@@ -39,7 +39,7 @@ module.exports = {
       },
       fontFamily: {
         bengali: ["Kalpurush", "Inter", "sans-serif"],
-        arabic: ["ScheherazadeNew", "NotoNastaliqUrdu", "Noto Naskh Arabic", "Amiri", "serif"],
+        arabic: ["var(--font-arabic)", "ScheherazadeNew", "NotoNastaliqUrdu", "Amiri", "serif"],
         inter: ["Inter", "sans-serif"],
         display: ["AbrilFatface", "serif"],
       },
