@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { PageHead, EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
 import type { QuranChapter, QuranReciter } from "../../../lib/quran";
+import { surahBnFull } from "../../../lib/surah-names";
 
 // Audio Quran — reciters + chapter streaming from quran.com API.
 export default function QuranAudio() {
@@ -66,7 +67,7 @@ export default function QuranAudio() {
           <select value={surah} onChange={(e) => setSurah(Number(e.target.value))} className="input mt-1.5">
             {chapters.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.id}. {c.name_arabic} — {c.translated_name?.name || c.name_simple}
+                {c.id}. {surahBnFull(c.id)}{c.translated_name?.name ? ` — ${c.translated_name.name}` : ""}
               </option>
             ))}
           </select>
@@ -94,7 +95,7 @@ export default function QuranAudio() {
           <div className="mb-2 text-sm font-bold">আমার সংগ্রহ ({saved.length})</div>
           <div className="flex flex-wrap gap-1.5">
             {saved.map((s) => (
-              <button key={s} onClick={() => setSurah(s)} className="chip">সূরা {s}</button>
+              <button key={s} onClick={() => setSurah(s)} className="chip">{surahBnFull(s)}</button>
             ))}
           </div>
         </div>

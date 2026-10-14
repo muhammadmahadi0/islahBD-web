@@ -8,6 +8,7 @@ import {
   BN_TRANSLATIONS, BN_TAFSIRS, stripHtml,
   type QuranChapter,
 } from "../../../lib/quran";
+import { surahBnFull } from "../../../lib/surah-names";
 
 const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
 const toArNum = (n: number) => String(n).replace(/[0-9]/g, (d) => AR_DIGITS[Number(d)]);
@@ -135,7 +136,7 @@ function Reader() {
         <Icon name="chevron" size={12} />
         <Link href="/quran" className="hover:text-primary-700">কুরআন</Link>
         <Icon name="chevron" size={12} />
-        <span className="text-primary-700">{current?.translated_name?.name || `সূরা ${surah}`}</span>
+        <span className="text-primary-700">{surahBnFull(surah)}</span>
       </div>
 
       {/* surah header */}
@@ -143,10 +144,11 @@ function Reader() {
         <div className="relative z-10">
           <div className="font-arabic text-4xl text-white" dir="rtl">{current?.name_arabic || ""}</div>
           <h1 className="mt-1 text-xl font-bold">
-            {current ? `${current.translated_name?.name || current.name_simple}` : `সূরা ${surah}`}
+            {surahBnFull(surah)}
           </h1>
           <p className="mt-0.5 text-xs text-white/75">
-            {current ? `${current.name_simple} • ${current.revelation_place === "makkah" ? "মাক্কী" : "মাদানী"} • ${current.verses_count} আয়াত` : ""}
+            অর্থ: {current?.translated_name?.name || current?.name_simple || ""}
+            {current ? ` • ${current.name_simple} • ${current.revelation_place === "makkah" ? "মাক্কী" : "মাদানী"} • ${current.verses_count} আয়াত` : ""}
           </p>
           <div className="mx-auto mt-3 flex max-w-md items-center gap-2">
             <button
@@ -159,7 +161,7 @@ function Reader() {
             <select value={surah} onChange={(e) => changeSurah(Number(e.target.value))} className="input !border-white/20 !bg-white/10 !text-white !text-center [&>option]:text-ink" aria-label="surah">
               {(chapters.length ? chapters : Array.from({ length: 114 }, (_, i) => ({ id: i + 1, name_arabic: "", name_simple: `Surah ${i + 1}`, translated_name: { name: "" } } as any))).map((c: any) => (
                 <option key={c.id} value={c.id}>
-                  {c.id}. {c.translated_name?.name || c.name_simple} {c.name_arabic}
+                  {c.id}. {surahBnFull(c.id)}{c.translated_name?.name ? ` — ${c.translated_name.name}` : ""}
                 </option>
               ))}
             </select>

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Icon } from "../../components/icons";
 import type { QuranChapter } from "../../lib/quran";
+import { surahBn, surahBnFull } from "../../lib/surah-names";
 
 // quran.com-style home in app theme: hero search + quick links + surah list
 // with ornamented numbers, Arabic names and Makki/Madani meta.
@@ -25,6 +26,7 @@ export default function QuranLanding() {
         c.name_simple.toLowerCase().includes(query) ||
         c.name_arabic.includes(q.trim()) ||
         (c.translated_name?.name || "").includes(q.trim()) ||
+        surahBn(c.id).includes(q.trim()) ||
         String(c.id) === query
     );
   }, [chapters, q]);
@@ -98,7 +100,10 @@ export default function QuranLanding() {
             <Link key={c.id} href={`/quran/read?surah=${c.id}`} className="card card-hover flex items-center gap-3 p-3.5">
               <span className="surah-ornament"><span>{c.id}</span></span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-[15px] font-bold">{c.translated_name?.name || c.name_simple}</span>
+                <span className="block truncate text-[15px] font-bold">{surahBnFull(c.id)}</span>
+                <span className="block truncate text-[11px] font-bold text-ink-faint">
+                  অর্থ: {c.translated_name?.name || c.name_simple}
+                </span>
                 <span className="block text-[11px] font-bold uppercase tracking-wide text-ink-faint">
                   {c.name_simple} • {c.revelation_place === "makkah" ? "মাক্কী" : "মাদানী"} • {c.verses_count} আয়াত
                 </span>
