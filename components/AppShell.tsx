@@ -98,14 +98,15 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <span className="block text-[11px] font-medium text-ink-faint">দ্বীনি জীবনের সাথী</span>
             </span>
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={openIslahBDApp}
               aria-label="Open IslahBD app"
               title="অ্যাপ খুলুন"
-              className="prayer-gold flex h-10 w-10 items-center justify-center !rounded-full !p-0"
+              className="prayer-gold flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap !rounded-full px-3 text-xs font-bold text-white shadow-md"
             >
-              <Icon name="external" size={16} strokeWidth={2.2} />
+              <Icon name="external" size={14} strokeWidth={2.2} />
+              অ্যাপ খুলুন
             </button>
             <Link href="/notifications" aria-label="notifications" className={circleBtn}>
               <Icon name="bell" size={16} />
