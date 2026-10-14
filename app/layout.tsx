@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Naskh_Arabic } from "next/font/google";
+import { Noto_Naskh_Arabic, Hind_Siliguri } from "next/font/google";
 import "./globals.css";
 import AppShell from "../components/AppShell";
 import AudioPlayer from "../components/audio/AudioPlayer";
@@ -9,6 +9,13 @@ const arabicFont = Noto_Naskh_Arabic({
   subsets: ["arabic", "latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-arabic",
+  display: "swap",
+});
+
+const hindFont = Hind_Siliguri({
+  subsets: ["bengali", "latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-hind",
   display: "swap",
 });
 
@@ -28,7 +35,7 @@ const PREPAINT = `(function(){try{var t=null;try{t=JSON.parse(localStorage.getIt
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="bn" className={arabicFont.variable} suppressHydrationWarning>
+    <html lang="bn" className={`${arabicFont.variable} ${hindFont.variable}`} suppressHydrationWarning>
       <body>
         <script dangerouslySetInnerHTML={{ __html: PREPAINT }} />
         <AppShell>{children}</AppShell>

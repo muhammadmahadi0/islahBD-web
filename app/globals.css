@@ -67,9 +67,9 @@ html {
 }
 
 body {
-  font-family: "Kalpurush", "Inter", sans-serif;
-  background: #f6f2e9;
-  background-image: radial-gradient(1200px 400px at 50% -120px, rgba(14, 124, 91, 0.1), transparent);
+  font-family: "Hind Siliguri", "Kalpurush", "Inter", sans-serif;
+  background: #faf8f5;
+  background-image: radial-gradient(1200px 400px at 50% -120px, rgba(14, 124, 91, 0.08), transparent);
   background-attachment: fixed;
   color: #14231d;
   -webkit-font-smoothing: antialiased;
@@ -241,7 +241,7 @@ a:hover .surah-ornament > span, button:hover .surah-ornament > span {
 }
 
 /* ============================================================
-   DARK MODE (html.dark) — deep emerald night theme.
+   DARK MODE (html.dark) — deep midnight blue theme.
    Unlayered rules win over Tailwind's layered utilities.
    ============================================================ */
 html.dark {
@@ -249,61 +249,61 @@ html.dark {
 }
 
 html.dark body {
-  background-color: #07110d;
+  background-color: #0b1120;
   background-image:
-    radial-gradient(38rem 22rem at 85% -6rem, rgba(201, 162, 39, 0.12), transparent 65%),
-    radial-gradient(30rem 22rem at -8rem 32vh, rgba(14, 124, 91, 0.14), transparent 65%);
-  color: #f0ede1;
+    radial-gradient(38rem 22rem at 85% -6rem, rgba(230, 202, 101, 0.1), transparent 65%),
+    radial-gradient(30rem 22rem at -8rem 32vh, rgba(14, 124, 91, 0.16), transparent 65%);
+  color: #f1ede0;
 }
 
 html.dark .card {
-  background-color: #0d1f17;
-  border-color: rgba(201, 162, 39, 0.16);
+  background-color: rgba(30, 41, 59, 0.7);
+  border-color: rgba(230, 202, 101, 0.18);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -12px rgba(0, 0, 0, 0.6);
 }
 
 html.dark .input {
-  background-color: #0d1f17;
-  border-color: rgba(240, 237, 225, 0.14);
-  color: #f0ede1;
+  background-color: rgba(30, 41, 59, 0.7);
+  border-color: rgba(241, 237, 224, 0.14);
+  color: #f1ede0;
 }
 html.dark .input::placeholder {
-  color: #7e8f84;
+  color: #7e8ca0;
 }
 
 html.dark .chip {
-  background-color: #12241b;
+  background-color: #1b2940;
   color: #8fd8b4;
 }
 html.dark button.chip:hover {
-  background-color: #1a3325;
+  background-color: #253654;
 }
 
 html.dark .btn-ghost {
-  background-color: #12241b;
+  background-color: #1b2940;
   color: #8fd8b4;
 }
 html.dark .btn-ghost:hover {
-  background-color: #1a3325;
+  background-color: #253654;
 }
 html.dark .btn-outline {
   background-color: transparent;
-  border-color: rgba(240, 237, 225, 0.18);
+  border-color: rgba(241, 237, 224, 0.18);
   color: #8fd8b4;
 }
 
-html.dark .text-ink { color: #f0ede1; }
-html.dark .text-ink-soft { color: #b9c6bc; }
-html.dark .text-ink-faint { color: #7e8f84; }
+html.dark .text-ink { color: #f1ede0; }
+html.dark .text-ink-soft { color: #b9c2cf; }
+html.dark .text-ink-faint { color: #7e8ca0; }
 html.dark .text-primary-700 { color: #7fd6ac; }
 html.dark .text-primary-600 { color: #4ade9e; }
-html.dark .text-gold-600 { color: #d9b845; }
-html.dark .text-gold-dark { color: #e3c568; }
+html.dark .text-gold-600 { color: #e6ca65; }
+html.dark .text-gold-dark { color: #e6ca65; }
 
-html.dark .bg-sand { background-color: #12241b; }
-html.dark .bg-sand-dark { background-color: #1b3327; }
-html.dark .bg-primary-50 { background-color: #0e2a1f; }
-html.dark .bg-primary-100 { background-color: #143823; }
+html.dark .bg-sand { background-color: #1b2940; }
+html.dark .bg-sand-dark { background-color: #253654; }
+html.dark .bg-primary-50 { background-color: #12283a; }
+html.dark .bg-primary-100 { background-color: #1a3650; }
 html.dark .bg-gold-light { background-color: #2a230f; }
 /* gold gradient feature card (home Hamd/Naat tile) */
 html.dark .gold-card {
@@ -313,18 +313,18 @@ html.dark .gold-card {
 html.dark .gold-card .text-ink-faint { color: #a89a6a; }
 html.dark .bg-amber-50 { background-color: #241d08; }
 html.dark .bg-amber-100 { background-color: #332a0d; }
-html.dark .bg-sky-50 { background-color: #0c1e2a; }
+html.dark .bg-sky-50 { background-color: #10222f; }
 html.dark .bg-rose-50 { background-color: #2a1414; }
-html.dark .bg-violet-50 { background-color: #1c1530; }
-html.dark .bg-teal-50 { background-color: #0a2220; }
+html.dark .bg-violet-50 { background-color: #1e1836; }
+html.dark .bg-teal-50 { background-color: #0e2422; }
 html.dark .bg-orange-50 { background-color: #2a1a0c; }
-html.dark .bg-indigo-50 { background-color: #151a30; }
-html.dark .bg-emerald-50 { background-color: #0b241b; }
+html.dark .bg-indigo-50 { background-color: #171c36; }
+html.dark .bg-emerald-50 { background-color: #0d2420; }
 html.dark .bg-red-50 { background-color: #2a1414; }
-html.dark .hover\:bg-sand\/60:hover { background-color: rgba(18, 36, 27, 0.6); }
-html.dark .hover\:bg-sand:hover { background-color: #12241b; }
-html.dark .hover\:bg-primary-50:hover { background-color: #0e2a1f; }
-html.dark .hover\:bg-primary-100:hover { background-color: #143823; }
+html.dark .hover\:bg-sand\/60:hover { background-color: rgba(27, 41, 64, 0.6); }
+html.dark .hover\:bg-sand:hover { background-color: #1b2940; }
+html.dark .hover\:bg-primary-50:hover { background-color: #12283a; }
+html.dark .hover\:bg-primary-100:hover { background-color: #1a3650; }
 
 html.dark .border-primary-900\/10 { border-color: rgba(240, 237, 225, 0.1); }
 html.dark .divide-primary-900\/5 > * + * { border-color: rgba(240, 237, 225, 0.07); }
@@ -341,15 +341,15 @@ html.dark .surah-ornament > span {
   color: #7fd6ac;
 }
 html.dark .verse-action {
-  color: #7e8f84;
+  color: #7e8ca0;
 }
 html.dark .verse-action:hover {
-  background-color: #0e2a1f;
+  background-color: #12283a;
   color: #7fd6ac;
 }
 
 html.dark audio::-webkit-media-controls-panel {
-  background: #0e2a1f;
+  background: #12283a;
 }
 
 /* ============================================================
@@ -381,8 +381,8 @@ html.glass .card {
     0 16px 48px -12px rgba(8, 73, 47, 0.25);
 }
 html.dark.glass .card {
-  background: linear-gradient(135deg, rgba(20, 42, 30, 0.82), rgba(10, 24, 18, 0.72));
-  border-color: rgba(201, 162, 39, 0.35);
+  background: linear-gradient(135deg, rgba(34, 47, 70, 0.82), rgba(14, 22, 36, 0.72));
+  border-color: rgba(230, 202, 101, 0.3);
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.12),
     inset 0 -1px 2px rgba(0, 0, 0, 0.3),
@@ -403,12 +403,12 @@ html.glass .bottom-nav {
     0 16px 48px -12px rgba(8, 73, 47, 0.3);
 }
 html.dark .bottom-nav {
-  background: rgba(10, 22, 17, 0.95) !important;
-  border-color: rgba(201, 162, 39, 0.22) !important;
+  background: rgba(13, 20, 34, 0.95) !important;
+  border-color: rgba(230, 202, 101, 0.22) !important;
 }
 html.dark.glass .bottom-nav {
-  background: rgba(10, 22, 17, 0.78) !important;
-  border-color: rgba(201, 162, 39, 0.3) !important;
+  background: rgba(13, 20, 34, 0.78) !important;
+  border-color: rgba(230, 202, 101, 0.3) !important;
 }
 
 html.glass .chip {
@@ -418,7 +418,7 @@ html.glass .chip {
   border: 1px solid rgba(201, 162, 39, 0.3);
 }
 html.dark.glass .chip {
-  background: rgba(18, 36, 27, 0.6);
+  background: rgba(27, 41, 64, 0.6);
 }
 html.glass .chip-active,
 html.dark.glass .chip-active {
@@ -438,4 +438,79 @@ html.glass .btn-gold {
     inset 0 -1px 2px rgba(0, 0, 0, 0.15),
     0 0 14px rgba(201, 162, 39, 0.4),
     0 8px 24px -8px rgba(122, 100, 21, 0.5);
+}
+
+/* ============================================================
+   GOLDEN SIGNATURE ELEMENTS — identical in light + dark.
+   ============================================================ */
+
+/* Elegant golden gradient text (honorific titles) */
+.gold-text {
+  background: linear-gradient(120deg, #f6e27a 0%, #e6ca65 30%, #b8860b 55%, #f0d878 80%, #b8860b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Golden prayer card — fixed rich gold in BOTH modes */
+.prayer-gold {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: linear-gradient(150deg, #e6ca65 0%, #d4af37 45%, #b8860b 100%);
+  color: #1a1405;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -2px 6px rgba(90, 66, 8, 0.25),
+    0 0 24px rgba(212, 175, 55, 0.35),
+    0 16px 48px -12px rgba(122, 100, 21, 0.45);
+}
+.prayer-gold::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 88% 8%, rgba(255, 255, 255, 0.35), transparent 45%),
+    radial-gradient(circle at 8% 95%, rgba(90, 66, 8, 0.25), transparent 50%);
+  pointer-events: none;
+}
+
+/* Golden floating bottom nav — identical in light + dark */
+.bottom-nav {
+  background: linear-gradient(135deg, #e6ca65 0%, #d4af37 50%, #b8860b 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(212, 175, 55, 0.35),
+    0 16px 48px -12px rgba(122, 100, 21, 0.5) !important;
+}
+html.dark .bottom-nav,
+html.dark.glass .bottom-nav,
+html.glass .bottom-nav {
+  background: linear-gradient(135deg, #e6ca65 0%, #d4af37 50%, #b8860b 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border-radius: 1rem;
+  padding: 8px 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(26, 20, 5, 0.65);
+  transition: all 0.15s;
+}
+.nav-tab:active {
+  transform: scale(0.95);
+}
+.nav-tab-active {
+  background: #0b1120;
+  color: #e6ca65;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.3);
 }
