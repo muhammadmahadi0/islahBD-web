@@ -1,0 +1,72 @@
+# SPEC — Islah Web (`alpha` branch)
+
+## 1. Goal
+
+Faithful, modern web clone of the IslahBD Android app with beta-branch
+media players and pray-bd prayer accuracy. Bengali-first, mobile-first,
+offline-tolerant, keyless APIs only.
+
+## 2. Non-goals
+
+- No auth, no accounts, no backend database
+- No paid APIs; every upstream must be keyless
+- No emoji iconography (SVG set only)
+
+## 3. Architecture
+
+- **Framework:** Next.js 14 App Router, TypeScript, Tailwind 3
+- **State:** zustand + persist (player, playlists, theme, design);
+  local component state + localStorage caches elsewhere
+- **Data:** static JSON in `public/data` (bundled from APK) + cached
+  Next route handlers proxying upstream APIs
+- **Styling:** Tailwind utilities + `app/globals.css` design tokens;
+  `html.dark` (midnight blue) and `html.glass` (liquid glass) layers
+
+## 4. Subsystems
+
+### 4.1 Quran (quran.com API v4)
+- Chapters with Bengali names + Bangla transliterations (`lib/surah-names.ts`,
+  all 114 verified)
+- Reader: 4 Bengali translations, 3 Bengali tafsirs, word-by-word,
+  transliteration, per-ayah audio, bookmarks, font-size control
+- **Invariant:** `text_uthmani` must be requested via `fields=` (API omits
+  it by default); render falls back Uthmani → Imlaei → offline DB so the
+  Arabic line can never be blank
+- Offline `quran_database.json` (6236 ayahs) auto-fills gaps and takes over
+  fully when offline; search merges both sources with verse-key dedup
+
+### 4.2 Prayer (pray-bd engine, `lib/prayer.ts`)
+- Aladhan `timings` (method=1 Karachi, school=1 Hanafi) via `/api/prayer`
+- IP geolocation (ipapi → ip-api → Dhaka, 24h cached) + 8 BD cities + GPS
+- 24h per-location cache, midnight auto-refresh, seasonal Hanafi fallback
+- Special periods: sunrise prohibited (red) → Ishraq → Chasht (Dhuhr−10)
+- Hijri from Aladhan `date.hijri`, mapped by **month number**, minus 1 day
+  for BD moon sighting; Intl fallback
+- Home card shows the **current** ongoing prayer + remaining time
+
+### 4.3 Media players (beta engine)
+- zustand `player-store` (persisted queue, throttled writes) + `playlist-store`
+- `AudioPlayer`: HTML audio + lazy hls.js, proxy retry, recording fallback
+  for live, wake lock, SEEK_EVENT bus
+- `MiniPlayer`: persistent YouTube embed (audio-first 144p, opt-in video,
+  autoplay watchdog), expanded sheet (seek/volume/queue/download/share),
+  mini pill, swipe, EQ bars
+- Boyan: `/api/audios` + categories, search/filter, silent refresh, play-all
+- Hamd/Naat: `/api/nasheeds`, audio↔player / video↔YouTube engine
+- Live: `/api/live` polling (60s), in-app HLS or last recording
+
+### 4.4 Shell & theme
+- `AppShell`: phone shell, header (logo, app-open deep link
+  `islahbd://` with store fallback, bell, share, theme toggle),
+  honorific block, bottom bar Home/Live(play)/Boyan/Family/More
+- Theme store (`islah-theme`, OS default) + design store
+  (`islah-design`, Material on Android, Liquid elsewhere) + pre-paint script
+- Golden signature elements identical in both modes
+
+## 5. Conventions
+
+- Bengali UI strings inline (no i18n framework); dates/digits in Bengali
+- New pages: `PageHead` hero + skeleton loaders + `EmptyState`
+- Buttons only from the `.btn-*` / `.chip` system — every variant must be
+  readable in **both** light and dark (pinned colors on gold/white)
+- Verify with `npm run build` (49 routes) + prod smoke test before push
