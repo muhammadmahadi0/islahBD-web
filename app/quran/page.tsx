@@ -12,7 +12,7 @@ const tiles = [
 export default function QuranLanding() {
   return (
     <div className="animate-fade-up">
-      <PageHead title="আল-কুরআন" subtitle="৬২৩৬ আয়াত • অফলাইন ডাটাবেজ" icon="book" />
+      <PageHead title="আল-কুরআন" subtitle="quran.com API • ৪ বাংলা অনুবাদ • ৩ তাফসীর" icon="book" />
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         {tiles.map((c) => (
           <Link key={c.t} href={c.href} className="card card-hover overflow-hidden">

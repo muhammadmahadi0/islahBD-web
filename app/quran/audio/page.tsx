@@ -1,42 +1,90 @@
 "use client";
-import { useState } from "react";
-import { PageHead } from "../../../components/ui";
+import { useEffect, useState } from "react";
+import { PageHead, EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
+import type { QuranChapter, QuranReciter } from "../../../lib/quran";
 
-const QARIS = [
-  { id: "Ali_Hajjaj_AlSuesy_128kbps", name: "আলী হাজ্জাজ আস-সুয়েসি", base: "https://everyayah.com/data/Ali_Hajjaj_AlSuesy_128kbps/" },
-  { id: "mishary", name: "মিশারী রাশিদ", base: "https://everyayah.com/data/Mishary_Rashid_128kbps/" },
-  { id: "wbw", name: "শব্দ-শব্দ (WBW)", base: "https://audio.qurancdn.com/wbw/" },
-];
-
+// Audio Quran — reciters + chapter streaming from quran.com API.
 export default function QuranAudio() {
-  const [qari, setQari] = useState(0);
+  const [reciters, setReciters] = useState<QuranReciter[]>([]);
+  const [chapters, setChapters] = useState<QuranChapter[]>([]);
+  const [reciter, setReciter] = useState(7);
   const [surah, setSurah] = useState(1);
+  const [src, setSrc] = useState("");
+  const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState<number[]>([]);
 
-  const pad = (n: number) => String(n).padStart(3, "0");
-  const src = `${QARIS[qari].base}${pad(surah)}.mp3`;
+  useEffect(() => {
+    fetch("/api/quran/recitations").then((r) => r.json()).then((d) => {
+      if (d.success) setReciters(d.recitations);
+    }).catch(() => {});
+    fetch("/api/quran/chapters").then((r) => r.json()).then((d) => {
+      if (d.success) setChapters(d.chapters);
+    }).catch(() => {});
+    try { setSaved(JSON.parse(localStorage.getItem("quran_audio_saved") || "[]")); } catch {}
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`/api/quran/chapter-audio?reciter=${reciter}&chapter=${surah}`)
+      .then((r) => r.json())
+      .then((d) => setSrc(d.audio_file?.audio_url || ""))
+      .catch(() => setSrc(""))
+      .finally(() => setLoading(false));
+  }, [reciter, surah]);
+
+  const save = (s: number) => {
+    const next = saved.includes(s) ? saved : [...saved, s];
+    setSaved(next);
+    localStorage.setItem("quran_audio_saved", JSON.stringify(next));
+  };
+
+  const current = chapters.find((c) => c.id === surah);
+  const reciterName = reciters.find((r) => r.id === reciter)?.reciter_name || "";
 
   return (
     <div className="animate-fade-up">
-      <PageHead title="অডিও কুরআন" subtitle="তিলাওয়াত শুনুন ও ডাউনলোড করুন" icon="headphones" backHref="/quran" />
+      <PageHead
+        title="অডিও কুরআন"
+        subtitle={current ? `${current.name_arabic} • ${reciterName}` : "quran.com তিলাওয়াত"}
+        icon="headphones"
+        backHref="/quran"
+      />
       <div className="card mt-3 space-y-3 p-4">
         <label className="block text-sm font-bold">
-          ক্বারী
-          <select value={qari} onChange={(e) => setQari(Number(e.target.value))} className="input mt-1.5">
-            {QARIS.map((x, i) => <option key={x.id} value={i}>{x.name}</option>)}
+          ক্বারী ({reciters.length})
+          <select value={reciter} onChange={(e) => setReciter(Number(e.target.value))} className="input mt-1.5">
+            {reciters.map((r) => (
+              <option key={`${r.id}-${r.style}`} value={r.id}>
+                {r.reciter_name}{r.style ? ` (${r.style})` : ""}
+              </option>
+            ))}
           </select>
         </label>
         <label className="block text-sm font-bold">
-          সূরা নম্বর (১–১১৪)
-          <input type="number" min={1} max={114} value={surah} onChange={(e) => setSurah(Math.min(114, Math.max(1, Number(e.target.value) || 1)))} className="input mt-1.5" />
+          সূরা
+          <select value={surah} onChange={(e) => setSurah(Number(e.target.value))} className="input mt-1.5">
+            {chapters.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.id}. {c.name_arabic} — {c.translated_name?.name || c.name_simple}
+              </option>
+            ))}
+          </select>
         </label>
-        <audio key={src} controls src={src} className="w-full" preload="none" />
+        {loading ? (
+          <div className="h-12 animate-pulse rounded-2xl bg-sand" />
+        ) : src ? (
+          <audio key={src} controls src={src} className="w-full" preload="none" />
+        ) : (
+          <EmptyState icon="headphones" title="অডিও পাওয়া যায়নি" />
+        )}
         <div className="flex gap-2">
-          <a href={src} download className="btn-primary flex-1">
-            <Icon name="download" size={16} /> ডাউনলোড
-          </a>
-          <button className="btn-gold flex-1" onClick={() => setSaved((p) => (p.includes(surah) ? p : [...p, surah]))}>
+          {src && (
+            <a href={src} download className="btn-primary flex-1">
+              <Icon name="download" size={16} /> ডাউনলোড
+            </a>
+          )}
+          <button className="btn-gold flex-1" onClick={() => save(surah)}>
             <Icon name="plus" size={16} /> সংগ্রহে রাখুন
           </button>
         </div>
@@ -45,7 +93,9 @@ export default function QuranAudio() {
         <div className="card mt-2 p-4">
           <div className="mb-2 text-sm font-bold">আমার সংগ্রহ ({saved.length})</div>
           <div className="flex flex-wrap gap-1.5">
-            {saved.map((s) => <span key={s} className="chip">সূরা {s}</span>)}
+            {saved.map((s) => (
+              <button key={s} onClick={() => setSurah(s)} className="chip">সূরা {s}</button>
+            ))}
           </div>
         </div>
       )}
