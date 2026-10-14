@@ -14,7 +14,7 @@ function Heading({ t, sub, link }: { t: string; sub?: string; link?: string }) {
     <div className="flex items-center justify-between">
       <div>
         <h3 className="flex items-center gap-2 text-base font-bold text-ink">
-          <span className="h-4 w-1 rounded-full bg-amber-500" />
+          <span className="h-4 w-1 rounded-full bg-primary-500" />
           {t}
         </h3>
         {sub && <p className="ml-6 text-[10px] text-ink-faint">{sub}</p>}
@@ -65,10 +65,10 @@ export default function HomePage() {
 
       {/* Live promo */}
       <section className="my-4">
-        <div className="relative flex items-center justify-between overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-r from-amber-500/15 to-amber-700/10 p-4 dark:from-amber-500/20 dark:to-slate-800/40">
-          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-amber-400/20 blur-xl" />
+        <div className="relative flex items-center justify-between overflow-hidden rounded-2xl border border-primary-600/20 bg-gradient-to-r from-primary-600/10 to-primary-800/5 p-4 dark:from-primary-600/20 dark:to-slate-800/40">
+          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-primary-500/20 blur-xl" />
           <div className="relative">
-            <p className="mb-0.5 text-[10px] font-semibold text-amber-700 dark:text-amber-300">লাইভ বয়ান</p>
+            <p className="mb-0.5 text-[10px] font-semibold text-primary-700">লাইভ বয়ান</p>
             <h3 className="text-sm font-bold text-ink">সরাসরি বয়ান শুনুন</h3>
             <p className="mt-0.5 text-[10px] text-ink-faint">নতুন বয়ানের নোটিফিকেশন পান</p>
           </div>
@@ -94,7 +94,7 @@ export default function HomePage() {
               href={s.route}
               className={`${card} group flex flex-col items-center justify-center p-3 text-center`}
             >
-              <span className="rounded-xl bg-slate-100 p-2.5 text-amber-600 transition group-hover:scale-110 dark:bg-slate-800/80 dark:text-amber-300">
+              <span className="rounded-xl bg-emerald-50 p-2.5 text-primary-600 transition group-hover:scale-110">
                 <Icon name={s.icon} size={20} />
               </span>
               <span className="mt-2 line-clamp-1 w-full text-[11px] font-medium text-ink-soft">{s.bn}</span>
@@ -111,7 +111,7 @@ export default function HomePage() {
         <div className="grid grid-cols-2 gap-3">
           {MEDIA.map((m) => (
             <Link key={m.bn} href={m.route} className={`${card} flex items-center gap-3 p-4`}>
-              <span className="rounded-xl bg-amber-500/10 p-3 text-amber-600 dark:text-amber-400">
+              <span className="rounded-xl bg-emerald-50 p-3 text-primary-600">
                 <Icon name={m.icon} size={24} />
               </span>
               <span>
@@ -137,18 +137,18 @@ export default function HomePage() {
                     NEW
                   </span>
                 )}
-                <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-slate-100 text-amber-600 dark:bg-slate-800 dark:text-amber-400">
+                <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-primary-600">
                   <Icon name="mic" size={20} />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-xs font-bold text-ink">{b.title}</span>
                   <span className="mt-1 flex items-center gap-1 text-[10px] text-ink-faint">
-                    <Icon name="calendar" size={12} className="text-amber-500" />
+                    <Icon name="calendar" size={12} className="text-primary-600" />
                     {timeAgoBn(b.uploadDate) || `বয়ান ${bnNum(b.id)}`}
                   </span>
                   {b.location && (
                     <span className="mt-0.5 flex items-center gap-1 truncate text-[10px] text-ink-faint">
-                      <Icon name="pin" size={12} className="shrink-0" />
+                      <Icon name="pin" size={12} className="shrink-0 text-primary-600" />
                       <span className="truncate">{b.location}</span>
                     </span>
                   )}

@@ -510,17 +510,24 @@ html.dark .gold-text {
   border-radius: 999px;
   font-size: 10px;
   font-weight: 600;
-  color: rgba(251, 240, 185, 0.8);
+  color: rgba(11, 17, 32, 0.72);
   transition: all 0.15s;
 }
 .nav-tab:hover {
-  color: #fff;
+  color: #0b1120;
 }
 .nav-tab:active {
   transform: scale(0.95);
 }
+.nav-tab:disabled {
+  opacity: 0.45;
+}
 .nav-tab-active {
-  color: #0b1120;
+  background: #0b1120;
+  color: #e6ca65;
   font-weight: 800;
-  transform: scale(1.1);
+  transform: scale(1.06);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.3);
 }
