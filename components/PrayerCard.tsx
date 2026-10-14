@@ -98,57 +98,56 @@ export default function PrayerCard() {
   const gregEn = now.toLocaleDateString("en-US", { weekday: "short", day: "numeric", month: "short" });
 
   return (
-    <div className="prayer-gold mx-1 my-2 p-4 text-white shadow-xl">
-      <div className="dots-overlay pointer-events-none absolute inset-0" />
+    <div className="page-hero mx-1 my-2 p-4 text-white shadow-xl">
       <div className="relative">
         {/* location + date pills */}
         <div className="mb-4 flex items-center justify-between text-xs">
-          <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 backdrop-blur-md">
-            <Icon name="pin" size={14} className="text-amber-200" />
-            <span className="font-medium text-amber-100">{place}</span>
+          <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 backdrop-blur-md">
+            <Icon name="pin" size={14} className="text-gold-100" />
+            <span className="font-medium text-white">{place}</span>
           </span>
-          <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-right backdrop-blur-md">
-            <Icon name="calendar" size={14} className="text-amber-200" />
+          <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-right backdrop-blur-md">
+            <Icon name="calendar" size={14} className="text-gold-100" />
             <span className="text-[11px] leading-tight">
-              <span className="block font-semibold text-amber-100">{gregEn}</span>
-              <span className="block text-[10px] text-amber-200/80">{hijriText(hijri, "bn")}</span>
+              <span className="block font-semibold text-white">{gregEn}</span>
+              <span className="block text-[10px] text-white/75">{hijriText(hijri, "bn")}</span>
             </span>
           </span>
         </div>
 
         {/* gauge + current prayer */}
-        <div className="my-3 flex items-center justify-between rounded-2xl border border-white/10 bg-black/15 p-3.5">
+        <div className="my-3 flex items-center justify-between rounded-2xl bg-white/10 p-3.5">
           <div className="relative flex h-20 w-20 items-center justify-center">
             <svg className="h-full w-full -rotate-90" viewBox="0 0 36 36">
               <path className="text-white/20" strokeWidth="3.5" stroke="currentColor" fill="none" d={`M18 2.0845 a ${R} ${R} 0 0 1 0 31.831 a ${R} ${R} 0 0 1 0 -31.831`} />
               <path
-                className="text-amber-200" strokeWidth="3.5" strokeLinecap="round" stroke="currentColor" fill="none"
+                className="text-gold-100" strokeWidth="3.5" strokeLinecap="round" stroke="currentColor" fill="none"
                 strokeDasharray={`${(done * 100).toFixed(1)}, 100`}
                 d={`M18 2.0845 a ${R} ${R} 0 0 1 0 31.831 a ${R} ${R} 0 0 1 0 -31.831`}
               />
             </svg>
             <div className="absolute text-center">
-              <p className="text-[10px] text-amber-100/80">এখন</p>
+              <p className="text-[10px] text-white/75">এখন</p>
               <p className="text-[10px] font-bold leading-tight">{remainBn}</p>
-              <p className="text-[9px] text-amber-200/80">বাকি</p>
+              <p className="text-[9px] text-white/70">বাকি</p>
             </div>
           </div>
           <div className="ml-4 flex-1">
             <div className="mb-2 flex items-center gap-2">
-              <span className="rounded bg-amber-200/20 px-2 py-0.5 text-xs font-medium text-amber-100">এখন</span>
+              <span className="rounded bg-gold px-2 py-0.5 text-xs font-bold text-[#1a1405]">এখন</span>
               <span className="text-2xl font-bold tracking-wide text-white">{prayerName(cur, "bn")}</span>
             </div>
-            <div className="flex gap-3 text-[11px] text-amber-100/80">
+            <div className="flex gap-3 text-[11px] text-white/80">
               <div>
                 <span className="block text-[10px] opacity-75">শুরু</span>
-                <span className="font-semibold text-white">{fmt12(times[cur])}</span>
+                <span className="font-semibold tabular-nums text-white">{fmt12(times[cur])}</span>
               </div>
               <div className="border-l border-white/20 pl-3">
                 <span className="block text-[10px] opacity-75">শেষ</span>
-                <span className="font-semibold text-white">{fmt12(next.time)}</span>
+                <span className="font-semibold tabular-nums text-white">{fmt12(next.time)}</span>
               </div>
             </div>
-            <Link href="/prayer-times" className="mt-2 inline-block text-[11px] font-bold text-amber-200 underline-offset-2 hover:underline">
+            <Link href="/prayer-times" className="mt-2 inline-block text-[11px] font-bold text-gold-100 underline-offset-2 hover:underline">
               পূর্ণ সময়সূচি →
             </Link>
           </div>
@@ -163,8 +162,8 @@ export default function PrayerCard() {
                 key={key}
                 className={`rounded-xl p-2 text-center transition-all ${
                   active
-                    ? "scale-105 bg-amber-200 font-bold text-slate-900 shadow-lg"
-                    : "bg-black/20 text-amber-100/90 hover:bg-black/30"
+                    ? "scale-105 bg-gold font-bold text-[#1a1405] shadow-lg"
+                    : "bg-white/10 text-white/90 hover:bg-white/20"
                 }`}
               >
                 <p className="mb-1 text-[11px]">{prayerName(key, "bn")}</p>

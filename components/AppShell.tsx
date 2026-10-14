@@ -90,8 +90,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <header className="app-header px-4 pb-2 pt-4">
         <div className="mb-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <span className="prayer-gold flex h-10 w-10 items-center justify-center rounded-xl text-xl font-bold text-white shadow-md">
-              <span className="font-arabic leading-none">اصلاح</span>
+            <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-md">
+              <img src="/images/logo.png" alt="Islah" className="h-full w-full object-cover" />
             </span>
             <span>
               <span className="block text-xl font-bold leading-none tracking-wide">islah</span>
