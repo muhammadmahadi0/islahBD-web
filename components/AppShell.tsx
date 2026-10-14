@@ -6,7 +6,6 @@ import { Icon } from "./icons";
 import { openIslahBDApp } from "../lib/open-app";
 import { usePlayerStore, type Track } from "../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../lib/live";
-import { useThemeStore } from "../store/theme-store";
 
 // Paths belonging to the More hub — the More tab stays highlighted there.
 const MORE_PREFIXES = [
@@ -20,7 +19,6 @@ const MORE_PREFIXES = [
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   const { playTrack, currentTrack, isPlaying, setIsPlaying } = usePlayerStore();
-  const { theme, toggle: toggleTheme } = useThemeStore();
   const [live, setLive] = useState<LiveStatus | null>(null);
 
   // Live status (same source as the Live page) — the Live tab plays
@@ -70,71 +68,46 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     if (track) playTrack(track, [track], 0);
   }, [live, isLiveTrackActive, isPlaying, setIsPlaying, playTrack]);
 
-  const sharePage = useCallback(() => {
-    const url = location.href;
-    if (navigator.share) navigator.share({ title: "Islah", text: "ইসলাহ — দ্বীন জীবনের সঙ্গী", url }).catch(() => {});
-    else navigator.clipboard?.writeText(url);
-  }, []);
-
   const moreActive = MORE_PREFIXES.some((p) => path === p || path.startsWith(p + "/"));
   const liveReady = !!live && (live.isLive || !!live.recording?.audioUrl);
-  const isHome = path === "/";
 
   const tabCls = (active: boolean) => `nav-tab${active ? " nav-tab-active" : ""}`;
-
-  const iconBtn =
-    "flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-white transition hover:bg-white/20 active:scale-95";
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col">
       <header className="app-header sticky top-0 z-40 border-b border-white/10 bg-gradient-to-l from-primary-800 via-primary-700 to-primary-800 text-white shadow-lift">
         <div className="flex items-center gap-2 px-3 py-3 sm:gap-3 sm:px-4">
-          <Link href="/" className="flex h-10 items-center gap-2 rounded-2xl bg-white px-2.5 shadow-card">
-            <img src="/images/logo.png" alt="Islah" className="h-7 w-7 rounded-lg object-cover" />
-            <span className="text-[17px] font-bold tracking-tight text-primary-800">islah</span>
+          <Link href="/" className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-card">
+            <img src="/images/logo.png" alt="Islah" className="h-full w-full object-cover" />
           </Link>
-          <div className="flex-1" />
-          {/* Top app-open button: installed app, otherwise the right store */}
+          <div className="min-w-0 flex-1 leading-tight">
+            <div className="text-[17px] font-bold tracking-tight">ইসলাহ</div>
+            <div className="text-[11px] font-medium text-white/70">দ্বীন জীবনের সঙ্গী</div>
+          </div>
           <button
             onClick={openIslahBDApp}
             aria-label="Open IslahBD app"
             title="Open IslahBD app"
-            className="hidden h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-gradient-to-br from-[#cba135] via-[#e8c96c] to-[#a07e28] px-3 text-xs font-bold text-[#1a1405] shadow-card transition-all hover:brightness-105 active:scale-95 sm:flex sm:px-4 sm:text-[13px]"
+            className="flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-gradient-to-br from-[#cba135] via-[#e8c96c] to-[#a07e28] px-3 text-xs font-bold text-[#1a1405] shadow-card transition-all hover:brightness-105 active:scale-95 sm:px-4 sm:text-[13px]"
           >
             <Icon name="external" size={15} strokeWidth={2.2} />
             অ্যাপ খুলুন
           </button>
-          <Link href="/quran/search" aria-label="search" className={iconBtn}>
-            <Icon name="search" size={20} />
-          </Link>
-          <button onClick={sharePage} aria-label="share" className={iconBtn}>
-            <Icon name="share" size={20} />
-          </button>
-          <Link href="/notifications" aria-label="notifications" className={iconBtn}>
+          <Link
+            href="/notifications"
+            aria-label="notifications"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-white transition hover:bg-white/20 active:scale-95"
+          >
             <Icon name="bell" size={20} />
           </Link>
-          {/* Settings icon doubles as the theme toggle */}
-          <button
-            onClick={toggleTheme}
-            aria-label={theme === "dark" ? "লাইট মোড" : "ডার্ক মোড"}
-            title={theme === "dark" ? "লাইট মোড" : "ডার্ক মোড"}
-            className={iconBtn}
+          <Link
+            href="/settings"
+            aria-label="settings"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-white transition hover:bg-white/20 active:scale-95"
           >
-            <Icon name={theme === "dark" ? "sun" : "moon"} size={20} />
-          </button>
+            <Icon name="gear" size={20} />
+          </Link>
         </div>
-        {/* Honorific sub-header — home only */}
-        {isHome && (
-          <div className="px-4 pb-4 text-center">
-            <div className="font-arabic text-lg text-gold-100" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ</div>
-            <div className="mt-0.5 text-[13px] font-bold tracking-wide text-white/75">
-              ◈ হযরত মাওলানা ◈
-            </div>
-            <h1 className="gold-text mt-0.5 text-[30px] font-bold leading-tight tracking-tight">
-              তৈয়্যেব আশরাফ সাহেব
-            </h1>
-          </div>
-        )}
       </header>
 
       <main className="flex-1 px-3 pb-28 pt-4 sm:px-5">{children}</main>
