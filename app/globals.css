@@ -101,6 +101,13 @@ body {
 .btn-dark {
   @apply btn bg-ink text-white hover:bg-black;
 }
+.btn-white {
+  @apply bg-white text-[#1a1405];
+}
+html.dark .btn-white {
+  background-color: #0e7c5b;
+  color: #fff;
+}
 .btn-ghost {
   @apply btn bg-primary-50 text-primary-700 hover:bg-primary-100;
 }

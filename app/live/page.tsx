@@ -116,7 +116,7 @@ export default function LivePage() {
               )}
               <button
                 onClick={playLive}
-                className="mx-auto mt-4 flex items-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-bold text-[#1a1405] shadow-lift transition hover:scale-105 active:scale-95"
+                className="btn-white mx-auto mt-4 flex items-center gap-2 rounded-full px-7 py-3 text-sm font-bold shadow-lift transition hover:scale-105 active:scale-95"
               >
                 {playingLive && isPlaying ? (
                   <><Icon name="pause" size={17} /> থামান</>
