@@ -136,8 +136,11 @@ function Reader() {
       } as any));
 
   const renderVerse = (v: any) => {
-    // Gap-fill: missing online translation/page/juz falls back to local DB
+    // Gap-fill: missing online translation/page/juz falls back to local DB.
+    // Verse text prefers Uthmani, then Imlaei, then the offline database —
+    // so the Arabic line can never come back blank again.
     const local = dbByKey(surah, v.verse_number);
+    const arabic = v.text_uthmani || v.text_imlaei || local?.text || "";
     const tr = stripHtml(v.translations?.[0]?.text || "") || local?.translation || "";
     const taf = v.tafsirs?.[0]?.text || "";
     const playing = playingKey === v.verse_key && !(audioRef.current?.paused ?? true);
@@ -166,7 +169,7 @@ function Reader() {
             </div>
           </div>
           <p className="font-arabic text-right" dir="rtl" style={{ fontSize }}>
-            {v.text_uthmani}
+            {arabic}
             <span className="ayah-end">{toArNum(v.verse_number)}</span>
           </p>
           {showTranslit && translitOf(v) && (
@@ -201,7 +204,7 @@ function Reader() {
           </div>
         )}
         <div className="border-t border-primary-900/5 px-4 py-2.5 sm:px-5">
-          <ShareCopy text={`${v.text_uthmani}\n${tr}\n(${v.verse_key})`} />
+          <ShareCopy text={`${arabic}\n${tr}\n(${v.verse_key})`} />
         </div>
       </article>
     );

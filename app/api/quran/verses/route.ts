@@ -19,6 +19,9 @@ export async function GET(req: Request) {
     translation_fields: "resource_id,language_id,text",
     page: String(page),
     per_page: String(perPage),
+    // NOTE: api.quran.com no longer includes verse text by default —
+    // it must be requested explicitly or text_uthmani comes back empty.
+    fields: "text_uthmani,text_imlaei",
   });
   if (tafsirs) {
     params.set("tafsirs", tafsirs);
