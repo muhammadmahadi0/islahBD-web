@@ -305,6 +305,12 @@ html.dark .bg-sand-dark { background-color: #1b3327; }
 html.dark .bg-primary-50 { background-color: #0e2a1f; }
 html.dark .bg-primary-100 { background-color: #143823; }
 html.dark .bg-gold-light { background-color: #2a230f; }
+/* gold gradient feature card (home Hamd/Naat tile) */
+html.dark .gold-card {
+  background: linear-gradient(to bottom right, #2a230f, #3a2f10) !important;
+  border-color: rgba(201, 162, 39, 0.35);
+}
+html.dark .gold-card .text-ink-faint { color: #a89a6a; }
 html.dark .bg-amber-50 { background-color: #241d08; }
 html.dark .bg-amber-100 { background-color: #332a0d; }
 html.dark .bg-sky-50 { background-color: #0c1e2a; }
@@ -395,6 +401,10 @@ html.glass .bottom-nav {
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.55),
     0 16px 48px -12px rgba(8, 73, 47, 0.3);
+}
+html.dark .bottom-nav {
+  background: rgba(10, 22, 17, 0.95) !important;
+  border-color: rgba(201, 162, 39, 0.22) !important;
 }
 html.dark.glass .bottom-nav {
   background: rgba(10, 22, 17, 0.78) !important;

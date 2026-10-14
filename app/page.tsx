@@ -74,7 +74,7 @@ export default function HomePage() {
             <span className="block text-xs text-white/70">MP3 লেকচার শুনুন</span>
           </span>
         </Link>
-        <Link href="/hamdnaat" className="card card-hover block overflow-hidden bg-gradient-to-br from-gold-light to-amber-100 p-4">
+        <Link href="/hamdnaat" className="card card-hover gold-card block overflow-hidden bg-gradient-to-br from-gold-light to-amber-100 p-4">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-gold-600 shadow-card">
             <Icon name="music" size={22} />
           </span>
