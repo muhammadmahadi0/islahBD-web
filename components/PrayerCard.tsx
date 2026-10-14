@@ -75,15 +75,10 @@ export default function PrayerCard() {
             <div className="flex items-center gap-1.5 text-[12px] font-bold text-white/70">
               <Icon name="pin" size={14} />
               {place}
-              {cur && (
-                <span className="rounded-full bg-white/15 px-2 py-0.5 text-[10px]">
-                  {prayerName(cur, "bn")} চলছে
-                </span>
-              )}
             </div>
-            <div className="mt-1 text-[13px] text-white/75">পরবর্তী নামাজ</div>
+            <div className="mt-1 text-[13px] text-white/75">এখন চলছে</div>
             <div className="text-[32px] font-bold leading-tight tracking-tight">
-              {prayerName(next.key, "bn")}
+              {prayerName(cur, "bn")}
             </div>
             <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[12px] font-bold tabular-nums">
               <Icon name="clock" size={14} />
@@ -97,15 +92,15 @@ export default function PrayerCard() {
       </div>
       <div className="grid grid-cols-3 gap-2 p-3">
         {ORDER.map((k) => {
-          const isNext = k === next.key;
+          const isCur = k === cur;
           return (
             <div
               key={k}
               className={`rounded-2xl border p-2.5 text-center transition ${
-                isNext ? "border-gold bg-gold-light shadow-card" : "border-primary-900/10 bg-sand"
+                isCur ? "border-gold bg-gold-light shadow-card" : "border-primary-900/10 bg-sand"
               }`}
             >
-              <div className={`text-[12px] font-bold ${isNext ? "text-gold-dark" : "text-ink-soft"}`}>
+              <div className={`text-[12px] font-bold ${isCur ? "text-gold-dark" : "text-ink-soft"}`}>
                 {prayerName(k, "bn")}
               </div>
               <div className="text-[13px] font-bold tabular-nums">{fmt(times[k])}</div>
