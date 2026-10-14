@@ -22,10 +22,15 @@ export const viewport: Viewport = {
   themeColor: "#0B6248",
 };
 
+// Pre-paint: apply persisted theme/design before first render (no flash).
+// Mirrors beta Layout.astro — keys islah-theme / islah-design.
+const PREPAINT = `(function(){try{var t=null;try{t=JSON.parse(localStorage.getItem('islah-theme')||'null')}catch(e){}var theme=t&&t.state&&t.state.theme?t.state.theme:(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');if(theme==='dark')document.documentElement.classList.add('dark');var d=null;try{d=JSON.parse(localStorage.getItem('islah-design')||'null')}catch(e){}var mode=d&&d.state&&d.state.mode?d.state.mode:(/Android/i.test(navigator.userAgent)?'material':'liquid');if(mode==='liquid')document.documentElement.classList.add('glass');}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="bn" className={arabicFont.variable}>
+    <html lang="bn" className={arabicFont.variable} suppressHydrationWarning>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: PREPAINT }} />
         <AppShell>{children}</AppShell>
         <AudioPlayer />
         <MiniPlayer />
