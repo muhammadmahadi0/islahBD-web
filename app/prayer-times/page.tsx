@@ -257,7 +257,7 @@ export default function PrayerTimesPage() {
                     {prayerName(k, lang)}
                   </span>
                   {isCur && <span className="rounded-full bg-primary-600 px-2 py-0.5 text-[10px] font-bold text-white">{lang === "bn" ? "চলছে" : "Now"}</span>}
-                  {isNextReal && !isCur && <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-ink">{lang === "bn" ? "পরবর্তী" : "Next"}</span>}
+                  {isNextReal && !isCur && <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-[#1a1405]">{lang === "bn" ? "পরবর্তী" : "Next"}</span>}
                 </div>
                 <div className={`mt-1 text-[22px] font-bold tabular-nums ${isNextReal ? "text-gold-dark" : isCur ? "text-primary-700" : ""}`}>
                   {formatTime12(times[k], lang)}

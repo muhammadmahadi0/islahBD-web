@@ -75,7 +75,7 @@ export default function BoyanPage() {
         icon="mic"
         action={
           results.length > 0 ? (
-            <button onClick={playAll} className="inline-flex items-center gap-1.5 rounded-full bg-gold px-4 py-1.5 text-xs font-bold text-ink transition hover:bg-gold-600 hover:text-white active:scale-95">
+            <button onClick={playAll} className="inline-flex items-center gap-1.5 rounded-full bg-gold px-4 py-1.5 text-xs font-bold text-[#1a1405] transition hover:brightness-105 active:scale-95">
               <Icon name="playfill" size={14} /> সব চালান
             </button>
           ) : undefined

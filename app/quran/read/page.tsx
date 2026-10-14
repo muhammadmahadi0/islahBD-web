@@ -229,7 +229,7 @@ function Reader() {
             {current ? ` • ${current.name_simple} • ${current.revelation_place === "makkah" ? "মাক্কী" : "মাদানী"} • ${current.verses_count} আয়াত` : ""}
           </p>
           {offline && (
-            <p className="mx-auto mt-2 inline-block rounded-full bg-gold px-3 py-1 text-[11px] font-bold text-ink">
+            <p className="mx-auto mt-2 inline-block rounded-full bg-gold px-3 py-1 text-[11px] font-bold text-[#1a1405]">
               অফলাইন ডাটাবেজ দেখানো হচ্ছে
             </p>
           )}
