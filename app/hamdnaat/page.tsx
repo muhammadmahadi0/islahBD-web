@@ -2,15 +2,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { usePlayer } from "../../components/audio/player";
+import { usePlayerStore, type Track } from "../../store/player-store";
+import AddToPlaylistMenu from "../../components/audio/AddToPlaylistMenu";
 import {
   hamdNaatToTrack, timeAgoBn, bnNum,
   type HamdNaatItem, type HamdNaatType,
 } from "../../lib/audio";
 
-// Hamd/Naat section — ported from beta HamdNaatView + /api/hamdnaat,
-// restyled to the modern design system. Source: api.islahbd.com/api/nasheeds/
-// Audio items play in the global player; video items open YouTube.
+// Hamd/Naat — beta HamdNaatView behavior (type filter, search, queue
+// playback, playlist menu, YouTube video rows) on the app theme.
 type TypeFilter = "all" | HamdNaatType;
 
 export default function HamdNaatPage() {
@@ -20,7 +20,8 @@ export default function HamdNaatPage() {
   const [query, setQuery] = useState("");
   const [submitted, setSubmitted] = useState("");
   const [type, setType] = useState<TypeFilter>("all");
-  const { play, track, isPlaying } = usePlayer();
+  const [menuTrack, setMenuTrack] = useState<Track | null>(null);
+  const { playTrack, currentTrack, isPlaying } = usePlayerStore();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -49,6 +50,22 @@ export default function HamdNaatPage() {
     });
   }, [items, submitted, type]);
 
+  const audioQueue = useMemo(
+    () => results.filter((r) => r.type === "audio").map(hamdNaatToTrack),
+    [results]
+  );
+
+  const playAudioAt = (item: HamdNaatItem) => {
+    const track = hamdNaatToTrack(item);
+    const idx = audioQueue.findIndex((t) => t.id === track.id);
+    playTrack(track, audioQueue, Math.max(0, idx));
+  };
+
+  const playVideo = (item: HamdNaatItem) => {
+    const track = hamdNaatToTrack(item);
+    playTrack(track, [track, ...audioQueue], 0);
+  };
+
   const audioCount = items.filter((i) => i.type === "audio").length;
   const videoCount = items.filter((i) => i.type === "video").length;
 
@@ -60,10 +77,7 @@ export default function HamdNaatPage() {
         icon="music"
       />
 
-      <form
-        className="relative mt-3"
-        onSubmit={(e) => { e.preventDefault(); setSubmitted(query); }}
-      >
+      <form className="relative mt-3" onSubmit={(e) => { e.preventDefault(); setSubmitted(query); }}>
         <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-faint">
           <Icon name="search" size={18} />
         </span>
@@ -113,16 +127,14 @@ export default function HamdNaatPage() {
         <div className="space-y-2">
           {results.slice(0, 150).map((it) => {
             const isVideo = it.type === "video";
-            const active = track?.id === `hamd-${it.id}`;
+            const active = currentTrack?.id === `hamd-${it.id}`;
             const sub = [it.artist, it.writingPlace, timeAgoBn(it.createdAt)].filter(Boolean).join(" • ");
             const credits = [it.lyricist, it.composer].filter(Boolean).join(" • ");
             return (
               <div
                 key={it.id}
-                onClick={() => { if (!isVideo) play(hamdNaatToTrack(it), results.filter((r) => r.type === "audio").map(hamdNaatToTrack)); }}
-                className={`card card-hover flex items-center gap-3 p-3 ${
-                  isVideo ? "" : "cursor-pointer"
-                } ${active ? "!border-primary-600/40 !bg-primary-50" : ""}`}
+                onClick={() => { if (!isVideo) playAudioAt(it); }}
+                className={`card card-hover flex items-center gap-3 p-3 ${isVideo ? "" : "cursor-pointer"} ${active ? "!border-primary-600/40 !bg-primary-50" : ""}`}
               >
                 <span className="icon-tile shrink-0 overflow-hidden bg-gradient-to-br from-primary-700 to-primary-900 text-gold-100">
                   {isVideo && it.youtubeId ? (
@@ -142,35 +154,35 @@ export default function HamdNaatPage() {
                   </div>
                 </div>
                 {isVideo && it.youtubeId ? (
-                  <a
-                    href={`https://www.youtube.com/watch?v=${it.youtubeId}`}
-                    target="_blank" rel="noreferrer"
-                    aria-label="watch"
+                  <button
+                    onClick={() => playVideo(it)}
+                    aria-label="play video"
                     className="btn-ghost shrink-0 !rounded-xl !p-2.5"
                   >
                     <Icon name="playfill" size={16} />
-                  </a>
+                  </button>
                 ) : active && isPlaying ? (
                   <span className="flex h-4 items-end gap-[3px] pr-1 text-primary-600">
                     {[0, 1, 2].map((i) => (
                       <span key={i} className="eq-bar h-full" style={{ animationDelay: `${i * 0.22}s` }} />
                     ))}
                   </span>
-                ) : it.audioUrl ? (
-                  <a
-                    href={it.audioUrl} download
-                    onClick={(e) => e.stopPropagation()}
-                    aria-label="download"
+                ) : (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setMenuTrack(hamdNaatToTrack(it)); }}
+                    aria-label="প্লেলিস্টে রাখুন"
                     className="shrink-0 rounded-xl p-2 text-ink-faint transition hover:bg-primary-50 hover:text-primary-700"
                   >
-                    <Icon name="download" size={17} />
-                  </a>
-                ) : null}
+                    <Icon name="plus" size={17} />
+                  </button>
+                )}
               </div>
             );
           })}
         </div>
       )}
+
+      {menuTrack && <AddToPlaylistMenu track={menuTrack} onClose={() => setMenuTrack(null)} />}
     </div>
   );
 }

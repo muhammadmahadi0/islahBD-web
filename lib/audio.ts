@@ -36,14 +36,33 @@ export interface HamdNaatItem {
   createdAt: string;
 }
 
-export interface PlayerTrack {
-  id: string;
-  title: string;
-  subtitle: string;
-  audioUrl: string;
-  youtubeId?: string;
+import type { Track } from "../store/player-store";
+
+export function boyanToTrack(a: BoyanAudio): Track {
+  return {
+    id: `boyan-${a.id}`,
+    title: a.title,
+    thumbnail: "",
+    duration: parseDuration(a.duration),
+    channelName: [a.speaker, a.location].filter(Boolean).join(" • "),
+    videoId: "",
+    audioUrl: a.audioUrl,
+    location: a.location,
+  };
 }
 
+export function hamdNaatToTrack(item: HamdNaatItem): Track {
+  const isVideo = item.type === "video";
+  return {
+    id: `hamd-${item.id}`,
+    title: item.title,
+    thumbnail: isVideo && item.youtubeId ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg` : "",
+    duration: 0,
+    channelName: [item.artist, item.writingPlace].filter(Boolean).join(" • "),
+    videoId: isVideo ? item.youtubeId : "",
+    audioUrl: isVideo ? undefined : item.audioUrl || undefined,
+  };
+}
 function sanitizeBoyan(item: any): BoyanAudio | null {
   if (!item || typeof item.audioUrl !== "string" || !item.audioUrl) return null;
   return {
@@ -102,25 +121,6 @@ export function parseHamdNaatList(data: unknown): HamdNaatItem[] {
     .map(sanitizeHamdNaat)
     .filter((a): a is HamdNaatItem => a !== null)
     .sort((a, b) => b.id - a.id);
-}
-
-export function boyanToTrack(a: BoyanAudio): PlayerTrack {
-  return {
-    id: `boyan-${a.id}`,
-    title: a.title,
-    subtitle: [a.speaker, a.location].filter(Boolean).join(" • "),
-    audioUrl: a.audioUrl,
-  };
-}
-
-export function hamdNaatToTrack(item: HamdNaatItem): PlayerTrack {
-  return {
-    id: `hamd-${item.id}`,
-    title: item.title,
-    subtitle: [item.artist, item.writingPlace].filter(Boolean).join(" • "),
-    audioUrl: item.audioUrl,
-    youtubeId: item.youtubeId || undefined,
-  };
 }
 
 /** "30:23" / "1:02:03" → seconds. */

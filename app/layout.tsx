@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Noto_Naskh_Arabic } from "next/font/google";
 import "./globals.css";
 import AppShell from "../components/AppShell";
-import { PlayerProvider } from "../components/audio/player";
+import AudioPlayer from "../components/audio/AudioPlayer";
 import MiniPlayer from "../components/audio/MiniPlayer";
 
 const arabicFont = Noto_Naskh_Arabic({
@@ -26,10 +26,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="bn" className={arabicFont.variable}>
       <body>
-        <PlayerProvider>
-          <AppShell>{children}</AppShell>
-          <MiniPlayer />
-        </PlayerProvider>
+        <AppShell>{children}</AppShell>
+        <AudioPlayer />
+        <MiniPlayer />
       </body>
     </html>
   );

@@ -2,14 +2,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { usePlayer } from "../../components/audio/player";
+import { usePlayerStore, type Track } from "../../store/player-store";
+import AddToPlaylistMenu from "../../components/audio/AddToPlaylistMenu";
 import {
   boyanToTrack, timeAgoBn, bnNum,
   type BoyanAudio, type BoyanCategory,
 } from "../../lib/audio";
 
-// Bayan section — ported from beta BoyanView + /api/boyan, restyled to the
-// modern design system. MP3 lectures from api.islahbd.com/api/audios/.
+// Bayan section — beta BoyanView behavior (search, category filter, silent
+// background refresh, queue playback, playlist menu) on the app theme,
+// powered by the beta player engine (zustand + AudioPlayer + MiniPlayer).
 export default function BoyanPage() {
   const [audios, setAudios] = useState<BoyanAudio[]>([]);
   const [categories, setCategories] = useState<BoyanCategory[]>([]);
@@ -18,7 +20,8 @@ export default function BoyanPage() {
   const [query, setQuery] = useState("");
   const [submitted, setSubmitted] = useState("");
   const [cat, setCat] = useState("all");
-  const { play, track, isPlaying } = usePlayer();
+  const [menuTrack, setMenuTrack] = useState<Track | null>(null);
+  const { playTrack, currentTrack, isPlaying } = usePlayerStore();
   const refreshTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const load = useCallback(async (silent = false) => {
@@ -30,7 +33,7 @@ export default function BoyanPage() {
       setAudios((prev) => {
         if (silent && prev.length) {
           const ids = new Set(prev.map((a) => a.id));
-          const fresh = data.audios.filter((a: BoyanAudio) => !ids.has(a.id));
+          const fresh = (data.audios as BoyanAudio[]).filter((a) => !ids.has(a.id));
           return fresh.length ? [...fresh, ...prev] : prev;
         }
         return data.audios;
@@ -46,7 +49,6 @@ export default function BoyanPage() {
 
   useEffect(() => {
     load();
-    // Silent background refresh like beta (new bayans surface without reload)
     refreshTimer.current = setInterval(() => load(true), 5 * 60 * 1000);
     return () => { if (refreshTimer.current) clearInterval(refreshTimer.current); };
   }, [load]);
@@ -60,11 +62,10 @@ export default function BoyanPage() {
     });
   }, [audios, submitted, cat]);
 
-  const playAll = () => {
-    if (!results.length) return;
-    const tracks = results.map(boyanToTrack);
-    play(tracks[0], tracks);
-  };
+  const tracks = useMemo(() => results.map(boyanToTrack), [results]);
+
+  const playAt = (index: number) => playTrack(tracks[index], tracks, index);
+  const playAll = () => { if (tracks.length) playTrack(tracks[0], tracks, 0); };
 
   return (
     <div className="animate-fade-up">
@@ -81,10 +82,7 @@ export default function BoyanPage() {
         }
       />
 
-      <form
-        className="relative mt-3"
-        onSubmit={(e) => { e.preventDefault(); setSubmitted(query); }}
-      >
+      <form className="relative mt-3" onSubmit={(e) => { e.preventDefault(); setSubmitted(query); }}>
         <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-faint">
           <Icon name="search" size={18} />
         </span>
@@ -113,9 +111,7 @@ export default function BoyanPage() {
         </div>
       )}
 
-      <div className="mb-2 mt-1 text-xs font-bold text-ink-faint">
-        {bnNum(results.length)}টি ফলাফল
-      </div>
+      <div className="mb-2 mt-1 text-xs font-bold text-ink-faint">{bnNum(results.length)}টি ফলাফল</div>
 
       {loading ? (
         <div className="space-y-2">
@@ -135,53 +131,48 @@ export default function BoyanPage() {
         <EmptyState icon="search" title="কিছু পাওয়া যায়নি" hint="অন্য শব্দে খুঁজে দেখুন" />
       ) : (
         <div className="space-y-2">
-          {results.slice(0, 150).map((a) => {
-            const active = track?.id === `boyan-${a.id}`;
+          {results.slice(0, 150).map((a, i) => {
+            const active = currentTrack?.id === `boyan-${a.id}`;
             const sub = [a.speaker, a.location, timeAgoBn(a.uploadDate)].filter(Boolean).join(" • ");
             return (
               <div
                 key={a.id}
-                onClick={() => play(boyanToTrack(a), results.map(boyanToTrack))}
-                className={`card card-hover flex cursor-pointer items-center gap-3 p-3 ${
-                  active ? "!border-primary-600/40 !bg-primary-50" : ""
-                }`}
+                onClick={() => playAt(i)}
+                className={`card card-hover flex cursor-pointer items-center gap-3 p-3 ${active ? "!border-primary-600/40 !bg-primary-50" : ""}`}
               >
                 <span className={`icon-tile shrink-0 ${active ? "bg-primary-600 text-white" : "bg-gradient-to-br from-primary-700 to-primary-900 text-gold-100"}`}>
                   <Icon name="mic" size={20} />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <div className={`truncate text-sm font-bold leading-snug ${active ? "text-primary-700" : ""}`}>
-                    {a.title}
-                  </div>
+                  <div className={`truncate text-sm font-bold leading-snug ${active ? "text-primary-700" : ""}`}>{a.title}</div>
                   {sub && <div className="mt-0.5 truncate text-xs text-ink-faint">{sub}</div>}
                   {a.category && <span className="chip mt-1 !py-0.5 !text-[10px]">{a.category}</span>}
                 </div>
                 {a.duration && a.duration !== "00:00" && (
-                  <span className="shrink-0 text-xs font-bold tabular-nums text-ink-faint">
-                    {a.duration}
-                  </span>
+                  <span className="shrink-0 text-xs font-bold tabular-nums text-ink-faint">{a.duration}</span>
                 )}
                 {active && isPlaying ? (
                   <span className="flex h-4 items-end gap-[3px] pr-1 text-primary-600">
-                    {[0, 1, 2].map((i) => (
-                      <span key={i} className="eq-bar h-full" style={{ animationDelay: `${i * 0.22}s` }} />
+                    {[0, 1, 2].map((k) => (
+                      <span key={k} className="eq-bar h-full" style={{ animationDelay: `${k * 0.22}s` }} />
                     ))}
                   </span>
                 ) : (
-                  <a
-                    href={a.audioUrl} download
-                    onClick={(e) => e.stopPropagation()}
-                    aria-label="download"
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setMenuTrack(tracks[i]); }}
+                    aria-label="প্লেলিস্টে রাখুন"
                     className="shrink-0 rounded-xl p-2 text-ink-faint transition hover:bg-primary-50 hover:text-primary-700"
                   >
-                    <Icon name="download" size={17} />
-                  </a>
+                    <Icon name="plus" size={17} />
+                  </button>
                 )}
               </div>
             );
           })}
         </div>
       )}
+
+      {menuTrack && <AddToPlaylistMenu track={menuTrack} onClose={() => setMenuTrack(null)} />}
     </div>
   );
 }

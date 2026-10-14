@@ -1,22 +1,77 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { PageHead } from "../../components/ui";
+import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { endpoints } from "../../lib/api";
+import { usePlayerStore, type Track } from "../../store/player-store";
+import { LIVE_POLL_MS, type LiveStatus } from "../../lib/live";
+import { bnNum } from "../../lib/audio";
 
-function useApi(path: string) {
-  const [data, setData] = useState<any>(null);
-  useEffect(() => {
-    fetch(`https://api.islahbd.com${path}`).then((r) => r.json()).then(setData).catch(() => setData(null));
-  }, [path]);
-  return data;
+// Live broadcast — beta live behavior: status polling, in-app HLS playback
+// with recording fallback (handled by AudioPlayer), listener count.
+function liveToTrack(live: LiveStatus): Track | null {
+  if (live.isLive && live.streamUrl) {
+    return {
+      id: "live",
+      title: live.title || "সরাসরি বয়ান",
+      thumbnail: "",
+      duration: 0,
+      channelName: [live.speaker, live.location].filter(Boolean).join(" • "),
+      videoId: "",
+      hlsUrl: live.streamUrl,
+      audioUrl: live.streamUrl,
+      isLive: true,
+      location: live.location,
+    };
+  }
+  const rec = live.recording;
+  if (rec?.audioUrl) {
+    return {
+      id: `live-recording`,
+      title: rec.title || "সর্বশেষ বয়ান",
+      thumbnail: "",
+      duration: rec.durationSeconds || 0,
+      channelName: [rec.speaker, rec.location].filter(Boolean).join(" • "),
+      videoId: "",
+      audioUrl: rec.audioUrl,
+      location: rec.location,
+    };
+  }
+  return null;
 }
 
 export default function LivePage() {
-  const live = useApi(endpoints.liveStatus);
-  const next = useApi(endpoints.nextBoyan);
-  const isLive = !!(live && (live.is_live || live.live || live.status === "live"));
+  const [live, setLive] = useState<LiveStatus | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { playTrack, currentTrack, isPlaying } = usePlayerStore();
+
+  const load = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
+    try {
+      const res = await fetch("/api/live");
+      const data = await res.json();
+      if (data.success) setLive(data.live);
+    } catch {
+      // keep last known status
+    } finally {
+      if (!silent) setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+    const id = setInterval(() => load(true), LIVE_POLL_MS);
+    return () => clearInterval(id);
+  }, [load]);
+
+  const isLive = !!live?.isLive;
+  const playingLive = currentTrack?.id === "live" || currentTrack?.id === "live-recording";
+
+  const playLive = () => {
+    if (!live) return;
+    const track = liveToTrack(live);
+    if (track) playTrack(track);
+  };
 
   return (
     <div className="animate-fade-up">
@@ -26,31 +81,60 @@ export default function LivePage() {
         icon="radio"
         action={
           <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ${isLive ? "bg-red-500 text-white" : "bg-white/15 text-white"}`}>
-            <span className={`h-2 w-2 rounded-full ${isLive ? "bg-white animate-pulsedot" : "bg-white/50"}`} />
+            <span className={`h-2 w-2 rounded-full ${isLive ? "animate-pulsedot bg-white" : "bg-white/50"}`} />
             {isLive ? "লাইভ চলছে" : "অফলাইন"}
           </span>
         }
       />
 
-      <div className="card mt-3 overflow-hidden">
-        <div className="flex items-center gap-3 bg-gradient-to-l from-red-600 to-red-500 p-4 text-white">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20">
-            <Icon name="radio" size={24} />
-          </span>
-          <div className="flex-1">
-            <div className="font-bold">লাইভ বয়ান</div>
-            <div className="text-xs text-white/80">সরাসরি সম্প্রচার দেখুন</div>
+      {loading && !live ? (
+        <div className="card mt-3 animate-pulse p-8">
+          <div className="mx-auto h-16 w-16 rounded-full bg-sand-dark" />
+          <div className="mx-auto mt-3 h-4 w-2/3 rounded-full bg-sand-dark" />
+        </div>
+      ) : !live ? (
+        <div className="mt-3"><EmptyState icon="radio" title="লাইভ তথ্য পাওয়া যাচ্ছে না" /></div>
+      ) : (
+        <div className="card mt-3 overflow-hidden">
+          <div className={`p-6 text-center text-white ${isLive ? "bg-gradient-to-br from-red-600 via-red-500 to-red-700" : "page-hero !rounded-none"}`}>
+            <div className="relative z-10">
+              <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/15">
+                <Icon name="radio" size={30} />
+              </span>
+              <h2 className="mt-3 text-xl font-bold leading-snug">
+                {live.title || (isLive ? "সরাসরি বয়ান চলছে" : "সর্বশেষ বয়ান")}
+              </h2>
+              {(live.speaker || live.location) && (
+                <p className="mt-1 text-sm text-white/80">
+                  {[live.speaker, live.location].filter(Boolean).join(" • ")}
+                </p>
+              )}
+              {isLive && live.listeners > 0 && (
+                <p className="mt-1 text-xs font-bold tabular-nums text-white/80">
+                  {bnNum(live.listeners)} জন শুনছেন
+                </p>
+              )}
+              <button
+                onClick={playLive}
+                className="mx-auto mt-4 flex items-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-bold text-ink shadow-lift transition hover:scale-105 active:scale-95"
+              >
+                {playingLive && isPlaying ? (
+                  <><Icon name="pause" size={17} /> থামান</>
+                ) : (
+                  <><Icon name="playfill" size={17} /> {isLive ? "লাইভ শুনুন" : "রেকর্ডিং শুনুন"}</>
+                )}
+              </button>
+              {!isLive && live.recording && (
+                <p className="mt-2 text-[11px] text-white/70">এখন লাইভ বন্ধ — সর্বশেষ রেকর্ডিং বাজবে</p>
+              )}
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2 p-3">
+            <Link2 href="https://www.youtube.com/@islahbd" icon="play" label="YouTube চ্যানেল" />
+            <Link2 href="/boyan" icon="mic" label="অডিও বয়ান" internal />
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-2 p-3">
-          <a href="https://www.youtube.com/@islahbd" target="_blank" rel="noreferrer" className="btn-primary !py-2.5 text-[13px]">
-            <Icon name="playfill" size={15} /> YouTube
-          </a>
-          <Link href="/boyan" className="btn-ghost !py-2.5 text-[13px]">
-            <Icon name="mic" size={15} /> অডিও বয়ান
-          </Link>
-        </div>
-      </div>
+      )}
 
       <div className="card mt-2 p-4">
         <div className="flex items-center gap-2.5">
@@ -59,7 +143,7 @@ export default function LivePage() {
           </span>
           <div>
             <div className="font-bold">মক্কা ও মদিনা লাইভ</div>
-            <div className="text-xs text-ink-faint">হারামাইন সরাসরি</div>
+            <div className="text-xs text-ink-faint">হারামাইন সরাসরি (YouTube)</div>
           </div>
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2">
@@ -69,21 +153,27 @@ export default function LivePage() {
       </div>
 
       <div className="card mt-2 p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="icon-tile bg-amber-50 text-gold-600">
-              <Icon name="bell" size={24} />
-            </span>
-            <div>
-              <div className="font-bold">পরবর্তী বয়ান</div>
-              <div className="text-xs text-ink-faint">{next ? JSON.stringify(next).slice(0, 80) : "লোড হচ্ছে…"}</div>
-            </div>
+        <div className="flex items-center gap-2.5">
+          <span className="icon-tile bg-amber-50 text-gold-600">
+            <Icon name="bell" size={22} />
+          </span>
+          <div className="flex-1">
+            <div className="font-bold">বয়ান রিমাইন্ডার</div>
+            <div className="text-xs text-ink-faint">লাইভ শুরু হলে জানুন</div>
           </div>
         </div>
-        <button className="btn-gold mt-3 w-full" onClick={() => { (Notification as any)?.requestPermission?.(); }}>
+        <button className="btn-gold mt-3 w-full" onClick={() => (Notification as any)?.requestPermission?.()}>
           <Icon name="bell" size={16} /> রিমাইন্ডার অন করুন
         </button>
       </div>
     </div>
   );
+}
+
+function Link2({ href, icon, label, internal = false }: { href: string; icon: string; label: string; internal?: boolean }) {
+  const cls = "btn-ghost flex items-center justify-center gap-1.5 !py-2.5 text-[13px]";
+  if (internal) {
+    return <Link href={href} className={cls}><Icon name={icon} size={15} /> {label}</Link>;
+  }
+  return <a href={href} target="_blank" rel="noreferrer" className={cls}><Icon name={icon} size={15} /> {label}</a>;
 }
