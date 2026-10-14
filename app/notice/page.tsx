@@ -1,26 +1,58 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { PageHead, EmptyState } from "../../components/ui";
+import { Icon } from "../../components/icons";
 
 export default function NoticePage() {
   const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    fetch("https://api.islahbd.com/api/notices/?ordering=-date").then((r) => r.json()).then((d) => setItems(Array.isArray(d) ? d : d.results || [])).catch(() => {});
+    fetch("https://api.islahbd.com/api/notices/?ordering=-date")
+      .then((r) => r.json())
+      .then((d) => setItems(Array.isArray(d) ? d : d.results || []))
+      .catch(() => setItems([]))
+      .finally(() => setLoading(false));
   }, []);
+
   return (
-    <div>
-      <Link href="/" className="text-primary text-sm font-semibold">← হোম</Link>
-      <h1 className="text-2xl font-bold mt-1">📢 নোটিশ বোর্ড</h1>
-      <div className="space-y-2 mt-3">
-        {items.slice(0, 40).map((n: any, i: number) => (
-          <details key={i} className="card p-3.5">
-            <summary className="font-bold cursor-pointer">{n.title} <span className="text-xs text-stone-400">• {n.date}</span></summary>
-            <div className="text-sm mt-1 whitespace-pre-line">{n.body || n.description}</div>
-            <button className="chip mt-2" onClick={() => { navigator.clipboard?.writeText(`${n.title}\n${n.body || ""}`); alert("নোটিশ কপি ✓"); }}>📋 শেয়ার/কপি</button>
-          </details>
-        ))}
-        {items.length === 0 && <div className="card p-4 text-sm">নোটিশ লোড হচ্ছে…</div>}
-      </div>
+    <div className="animate-fade-up">
+      <PageHead title="নোটিশ বোর্ড" subtitle="ঘোষণা ও আপডেট" icon="mega" />
+      {loading ? (
+        <div className="mt-3 space-y-2">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="card animate-pulse p-4"><div className="h-4 w-2/3 rounded-full bg-sand-dark" /></div>
+          ))}
+        </div>
+      ) : items.length === 0 ? (
+        <div className="mt-3"><EmptyState icon="mega" title="কোনো নোটিশ নেই" /></div>
+      ) : (
+        <div className="mt-3 space-y-2">
+          {items.slice(0, 40).map((n: any, i: number) => (
+            <details key={i} className="card group p-4" open={i === 0}>
+              <summary className="flex cursor-pointer list-none items-center gap-2.5 [&::-webkit-details-marker]:hidden">
+                <span className="icon-tile !h-10 !w-10 shrink-0 bg-sky-50 text-sky-600"><Icon name="mega" size={18} /></span>
+                <span className="flex-1">
+                  <span className="block text-sm font-bold leading-snug">{n.title}</span>
+                  <span className="block text-[11px] font-bold text-ink-faint">{n.date}</span>
+                </span>
+                <span className="rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform group-open:rotate-90">
+                  <Icon name="chevron" size={15} />
+                </span>
+              </summary>
+              <p className="mt-2 whitespace-pre-line pl-[52px] text-sm leading-relaxed text-ink-soft">{n.body || n.description}</p>
+              <div className="mt-2 pl-[52px]">
+                <button
+                  className="btn-ghost !py-1.5 !text-xs"
+                  onClick={() => navigator.clipboard?.writeText(`${n.title}\n${n.body || ""}`)}
+                >
+                  <Icon name="copy" size={14} /> কপি
+                </button>
+              </div>
+            </details>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

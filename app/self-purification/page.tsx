@@ -1,25 +1,51 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { PageHead, EmptyState } from "../../components/ui";
+import { Icon } from "../../components/icons";
 
 export default function PurificationPage() {
   const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    fetch("https://api.islahbd.com/api/self-purification/").then((r) => r.json()).then((d) => setItems(Array.isArray(d) ? d : d.results || [])).catch(() => {});
+    fetch("https://api.islahbd.com/api/self-purification/")
+      .then((r) => r.json())
+      .then((d) => setItems(Array.isArray(d) ? d : d.results || []))
+      .catch(() => setItems([]))
+      .finally(() => setLoading(false));
   }, []);
+
   return (
-    <div>
-      <Link href="/" className="text-primary text-sm font-semibold">← হোম</Link>
-      <h1 className="text-2xl font-bold mt-1">🤍 আত্মশুদ্ধি (Self Purification)</h1>
-      <div className="space-y-2 mt-3">
-        {items.slice(0, 40).map((p: any, i: number) => (
-          <details key={i} className="card p-3.5">
-            <summary className="font-bold cursor-pointer">{p.title || `ধাপ ${i + 1}`}</summary>
-            <div className="text-sm mt-1 whitespace-pre-line">{p.content || p.description}</div>
-          </details>
-        ))}
-        {items.length === 0 && <div className="card p-4 text-sm">কনটেন্ট লোড হচ্ছে… শরঈ purification গাইড শীঘ্রই।</div>}
-      </div>
+    <div className="animate-fade-up">
+      <PageHead title="আত্মশুদ্ধি" subtitle="নফসের পরিশুদ্ধির পথ" icon="heart" />
+      {loading ? (
+        <div className="mt-3 space-y-2">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="card animate-pulse p-4">
+              <div className="h-4 w-2/3 rounded-full bg-sand-dark" />
+            </div>
+          ))}
+        </div>
+      ) : items.length === 0 ? (
+        <div className="mt-3"><EmptyState icon="heart" title="শীঘ্রই আসছে" hint="আত্মশুদ্ধির গাইড যোগ হচ্ছে" /></div>
+      ) : (
+        <div className="mt-3 space-y-2">
+          {items.slice(0, 40).map((p: any, i: number) => (
+            <details key={i} className="card group p-4">
+              <summary className="flex cursor-pointer list-none items-center gap-3 font-bold [&::-webkit-details-marker]:hidden">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-sm font-bold text-rose-500">
+                  {i + 1}
+                </span>
+                <span className="flex-1">{p.title || `ধাপ ${i + 1}`}</span>
+                <span className="rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform group-open:rotate-90">
+                  <Icon name="chevron" size={15} />
+                </span>
+              </summary>
+              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ink-soft">{p.content || p.description}</p>
+            </details>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

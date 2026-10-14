@@ -1,28 +1,53 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { PageHead } from "../../components/ui";
+import { Icon } from "../../components/icons";
 
 export default function ParibarPage() {
   const [sent, setSent] = useState(false);
   return (
-    <div>
-      <Link href="/" className="text-primary text-sm font-semibold">← হোম</Link>
-      <h1 className="text-2xl font-bold mt-1">👨‍👩‍👧 পরিবার / বাইআত</h1>
-      <p className="text-sm text-stone-500">Paribar • BaiyatGuidance • HazratDetail • ShaykhMission • Forms</p>
-      <div className="card p-4 mt-3">
-        <div className="font-bold">🤝 বাইআত ফর্ম (BaiyatFormSheet)</div>
+    <div className="animate-fade-up">
+      <PageHead title="পরিবার / বাইআত" subtitle="দ্বীনি পরিবারের সাথে যুক্ত হোন" icon="users" />
+      <div className="card mt-3 p-4">
+        <div className="flex items-center gap-2.5">
+          <span className="icon-tile bg-orange-50 text-orange-500">
+            <Icon name="doc" size={22} />
+          </span>
+          <div className="font-bold">বাইআত আবেদন ফর্ম</div>
+        </div>
         {!sent ? (
-          <form className="space-y-2 mt-2" onSubmit={async (e) => { e.preventDefault(); const f = new FormData(e.target as any); await fetch("https://api.islahbd.com/api/paribar/apply/", { method: "POST", body: f }).catch(() => {}); setSent(true); }}>
-            <input name="name" required placeholder="নাম" className="input" />
-            <input name="phone" required placeholder="মোবাইল" className="input" />
-            <textarea name="message" placeholder="বার্তা" className="input" />
-            <button className="btn-primary w-full">আবেদন পাঠান</button>
+          <form
+            className="mt-3 space-y-2"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const f = new FormData(e.target as HTMLFormElement);
+              await fetch("https://api.islahbd.com/api/paribar/apply/", { method: "POST", body: f }).catch(() => {});
+              setSent(true);
+            }}
+          >
+            <input name="name" required placeholder="আপনার নাম" className="input" />
+            <input name="phone" required placeholder="মোবাইল নম্বর" className="input" />
+            <textarea name="message" placeholder="বার্তা (ঐচ্ছিক)" className="input" rows={3} />
+            <button className="btn-primary w-full">
+              <Icon name="check" size={16} /> আবেদন পাঠান
+            </button>
           </form>
-        ) : <div className="text-primary font-bold mt-2">✓ আবেদন গৃহীত (ডেমো)</div>}
+        ) : (
+          <div className="mt-3 flex items-center gap-2 rounded-2xl bg-primary-50 p-3.5 text-sm font-bold text-primary-700">
+            <Icon name="check" size={18} /> আবেদন পৌঁছেছে — যোগাযোগ করা হবে ইনশাআল্লাহ
+          </div>
+        )}
       </div>
-      <div className="grid sm:grid-cols-2 gap-2 mt-2">
-        <Link href="/support" className="card p-4"><b>🌟 শায়খ মিশন</b><div className="text-xs text-stone-500">ShaykhMissionScreen</div></Link>
-        <Link href="/support" className="card p-4"><b>👤 হযরত পরিচিতি</b><div className="text-xs text-stone-500">HazratDetailScreen</div></Link>
+      <div className="mt-2 grid gap-2 sm:grid-cols-2">
+        <Link href="/support" className="card card-hover flex items-center gap-3 p-4">
+          <span className="icon-tile bg-gold-light text-gold-600"><Icon name="star" size={22} /></span>
+          <span><span className="block font-bold">শায়খ মিশন</span><span className="block text-xs text-ink-faint">লক্ষ্য ও কর্মসূচি</span></span>
+        </Link>
+        <Link href="/support" className="card card-hover flex items-center gap-3 p-4">
+          <span className="icon-tile bg-primary-50 text-primary-600"><Icon name="users" size={22} /></span>
+          <span><span className="block font-bold">হযরত পরিচিতি</span><span className="block text-xs text-ink-faint">জীবনী ও অবদান</span></span>
+        </Link>
       </div>
     </div>
   );

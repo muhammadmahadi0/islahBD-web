@@ -1,38 +1,58 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { ShareCopy } from "../../components/ui";
+import { PageHead, ShareCopy, EmptyState } from "../../components/ui";
+import { Icon } from "../../components/icons";
 
 export default function MalfuzatPage() {
   const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState<number[]>([]);
+
   useEffect(() => {
-    fetch("https://api.islahbd.com/api/malfuzat/?ordering=-createdAt").then((r) => r.json()).then((d) => setItems(Array.isArray(d) ? d : d.results || [])).catch(() => {});
-    setSaved(JSON.parse(localStorage.getItem("malfuzat_bookmarks") || "[]"));
+    fetch("https://api.islahbd.com/api/malfuzat/?ordering=-createdAt")
+      .then((r) => r.json())
+      .then((d) => setItems(Array.isArray(d) ? d : d.results || []))
+      .catch(() => setItems([]))
+      .finally(() => setLoading(false));
+    try { setSaved(JSON.parse(localStorage.getItem("malfuzat_bookmarks") || "[]")); } catch {}
   }, []);
+
   const toggle = (i: number) => {
     const n = saved.includes(i) ? saved.filter((x) => x !== i) : [...saved, i];
     setSaved(n);
     localStorage.setItem("malfuzat_bookmarks", JSON.stringify(n));
   };
+
   return (
-    <div>
-      <Link href="/" className="text-primary text-sm font-semibold">← হোম</Link>
-      <h1 className="text-2xl font-bold mt-1">মালফুযাত</h1>
-      <p className="text-sm text-stone-500">Malfuzat • DailyDialog • Bookmarks • Reactions ({saved.length} সেভড)</p>
-      <div className="space-y-2 mt-3">
-        {items.slice(0, 50).map((m: any, i: number) => (
-          <div key={i} className="card p-3.5">
-            <div className="text-sm whitespace-pre-line">{m.text || m.content || m.title}</div>
-            <div className="flex gap-2 mt-2">
-              <button onClick={() => toggle(i)} className="chip">{saved.includes(i) ? "🔖 সেভড" : "📑 সেভ"}</button>
-              <button onClick={() => alert("❤️ রিঅ্যাকশন পাঠানো ✓")} className="chip">❤️</button>
+    <div className="animate-fade-up">
+      <PageHead title="মালফুযাত" subtitle={`বুযুর্গদের বাণী • ${saved.length}টি সেভড`} icon="chat" />
+      {loading ? (
+        <div className="mt-3 space-y-2">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="card animate-pulse p-4">
+              <div className="h-4 w-full rounded-full bg-sand-dark" />
+              <div className="mt-2 h-3 w-2/3 rounded-full bg-sand-dark" />
             </div>
-            <div className="mt-2"><ShareCopy text={m.text || m.content || m.title || ""} /></div>
-          </div>
-        ))}
-        {items.length === 0 && <div className="card p-4 text-sm">অনলাইন মালফুযাত লোড হচ্ছে…</div>}
-      </div>
+          ))}
+        </div>
+      ) : items.length === 0 ? (
+        <div className="mt-3"><EmptyState icon="chat" title="এখনো কিছু নেই" /></div>
+      ) : (
+        <div className="mt-3 space-y-2">
+          {items.slice(0, 50).map((m: any, i: number) => (
+            <div key={i} className="card p-4">
+              <p className="whitespace-pre-line text-sm leading-relaxed">{m.text || m.content || m.title}</p>
+              <div className="mt-3 flex gap-2">
+                <button onClick={() => toggle(i)} className={`btn-ghost flex-1 !py-2 text-[13px] ${saved.includes(i) ? "!bg-gold-light !text-gold-dark" : ""}`}>
+                  <Icon name="bookmark" size={15} />
+                  {saved.includes(i) ? "সেভড" : "সেভ"}
+                </button>
+              </div>
+              <div className="mt-2"><ShareCopy text={m.text || m.content || m.title || ""} /></div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

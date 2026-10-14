@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ShareCopy } from "../../../components/ui";
+import { PageHead, ShareCopy, EmptyState } from "../../../components/ui";
+import { Icon } from "../../../components/icons";
 
 type Ayah = { number: number; surahNumber: number; surahName: string; surahEnglish: string; numberInSurah: number; text: string; translation: string; page: number; juz: number };
 
@@ -13,7 +14,7 @@ export default function QuranRead() {
 
   useEffect(() => {
     fetch("/data/quran_database.json").then((r) => r.json()).then(setDb).catch(() => {});
-    setMarks(JSON.parse(localStorage.getItem("quran_bookmarks") || "[]"));
+    try { setMarks(JSON.parse(localStorage.getItem("quran_bookmarks") || "[]")); } catch {}
   }, []);
 
   const surahs = useMemo(() => {
@@ -23,9 +24,11 @@ export default function QuranRead() {
   }, [db]);
 
   const ayahs = useMemo(() => {
-    let list = db.filter((a) => a.surahNumber === surah);
-    if (q.trim()) list = db.filter((a) => a.text.includes(q) || a.translation.includes(q)).slice(0, 100);
-    return list;
+    if (q.trim()) {
+      const query = q.trim();
+      return db.filter((a) => a.text.includes(query) || a.translation.includes(query)).slice(0, 100);
+    }
+    return db.filter((a) => a.surahNumber === surah);
   }, [db, surah, q]);
 
   const toggleMark = (n: number) => {
@@ -34,32 +37,61 @@ export default function QuranRead() {
     localStorage.setItem("quran_bookmarks", JSON.stringify(next));
   };
 
+  const current = surahs.find((s) => s.surahNumber === surah);
+
   return (
-    <div>
-      <Link href="/quran" className="text-primary text-sm font-semibold">← কুরআন হোম</Link>
-      <h1 className="text-2xl font-bold mt-1">ডিজিটাল কুরআন + হাফেজি মুসহাফ</h1>
-      <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="🔍 আয়াত / অনুবাদ খুঁজুন…" className="input mt-3" />
-      <div className="flex gap-2 mt-3">
-        <select value={surah} onChange={(e) => setSurah(Number(e.target.value))} className="input">
-          {surahs.map((s) => (
-            <option key={s.surahNumber} value={s.surahNumber}>
-              {s.surahNumber}. {s.surahEnglish}
-            </option>
-          ))}
-        </select>
-        <Link href="/quran/audio" className="btn-primary whitespace-nowrap">🎧 অডিও</Link>
+    <div className="animate-fade-up">
+      <PageHead
+        title={current ? `${current.surahEnglish}` : "ডিজিটাল কুরআন"}
+        subtitle={current ? `${current.surahName} • ${ayahs.length} আয়াত • 🔖 ${marks.length} বুকমার্ক` : "লোড হচ্ছে…"}
+        icon="book"
+        backHref="/quran"
+        action={
+          <Link href="/quran/audio" className="inline-flex items-center gap-1.5 rounded-full bg-gold px-4 py-1.5 text-xs font-bold text-ink transition hover:bg-gold-600 hover:text-white active:scale-95">
+            <Icon name="headphones" size={14} /> অডিও
+          </Link>
+        }
+      />
+
+      <div className="relative mt-3">
+        <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-faint">
+          <Icon name="search" size={18} />
+        </span>
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="আয়াত বা অনুবাদ খুঁজুন…" className="input !pl-11 !shadow-card" />
       </div>
-      <div className="text-xs text-stone-400 mt-2">🔖 বুকমার্ক: {marks.length} • পৃষ্ঠা/জুজ তথ্যসহ • {ayahs.length} আয়াত</div>
-      <div className="space-y-2 mt-2">
+
+      {!q.trim() && (
+        <div className="mt-3 flex gap-2">
+          <select value={surah} onChange={(e) => setSurah(Number(e.target.value))} className="input !shadow-card" aria-label="surah">
+            {surahs.map((s) => (
+              <option key={s.surahNumber} value={s.surahNumber}>
+                {s.surahNumber}. {s.surahEnglish}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      <div className="mt-3 space-y-2.5">
+        {ayahs.length === 0 && db.length > 0 && <EmptyState icon="search" title="কিছু পাওয়া যায়নি" />}
         {ayahs.map((a) => (
-          <div key={a.number} className="card p-3.5">
-            <div className="flex justify-between text-[11px] text-stone-400">
-              <span>{a.surahNumber}:{a.numberInSurah} • পৃষ্ঠা {a.page} • জুজ {a.juz}</span>
-              <button onClick={() => toggleMark(a.number)}>{marks.includes(a.number) ? "🔖" : "📑"}</button>
+          <div key={a.number} className="card p-4">
+            <div className="flex items-center justify-between">
+              <span className="ayah-badge">{a.surahNumber}:{a.numberInSurah}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-bold text-ink-faint">পৃষ্ঠা {a.page} • জুজ {a.juz}</span>
+                <button
+                  onClick={() => toggleMark(a.number)}
+                  aria-label="bookmark"
+                  className={`rounded-xl p-1.5 transition active:scale-95 ${marks.includes(a.number) ? "bg-gold-light text-gold-600" : "text-ink-faint hover:bg-sand"}`}
+                >
+                  <Icon name="bookmark" size={17} />
+                </button>
+              </div>
             </div>
-            <div className="font-arabic text-[22px] leading-[2.2]" dir="rtl">{a.text}</div>
-            <div className="text-sm text-stone-600 mt-1">{a.translation}</div>
-            <div className="mt-2"><ShareCopy text={`${a.text}\n${a.translation}\n(সূরা ${a.surahEnglish} ${a.surahNumber}:${a.numberInSurah})`} /></div>
+            <div className="font-arabic mt-2 text-[23px]" dir="rtl">{a.text}</div>
+            <div className="mt-1.5 text-sm leading-relaxed text-ink-soft">{a.translation}</div>
+            <div className="mt-3"><ShareCopy text={`${a.text}\n${a.translation}\n(সূরা ${a.surahEnglish} ${a.surahNumber}:${a.numberInSurah})`} /></div>
           </div>
         ))}
       </div>

@@ -1,11 +1,19 @@
 import Link from "next/link";
+import { PageHead } from "../../components/ui";
+import { Icon } from "../../components/icons";
+
 export default function MunajatPage() {
   return (
-    <div>
-      <Link href="/dua" className="text-primary text-sm font-semibold">← দোআ</Link>
-      <h1 className="text-2xl font-bold mt-1">মুনাজাতে মাকবুল</h1>
-      <p className="text-sm text-stone-500">MunajateMaqbulMain • Detail • Drawer • Bookmarks — দোআ পেজের বিশেষ সংকলন হিসেবে দেখুন।</p>
-      <Link href="/dua" className="btn-primary block text-center mt-3">দোআ সংকলন খুলুন →</Link>
+    <div className="animate-fade-up">
+      <PageHead title="মুনাজাতে মাকবুল" subtitle="কবুল হওয়া মুনাজাতের সংকলন" icon="hands" backHref="/dua" />
+      <div className="card mt-3 p-4 text-center">
+        <p className="text-sm leading-relaxed text-ink-soft">
+          মুনাজাতে মাকবুলের সম্পূর্ণ সংকলন দোআ বিভাগে সাজানো আছে।
+        </p>
+        <Link href="/dua" className="btn-primary mt-3 w-full">
+          <Icon name="hands" size={16} /> দোআ সংকলন খুলুন
+        </Link>
+      </div>
     </div>
   );
 }

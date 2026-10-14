@@ -1,49 +1,68 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { ShareCopy } from "../../components/ui";
+import { PageHead, ShareCopy, EmptyState } from "../../components/ui";
+import { Icon } from "../../components/icons";
 
 export default function PoemPage() {
-  const [tab, setTab] = useState<"cats" | "hakim">("cats");
+  const [tab, setTab] = useState<"cats" | "hakim">("hakim");
   const [cats, setCats] = useState<any[]>([]);
   const [poems, setPoems] = useState<any[]>([]);
   const [q, setQ] = useState("");
+  const [submitted, setSubmitted] = useState("");
 
   useEffect(() => {
     fetch("/data/spiritual_poetry.json").then((r) => r.json()).then((d) => setCats(d.categories || [])).catch(() => {});
     fetch("/data/hakim_akhtar.json").then((r) => r.json()).then((d) => setPoems(d.poems || [])).catch(() => {});
   }, []);
 
-  const list = poems.filter((p: any) => !q.trim() || JSON.stringify(p).includes(q.trim())).slice(0, 80);
+  const list = poems.filter((p: any) => !submitted.trim() || JSON.stringify(p).includes(submitted.trim())).slice(0, 80);
 
   return (
-    <div>
-      <Link href="/" className="text-primary text-sm font-semibold">← হোম</Link>
-      <h1 className="text-2xl font-bold mt-1">আধ্যাত্মিক কবিতা</h1>
-      <div className="flex gap-2 mt-2">
-        <button onClick={() => setTab("cats")} className={tab === "cats" ? "btn-primary" : "chip !py-2"}>কবিগণ</button>
-        <button onClick={() => setTab("hakim")} className={tab === "hakim" ? "btn-primary" : "chip !py-2"}>হাকীম আখতার (২৬৯)</button>
+    <div className="animate-fade-up">
+      <PageHead title="আধ্যাত্মিক কবিতা" subtitle={`হাকীম আখতার (রহ.) • ${poems.length}টি কবিতা`} icon="feather" />
+      <div className="mt-3 grid grid-cols-2 gap-2 rounded-2xl bg-white p-1 shadow-card">
+        {(["hakim", "cats"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`rounded-xl py-2 text-[13px] font-bold transition ${tab === t ? "bg-primary-600 text-white shadow-card" : "text-ink-faint"}`}
+          >
+            {t === "hakim" ? "হাকীম আখতার" : "কবিগণ"}
+          </button>
+        ))}
       </div>
-      <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="🔍 কবিতা খুঁজুন…" className="input mt-3" />
+      <form className="relative mt-3" onSubmit={(e) => { e.preventDefault(); setSubmitted(q); }}>
+        <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-faint">
+          <Icon name="search" size={18} />
+        </span>
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="কবিতা খুঁজুন…" className="input !pl-11 !shadow-card" />
+      </form>
       {tab === "cats" ? (
-        <div className="grid sm:grid-cols-2 gap-2 mt-3">
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {cats.map((c: any) => (
-            <div key={c.id} className="card p-4">
+            <div key={c.id} className="card card-hover p-4">
               <div className="font-bold">{c.name}</div>
-              <div className="text-xs text-stone-500">{c.title} • {c.era}</div>
-              <div className="text-xs mt-1">{c.books_summary}</div>
+              <div className="text-xs text-ink-faint">{c.title} • {c.era}</div>
+              <div className="mt-1 text-xs leading-relaxed text-ink-soft">{c.books_summary}</div>
             </div>
           ))}
         </div>
+      ) : list.length === 0 ? (
+        <div className="mt-3"><EmptyState icon="search" title="কিছু পাওয়া যায়নি" /></div>
       ) : (
-        <div className="space-y-2 mt-3">
+        <div className="mt-3 space-y-2">
           {list.map((p: any) => (
-            <details key={p.id} className="card p-3.5">
-              <summary className="font-bold cursor-pointer">{p.title} <span className="text-xs text-stone-400">• {p.book_source}</span></summary>
-              {p.original_text && <div className="mt-2 whitespace-pre-line font-arabic text-lg" dir="auto">{p.original_text}</div>}
-              {p.bangla_translation && <div className="mt-1 text-sm whitespace-pre-line">{p.bangla_translation}</div>}
-              {p.sharh && <div className="mt-1 text-xs text-stone-500 whitespace-pre-line">{p.sharh}</div>}
-              <div className="mt-2"><ShareCopy text={`${p.title}\n${p.original_text || ""}\n${p.bangla_translation || ""}`} /></div>
+            <details key={p.id} className="card group p-4">
+              <summary className="flex cursor-pointer list-none items-center gap-2 font-bold [&::-webkit-details-marker]:hidden">
+                <span className="flex-1">{p.title} <span className="text-xs font-bold text-ink-faint">• {p.book_source}</span></span>
+                <span className="rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform group-open:rotate-90">
+                  <Icon name="chevron" size={15} />
+                </span>
+              </summary>
+              {p.original_text && <div className="font-arabic mt-2 whitespace-pre-line text-lg" dir="auto">{p.original_text}</div>}
+              {p.bangla_translation && <div className="mt-1 whitespace-pre-line text-sm leading-relaxed">{p.bangla_translation}</div>}
+              {p.sharh && <div className="mt-1.5 whitespace-pre-line text-xs leading-relaxed text-ink-soft">{p.sharh}</div>}
+              <div className="mt-3"><ShareCopy text={`${p.title}\n${p.original_text || ""}\n${p.bangla_translation || ""}`} /></div>
             </details>
           ))}
         </div>

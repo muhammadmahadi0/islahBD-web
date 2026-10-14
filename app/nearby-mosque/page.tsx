@@ -1,11 +1,15 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
+import { PageHead, EmptyState } from "../../components/ui";
+import { Icon } from "../../components/icons";
 
 export default function NearbyMosque() {
   const [items, setItems] = useState<any[]>([]);
-  const [msg, setMsg] = useState("GPS দিয়ে কাছের মসজিদ খুঁজুন (OpenStreetMap Overpass)");
+  const [msg, setMsg] = useState("GPS দিয়ে কাছের মসজিদ খুঁজুন");
+  const [busy, setBusy] = useState(false);
+
   const find = () => {
+    setBusy(true);
     navigator.geolocation?.getCurrentPosition(async (p) => {
       const { latitude: la, longitude: lo } = p.coords;
       setMsg("খোঁজা হচ্ছে…");
@@ -15,23 +19,36 @@ export default function NearbyMosque() {
         const j = await r.json();
         setItems(j.elements || []);
         setMsg(`${j.elements?.length || 0}টি মসজিদ পাওয়া গেছে`);
-      } catch { setMsg("লোড ব্যর্থ — ইন্টারনেট চেক করুন"); }
-    }, () => setMsg("লোকেশন অনুমতি দিন"));
+      } catch {
+        setMsg("লোড ব্যর্থ — ইন্টারনেট চেক করুন");
+      } finally {
+        setBusy(false);
+      }
+    }, () => { setMsg("লোকেশন অনুমতি দিন"); setBusy(false); });
   };
+
   return (
-    <div>
-      <Link href="/" className="text-primary text-sm font-semibold">← হোম</Link>
-      <h1 className="text-2xl font-bold mt-1">কাছের মসজিদ</h1>
-      <p className="text-sm text-stone-500">{msg}</p>
-      <button onClick={find} className="btn-primary w-full mt-3">📍 মসজিদ খুঁজুন</button>
-      <div className="space-y-2 mt-3">
-        {items.map((m: any, i: number) => (
-          <a key={i} target="_blank" href={`https://www.google.com/maps/search/?api=1&query=${m.lat},${m.lon}`} className="card p-3.5 block">
-            <div className="font-bold">🕌 {m.tags?.name || "মসজিদ"}</div>
-            <div className="text-xs text-stone-500">{m.lat?.toFixed(4)}, {m.lon?.toFixed(4)} • ম্যাপ খুলুন →</div>
-          </a>
-        ))}
-      </div>
+    <div className="animate-fade-up">
+      <PageHead title="কাছের মসজিদ" subtitle={msg} icon="mosque" />
+      <button onClick={find} disabled={busy} className="btn-primary mt-3 w-full disabled:opacity-60">
+        <Icon name="pin" size={16} /> {busy ? "খোঁজা হচ্ছে…" : "মসজিদ খুঁজুন"}
+      </button>
+      {items.length === 0 ? (
+        <div className="mt-3"><EmptyState icon="mosque" title="এখনো খোঁজা হয়নি" hint="উপরের বোতাম চাপুন" /></div>
+      ) : (
+        <div className="mt-3 space-y-2">
+          {items.map((m: any, i: number) => (
+            <a key={i} target="_blank" rel="noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${m.lat},${m.lon}`} className="card card-hover flex items-center gap-3 p-4">
+              <span className="icon-tile bg-emerald-50 text-primary-600"><Icon name="mosque" size={22} /></span>
+              <span className="flex-1">
+                <span className="block font-bold">{m.tags?.name || "মসজিদ"}</span>
+                <span className="block text-xs text-ink-faint">{m.lat?.toFixed(4)}, {m.lon?.toFixed(4)}</span>
+              </span>
+              <Icon name="chevron" size={18} className="text-ink-faint" />
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

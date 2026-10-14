@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
+import { PageHead } from "../../../components/ui";
+import { Icon } from "../../../components/icons";
 
 const QARIS = [
   { id: "Ali_Hajjaj_AlSuesy_128kbps", name: "আলী হাজ্জাজ আস-সুয়েসি", base: "https://everyayah.com/data/Ali_Hajjaj_AlSuesy_128kbps/" },
@@ -11,32 +12,43 @@ const QARIS = [
 export default function QuranAudio() {
   const [qari, setQari] = useState(0);
   const [surah, setSurah] = useState(1);
-  const [downloads, setDownloads] = useState<number[]>([]);
+  const [saved, setSaved] = useState<number[]>([]);
 
   const pad = (n: number) => String(n).padStart(3, "0");
   const src = `${QARIS[qari].base}${pad(surah)}.mp3`;
 
   return (
-    <div>
-      <Link href="/quran" className="text-primary text-sm font-semibold">← কুরআন হোম</Link>
-      <h1 className="text-2xl font-bold mt-1">অডিও কুরআন (MP3)</h1>
-      <p className="text-sm text-stone-500">QuranMp3Player • Mp3Downloads • QariSelector • FloatingPlayer</p>
-      <div className="card p-4 mt-3">
-        <label className="text-sm font-bold">ক্বারী चुनুন</label>
-        <select value={qari} onChange={(e) => setQari(Number(e.target.value))} className="input mt-1">
-          {QARIS.map((x, i) => <option key={x.id} value={i}>{x.name}</option>)}
-        </select>
-        <label className="text-sm font-bold mt-3 block">সূরা নম্বর (১–১১৪)</label>
-        <input type="number" min={1} max={114} value={surah} onChange={(e) => setSurah(Number(e.target.value))} className="input mt-1" />
-        <audio key={src} controls src={src} className="w-full mt-3" preload="none" />
-        <div className="flex gap-2 mt-3">
-          <a href={src} download className="btn-primary flex-1 text-center">⬇ ডাউনলোড</a>
-          <button className="btn-primary flex-1 !bg-gold !text-ink" onClick={() => setDownloads([...downloads, surah])}>➕ My Downloads</button>
+    <div className="animate-fade-up">
+      <PageHead title="অডিও কুরআন" subtitle="তিলাওয়াত শুনুন ও ডাউনলোড করুন" icon="headphones" backHref="/quran" />
+      <div className="card mt-3 space-y-3 p-4">
+        <label className="block text-sm font-bold">
+          ক্বারী
+          <select value={qari} onChange={(e) => setQari(Number(e.target.value))} className="input mt-1.5">
+            {QARIS.map((x, i) => <option key={x.id} value={i}>{x.name}</option>)}
+          </select>
+        </label>
+        <label className="block text-sm font-bold">
+          সূরা নম্বর (১–১১৪)
+          <input type="number" min={1} max={114} value={surah} onChange={(e) => setSurah(Math.min(114, Math.max(1, Number(e.target.value) || 1)))} className="input mt-1.5" />
+        </label>
+        <audio key={src} controls src={src} className="w-full" preload="none" />
+        <div className="flex gap-2">
+          <a href={src} download className="btn-primary flex-1">
+            <Icon name="download" size={16} /> ডাউনলোড
+          </a>
+          <button className="btn-gold flex-1" onClick={() => setSaved((p) => (p.includes(surah) ? p : [...p, surah]))}>
+            <Icon name="plus" size={16} /> সংগ্রহে রাখুন
+          </button>
         </div>
       </div>
-      <div className="card p-4 mt-2 text-sm">
-        <b>Mp3DownloadsScreen:</b> {downloads.length ? downloads.map((d) => `সূরা ${d}`).join(", ") : "এখনো কিছু ডাউনলোড করেননি (এই সেশনে)।"}
-      </div>
+      {saved.length > 0 && (
+        <div className="card mt-2 p-4">
+          <div className="mb-2 text-sm font-bold">আমার সংগ্রহ ({saved.length})</div>
+          <div className="flex flex-wrap gap-1.5">
+            {saved.map((s) => <span key={s} className="chip">সূরা {s}</span>)}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

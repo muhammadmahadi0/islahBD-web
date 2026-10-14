@@ -7,6 +7,8 @@ export default function HajjPage() {
       title="হজ ও ওমরাহ"
       subtitle="তামাত্তু হজ ও ওমরাহর ধাপে ধাপে গাইড — দোআ, নিয়ম, ম্যাপ, চেকলিস্ট"
       backHref="/"
+    
+      icon="kaaba"
     />
   );
 }

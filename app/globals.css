@@ -23,13 +23,123 @@
   font-display: swap;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Kalpurush", "Inter", sans-serif;
-  background: #faf7ef;
-  color: #10231c;
+  background: #f6f2e9;
+  background-image: radial-gradient(1200px 400px at 50% -120px, rgba(14, 124, 91, 0.1), transparent);
+  background-attachment: fixed;
+  color: #14231d;
+  -webkit-font-smoothing: antialiased;
 }
-.font-arabic { font-family: "ScheherazadeNew", serif; }
-.card { @apply bg-white rounded-2xl shadow-sm border border-emerald-900/10; }
-.btn-primary { @apply bg-primary text-white rounded-xl px-4 py-2.5 font-semibold active:scale-[0.98] transition; }
-.chip { @apply text-xs px-2.5 py-1 rounded-full bg-primary-light text-primary-dark font-semibold; }
-.input { @apply w-full rounded-xl border border-emerald-900/15 px-3.5 py-2.5 bg-white outline-none focus:ring-2 ring-primary/40; }
+
+.font-arabic {
+  font-family: "ScheherazadeNew", serif;
+  line-height: 2.1;
+}
+
+/* ---------- surfaces ---------- */
+.card {
+  @apply bg-white rounded-3xl border border-primary-900/10 shadow-card;
+}
+.card-hover {
+  @apply transition-all duration-200 hover:shadow-lift hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99];
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold transition-all duration-150 active:scale-[0.97] select-none;
+}
+.btn-primary {
+  @apply btn bg-primary-600 text-white shadow-card hover:bg-primary-700;
+}
+.btn-gold {
+  @apply btn bg-gold text-ink hover:bg-gold-600 hover:text-white;
+}
+.btn-dark {
+  @apply btn bg-ink text-white hover:bg-black;
+}
+.btn-ghost {
+  @apply btn bg-primary-50 text-primary-700 hover:bg-primary-100;
+}
+.btn-outline {
+  @apply btn border border-primary-900/15 bg-white text-primary-700 hover:border-primary-600/40;
+}
+
+/* ---------- chips ---------- */
+.chip {
+  @apply inline-flex items-center gap-1 rounded-full bg-primary-50 px-3 py-1.5 text-xs font-bold text-primary-700 transition-colors;
+}
+button.chip:hover {
+  @apply bg-primary-100;
+}
+.chip-active {
+  @apply bg-primary-600 text-white shadow-card;
+}
+button.chip-active:hover {
+  @apply bg-primary-600 text-white;
+}
+
+/* ---------- inputs ---------- */
+.input {
+  @apply w-full rounded-2xl border border-primary-900/15 bg-white px-4 py-2.5 text-sm text-ink placeholder:text-ink-faint outline-none transition-all focus:border-primary-500 focus:ring-4 focus:ring-primary-500/15;
+}
+select.input {
+  @apply font-bold;
+}
+
+/* ---------- hero header for subpages ---------- */
+.page-hero {
+  @apply relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800 text-white shadow-lift;
+}
+.page-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 85% 15%, rgba(201, 162, 39, 0.35), transparent 55%),
+    radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.08), transparent 50%);
+  pointer-events: none;
+}
+
+.icon-tile {
+  @apply flex h-12 w-12 items-center justify-center rounded-2xl shadow-card;
+}
+
+/* thin scrollbars for chip rails */
+.rail {
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* audio element polish */
+audio {
+  @apply w-full;
+  accent-color: #0e7c5b;
+}
+audio::-webkit-media-controls-panel {
+  background: #eef7f2;
+  border-radius: 12px;
+}
+
+/* verse badge */
+.ayah-badge {
+  @apply inline-flex h-8 min-w-8 items-center justify-center rounded-xl bg-primary-600 px-2 text-xs font-bold text-white;
+}
+
+/* mini equalizer bars (mini-player + track rows) */
+.eq-bar {
+  width: 3px;
+  border-radius: 99px;
+  background: currentColor;
+  animation: eq-bounce 0.9s ease-in-out infinite;
+  transform-origin: bottom;
+}
+@keyframes eq-bounce {
+  0%, 100% { height: 35%; }
+  50% { height: 100%; }
+}

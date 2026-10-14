@@ -5,8 +5,8 @@ export default function DuaPage() {
     <FeatureListPage
       file="dua.json"
       title="দোআ"
-      subtitle="বিষয়ভিত্তিক ও দৈনন্দিন দোআসমূহ — খাযায়েনে কোরআন ও হাদীছ"
-      backHref="/"
+      subtitle="বিষয়ভিত্তিক ও দৈনন্দিন দোআসমূহ"
+      icon="hands"
     />
   );
 }
