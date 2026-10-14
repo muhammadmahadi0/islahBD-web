@@ -1,0 +1,27 @@
+{
+  "name": "islah-web",
+  "version": "1.3.0",
+  "description": "Islah – দ্বীন জীবনের সঙ্গী | Web clone of IslahBD Android app (com.islahbd.app v27)",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "adhan": "^4.4.3",
+    "next": "14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.7",
+    "typescript": "^5.5.0"
+  }
+}
