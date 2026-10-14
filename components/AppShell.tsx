@@ -71,7 +71,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const moreActive = MORE_PREFIXES.some((p) => path === p || path.startsWith(p + "/"));
   const liveReady = !!live && (live.isLive || !!live.recording?.audioUrl);
 
-  const tabCls = (active: boolean) => `nav-tab${active ? " nav-tab-active" : ""}`;
+  const tabCls = (active: boolean) =>
+    `flex flex-col items-center gap-0.5 rounded-2xl py-2 text-[11px] font-bold transition-all active:scale-95 ${
+      active ? "bg-primary-600 text-white shadow-card" : "text-ink-faint hover:bg-primary-50 hover:text-primary-700"
+    }`;
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col">
