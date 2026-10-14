@@ -37,7 +37,7 @@ export default function QiblaPage() {
         <div className="relative mx-auto h-60 w-60 rounded-full border-[10px] border-primary-50 bg-sand shadow-card">
           <div className="absolute inset-0 flex items-center justify-center">
             <div
-              className="flex h-44 w-44 items-center justify-center rounded-full bg-white shadow-card transition-transform duration-300"
+              className="flex h-44 w-44 items-center justify-center rounded-full bg-sand shadow-card transition-transform duration-300"
               style={{ transform: `rotate(${-deg}deg)` }}
             >
               <span className="text-5xl">🕋</span>

@@ -54,7 +54,7 @@ export default function HomePage() {
             <a
               href="https://play.google.com/store/apps/details?id=com.islahbd.app"
               target="_blank" rel="noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-2xl bg-white px-4 py-2 text-xs font-bold text-ink transition hover:scale-105 active:scale-95"
+              className="inline-flex items-center gap-1.5 rounded-2xl bg-white px-4 py-2 text-xs font-bold text-[#1a1405] transition hover:scale-105 active:scale-95"
             >
               <Icon name="play" size={15} /> Google Play
             </a>

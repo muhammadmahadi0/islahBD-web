@@ -188,7 +188,7 @@ function Reader() {
           <div className="border-t border-primary-900/10 bg-sand/70 px-4 py-3">
             <div className="flex flex-wrap gap-1.5" dir="rtl">
               {v.words.filter((w: any) => w.char_type_name === "word").map((w: any) => (
-                <span key={w.id} className="rounded-xl border border-primary-900/10 bg-white px-2.5 py-1.5 text-center">
+                <span key={w.id} className="inner-box rounded-xl border border-primary-900/10 bg-white px-2.5 py-1.5 text-center">
                   <span className="font-arabic block text-[18px] leading-snug">{w.text_uthmani}</span>
                   <span className="block text-[10px] font-bold text-primary-700" dir="ltr">{w.transliteration?.text || ""}</span>
                   <span className="block text-[10px] text-ink-faint" dir="ltr">{w.translation?.text || ""}</span>

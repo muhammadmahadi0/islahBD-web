@@ -127,7 +127,7 @@ export function FeatureListPage({ file, title, subtitle, icon = "book", backHref
                       <p className="text-sm leading-relaxed"><b className="text-primary-700">ফযীলত: </b>{it.fazilat}</p>
                     )}
                     {amalTexts.map((a: any, j: number) => (
-                      <div key={j} className="rounded-2xl border border-primary-900/10 bg-white p-3.5">
+                      <div key={j} className="inner-box rounded-2xl border border-primary-900/10 bg-white p-3.5">
                         {a.name && (
                           <div className="text-xs font-bold text-primary-700">
                             {a.name}{a.recite_count ? ` • ${a.recite_count}` : ""}

@@ -20,7 +20,7 @@ export default function PoemPage() {
   return (
     <div className="animate-fade-up">
       <PageHead title="আধ্যাত্মিক কবিতা" subtitle={`হাকীম আখতার (রহ.) • ${poems.length}টি কবিতা`} icon="feather" />
-      <div className="mt-3 grid grid-cols-2 gap-2 rounded-2xl bg-white p-1 shadow-card">
+      <div className="mt-3 grid grid-cols-2 gap-2 rounded-2xl bg-sand p-1 shadow-card">
         {(["hakim", "cats"] as const).map((t) => (
           <button
             key={t}

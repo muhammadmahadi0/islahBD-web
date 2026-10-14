@@ -47,7 +47,7 @@ export default function QuranLanding() {
           <h1 className="mt-1 text-[26px] font-bold tracking-tight">আল-কুরআন পড়ুন ও শুনুন</h1>
           <p className="mt-1 text-[13px] text-white/75">৪ বাংলা অনুবাদ • ৩ তাফসীর • শব্দ-শব্দ অর্থ • তিলাওয়াত</p>
           <form
-            className="mx-auto mt-4 flex max-w-md items-center gap-2 rounded-2xl bg-white p-1.5 shadow-lift"
+            className="hero-search mx-auto mt-4 flex max-w-md items-center gap-2 rounded-2xl bg-white p-1.5 shadow-lift"
             onSubmit={(e) => { e.preventDefault(); goSearch(); }}
           >
             <span className="pl-2.5 text-ink-faint"><Icon name="search" size={19} /></span>

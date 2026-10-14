@@ -321,6 +321,13 @@ html.dark .bg-orange-50 { background-color: #2a1a0c; }
 html.dark .bg-indigo-50 { background-color: #171c36; }
 html.dark .bg-emerald-50 { background-color: #0d2420; }
 html.dark .bg-red-50 { background-color: #2a1414; }
+html.dark .bg-ivory { background-color: #1b2940; }
+html.dark .btn-gold { color: #1a1405; }
+html.dark .btn-dark { background-color: #000; }
+/* white inner boxes (word chips, amal texts) — dark surface in dark mode */
+html.dark .inner-box { background-color: #1b2940; border-color: rgba(241, 237, 224, 0.1); }
+/* hero search box (quran landing) */
+html.dark .hero-search { background: rgba(30, 41, 59, 0.92); }
 html.dark .hover\:bg-sand\/60:hover { background-color: rgba(27, 41, 64, 0.6); }
 html.dark .hover\:bg-sand:hover { background-color: #1b2940; }
 html.dark .hover\:bg-primary-50:hover { background-color: #12283a; }
