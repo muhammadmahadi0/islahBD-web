@@ -759,7 +759,7 @@ export default function MiniPlayer() {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          className="card mx-auto max-w-5xl cursor-pointer overflow-hidden !rounded-3xl transition-all active:scale-[0.99]"
+          className="card mx-auto max-w-md cursor-pointer overflow-hidden !rounded-3xl transition-all active:scale-[0.99]"
         >
           <div className="h-1 bg-primary-50">
             <div
