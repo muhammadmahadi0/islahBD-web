@@ -131,6 +131,63 @@ audio::-webkit-media-controls-panel {
   @apply inline-flex h-8 min-w-8 items-center justify-center rounded-xl bg-primary-600 px-2 text-xs font-bold text-white;
 }
 
+/* quran.com-style surah number ornament (rotated square) */
+.surah-ornament {
+  @apply relative flex h-11 w-11 shrink-0 items-center justify-center;
+}
+.surah-ornament::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  transform: rotate(45deg);
+  border-radius: 10px;
+  background: var(--orn-bg, #eef7f2);
+  border: 1.5px solid var(--orn-bd, rgba(14, 124, 91, 0.25));
+  transition: all 0.2s;
+}
+.surah-ornament > span {
+  position: relative;
+  z-index: 1;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--orn-fg, #0e7c5b);
+  font-variant-numeric: tabular-nums;
+}
+a:hover .surah-ornament::before, button:hover .surah-ornament::before {
+  background: #0e7c5b;
+  border-color: #0e7c5b;
+}
+a:hover .surah-ornament > span, button:hover .surah-ornament > span {
+  color: #fff;
+}
+
+/* ornamental ayah-end marker (۝ style) */
+.ayah-end {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.1em;
+  height: 2.1em;
+  margin-inline-start: 0.35em;
+  padding: 0 0.3em;
+  border: 1.5px solid #c9a227;
+  border-radius: 999px;
+  color: #0b6248;
+  background: #fbf3dc;
+  font-size: 0.62em;
+  font-weight: 700;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* reader toolbar buttons (quran.com action rail) */
+.verse-action {
+  @apply flex h-9 w-9 items-center justify-center rounded-xl text-ink-faint transition hover:bg-primary-50 hover:text-primary-700 active:scale-95;
+}
+.verse-action.on {
+  @apply bg-primary-600 text-white hover:bg-primary-600 hover:text-white;
+}
+
 /* mini equalizer bars (mini-player + track rows) */
 .eq-bar {
   width: 3px;

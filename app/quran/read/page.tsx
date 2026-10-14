@@ -1,6 +1,7 @@
 "use client";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { PageHead, ShareCopy, EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
 import {
@@ -8,26 +9,31 @@ import {
   type QuranChapter,
 } from "../../../lib/quran";
 
-type AyahLocal = { number: number; surahNumber: number; surahName: string; surahEnglish: string; numberInSurah: number; text: string; translation: string; page: number; juz: number };
+const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
+const toArNum = (n: number) => String(n).replace(/[0-9]/g, (d) => AR_DIGITS[Number(d)]);
 
-// Reader: quran.com API (translations + tafsir + word-by-word + ayah audio)
-// with the bundled offline database as fallback.
-export default function QuranRead() {
+/** quran.com-style reading view in app theme: surah header with Bismillah,
+ *  verses with ornamental end-markers, action rail, translation +
+ *  transliteration + word-by-word + tafsir, font controls, surah pager. */
+function Reader() {
+  const params = useSearchParams();
   const [mode, setMode] = useState<"online" | "offline">("online");
   const [chapters, setChapters] = useState<QuranChapter[]>([]);
-  const [surah, setSurah] = useState(1);
+  const [surah, setSurah] = useState(Number(params.get("surah")) || 1);
   const [transId, setTransId] = useState(161);
-  const [tafsirId, setTafsirId] = useState(0);
+  const [tafsirId, setTafsirId] = useState(165);
+  const [showTafsir, setShowTafsir] = useState(true);
+  const [showWbw, setShowWbw] = useState(false);
+  const [showTranslit, setShowTranslit] = useState(false);
+  const [fontSize, setFontSize] = useState(26);
   const [verses, setVerses] = useState<any[]>([]);
   const [pagination, setPagination] = useState<any>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [onlineFail, setOnlineFail] = useState(false);
-
-  // offline fallback
-  const [db, setDb] = useState<AyahLocal[]>([]);
-  const [q, setQ] = useState("");
+  const [db, setDb] = useState<any[]>([]);
   const [marks, setMarks] = useState<number[]>([]);
+  const [openTafsir, setOpenTafsir] = useState<number | null>(null);
   const [playingKey, setPlayingKey] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -38,19 +44,21 @@ export default function QuranRead() {
     fetch("/data/quran_database.json").then((r) => r.json()).then(setDb).catch(() => {});
     try { setMarks(JSON.parse(localStorage.getItem("quran_bookmarks") || "[]")); } catch {}
     audioRef.current = new Audio();
-    return () => audioRef.current?.pause();
+    const el = audioRef.current;
+    el.addEventListener("ended", () => setPlayingKey(null));
+    return () => el.pause();
   }, []);
 
-  const loadVerses = useCallback(async (s: number, p: number, t: number, taf: number) => {
+  const loadVerses = useCallback(async (s: number, p: number, t: number, taf: number, wbw: boolean) => {
     setLoading(true);
     setOnlineFail(false);
     try {
-      const params = new URLSearchParams({
+      const qp = new URLSearchParams({
         chapter: String(s), page: String(p), per_page: "20",
-        translations: String(t), words: "1",
+        translations: String(t), words: wbw || true ? "1" : "1",
       });
-      if (taf) params.set("tafsirs", String(taf));
-      const res = await fetch(`/api/quran/verses?${params}`);
+      if (taf) qp.set("tafsirs", String(taf));
+      const res = await fetch(`/api/quran/verses?${qp}`);
       const data = await res.json();
       if (data.error || !data.verses) throw new Error("fail");
       setVerses(data.verses);
@@ -66,15 +74,21 @@ export default function QuranRead() {
   useEffect(() => {
     if (mode === "online") {
       setPage(1);
-      loadVerses(surah, 1, transId, tafsirId);
+      loadVerses(surah, 1, transId, tafsirId, showWbw || showTranslit);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, surah, transId, tafsirId]);
 
   const goPage = (p: number) => {
     setPage(p);
-    loadVerses(surah, p, transId, tafsirId);
+    loadVerses(surah, p, transId, tafsirId, showWbw || showTranslit);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const changeSurah = (s: number) => {
+    if (s < 1 || s > 114) return;
+    setSurah(s);
+    window.scrollTo({ top: 0 });
   };
 
   const playAyah = async (key: string) => {
@@ -92,7 +106,6 @@ export default function QuranRead() {
       if (!url) throw new Error();
       el.src = url;
       await el.play();
-      el.onended = () => setPlayingKey(null);
     } catch {
       setPlayingKey(null);
     }
@@ -106,36 +119,68 @@ export default function QuranRead() {
 
   const current = chapters.find((c) => c.id === surah);
   const totalPages = pagination?.total_pages || 1;
+  const offlineAyahs = db.filter((a: any) => a.surahNumber === surah);
 
-  const offlineAyahs = useMemo(() => {
-    if (q.trim()) {
-      const query = q.trim();
-      return db.filter((a) => a.text.includes(query) || a.translation.includes(query)).slice(0, 100);
-    }
-    return db.filter((a) => a.surahNumber === surah);
-  }, [db, surah, q]);
-
-  const surahOptions = chapters.length
-    ? chapters
-    : db.length
-      ? [...new Map(db.map((a) => [a.surahNumber, { id: a.surahNumber, name_simple: a.surahEnglish, name_arabic: a.surahName, translated_name: { name: "" } }])).values()]
-      : [];
+  const translitOf = (v: any) =>
+    (v.words || [])
+      .filter((w: any) => w.char_type_name === "word" && w.transliteration?.text)
+      .map((w: any) => w.transliteration.text)
+      .join(" ");
 
   return (
     <div className="animate-fade-up">
-      <PageHead
-        title={current ? current.name_arabic : "ডিজিটাল কুরআন"}
-        subtitle={current ? `${current.translated_name?.name || current.name_simple} • ${current.verses_count} আয়াত • quran.com` : "quran.com + অফলাইন"}
-        icon="book"
-        backHref="/quran"
-        action={
-          <Link href="/quran/audio" className="inline-flex items-center gap-1.5 rounded-full bg-gold px-4 py-1.5 text-xs font-bold text-ink transition hover:bg-gold-600 hover:text-white active:scale-95">
-            <Icon name="headphones" size={14} /> অডিও
-          </Link>
-        }
-      />
+      {/* breadcrumb */}
+      <div className="mb-2 flex items-center gap-1.5 px-1 text-xs font-bold text-ink-faint">
+        <Link href="/" className="hover:text-primary-700">হোম</Link>
+        <Icon name="chevron" size={12} />
+        <Link href="/quran" className="hover:text-primary-700">কুরআন</Link>
+        <Icon name="chevron" size={12} />
+        <span className="text-primary-700">{current?.translated_name?.name || `সূরা ${surah}`}</span>
+      </div>
 
-      {/* source + chapter */}
+      {/* surah header */}
+      <div className="page-hero p-6 text-center">
+        <div className="relative z-10">
+          <div className="font-arabic text-4xl text-white" dir="rtl">{current?.name_arabic || ""}</div>
+          <h1 className="mt-1 text-xl font-bold">
+            {current ? `${current.translated_name?.name || current.name_simple}` : `সূরা ${surah}`}
+          </h1>
+          <p className="mt-0.5 text-xs text-white/75">
+            {current ? `${current.name_simple} • ${current.revelation_place === "makkah" ? "মাক্কী" : "মাদানী"} • ${current.verses_count} আয়াত` : ""}
+          </p>
+          <div className="mx-auto mt-3 flex max-w-md items-center gap-2">
+            <button
+              onClick={() => changeSurah(surah - 1)} disabled={surah <= 1}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-white transition hover:bg-white/25 disabled:opacity-30"
+              aria-label="previous surah"
+            >
+              <Icon name="back" size={17} />
+            </button>
+            <select value={surah} onChange={(e) => changeSurah(Number(e.target.value))} className="input !border-white/20 !bg-white/10 !text-white !text-center [&>option]:text-ink" aria-label="surah">
+              {(chapters.length ? chapters : Array.from({ length: 114 }, (_, i) => ({ id: i + 1, name_arabic: "", name_simple: `Surah ${i + 1}`, translated_name: { name: "" } } as any))).map((c: any) => (
+                <option key={c.id} value={c.id}>
+                  {c.id}. {c.translated_name?.name || c.name_simple} {c.name_arabic}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => changeSurah(surah + 1)} disabled={surah >= 114}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-white transition hover:bg-white/25 disabled:opacity-30"
+              aria-label="next surah"
+            >
+              <Icon name="chevron" size={17} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {mode === "online" && surah !== 1 && surah !== 9 && (
+        <div className="card mt-3 p-5 text-center">
+          <div className="font-arabic text-3xl text-primary-700" dir="rtl">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>
+        </div>
+      )}
+
+      {/* reading settings */}
       <div className="card mt-3 space-y-2.5 p-3.5">
         <div className="grid grid-cols-2 gap-1 rounded-2xl bg-sand p-1">
           {(["online", "offline"] as const).map((m) => (
@@ -148,44 +193,59 @@ export default function QuranRead() {
             </button>
           ))}
         </div>
-        <select value={surah} onChange={(e) => setSurah(Number(e.target.value))} className="input" aria-label="surah">
-          {surahOptions.map((s: any) => (
-            <option key={s.id} value={s.id}>
-              {s.id}. {s.name_arabic} — {s.translated_name?.name || s.name_simple}
-            </option>
-          ))}
-        </select>
         {mode === "online" && (
-          <div className="grid grid-cols-2 gap-2">
-            <select value={transId} onChange={(e) => setTransId(Number(e.target.value))} className="input !text-[13px]" aria-label="translation">
-              {BN_TRANSLATIONS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
-            </select>
-            <select value={tafsirId} onChange={(e) => setTafsirId(Number(e.target.value))} className="input !text-[13px]" aria-label="tafsir">
-              <option value={0}>তাফসীর ছাড়া</option>
-              {BN_TAFSIRS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
-            </select>
-          </div>
+          <>
+            <div className="grid grid-cols-2 gap-2">
+              <select value={transId} onChange={(e) => setTransId(Number(e.target.value))} className="input !text-[13px]" aria-label="translation">
+                {BN_TRANSLATIONS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
+              </select>
+              <select
+                value={tafsirId}
+                onChange={(e) => { setTafsirId(Number(e.target.value)); setShowTafsir(true); }}
+                className="input !text-[13px]"
+                aria-label="tafsir"
+              >
+                <option value={0}>তাফসীর ছাড়া</option>
+                {BN_TAFSIRS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
+              </select>
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              {(
+                [
+                  ["wbw", showWbw, setShowWbw, "শব্দ-শব্দ"],
+                  ["tr", showTranslit, setShowTranslit, "উচ্চারণ"],
+                  ["tf", showTafsir, setShowTafsir, "তাফসীর"],
+                ] as const
+              ).map(([id, on, set, label]) => (
+                <button
+                  key={id}
+                  onClick={() => set(!on)}
+                  className={`chip !px-3.5 !py-2 ${on ? "chip-active" : ""}`}
+                >
+                  {on && <Icon name="check" size={13} />}
+                  {label}
+                </button>
+              ))}
+              <span className="ml-auto flex items-center gap-1">
+                <button className="verse-action !h-8 !w-8" aria-label="smaller" onClick={() => setFontSize((f) => Math.max(20, f - 2))}>−</button>
+                <span className="text-[11px] font-bold text-ink-faint">অক্ষর</span>
+                <button className="verse-action !h-8 !w-8" aria-label="bigger" onClick={() => setFontSize((f) => Math.min(36, f + 2))}>+</button>
+              </span>
+            </div>
+          </>
         )}
       </div>
 
-      {mode === "offline" && (
-        <div className="relative mt-3">
-          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-faint">
-            <Icon name="search" size={18} />
-          </span>
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="আয়াত বা অনুবাদ খুঁজুন…" className="input !pl-11 !shadow-card" />
-        </div>
-      )}
-
-      {/* online verses */}
+      {/* verses */}
       {mode === "online" && (
         <>
           {loading ? (
             <div className="mt-3 space-y-2.5">
               {[0, 1, 2].map((i) => (
-                <div key={i} className="card animate-pulse p-4">
-                  <div className="h-6 w-full rounded-xl bg-sand-dark" />
-                  <div className="mt-2 h-3 w-3/4 rounded-full bg-sand-dark" />
+                <div key={i} className="card animate-pulse p-5">
+                  <div className="ml-auto h-7 w-3/4 rounded-xl bg-sand-dark" />
+                  <div className="mt-3 h-3 w-full rounded-full bg-sand-dark" />
+                  <div className="mt-2 h-3 w-2/3 rounded-full bg-sand-dark" />
                 </div>
               ))}
             </div>
@@ -196,94 +256,130 @@ export default function QuranRead() {
             </div>
           ) : (
             <>
-              <div className="mt-3 space-y-2.5">
+              <div className="mt-3 space-y-3">
                 {verses.map((v: any) => {
                   const tr = v.translations?.[0]?.text || "";
                   const taf = v.tafsirs?.[0]?.text || "";
-                  const isPlaying = playingKey === v.verse_key && !(audioRef.current?.paused ?? true);
+                  const playing = playingKey === v.verse_key && !(audioRef.current?.paused ?? true);
+                  const marked = marks.includes(v.id);
                   return (
-                    <div key={v.id} className="card p-4">
-                      <div className="flex items-center justify-between">
-                        <span className="ayah-badge">{v.verse_key}</span>
-                        <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => playAyah(v.verse_key)}
-                            aria-label="play ayah"
-                            className={`rounded-xl p-2 transition active:scale-95 ${playingKey === v.verse_key ? "bg-primary-600 text-white" : "text-primary-700 hover:bg-primary-50"}`}
-                          >
-                            <Icon name={isPlaying ? "pause" : "playfill"} size={16} />
-                          </button>
-                          <button
-                            onClick={() => toggleMark(v.id)}
-                            aria-label="bookmark"
-                            className={`rounded-xl p-2 transition active:scale-95 ${marks.includes(v.id) ? "bg-gold-light text-gold-600" : "text-ink-faint hover:bg-sand"}`}
-                          >
-                            <Icon name="bookmark" size={16} />
-                          </button>
+                    <article key={v.id} className="card overflow-hidden">
+                      <div className="p-4 sm:p-5">
+                        {/* action rail */}
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="chip">{v.verse_key}</span>
+                          <div className="flex items-center gap-0.5">
+                            <button className={`verse-action ${playing ? "on" : ""}`} aria-label="play" onClick={() => playAyah(v.verse_key)}>
+                              <Icon name={playing ? "pause" : "playfill"} size={16} />
+                            </button>
+                            <button className={`verse-action ${marked ? "on !bg-gold !text-white" : ""}`} aria-label="bookmark" onClick={() => toggleMark(v.id)}>
+                              <Icon name="bookmark" size={16} />
+                            </button>
+                            {taf && showTafsir && (
+                              <button
+                                className={`verse-action ${openTafsir === v.id ? "on" : ""}`}
+                                aria-label="tafsir"
+                                onClick={() => setOpenTafsir(openTafsir === v.id ? null : v.id)}
+                              >
+                                <Icon name="doc" size={16} />
+                              </button>
+                            )}
+                          </div>
                         </div>
+                        {/* arabic with end marker */}
+                        <p className="font-arabic text-right" dir="rtl" style={{ fontSize }}>
+                          {v.text_uthmani}
+                          <span className="ayah-end">{toArNum(v.verse_number)}</span>
+                        </p>
+                        {showTranslit && translitOf(v) && (
+                          <p className="mt-1.5 text-[13px] italic text-ink-faint" dir="ltr">{translitOf(v)}</p>
+                        )}
+                        {tr && (
+                          <p className="mt-2.5 border-l-[3px] border-primary-200 pl-3 text-[15px] leading-relaxed text-ink">
+                            {stripHtml(tr)}
+                          </p>
+                        )}
                       </div>
-                      <div className="font-arabic mt-2 text-[24px]" dir="rtl">{v.text_uthmani}</div>
-                      {tr && <div className="mt-1.5 text-sm leading-relaxed text-ink-soft">{stripHtml(tr)}</div>}
-                      {v.words?.length > 0 && (
-                        <details className="mt-2.5 rounded-2xl bg-sand p-3">
-                          <summary className="cursor-pointer text-[13px] font-bold text-primary-700">
-                            শব্দ-শব্দ অর্থ ({v.words.length})
-                          </summary>
-                          <div className="mt-2 flex flex-wrap gap-1.5" dir="rtl">
+                      {showWbw && v.words?.length > 0 && (
+                        <div className="border-t border-primary-900/10 bg-sand/70 px-4 py-3">
+                          <div className="flex flex-wrap gap-1.5" dir="rtl">
                             {v.words.filter((w: any) => w.char_type_name === "word").map((w: any) => (
                               <span key={w.id} className="rounded-xl border border-primary-900/10 bg-white px-2.5 py-1.5 text-center">
-                                <span className="font-arabic block text-[17px] leading-snug">{w.text_uthmani}</span>
-                                <span className="block text-[10px] text-ink-faint" dir="ltr">{w.transliteration?.text || w.translation?.text || ""}</span>
+                                <span className="font-arabic block text-[18px] leading-snug">{w.text_uthmani}</span>
+                                <span className="block text-[10px] font-bold text-primary-700" dir="ltr">
+                                  {w.transliteration?.text || ""}
+                                </span>
+                                <span className="block text-[10px] text-ink-faint" dir="ltr">
+                                  {w.translation?.text || ""}
+                                </span>
                               </span>
                             ))}
                           </div>
-                        </details>
+                        </div>
                       )}
-                      {taf && (
-                        <details className="mt-2 rounded-2xl bg-gold-light/60 p-3">
-                          <summary className="cursor-pointer text-[13px] font-bold text-gold-dark">তাফসীর পড়ুন</summary>
-                          <div className="mt-1.5 whitespace-pre-line text-[13px] leading-relaxed">{stripHtml(taf).slice(0, 2000)}</div>
-                        </details>
+                      {taf && showTafsir && openTafsir === v.id && (
+                        <div className="border-t border-gold/30 bg-gold-light/50 px-4 py-3 sm:px-5">
+                          <div className="mb-1 text-xs font-bold text-gold-dark">তাফসীর</div>
+                          <div className="whitespace-pre-line text-[13px] leading-relaxed">{stripHtml(taf).slice(0, 3000)}</div>
+                        </div>
                       )}
-                      <div className="mt-3">
+                      <div className="border-t border-primary-900/5 px-4 py-2.5 sm:px-5">
                         <ShareCopy text={`${v.text_uthmani}\n${stripHtml(tr)}\n(${v.verse_key})`} />
                       </div>
-                    </div>
+                    </article>
                   );
                 })}
               </div>
               {totalPages > 1 && (
-                <div className="mt-3 flex items-center justify-between">
+                <div className="card mt-3 flex items-center justify-between p-3">
                   <button disabled={page <= 1} onClick={() => goPage(page - 1)} className="btn-outline disabled:opacity-40">
                     <Icon name="back" size={15} /> আগে
                   </button>
-                  <span className="text-xs font-bold tabular-nums text-ink-faint">পৃষ্ঠা {page} / {totalPages}</span>
+                  <span className="text-xs font-bold tabular-nums text-ink-faint">{page} / {totalPages}</span>
                   <button disabled={page >= totalPages} onClick={() => goPage(page + 1)} className="btn-outline disabled:opacity-40">
                     পরে <Icon name="chevron" size={15} />
                   </button>
                 </div>
               )}
+              {/* surah pager */}
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <button disabled={surah <= 1} onClick={() => changeSurah(surah - 1)} className="btn-ghost disabled:opacity-40">
+                  <Icon name="back" size={15} /> আগের সূরা
+                </button>
+                <button disabled={surah >= 114} onClick={() => changeSurah(surah + 1)} className="btn-ghost disabled:opacity-40">
+                  পরের সূরা <Icon name="chevron" size={15} />
+                </button>
+              </div>
             </>
           )}
         </>
       )}
 
-      {/* offline verses */}
       {mode === "offline" && (
-        <div className="mt-3 space-y-2.5">
-          {offlineAyahs.map((a) => (
-            <div key={a.number} className="card p-4">
-              <div className="flex items-center justify-between">
-                <span className="ayah-badge">{a.surahNumber}:{a.numberInSurah}</span>
+        <div className="mt-3 space-y-3">
+          {offlineAyahs.map((a: any) => (
+            <article key={a.number} className="card p-4 sm:p-5">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="chip">{a.surahNumber}:{a.numberInSurah}</span>
                 <span className="text-[11px] font-bold text-ink-faint">পৃষ্ঠা {a.page} • জুজ {a.juz}</span>
               </div>
-              <div className="font-arabic mt-2 text-[23px]" dir="rtl">{a.text}</div>
-              <div className="mt-1.5 text-sm leading-relaxed text-ink-soft">{a.translation}</div>
-              <div className="mt-3"><ShareCopy text={`${a.text}\n${a.translation}\n(সূরা ${a.surahEnglish} ${a.surahNumber}:${a.numberInSurah})`} /></div>
-            </div>
+              <p className="font-arabic text-right" dir="rtl" style={{ fontSize }}>
+                {a.text}
+                <span className="ayah-end">{toArNum(a.numberInSurah)}</span>
+              </p>
+              <p className="mt-2.5 border-l-[3px] border-primary-200 pl-3 text-[15px] leading-relaxed">{a.translation}</p>
+            </article>
           ))}
         </div>
       )}
     </div>
+  );
+}
+
+export default function QuranReadPage() {
+  return (
+    <Suspense>
+      <Reader />
+    </Suspense>
   );
 }

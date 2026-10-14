@@ -1,14 +1,16 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { PageHead, EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
 import { stripHtml } from "../../../lib/quran";
 
 // Search: quran.com full-text (Arabic/English) + offline Bengali database.
-export default function QuranSearch() {
+function SearchBody() {
+  const params = useSearchParams();
   const [mode, setMode] = useState<"online" | "offline">("online");
-  const [q, setQ] = useState("");
-  const [submitted, setSubmitted] = useState("");
+  const [q, setQ] = useState(params.get("q") || "");
+  const [submitted, setSubmitted] = useState(params.get("q") || "");
   const [onlineHits, setOnlineHits] = useState<any[]>([]);
   const [onlineTotal, setOnlineTotal] = useState(0);
   const [db, setDb] = useState<any[]>([]);
@@ -115,5 +117,13 @@ export default function QuranSearch() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function QuranSearchPage() {
+  return (
+    <Suspense>
+      <SearchBody />
+    </Suspense>
   );
 }
