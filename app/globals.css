@@ -516,7 +516,34 @@ html.dark .gold-text {
   pointer-events: none;
 }
 
-/* Golden floating bottom nav — identical in light + dark */
+/* Theme toggle on-click bloom (beta): a circle blooms from the tap point
+   in the incoming theme's base color, flips mid-expansion, then fades. */
+.theme-wrap {
+  position: fixed;
+  z-index: 90;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  animation: theme-wrap-bloom 0.65s ease-out forwards;
+}
+.theme-wrap-light {
+  background: radial-gradient(circle, rgba(250, 248, 245, 0.6) 0%, rgba(250, 248, 245, 0.35) 45%, transparent 65%);
+}
+.theme-wrap-dark {
+  background: radial-gradient(circle, rgba(11, 17, 32, 0.6) 0%, rgba(11, 17, 32, 0.35) 45%, transparent 65%);
+}
+@keyframes theme-wrap-bloom {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0.75; }
+  60% { transform: translate(-50%, -50%) scale(1); opacity: 0.75; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-wrap { display: none; }
+}
+
+/* ============================================================
+   GOLDEN SIGNATURE ELEMENTS — identical in light + dark.
+   ============================================================ */
 .nav-tab {
   display: flex;
   flex-direction: column;
@@ -547,8 +574,4 @@ html.dark .gold-text {
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.25),
     0 4px 14px rgba(8, 73, 47, 0.35);
-}
-html.dark .nav-tab-active {
-  background: rgba(255, 255, 255, 0.95);
-  color: #0b6248;
 }

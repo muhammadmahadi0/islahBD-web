@@ -5,6 +5,7 @@ import { Icon } from "../../components/icons";
 import { useThemeStore } from "../../store/theme-store";
 import { useDesignStore } from "../../store/design-store";
 import { openIslahBDApp } from "../../lib/open-app";
+import { bloomTheme } from "../../components/theme-bloom";
 
 // Settings — beta sidebar-settings behavior (theme + design segmented
 // controls, app opener) on the Islah design system.
@@ -16,6 +17,11 @@ export default function SettingsPage() {
     `flex-1 rounded-xl py-2 text-[13px] font-bold transition-all active:scale-95 ${
       active ? "bg-primary-600 text-white shadow-card" : "text-ink-faint hover:text-primary-700"
     }`;
+
+  const pickTheme = (e: React.MouseEvent<HTMLElement>, to: "dark" | "light") => {
+    if (to === theme) return;
+    bloomTheme(e, to, () => setTheme(to));
+  };
 
   return (
     <div className="animate-fade-up">
@@ -48,10 +54,10 @@ export default function SettingsPage() {
         </div>
         <div className="px-4 pb-4">
           <div className="grid grid-cols-2 gap-1 rounded-2xl bg-sand p-1">
-            <button onClick={() => setTheme("light")} className={seg(theme === "light")}>
+            <button onClick={(e) => pickTheme(e, "light")} className={seg(theme === "light")}>
               ☀ লাইট
             </button>
-            <button onClick={() => setTheme("dark")} className={seg(theme === "dark")}>
+            <button onClick={(e) => pickTheme(e, "dark")} className={seg(theme === "dark")}>
               🌙 ডার্ক
             </button>
           </div>

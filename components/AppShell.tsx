@@ -7,6 +7,7 @@ import { openIslahBDApp } from "../lib/open-app";
 import { usePlayerStore, type Track } from "../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../lib/live";
 import { useThemeStore } from "../store/theme-store";
+import { bloomTheme } from "./theme-bloom";
 
 // Paths belonging to the More hub — the More tab stays highlighted there.
 const MORE_PREFIXES = [
@@ -22,6 +23,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const { playTrack, currentTrack, isPlaying, setIsPlaying } = usePlayerStore();
   const { theme, toggle: toggleTheme } = useThemeStore();
   const [live, setLive] = useState<LiveStatus | null>(null);
+
+  const handleThemeToggle = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      const to = theme === "dark" ? "light" : "dark";
+      bloomTheme(e, to, toggleTheme);
+    },
+    [theme, toggleTheme]
+  );
 
   // Live status (same source as the Live page) — the Live tab plays
   // the broadcast / last recording straight from the bar, like beta.
@@ -114,7 +123,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <button onClick={sharePage} aria-label="share" className={circleBtn}>
               <Icon name="share" size={16} />
             </button>
-            <button onClick={toggleTheme} aria-label="theme" title="থিম বদলান" className={circleBtn}>
+            <button onClick={handleThemeToggle} aria-label="theme" title="থিম বদলান" className={circleBtn}>
               <Icon name={theme === "dark" ? "sun" : "moon"} size={16} />
             </button>
           </div>
