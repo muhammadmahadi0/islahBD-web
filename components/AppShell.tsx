@@ -126,7 +126,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন হুসাইন সাহেব-এর খলিফা হযরত মাওলানা
             </p>
             <h1 className="gold-text mt-1 text-2xl font-extrabold tracking-wide">
-              তৈয়্যেব আশরাফ সাহেব
+              তৈয়ব আশরাফ সাহেব
             </h1>
           </div>
         )}
