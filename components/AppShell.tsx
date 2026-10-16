@@ -107,7 +107,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </div>
         {/* Honorific sub-header — home only */}
         {isHome && (
-          <div className="my-3 px-2 text-center">
+          <div className="scholar-banner">
             <p className="mx-auto max-w-sm text-[12px] font-medium leading-relaxed text-ink-soft">
               তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন
               হুসাইন সাহেব-এর খলিফা হযরত মাওলানা
