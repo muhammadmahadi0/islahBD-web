@@ -145,7 +145,8 @@ function Reader() {
     deepAyah.current = null;
     setSurah(s);
     setJump("sura");
-    setDrawer(false);
+    // NOTE: drawer stays open on mobile so an ayah can be picked next —
+    // it closes only after an ayah is selected (see jumpToAyah).
     window.scrollTo({ top: 0 });
   };
 
@@ -467,7 +468,7 @@ function Reader() {
             {sideSuras.map((c) => (
               <button
                 key={c.id}
-                onClick={() => { changeSurah(c.id); setDrawer(false); }}
+                onClick={() => changeSurah(c.id)}
                 className={`block w-full truncate rounded-xl px-3 py-2 text-left text-sm transition ${
                   c.id === surah && jump === "sura"
                     ? "bg-primary-600 font-bold text-white"
