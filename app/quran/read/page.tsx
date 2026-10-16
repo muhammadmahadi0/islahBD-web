@@ -83,25 +83,48 @@ function Reader() {
 
   const transParam = [trans1, trans2].filter((t) => t > 0).join(",") || "161";
 
+  // Sura mode loads the WHOLE surah at once (one page, no splitting).
+  // Juz mode keeps pagination (50 per page).
   const load = useCallback(async (p: number) => {
     setLoading(true);
     try {
-      const qp = new URLSearchParams({
-        page: String(p),
-        per_page: jump === "sura" ? "20" : "50",
+      const base = {
         translations: transParam,
         words: "1",
-      });
-      if (tafsirId) qp.set("tafsirs", String(tafsirId));
-      const url =
-        jump === "sura"
-          ? `/api/quran/verses?chapter=${surah}&${qp}`
-          : `/api/quran/juz?juz=${juz}&${qp}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      if (data.error || !data.verses) throw new Error("fail");
-      setVerses(data.verses);
-      setPagination(data.pagination || null);
+      };
+      const fetchPage = async (pg: number, per: number) => {
+        const qp = new URLSearchParams({
+          ...base,
+          page: String(pg),
+          per_page: String(per),
+        });
+        if (tafsirId) qp.set("tafsirs", String(tafsirId));
+        const url =
+          jump === "sura"
+            ? `/api/quran/verses?chapter=${surah}&${qp}`
+            : `/api/quran/juz?juz=${juz}&${qp}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.error || !data.verses) throw new Error("fail");
+        return data;
+      };
+      if (jump === "sura") {
+        const first = await fetchPage(1, 50);
+        let all = first.verses;
+        const total = first.pagination?.total_pages || 1;
+        if (total > 1) {
+          const rest = await Promise.all(
+            Array.from({ length: total - 1 }, (_, i) => fetchPage(i + 2, 50))
+          );
+          for (const r of rest) all = all.concat(r.verses);
+        }
+        setVerses(all);
+        setPagination(null);
+      } else {
+        const data = await fetchPage(p, 50);
+        setVerses(data.verses);
+        setPagination(data.pagination || null);
+      }
       setOffline(false);
     } catch {
       setVerses([]);
@@ -125,12 +148,6 @@ function Reader() {
     if (!target || offline || loading || verses.length === 0 || jump !== "sura") return;
     const n = Number(target);
     if (!n) return;
-    const wantPage = Math.ceil(n / 20);
-    if (wantPage !== page) {
-      setPage(wantPage);
-      load(wantPage);
-      return;
-    }
     deepAyah.current = null;
     requestAnimationFrame(() => {
       setTimeout(() => {
@@ -160,20 +177,8 @@ function Reader() {
   const jumpToAyah = (n: number) => {
     if (!n) return;
     setDrawer(false);
-    const key = `${surah}:${n}`;
-    if (offline) {
-      scrollToKey(key);
-      return;
-    }
-    const want = Math.ceil(n / 20);
-    if (want !== page) {
-      deepAyah.current = String(n);
-      setPage(want);
-      load(want);
-    } else {
-      deepAyah.current = null;
-      scrollToKey(key);
-    }
+    deepAyah.current = null;
+    scrollToKey(`${surah}:${n}`);
   };
 
   const scrollToKey = (key: string) => {
@@ -352,9 +357,6 @@ function Reader() {
               >
                 <Icon name="share" size={13} className="text-ink-soft" />
               </button>
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-base font-bold text-white">
-                {toArNum(v.verse_number)}
-              </span>
               <button
                 onClick={() => toggleMark(v.id)}
                 className="rounded-full bg-white p-1 transition hover:bg-purple-50 dark:bg-transparent"
@@ -391,9 +393,7 @@ function Reader() {
           <>
             <div className="space-y-2 px-5 pb-1 pt-2 text-[15px]">
               {trs.map((t: string, i: number) => (
-                <div key={i} className="rounded-md border border-primary-900/10 bg-sand p-2 pb-0">
-                  <div className="text-justify leading-relaxed text-ink">{t}</div>
-                </div>
+                <div key={i} className="text-justify leading-relaxed text-ink">{t}</div>
               ))}
             </div>
             {showWbw && v.words?.length > 0 && (
