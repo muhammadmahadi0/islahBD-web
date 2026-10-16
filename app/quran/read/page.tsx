@@ -9,7 +9,7 @@ import {
   type QuranChapter,
 } from "../../../lib/quran";
 import { surahBnFull, surahBn } from "../../../lib/surah-names";
-import { storageSetJSON, storageGetJSON } from "../../../lib/storage";
+import { storageSetJSON, storageGetJSON, storageSet, storageGet } from "../../../lib/storage";
 import { usePlayerStore } from "../../../store/player-store";
 import { bnNum } from "../../../lib/audio";
 
@@ -33,6 +33,8 @@ function Reader() {
   const [trans1, setTrans1] = useState(161);
   const [trans2, setTrans2] = useState(0);
   const [tafsirId, setTafsirId] = useState(165);
+  const [reciters, setReciters] = useState<{ id: number; reciter_name: string; style: string | null }[]>([]);
+  const [reciter, setReciter] = useState(7);
   const [showTafsir, setShowTafsir] = useState(true);
   const [showWbw, setShowWbw] = useState(false);
   const [fontSize, setFontSize] = useState(30);
@@ -64,7 +66,11 @@ function Reader() {
       if (d.success) setChapters(d.chapters);
     }).catch(() => {});
     fetch("/data/quran_database.json").then((r) => r.json()).then(setDb).catch(() => {});
+    fetch("/api/quran/recitations").then((r) => r.json()).then((d) => {
+      if (d.success) setReciters(d.recitations);
+    }).catch(() => {});
     setMarks(storageGetJSON<number[]>("quran_bookmarks", []));
+    setReciter(Number(storageGet("quran_reciter") || 7));
     audioRef.current = new Audio();
     wordAudioRef.current = new Audio();
     const el = audioRef.current;
@@ -178,6 +184,17 @@ function Reader() {
     });
   };
 
+  const pickReciter = (id: number) => {
+    setReciter(id);
+    storageSet("quran_reciter", String(id));
+    setPlayingKey(null);
+    try {
+      audioRef.current?.pause();
+    } catch {
+      // ignore
+    }
+  };
+
   const playAyah = async (key: string) => {
     const el = audioRef.current;
     if (!el) return;
@@ -197,7 +214,7 @@ function Reader() {
     }
     try {
       setPlayingKey(key);
-      const res = await fetch(`/api/quran/chapter-audio?reciter=7&key=${encodeURIComponent(key)}`);
+      const res = await fetch(`/api/quran/chapter-audio?reciter=${reciter}&key=${encodeURIComponent(key)}`);
       const data = await res.json();
       const url = data.audio_files?.[0]?.url;
       if (!url) throw new Error();
@@ -224,7 +241,7 @@ function Reader() {
       return;
     }
     try {
-      const res = await fetch(`/api/quran/chapter-audio?reciter=7&chapter=${surah}`);
+      const res = await fetch(`/api/quran/chapter-audio?reciter=${reciter}&chapter=${surah}`);
       const data = await res.json();
       if (data.audio_file?.audio_url) {
         setSurahAudio(data.audio_file.audio_url);
@@ -573,6 +590,18 @@ function Reader() {
                 <option value={0}>তাফসীর বন্ধ</option>
                 {BN_TAFSIRS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
               </select>
+            </div>
+            <div>
+              <p className="mb-1 text-xs font-bold text-ink-faint">ক্বারী (তেলাওয়াত)</p>
+              <select value={reciter} onChange={(e) => pickReciter(Number(e.target.value))} className="input !text-[13px]" aria-label="reciter">
+                {reciters.length === 0 && <option value={7}>মিশারী রাশিদ আল-আফাসী</option>}
+                {reciters.map((r) => (
+                  <option key={`${r.id}-${r.style}`} value={r.id}>
+                    {r.reciter_name}{r.style ? ` (${r.style})` : ""}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-[11px] text-ink-faint">পছন্দ সংরক্ষিত থাকে</p>
             </div>
             <div>
               <p className="mb-2 text-xs font-bold text-ink-faint">অন্যান্য</p>
