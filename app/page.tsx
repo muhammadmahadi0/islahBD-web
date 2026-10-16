@@ -32,11 +32,11 @@ function Heading({ t, sub, link }: { t: string; sub?: string; link?: string }) {
 }
 
 const SERVICES: { route: string; bn: string; icon: string }[] = [
-  { route: "/quran", bn: "কুরআন", icon: "book" },
+  { route: "/quran", bn: "কুরআন", icon: "openbook" },
   { route: "/live", bn: "লাইভ", icon: "radio" },
   { route: "/qibla", bn: "কিবলা", icon: "compass" },
   { route: "/malfuzat", bn: "মালফুজাত", icon: "chat" },
-  { route: "/boyan", bn: "আকাবিরদের বয়ান সংকলন", icon: "users" },
+  { route: "/boyan", bn: "বয়ান", icon: "mic" },
   { route: "/library", bn: "বই", icon: "library" },
   { route: "/paribar", bn: "মাদ্রাসা", icon: "mosque" },
   { route: "/tasbeeh", bn: "তাসবিহ", icon: "beads" },

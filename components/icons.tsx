@@ -2,6 +2,12 @@
 const paths: Record<string, React.ReactNode> = {
   home: <path d="M3 10.5 12 3l9 7.5M5 9.5V21h5v-6h4v6h5V9.5" />,
   book: <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Zm0 15A2.5 2.5 0 0 1 6.5 18H20" />,
+  openbook: (
+    <>
+      <path d="M12 6.5C10 5 7 4.5 4 4.5v14c3 0 6 .5 8 2 2-1.5 5-2 8-2v-14c-3 0-6 .5-8 2Z" />
+      <path d="M12 6.5v14" />
+    </>
+  ),
   radio: (
     <>
       <circle cx="12" cy="12" r="2.2" />
