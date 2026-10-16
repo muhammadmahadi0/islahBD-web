@@ -24,7 +24,7 @@ export default function AddToPlaylistMenu({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/50 p-3 backdrop-blur-sm sm:items-center" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-3 sm:items-center" onClick={onClose}>
       <div className="card w-full max-w-sm p-4" onClick={(e) => e.stopPropagation()}>
         <div className="mb-2 flex items-center justify-between">
           <div className="font-bold">প্লেলিস্টে রাখুন</div>
