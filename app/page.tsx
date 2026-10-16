@@ -60,9 +60,13 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="animate-fade-up">
-      <PrayerCard />
+    <div className="animate-fade-up lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-4">
+      {/* Right rail on desktop (prayer first on mobile) */}
+      <aside className="order-first min-w-0 lg:order-2 lg:sticky lg:top-24">
+        <PrayerCard />
+      </aside>
 
+      <div className="min-w-0 lg:order-1">
       {/* Live promo */}
       <section className="my-4">
         <div className="relative flex items-center justify-between overflow-hidden rounded-2xl border border-primary-600/20 bg-gradient-to-r from-primary-600/10 to-primary-800/5 p-4 dark:from-primary-600/20 dark:to-slate-800/40">
@@ -162,6 +166,7 @@ export default function HomePage() {
       <p className="mt-8 text-center text-[11px] text-ink-faint">
         ইসলাহ • দ্বীন জীবনের সঙ্গী
       </p>
+      </div>
     </div>
   );
 }

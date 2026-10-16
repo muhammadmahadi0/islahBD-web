@@ -95,7 +95,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const tabCls = (active: boolean) => `nav-tab${active ? " nav-tab-active" : ""}`;
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-md border-x border-slate-200 dark:border-slate-800/50">
+    <div className="mx-auto min-h-screen w-full max-w-md border-x border-slate-200 lg:max-w-5xl dark:border-slate-800/50">
       <header className="app-header px-4 pb-2 pt-4">
         <div className="mb-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
       <main className="px-3 pb-28 sm:px-4">{children}</main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-md px-4" style={{ bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}>
+      <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-md px-4 lg:max-w-5xl" style={{ bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}>
         <div className="bottom-nav flex items-center justify-between rounded-full px-4 py-2.5 backdrop-blur-lg">
           <Link href="/" className={tabCls(path === "/")}>
             <Icon name="home" size={20} />
