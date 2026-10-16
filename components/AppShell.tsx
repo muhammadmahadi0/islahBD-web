@@ -108,10 +108,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {/* Honorific sub-header — home only */}
         {isHome && (
           <div className="my-3 px-2 text-center">
-            <p className="text-[11px] leading-snug text-ink-soft">
-              তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন হুসাইন সাহেব-এর খলিফা হযরত মাওলানা
+            <p className="mx-auto max-w-sm text-[12px] font-medium leading-relaxed text-ink-soft">
+              তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন
+              হুসাইন সাহেব-এর খলিফা হযরত মাওলানা
             </p>
-            <h1 className="gold-text mt-1 text-2xl font-extrabold tracking-wide">
+            <h1 className="gold-text mt-1 text-[28px] font-extrabold leading-tight tracking-wide">
               তৈয়্যেব আশরাফ সাহেব
             </h1>
           </div>

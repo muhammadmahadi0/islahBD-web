@@ -475,8 +475,14 @@ html.glass .btn-gold {
    GOLDEN SIGNATURE ELEMENTS — identical in light + dark.
    ============================================================ */
 
-/* Elegant golden gradient text (honorific titles) */
-.gold-text { color: #b45309; }
+/* Elegant golden gradient text (honorific titles) — gradient in both modes */
+.gold-text {
+  background: linear-gradient(135deg, #996515 0%, #b45309 35%, #d4af37 60%, #996515 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
 html.dark .gold-text {
   background: linear-gradient(135deg, #fbf0b9 0%, #d4af37 50%, #996515 100%);
   -webkit-background-clip: text;
