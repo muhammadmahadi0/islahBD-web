@@ -79,7 +79,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="mx-auto min-h-screen w-full max-w-md border-x border-slate-200 lg:max-w-5xl dark:border-slate-800/50">
-      <header className="app-header sticky top-0 z-40 border-b border-white/10 bg-gradient-to-l from-primary-800 via-primary-700 to-primary-800 px-4 pb-2 pt-4 text-white shadow-lift">
+      <header className="app-header px-4 pb-2 pt-4">
         <div className="mb-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-md">
