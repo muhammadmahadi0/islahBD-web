@@ -24,7 +24,10 @@ offline-tolerant, keyless APIs only.
 
 ## 4. Subsystems
 
-### 4.1 Quran (quran.com API v4)
+### 4.1 Quran (quran.com API v4, muslimbangla-style UI)
+- Index (`/quran`): surah cards (number, transliteration, meaning,
+  Makki/Madani badge, Arabic name, ayah count) + curated topics tab
+  (`lib/quran-topics.ts`)
 - Chapters with Bengali names + Bangla transliterations (`lib/surah-names.ts`,
   all 114 verified)
 - Reader: 4 Bengali translations, 3 Bengali tafsirs, word-by-word,

@@ -31,7 +31,7 @@ No env vars needed. All upstream APIs are keyless.
 | App / beta feature | Route |
 |---|---|
 | Home, prayer card, services, media, recent boyan | `/` |
-| Quran landing, reader, audio, search | `/quran`, `/quran/read`, `/quran/audio`, `/quran/search` |
+| Quran landing, reader, audio, search | `/quran` (muslimbangla-style index + topics), `/quran/read` (reader), `/quran/audio`, `/quran/search` |
 | Prayer times, Qibla, Tasbeeh, Nearby mosques | `/prayer-times`, `/qibla`, `/tasbeeh`, `/nearby-mosque` |
 | Dua, Wazifa, Amal, Sunnat, Fazilat, Hajj/Umrah, Calendar | `/dua`, `/wazifa`, `/amal`, `/sunnat`, `/fazilat`, `/hajj-umrah`, `/calendar` |
 | Poems, Munajate, Malfuzat, Self-purification | `/poem`, `/munajate`, `/malfuzat`, `/self-purification` |
