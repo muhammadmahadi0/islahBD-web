@@ -61,6 +61,8 @@ offline-tolerant, keyless APIs only.
   honorific block, bottom bar Home/Live(play)/Boyan/Family/More
 - Theme store (`islah-theme`, OS default) + design store
   (`islah-design`, Material on Android, Liquid elsewhere) + pre-paint script
+- Theme switch plays beta's tap-bloom (`components/theme-bloom.tsx` +
+  `.theme-wrap` CSS, reduced-motion safe)
 - Golden signature elements identical in both modes
 
 ## 5. Conventions
