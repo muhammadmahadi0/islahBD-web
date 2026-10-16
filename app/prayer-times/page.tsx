@@ -199,6 +199,14 @@ export default function PrayerTimesPage() {
           {PRAYER_ORDER.map((k) => {
             const isCur = k === curKey;
             const isNextReal = !!next && k === next.key && !special;
+            // Remaining time of the ongoing window (shown on the current card).
+            const remainSecs = isCur && next ? secsUntil(next.time, now, next.isTomorrow) : 0;
+            const remainCur = isCur
+              ? (() => {
+                  const h = Math.floor(remainSecs / 3600), m = Math.floor((remainSecs % 3600) / 60);
+                  return lang === "bn" ? `${toBn(h)}ঘ ${toBn(m)}ম বাকি` : `${h}h ${m}m left`;
+                })()
+              : "";
             const remain = isNextReal
               ? (() => {
                   const s = secsUntil(next.time, now, next.isTomorrow);
@@ -216,7 +224,7 @@ export default function PrayerTimesPage() {
                     <Icon name={PRAYER_ICONS[k]} size={16} className={isNextReal ? "text-gold-600" : "text-primary-600"} />
                     {prayerName(k, lang)}
                   </span>
-                  {isCur && <span className="rounded-full bg-primary-600 px-2 py-0.5 text-[10px] font-bold text-white">{lang === "bn" ? "চলছে" : "Now"}</span>}
+                  {isCur && <span className="rounded-full bg-primary-600 px-2 py-0.5 text-[10px] font-bold tabular-nums text-white">{remainCur}</span>}
                   {isNextReal && !isCur && <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-[#1a1405]">{lang === "bn" ? "পরবর্তী" : "Next"}</span>}
                 </div>
                 <div className={`mt-1 text-[22px] font-bold tabular-nums ${isNextReal ? "text-gold-dark" : isCur ? "text-primary-700" : ""}`}>
