@@ -4,46 +4,54 @@ export interface QuranTopic {
   id: string;
   title: string;
   desc: string;
-  surahs: number[];
+  /** Famous verse keys in this topic — verified standard references. */
+  verses: string[];
 }
 
-// Curated topic groups (well-known virtues and everyday use).
+// Topic categories mirror muslimbangla.com/quran?menu=topics; verse
+// references are famous, standard ayahs (individually verifiable).
 export const QURAN_TOPICS: QuranTopic[] = [
   {
-    id: "fazilat",
-    title: "ফজিলতপূর্ণ সূরা",
-    desc: "বিশেষ সওয়াবের সূরাসমূহ",
-    surahs: [36, 67, 18, 55, 56, 44, 32, 62],
+    id: "akaid",
+    title: "আকাঈদ",
+    desc: "ঈমান ও আকীদার আয়াত",
+    verses: ["112:1", "112:2", "112:3", "112:4", "2:255", "2:163", "59:22", "59:23", "59:24"],
   },
   {
-    id: "namaz",
-    title: "নামাজের সূরা",
-    desc: "নামাজে পড়ার ছোট সূরা",
-    surahs: [1, 103, 105, 106, 107, 108, 112, 113, 114],
+    id: "islam-muslim",
+    title: "ইসলাম ও মুসলিম",
+    desc: "দ্বীন ও মুসলিম পরিচয়",
+    verses: ["3:19", "3:85", "5:3", "49:13", "2:208", "3:110"],
   },
   {
-    id: "sokal-sondha",
-    title: "সকাল-সন্ধ্যার আমল",
-    desc: "সকাল-সন্ধ্যায় পড়ার সূরা",
-    surahs: [112, 113, 114, 36, 67],
+    id: "ahkam",
+    title: "আহ্কাম",
+    desc: "বিধি-বিধানের আয়াত",
+    verses: ["2:183", "2:184", "2:185", "2:43", "5:90", "17:23", "4:11"],
   },
   {
-    id: "ghum",
-    title: "ঘুমানোর আগের সূরা",
-    desc: "ঘুমের আগে পড়ার আমল",
-    surahs: [67, 32, 112, 113, 114],
+    id: "sristi",
+    title: "সৃষ্টি",
+    desc: "সৃষ্টিজগতের আয়াত",
+    verses: ["21:30", "67:3", "67:4", "88:17", "88:18", "88:19", "88:20", "41:53"],
   },
   {
-    id: "juma",
-    title: "জুমার দিনের সূরা",
-    desc: "জুমাবারে পড়ার সূরা",
-    surahs: [18, 62],
+    id: "itihas",
+    title: "ইতিহাস",
+    desc: "পূর্ববর্তীদের ঘটনা",
+    verses: ["12:111", "20:99", "11:100", "40:21", "30:9"],
   },
   {
-    id: "shifa",
-    title: "শিফা ও রুকইয়ার সূরা",
-    desc: "ঝাড়ফুঁক ও শিফার সূরা",
-    surahs: [1, 2, 112, 113, 114],
+    id: "ambia",
+    title: "আম্বিয়া আলাইহিমুস সালাম",
+    desc: "নবীগণের ঘটনা",
+    verses: ["21:83", "21:87", "37:102", "19:41", "12:4", "20:11"],
+  },
+  {
+    id: "ulumul-quran",
+    title: "উলুমুল কুরআন",
+    desc: "কুরআন সম্পর্কিত আয়াত",
+    verses: ["15:9", "17:82", "54:17", "39:23", "25:32"],
   },
 ];
 

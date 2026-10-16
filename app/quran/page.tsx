@@ -7,6 +7,7 @@ import type { QuranChapter } from "../../lib/quran";
 import { surahBn, surahBnFull } from "../../lib/surah-names";
 import { QURAN_TOPICS } from "../../lib/quran-topics";
 import { bnNum } from "../../lib/audio";
+import { stripHtml } from "../../lib/quran";
 
 // Surah index in the muslimbangla.com/quran layout: title, count, search,
 // Surahs/Topics tabs, and cards with number, transliteration, meaning,
@@ -42,6 +43,81 @@ export default function QuranLanding() {
     if (!query) return QURAN_TOPICS;
     return QURAN_TOPICS.filter((t) => t.title.includes(query) || t.desc.includes(query));
   }, [submitted]);
+
+// Topic card with expandable famous verses (Arabic + translation),
+// each linking deep into the reader.
+function TopicCard({ topic }: { topic: { id: string; title: string; desc: string; verses: string[] } }) {
+  const [open, setOpen] = useState(false);
+  const [verses, setVerses] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const toggle = async () => {
+    const next = !open;
+    setOpen(next);
+    if (next && verses.length === 0) {
+      setLoading(true);
+      try {
+        const rows = await Promise.all(
+          topic.verses.map((key) =>
+            fetch(`/api/quran/verse?key=${encodeURIComponent(key)}&translations=161`)
+              .then((r) => r.json())
+              .then((d) => d.verse || null)
+              .catch(() => null)
+          )
+        );
+        setVerses(rows.filter(Boolean));
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  return (
+    <div className="card overflow-hidden">
+      <button onClick={toggle} className="flex w-full items-center gap-3 p-4 text-left">
+        <span className="icon-tile bg-primary-50 text-primary-600">
+          <Icon name="book" size={20} />
+        </span>
+        <span className="flex-1">
+          <span className="block font-bold">{topic.title}</span>
+          <span className="block text-xs text-ink-faint">
+            {topic.desc} • {bnNum(topic.verses.length)} আয়াত
+          </span>
+        </span>
+        <span className={`rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform ${open ? "rotate-90" : ""}`}>
+          <Icon name="chevron" size={15} />
+        </span>
+      </button>
+      {open && (
+        <div className="space-y-2 border-t border-primary-900/10 bg-sand/60 p-3">
+          {loading && (
+            <div className="space-y-2">
+              {[0, 1].map((i) => (
+                <div key={i} className="animate-pulse rounded-2xl bg-sand-dark/60 p-4">
+                  <div className="h-4 w-3/4 rounded-full bg-sand-dark" />
+                </div>
+              ))}
+            </div>
+          )}
+          {verses.map((v: any) => {
+            const [s, a] = String(v.verse_key).split(":").map(Number);
+            return (
+              <Link key={v.verse_key} href={`/quran/read?surah=${s}&ayah=${a}`} className="block rounded-2xl border border-primary-900/10 bg-white p-3.5 transition hover:shadow-card dark:bg-transparent">
+                <span className="ayah-badge !h-7 !min-w-7 !text-[11px]">{v.verse_key}</span>
+                <span className="font-arabic mt-1.5 block text-[20px]" dir="rtl">
+                  {v.text_uthmani || v.text_imlaei}
+                </span>
+                <span className="mt-1 block text-[13px] leading-relaxed text-ink-soft">
+                  {stripHtml(v.translations?.[0]?.text || "").slice(0, 220)}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
   return (
     <div className="animate-fade-up">
@@ -156,17 +232,7 @@ export default function QuranLanding() {
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {topics.length === 0 && <EmptyState icon="search" title="কিছু পাওয়া যায়নি" />}
           {topics.map((t) => (
-            <div key={t.id} className="card p-4">
-              <div className="font-bold">{t.title}</div>
-              <div className="text-xs text-ink-faint">{t.desc}</div>
-              <div className="mt-2.5 flex flex-wrap gap-1.5">
-                {t.surahs.map((id) => (
-                  <Link key={id} href={`/quran/read?surah=${id}`} className="chip">
-                    {id}. {surahBn(id)}
-                  </Link>
-                ))}
-              </div>
-            </div>
+            <TopicCard key={t.id} topic={t} />
           ))}
         </div>
       )}
