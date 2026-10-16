@@ -130,6 +130,33 @@ function Reader() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const scrollToAyah = (key: string) => {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        document.getElementById(`ayah-${key}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 350);
+    });
+  };
+
+  // Jump to a specific ayah of the current surah (the ayah scrollbar).
+  const jumpToAyah = (n: number) => {
+    if (!n) return;
+    const key = `${surah}:${n}`;
+    if (offline) {
+      scrollToAyah(key);
+      return;
+    }
+    const want = Math.ceil(n / 20);
+    if (want !== page) {
+      deepAyah.current = String(n);
+      setPage(want);
+      load(want);
+    } else {
+      deepAyah.current = null;
+      scrollToAyah(key);
+    }
+  };
+
   const changeSurah = (s: number) => {
     if (s < 1 || s > 114) return;
     deepAyah.current = null;
@@ -399,6 +426,22 @@ function Reader() {
               </select>
             )}
           </div>
+          {jump === "sura" && (
+            <div className="mx-auto mt-2 flex max-w-md items-center gap-2">
+              <span className="shrink-0 text-[11px] font-bold text-white/75">আয়াতঃ</span>
+              <select
+                defaultValue=""
+                onChange={(e) => { if (e.target.value) jumpToAyah(Number(e.target.value)); e.target.value = ""; }}
+                className="input !border-white/20 !bg-white/10 !py-2 !text-center !text-[13px] !text-white [&>option]:text-ink"
+                aria-label="jump to ayah"
+              >
+                <option value="">আয়াত বেছে নিন…</option>
+                {Array.from({ length: current?.verses_count || 286 }, (_, i) => i + 1).map((n) => (
+                  <option key={n} value={n}>আয়াত {n}</option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
       </div>
 
@@ -510,7 +553,7 @@ function Reader() {
       ) : (
         <div className="mt-3 space-y-3">
           {offlineAyahs.map((a: any) => (
-            <article key={a.number} className="card p-4 sm:p-5">
+            <article key={a.number} id={`ayah-${a.surahNumber}:${a.numberInSurah}`} className="card scroll-mt-32 p-4 sm:p-5">
               <div className="mb-2 flex items-center justify-between">
                 <span className="chip">{a.surahNumber}:{a.numberInSurah}</span>
                 <span className="text-[11px] font-bold text-ink-faint">পৃষ্ঠা {a.page} • জুজ {a.juz}</span>
