@@ -71,4 +71,10 @@ offline-tolerant, keyless APIs only.
 - New pages: `PageHead` hero + skeleton loaders + `EmptyState`
 - Buttons only from the `.btn-*` / `.chip` system — every variant must be
   readable in **both** light and dark (pinned colors on gold/white)
+- Crash safety: all `localStorage` goes through `lib/storage.ts`
+  (never raw — Safari private mode throws), all `audio.play()` through
+  `tryPlay` (legacy WebKit returns undefined), route + root Bengali
+  error screens (`app/error.tsx`, `app/global-error.tsx`)
+- Favicon: `app/icon.png` + `app/apple-icon.png` + `app/favicon.ico`
+  (generated from `public/images/logo.png`)
 - Verify with `npm run build` (49 routes) + prod smoke test before push
