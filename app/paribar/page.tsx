@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { FAMILY_PROFILE, SOCIALS } from "../../lib/family-profile";
@@ -66,7 +67,7 @@ export default function ParibarPage() {
       </div>
 
       {/* Mission */}
-      <div className="card card-hover mt-2 flex items-center gap-3.5 p-4">
+      <Link href="/mission" className="card card-hover mt-2 flex items-center gap-3.5 p-4">
         <span className="icon-tile shrink-0 bg-gold-light text-gold-600">
           <Icon name="book" size={22} />
         </span>
@@ -74,7 +75,8 @@ export default function ParibarPage() {
           <span className="block font-bold">শায়খের মিশন</span>
           <span className="block text-xs text-ink-faint">আল্লাহর মহব্বত, আত্মশুদ্ধি ও মানুষ গড়ার মহান মিশন</span>
         </span>
-      </div>
+        <Icon name="chevron" size={18} className="shrink-0 text-ink-faint" />
+      </Link>
 
       {/* Applications */}
       <div className="mb-2 mt-5 px-1 text-[11px] font-bold uppercase tracking-[0.2em] text-gold-600">

@@ -150,7 +150,7 @@ export default function AudioPlayer() {
           // engine finished loading): keep the intent and retry on the
           // user's NEXT interaction anywhere — that tap carries a fresh
           // gesture, so playback starts instead of needing a replay tap.
-          retryOnNextGesture();
+          retryOnNextGesture(audio);
           storeRef.current.setIsLoading(false);
         });
       } else {
