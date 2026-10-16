@@ -20,7 +20,7 @@ const hindFont = Hind_Siliguri({
 });
 
 export const metadata: Metadata = {
-  title: "Islah – দ্বীন জীবনের সঙ্গী",
+  title: "islah - দ্বীনি জীবনের সাথী",
   description:
     "IslahBD ওয়েব: কুরআন, নামাজের সময়, কিবলা, তাসবীহ, দোআ, বয়ান, হামদ-নাত, হজ-ওমরাহ, লাইভ বয়ান, লাইব্রেরি ও আরও অনেক কিছু।",
 };
