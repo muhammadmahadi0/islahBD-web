@@ -4,6 +4,7 @@ import "./globals.css";
 import AppShell from "../components/AppShell";
 import AudioPlayer from "../components/audio/AudioPlayer";
 import MiniPlayer from "../components/audio/MiniPlayer";
+import EngineWarmup from "../components/audio/EngineWarmup";
 
 const arabicFont = Noto_Naskh_Arabic({
   subsets: ["arabic", "latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <script dangerouslySetInnerHTML={{ __html: PREPAINT }} />
         <AppShell>{children}</AppShell>
+        <EngineWarmup />
         <AudioPlayer />
         <MiniPlayer />
       </body>

@@ -101,6 +101,8 @@ export default function MiniPlayer() {
   };
   const armWatchdog = () => {
     clearWatchdog();
+    // 5s: long enough for buffering to start, short enough that a
+    // blocked first-tap reconciles before the user gives up and taps again.
     watchdogRef.current = setTimeout(() => {
       watchdogRef.current = null;
       try {
@@ -114,7 +116,7 @@ export default function MiniPlayer() {
       } catch {
         storeRef.current.setIsLoading(false);
       }
-    }, 8000);
+    }, 5000);
   };
 
   const isYtTrack =

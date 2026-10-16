@@ -8,6 +8,29 @@ function looksLikeHls(url: string): boolean {
   return /\.m3u8(\?|$)/i.test(url) || /\/live(\?|$)/i.test(url);
 }
 
+// One pending gesture-retry at a time: if a programmatic play() is
+// rejected (stale gesture after async engine load), the user's next tap
+// or keypress anywhere carries a fresh gesture — retry there.
+let kickArmed = false;
+function retryOnNextGesture(audio: HTMLAudioElement | null) {
+  if (!audio || kickArmed) return;
+  kickArmed = true;
+  const kick = () => {
+    kickArmed = false;
+    try {
+      const p = audio.play();
+      if (p) p.catch(() => {});
+    } catch {
+      // still blocked — the next tap will arm a fresh retry
+      kickArmed = false;
+    }
+  };
+  window.addEventListener("pointerdown", kick, { once: true });
+  window.addEventListener("keydown", kick, { once: true });
+  // Don't hold the slot forever if the user walks away.
+  setTimeout(() => { kickArmed = false; }, 30000);
+}
+
 /**
  * Stream playback engine — ported from beta (src/components/AudioPlayer.tsx).
  * `<audio>` + hls.js for live HLS + recordings (tracks carrying
@@ -123,7 +146,11 @@ export default function AudioPlayer() {
     const startPlayback = () => {
       if (autoplay) {
         audio.play().catch(() => {
-          storeRef.current.setIsPlaying(false);
+          // First-tap rejection (no usable gesture by the time the async
+          // engine finished loading): keep the intent and retry on the
+          // user's NEXT interaction anywhere — that tap carries a fresh
+          // gesture, so playback starts instead of needing a replay tap.
+          retryOnNextGesture();
           storeRef.current.setIsLoading(false);
         });
       } else {
@@ -234,7 +261,12 @@ export default function AudioPlayer() {
     const audio = audioRef.current;
     if (!audio) return;
     if (isPlaying) {
-      audio.play().catch(() => setIsPlaying(false));
+      audio.play().catch(() => {
+        // Stale-gesture rejection — retry on the user's next tap and
+        // keep the playing intent so the UI doesn't lie.
+        retryOnNextGesture(audio);
+        setIsLoading(false);
+      });
     } else {
       audio.pause();
     }
