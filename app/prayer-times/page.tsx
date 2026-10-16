@@ -152,7 +152,7 @@ export default function PrayerTimesPage() {
         )}
       </div>
 
-      {/* date + location */}
+      {/* dates */}
       <div className="card mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 p-3.5 text-[13px] font-bold">
         <span className="inline-flex items-center gap-1.5">
           <Icon name="calendar" size={16} className="text-gold-600" />
@@ -161,10 +161,6 @@ export default function PrayerTimesPage() {
         <span className="inline-flex items-center gap-1.5">
           <Icon name="moon" size={16} className="text-gold-600" />
           {hijriText(hijri, lang) || "…"}
-        </span>
-        <span className="inline-flex items-center gap-1.5 text-primary-700">
-          <Icon name="pin" size={16} />
-{loc ? `${loc.city}` : cityObj ? (lang === "bn" ? cityObj.nameBn : cityObj.name) : ""}
         </span>
       </div>
 
