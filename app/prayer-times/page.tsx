@@ -109,7 +109,10 @@ export default function PrayerTimesPage() {
       cdH = Math.floor(s / 3600);
       cdM = Math.floor((s % 3600) / 60);
       cdS = s % 60;
-      cdLabel = `${prayerName(curKey, lang)} ${lang === "bn" ? "চলছে" : "in progress"}`;
+      cdLabel =
+        lang === "bn"
+          ? `${prayerName(curKey, lang)} চলছে · বাকি ${toBn(cdH)}ঘ ${toBn(cdM)}ম`
+          : `${prayerName(curKey, lang)} in progress · ${cdH}h ${cdM}m remaining`;
     }
   }
 
