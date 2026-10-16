@@ -395,27 +395,24 @@ function Reader() {
               </div>
             )}
             {taf && showTafsir && (
-              <div className="px-5 pb-1">
+              <div className="mx-5 mb-2 border-t border-primary-900/10 pt-2">
                 <button
                   onClick={() => setOpenTafsir(openTafsir === v.verse_key ? null : v.verse_key)}
                   aria-expanded={openTafsir === v.verse_key}
-                  className="flex w-full items-center justify-center gap-1.5 rounded-2xl bg-gold-light/60 py-2 text-[13px] font-bold text-gold-dark transition hover:bg-gold-light active:scale-[0.99]"
+                  className="flex w-full items-center gap-3 rounded-2xl px-1 py-2 text-left transition active:scale-[0.99]"
                 >
-                  তাফসীর
+                  <span className="h-6 w-1 rounded-full bg-gold" />
+                  <span className="flex-1 text-lg font-bold">তাফসীরঃ</span>
                   <Icon
                     name="chevron"
-                    size={15}
-                    className={`transition-transform ${openTafsir === v.verse_key ? "-rotate-90" : "rotate-90"}`}
+                    size={17}
+                    className={`shrink-0 text-gold-dark transition-transform ${openTafsir === v.verse_key ? "-rotate-90" : "rotate-90"}`}
                   />
                 </button>
               </div>
             )}
             {taf && showTafsir && openTafsir === v.verse_key && (
-              <div className="mx-5 mb-2 border-t border-primary-900/10 pt-4">
-                <div className="mb-4 flex items-center gap-3">
-                  <span className="h-6 w-1 rounded-full bg-gold" />
-                  <p className="text-lg font-bold">তাফসীরঃ</p>
-                </div>
+              <div className="mx-5 mb-2">
                 <div className="rounded-xl border border-gold/30 bg-gold-light/50 p-4 text-justify text-sm leading-relaxed">
                   {stripHtml(taf).slice(0, 1500)}
                 </div>
