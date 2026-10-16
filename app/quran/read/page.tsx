@@ -2,7 +2,7 @@
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { ShareCopy, EmptyState } from "../../../components/ui";
+import { EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
 import {
   BN_TRANSLATIONS, BN_TAFSIRS, stripHtml,
@@ -49,6 +49,7 @@ function Reader() {
   const [db, setDb] = useState<any[]>([]);
   const [marks, setMarks] = useState<number[]>([]);
   const [playingKey, setPlayingKey] = useState<string | null>(null);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [wordSrc, setWordSrc] = useState("");
   const [surahAudio, setSurahAudio] = useState("");
   const [surahAudioOn, setSurahAudioOn] = useState(false);
@@ -236,6 +237,12 @@ function Reader() {
     else navigator.clipboard?.writeText(text);
   };
 
+  const copyAyah = (arabic: string, tr: string, key: string) => {
+    navigator.clipboard?.writeText(`${arabic}\n${tr}\n(${key})`);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey((k) => (k === key ? null : k)), 1200);
+  };
+
   const toggleMark = (n: number) => {
     const next = marks.includes(n) ? marks.filter((x) => x !== n) : [...marks, n];
     setMarks(next);
@@ -309,11 +316,22 @@ function Reader() {
                 </Link>
               )}
               <button
+                onClick={() => copyAyah(arabic, trs[0] || "", v.verse_key)}
+                className="rounded-full bg-white p-1.5 transition hover:bg-green-50 dark:bg-transparent"
+                aria-label="copy"
+              >
+                <Icon
+                  name={copiedKey === v.verse_key ? "check" : "copy"}
+                  size={15}
+                  className={copiedKey === v.verse_key ? "text-primary-600" : "text-ink-soft"}
+                />
+              </button>
+              <button
                 onClick={() => shareAyah(arabic, trs[0] || "", v.verse_key)}
-                className="rounded-full bg-white p-2 transition hover:bg-green-50 dark:bg-transparent"
+                className="rounded-full bg-white p-1.5 transition hover:bg-green-50 dark:bg-transparent"
                 aria-label="share"
               >
-                <Icon name="share" size={17} className="text-ink-soft" />
+                <Icon name="share" size={15} className="text-ink-soft" />
               </button>
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-600 text-lg font-bold text-white">
                 {toArNum(v.verse_number)}
@@ -392,7 +410,9 @@ function Reader() {
               </div>
             )}
             <div className="px-5 pb-4">
-              <ShareCopy text={`${arabic}\n${trs[0] || ""}\n(${v.verse_key})`} />
+              <div className="text-[11px] font-bold text-ink-faint">
+                পৃষ্ঠা {v.page_number || local?.page} • জুজ {v.juz_number || local?.juz}
+              </div>
             </div>
           </>
         )}
