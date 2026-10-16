@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { toBn } from "../../lib/audio";
+import { toBn } from "../../lib/prayer";
 
 const BENEFITS = [
   "উলামায়ে কেরাম ও তালিবুল ইলমদের সাথে জুড়ে থাকা যায়।",
