@@ -323,55 +323,55 @@ function Reader() {
       >
         {/* centered pill action bar */}
         {!recite && (
-          <div className="flex justify-center pt-4">
-            <div className="flex items-center gap-1.5 rounded-full border border-primary-100 bg-primary-50 p-1.5 sm:gap-2 sm:p-2 dark:bg-transparent">
+          <div className="flex justify-center pt-2.5">
+            <div className="flex items-center gap-1 rounded-full border border-primary-100 bg-primary-50 p-1 dark:bg-transparent">
               {taf && (
                 <Link
                   href={`/quran/tafsir?surah=${sNum}&ayah=${v.verse_number}`}
-                  className="flex items-center gap-1.5 rounded-full bg-white px-3 py-2 text-sm font-medium text-primary-700 transition hover:bg-blue-100 dark:bg-transparent"
+                  className="flex items-center gap-1 rounded-full bg-white px-2 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-blue-100 dark:bg-transparent"
                 >
-                  <Icon name="book" size={17} />
+                  <Icon name="book" size={14} />
                   তাফসীর
                 </Link>
               )}
               <button
                 onClick={() => copyAyah(arabic, trs[0] || "", v.verse_key)}
-                className="rounded-full bg-white p-1.5 transition hover:bg-green-50 dark:bg-transparent"
+                className="rounded-full bg-white p-1 transition hover:bg-green-50 dark:bg-transparent"
                 aria-label="copy"
               >
                 <Icon
                   name={copiedKey === v.verse_key ? "check" : "copy"}
-                  size={15}
+                  size={13}
                   className={copiedKey === v.verse_key ? "text-primary-600" : "text-ink-soft"}
                 />
               </button>
               <button
                 onClick={() => shareAyah(arabic, trs[0] || "", v.verse_key)}
-                className="rounded-full bg-white p-1.5 transition hover:bg-green-50 dark:bg-transparent"
+                className="rounded-full bg-white p-1 transition hover:bg-green-50 dark:bg-transparent"
                 aria-label="share"
               >
-                <Icon name="share" size={15} className="text-ink-soft" />
+                <Icon name="share" size={13} className="text-ink-soft" />
               </button>
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-600 text-lg font-bold text-white">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-base font-bold text-white">
                 {toArNum(v.verse_number)}
               </span>
               <button
                 onClick={() => toggleMark(v.id)}
-                className="rounded-full bg-white p-2 transition hover:bg-purple-50 dark:bg-transparent"
+                className="rounded-full bg-white p-1 transition hover:bg-purple-50 dark:bg-transparent"
                 aria-label="bookmark"
               >
                 <Icon
                   name="bookmark"
-                  size={17}
+                  size={14}
                   className={marked ? "fill-gold text-gold-600" : "text-ink-faint"}
                 />
               </button>
               <button
                 onClick={() => playAyah(v.verse_key)}
-                className="flex items-center gap-1.5 rounded-full bg-white px-3 py-2 text-sm font-medium text-primary-700 transition hover:bg-blue-100 dark:bg-transparent"
+                className="flex items-center gap-1 rounded-full bg-white px-2 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-blue-100 dark:bg-transparent"
                 aria-label="ayah audio"
               >
-                <Icon name={playing ? "pause" : "playfill"} size={17} />
+                <Icon name={playing ? "pause" : "playfill"} size={14} />
                 অডিও
               </button>
             </div>
