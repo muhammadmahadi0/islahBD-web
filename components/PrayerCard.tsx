@@ -23,8 +23,47 @@ const GRID: { key: "fajr" | "dhuhr" | "asr" | "maghrib" | "isha"; icon: string }
 export default function PrayerCard() {
   const [times, setTimes] = useState<PrayerTimes | null>(null);
   const [hijri, setHijri] = useState<any>(null);
-  const [place, setPlace] = useState("Dhaka");
+  const [place, setPlace] = useState("ঢাকা");
+  const [locating, setLocating] = useState(false);
   const [now, setNow] = useState(() => new Date());
+
+  const loadFor = async (lat: number, lng: number, label: string) => {
+    const d = await fetchPrayerData(lat, lng);
+    setPlace(label);
+    setTimes(d.times);
+    setHijri(d.hijri);
+  };
+
+  // Tap the location badge for an exact GPS fix with Bengali locality name.
+  const refreshGps = () => {
+    if (!navigator.geolocation || locating) return;
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (p) => {
+        const { latitude: lat, longitude: lng } = p.coords;
+        let label = `${lat.toFixed(2)}, ${lng.toFixed(2)}`;
+        try {
+          const ctl = new AbortController();
+          const t = setTimeout(() => ctl.abort(), 8000);
+          const r = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=bn`,
+            { signal: ctl.signal }
+          );
+          clearTimeout(t);
+          if (r.ok) {
+            const j = await r.json();
+            label = j.city || j.locality || label;
+          }
+        } catch {
+          // keep coords label
+        }
+        await loadFor(lat, lng, label);
+        setLocating(false);
+      },
+      () => setLocating(false),
+      { timeout: 10000, maximumAge: 600000 }
+    );
+  };
 
   useEffect(() => {
     let dead = false;
@@ -32,12 +71,7 @@ export default function PrayerCard() {
       const loc = await detectLocation();
       if (dead) return;
       const m = CITIES.find((x) => x.key === matchCity(loc.city));
-      setPlace(m ? m.name : loc.city);
-      const d = await fetchPrayerData(loc.lat, loc.lng);
-      if (!dead) {
-        setTimes(d.times);
-        setHijri(d.hijri);
-      }
+      await loadFor(loc.lat, loc.lng, m ? m.nameBn : loc.city);
     })();
     const tick = setInterval(() => setNow(new Date()), 1000);
     return () => { dead = true; clearInterval(tick); };
@@ -89,10 +123,14 @@ export default function PrayerCard() {
       <div className="relative">
         {/* location + date pills */}
         <div className="mb-4 flex items-center justify-between text-xs">
-          <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 backdrop-blur-md">
-            <Icon name="pin" size={14} className="text-gold-100" />
-            <span className="font-medium text-white">{place}</span>
-          </span>
+          <button
+            onClick={refreshGps}
+            title="GPS দিয়ে সঠিক লোকেশন নিন"
+            className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 backdrop-blur-md transition hover:bg-white/25 active:scale-95"
+          >
+            <Icon name={locating ? "clock" : "pin"} size={14} className="text-gold-100" />
+            <span className="font-medium text-white">{locating ? "খোঁজা হচ্ছে…" : place}</span>
+          </button>
           <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-right backdrop-blur-md">
             <Icon name="calendar" size={14} className="text-gold-100" />
             <span className="text-[11px] leading-tight">
