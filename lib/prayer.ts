@@ -65,20 +65,11 @@ export interface HijriInfo {
   year: string;
 }
 
-/** IP geolocation: ipapi.co → ip-api.com → Dhaka. Cached 24h. */
-export async function detectLocation(force = false): Promise<DetectedLocation> {
+/** IP geolocation: re-checked on every load (no stale cache).
+ * ipapi.co → ip-api.com → cached value → Dhaka. Cached copy is only a
+ * fallback when both providers fail, and is refreshed on every success. */
+export async function detectLocation(): Promise<DetectedLocation> {
   const KEY = "praybd-detected-location";
-  if (!force) {
-    const cached = storageGet(KEY);
-    if (cached) {
-      try {
-        const p = JSON.parse(cached);
-        if (p.detectedAt && Date.now() - p.detectedAt < 24 * 3600 * 1000) return p;
-      } catch {
-        safeStringStorage.removeItem(KEY);
-      }
-    }
-  }
   const withTimeout = async (url: string, ms = 8000) => {
     const ctl = new AbortController();
     const t = setTimeout(() => ctl.abort(), ms);
@@ -87,6 +78,17 @@ export async function detectLocation(force = false): Promise<DetectedLocation> {
     } finally {
       clearTimeout(t);
     }
+  };
+  const readCache = (): DetectedLocation | null => {
+    try {
+      const cached = storageGet(KEY);
+      if (!cached) return null;
+      const p = JSON.parse(cached);
+      if (p && p.detectedAt) return p;
+    } catch {
+      safeStringStorage.removeItem(KEY);
+    }
+    return null;
   };
   const fallback: DetectedLocation = {
     city: "Dhaka", lat: 23.8103, lng: 90.4125, country: "BD",
@@ -120,8 +122,8 @@ export async function detectLocation(force = false): Promise<DetectedLocation> {
       }
     }
   } catch {}
-  return fallback;
-}
+  return readCache() || fallback;
+};
 
 /** Match a detected city name to one of the 8 options (pray-bd logic). */
 export function matchCity(detectedCity: string | undefined): string {

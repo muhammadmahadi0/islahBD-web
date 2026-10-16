@@ -75,7 +75,7 @@ export default function PrayerTimesPage() {
   const refreshLocation = async () => {
     setRefreshing(true);
     try {
-      const detected = await detectLocation(true);
+      const detected = await detectLocation();
       setLoc(detected);
       setCity(matchCity(detected.city));
       await load(detected.lat, detected.lng);
