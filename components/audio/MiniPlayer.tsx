@@ -563,7 +563,7 @@ export default function MiniPlayer() {
         }`}
         aria-hidden={!hasTrack || !isExpanded}
       >
-        <div className="card flex max-h-[92dvh] w-full max-w-md flex-col overflow-hidden p-4">
+        <div className="card flex max-h-[92vh] w-full max-w-md flex-col overflow-hidden p-4" style={{ maxHeight: "92dvh" }}>
           {/* top bar */}
           <div className="flex items-center gap-2">
             <button

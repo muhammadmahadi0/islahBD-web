@@ -10,6 +10,7 @@ import {
 } from "../../../lib/quran";
 import { surahBnFull, surahBn } from "../../../lib/surah-names";
 import { storageSetJSON, storageGetJSON } from "../../../lib/storage";
+import { usePlayerStore } from "../../../store/player-store";
 import { bnNum } from "../../../lib/audio";
 
 const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
@@ -54,6 +55,7 @@ function Reader() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const wordAudioRef = useRef<HTMLAudioElement | null>(null);
   const deepAyah = useRef<string | null>(params.get("ayah"));
+  const { currentTrack } = usePlayerStore();
 
   useEffect(() => {
     fetch("/api/quran/chapters").then((r) => r.json()).then((d) => {
@@ -441,7 +443,7 @@ function Reader() {
       </div>
       {sideTab === "sura" ? (
         <div className="grid grid-cols-[1fr_auto] gap-2">
-          <div className="max-h-[50dvh] overflow-y-auto border-r border-primary-900/10 pr-1 lg:max-h-[60dvh]">
+          <div className="max-h-[50vh] overflow-y-auto border-r border-primary-900/10 pr-1 lg:max-h-[60vh]" style={{ maxHeight: "50dvh" }}>
             {sideSuras.map((c) => (
               <button
                 key={c.id}
@@ -456,7 +458,7 @@ function Reader() {
               </button>
             ))}
           </div>
-          <div className="max-h-[50dvh] overflow-y-auto pl-1 lg:max-h-[60dvh]">
+          <div className="max-h-[50vh] overflow-y-auto pl-1 lg:max-h-[60vh]" style={{ maxHeight: "50dvh" }}>
             <div className="mb-1 px-1 text-center text-[11px] font-bold text-ink-faint">আয়াত</div>
             {Array.from({ length: current?.verses_count || 0 }, (_, i) => i + 1).map((n) => (
               <button
@@ -470,7 +472,7 @@ function Reader() {
           </div>
         </div>
       ) : (
-        <div className="grid max-h-[50dvh] grid-cols-3 gap-1.5 overflow-y-auto lg:max-h-[60dvh]">
+        <div className="grid max-h-[50vh] grid-cols-3 gap-1.5 overflow-y-auto lg:max-h-[60vh]" style={{ maxHeight: "50dvh" }}>
           {Array.from({ length: 30 }, (_, i) => i + 1).map((j) => (
             <button
               key={j}
@@ -492,7 +494,7 @@ function Reader() {
   return (
     <div className="animate-fade-up lg:grid lg:grid-cols-[300px_minmax(0,1fr)] lg:items-start lg:gap-3">
       {/* desktop sidebar */}
-      <aside className="card sticky top-24 hidden max-h-[calc(100dvh-7rem)] flex-col overflow-hidden p-2 lg:flex">
+      <aside className="card sticky top-24 hidden max-h-[calc(100vh-7rem)] flex-col overflow-hidden p-2 lg:flex" style={{ maxHeight: "calc(100dvh - 7rem)" }}>
         {sidebarBody}
       </aside>
 
@@ -516,7 +518,7 @@ function Reader() {
       {settings && (
         <div className="fixed inset-0 z-50">
           <div className="absolute inset-0 bg-ink/50 backdrop-blur-sm" onClick={() => setSettings(false)} />
-          <div className="card absolute right-2 top-2 h-[calc(100dvh-1rem)] w-80 max-w-[90vw] space-y-4 overflow-y-auto rounded-l-3xl p-5">
+          <div className="card absolute bottom-2 right-2 top-2 w-80 max-w-[90vw] space-y-4 overflow-y-auto rounded-l-3xl p-5">
             <div className="flex items-center justify-between border-b border-primary-900/10 pb-3">
               <span className="font-bold">পড়ার সেটিংস</span>
               <button onClick={() => setSettings(false)} className="rounded-xl p-1.5 text-ink-faint hover:bg-sand" aria-label="close">
@@ -706,15 +708,18 @@ function Reader() {
         )}
       </div>
 
-      {/* floating surah-audio button */}
-      <button
-        onClick={toggleSurahAudio}
-        aria-label="surah audio"
-        className="fixed bottom-28 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-800 text-white shadow-lift transition hover:scale-105 active:scale-95 md:bottom-6"
-      >
-        <Icon name="headphones" size={22} />
-        {surahAudioOn && <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-white bg-gold" />}
-      </button>
+      {/* floating surah-audio button — hidden while the mini-player is
+          active so it never covers content */}
+      {!currentTrack && (
+        <button
+          onClick={toggleSurahAudio}
+          aria-label="surah audio"
+          className="fixed bottom-28 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-800 text-white shadow-lift transition hover:scale-105 active:scale-95 md:bottom-6"
+        >
+          <Icon name="headphones" size={22} />
+          {surahAudioOn && <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-white bg-gold" />}
+        </button>
+      )}
     </div>
   );
 }
