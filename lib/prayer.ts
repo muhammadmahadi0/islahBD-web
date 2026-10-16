@@ -1,7 +1,7 @@
 // Prayer engine — ported from pray-bd (script.js), restyled for Islah.
 // Aladhan API (method=1 Karachi, school=1 Hanafi) + IP geolocation +
 // 24h caching + special morning periods + Hijri with BD moon adjustment.
-import { storageGet, storageSet, storageSetJSON, storageGetJSON } from "./storage";
+import { storageGet, storageSet, storageSetJSON, storageGetJSON, safeStringStorage } from "./storage";
 
 export interface City {
   key: string;
@@ -66,21 +66,34 @@ export interface HijriInfo {
 }
 
 /** IP geolocation: ipapi.co → ip-api.com → Dhaka. Cached 24h. */
-export async function detectLocation(): Promise<DetectedLocation> {
+export async function detectLocation(force = false): Promise<DetectedLocation> {
   const KEY = "praybd-detected-location";
-  try {
+  if (!force) {
     const cached = storageGet(KEY);
     if (cached) {
-      const p = JSON.parse(cached);
-      if (p.detectedAt && Date.now() - p.detectedAt < 24 * 3600 * 1000) return p;
+      try {
+        const p = JSON.parse(cached);
+        if (p.detectedAt && Date.now() - p.detectedAt < 24 * 3600 * 1000) return p;
+      } catch {
+        safeStringStorage.removeItem(KEY);
+      }
     }
-  } catch {}
+  }
+  const withTimeout = async (url: string, ms = 8000) => {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), ms);
+    try {
+      return await fetch(url, { signal: ctl.signal });
+    } finally {
+      clearTimeout(t);
+    }
+  };
   const fallback: DetectedLocation = {
     city: "Dhaka", lat: 23.8103, lng: 90.4125, country: "BD",
     timezone: "Asia/Dhaka", ip: null, detectedAt: Date.now(),
   };
   try {
-    const r = await fetch("https://ipapi.co/json/");
+    const r = await withTimeout("https://ipapi.co/json/");
     if (r.ok) {
       const d = await r.json();
       const loc: DetectedLocation = {
@@ -93,7 +106,7 @@ export async function detectLocation(): Promise<DetectedLocation> {
     }
   } catch {}
   try {
-    const r = await fetch("https://ip-api.com/json");
+    const r = await withTimeout("https://ip-api.com/json");
     if (r.ok) {
       const d = await r.json();
       if (d.status === "success") {

@@ -9,7 +9,7 @@ import {
   prayerName, toBn, getNaflWindows,
   type DetectedLocation, type PrayerTimes, type Lang,
 } from "../../lib/prayer";
-import { storageGet, storageSet, safeStringStorage } from "../../lib/storage";
+import { storageGet, storageSet } from "../../lib/storage";
 
 // Prayer Times — ported from pray-bd (Aladhan Karachi/Hanafi, IP detect,
 // 8 cities, countdown with prohibited/Ishraq/Chasht, Hijri, BN/EN),
@@ -23,7 +23,6 @@ export default function PrayerTimesPage() {
   const [lang, setLang] = useState<Lang>("bn");
   const [city, setCity] = useState("dhaka");
   const [loc, setLoc] = useState<DetectedLocation | null>(null);
-  const [auto, setAuto] = useState(true);
   const [times, setTimes] = useState<PrayerTimes | null>(null);
   const [hijri, setHijri] = useState<any>(null);
   const [offline, setOffline] = useState(false);
@@ -43,25 +42,15 @@ export default function PrayerTimesPage() {
     setUpdatedAt(new Date());
   }, []);
 
-  // init: detect location → match city → load
+  // init: auto-detect location → load (no manual selection)
   useEffect(() => {
     let dead = false;
     (async () => {
-      const savedCity = storageGet("praybd-city");
       const detected = await detectLocation();
       if (dead) return;
       setLoc(detected);
-      if (savedCity && CITIES.some((c) => c.key === savedCity)) {
-        setCity(savedCity);
-        const c = CITIES.find((x) => x.key === savedCity)!;
-        setAuto(false);
-        load(c.lat, c.lng);
-      } else {
-        const m = matchCity(detected.city);
-        setCity(m);
-        setAuto(true);
-        load(detected.lat, detected.lng);
-      }
+      setCity(matchCity(detected.city));
+      load(detected.lat, detected.lng);
     })();
     const tick = setInterval(() => setNow(new Date()), 1000);
     return () => { dead = true; clearInterval(tick); };
@@ -75,41 +64,23 @@ export default function PrayerTimesPage() {
     tmr.setDate(tmr.getDate() + 1);
     tmr.setHours(0, 0, 5, 0);
     midnightTimer.current = setTimeout(() => {
-      const c = CITIES.find((x) => x.key === city);
-      if (auto && loc) load(loc.lat, loc.lng);
-      else if (c) load(c.lat, c.lng);
+      if (loc) load(loc.lat, loc.lng);
     }, tmr.getTime() - Date.now());
     return () => { if (midnightTimer.current) clearTimeout(midnightTimer.current); };
-  }, [city, auto, loc, load]);
+  }, [loc, load]);
 
-  const pickCity = (key: string) => {
-    const c = CITIES.find((x) => x.key === key);
-    if (!c) return;
-    setCity(key);
-    setAuto(false);
-    storageSet("praybd-city", key);
-    load(c.lat, c.lng);
-  };
+  const [refreshing, setRefreshing] = useState(false);
 
-  const useGps = () => {
-    navigator.geolocation?.getCurrentPosition(
-      (p) => {
-        setAuto(false);
-        safeStringStorage.removeItem("praybd-city");
-        setLoc({ city: "GPS", lat: p.coords.latitude, lng: p.coords.longitude, country: "BD", timezone: "Asia/Dhaka", ip: null, detectedAt: Date.now() });
-        load(p.coords.latitude, p.coords.longitude);
-      },
-      () => {},
-      { timeout: 8000 }
-    );
-  };
-
-  const useAuto = () => {
-    safeStringStorage.removeItem("praybd-city");
-    setAuto(true);
-    if (loc) {
-      setCity(matchCity(loc.city));
-      load(loc.lat, loc.lng);
+  // Re-detect location on demand (skips the 24h cache).
+  const refreshLocation = async () => {
+    setRefreshing(true);
+    try {
+      const detected = await detectLocation(true);
+      setLoc(detected);
+      setCity(matchCity(detected.city));
+      await load(detected.lat, detected.lng);
+    } finally {
+      setRefreshing(false);
     }
   };
 
@@ -151,7 +122,7 @@ export default function PrayerTimesPage() {
     <div className="animate-fade-up">
       <PageHead
         title={lang === "bn" ? "নামাজের সময়" : "Prayer Times"}
-        subtitle={cityObj ? `${lang === "bn" ? cityObj.nameBn : cityObj.name}${auto ? (lang === "bn" ? " • অটো" : " • Auto") : ""}` : ""}
+        subtitle={cityObj ? `${lang === "bn" ? cityObj.nameBn : cityObj.name}${lang === "bn" ? " • অটো" : " • Auto"}` : ""}
         icon="clock"
         action={
           <button
@@ -193,34 +164,25 @@ export default function PrayerTimesPage() {
         </span>
         <span className="inline-flex items-center gap-1.5 text-primary-700">
           <Icon name="pin" size={16} />
-          {auto && loc ? `${loc.city}` : cityObj ? (lang === "bn" ? cityObj.nameBn : cityObj.name) : ""}
+{loc ? `${loc.city}` : cityObj ? (lang === "bn" ? cityObj.nameBn : cityObj.name) : ""}
         </span>
       </div>
 
-      {/* city select */}
-      <div className="card mt-2 p-3.5">
-        <div className="mb-2 text-xs font-bold text-ink-faint">
-          {lang === "bn" ? "শহর বেছে নিন (৮টি)" : "Choose city (8)"}
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          {CITIES.map((c) => (
-            <button
-              key={c.key}
-              onClick={() => pickCity(c.key)}
-              className={`chip !px-3.5 !py-2 ${!auto && city === c.key ? "chip-active" : ""}`}
-            >
-              {lang === "bn" ? c.nameBn : c.name}
-            </button>
-          ))}
-        </div>
-        <div className="mt-2 flex gap-2">
-          <button onClick={useAuto} className={`btn-ghost flex-1 !py-2 text-[13px] ${auto ? "!bg-primary-600 !text-white" : ""}`}>
-            <Icon name="globe" size={15} /> {lang === "bn" ? "অটো লোকেশন" : "Auto"}
-          </button>
-          <button onClick={useGps} className="btn-ghost flex-1 !py-2 text-[13px]">
-            <Icon name="pin" size={15} /> GPS
-          </button>
-        </div>
+      {/* auto location + refresh */}
+      <div className="card mt-2 flex items-center gap-2.5 p-3.5">
+        <span className="icon-tile !h-10 !w-10 shrink-0 bg-primary-50 text-primary-600">
+          <Icon name="globe" size={20} />
+        </span>
+        <span className="flex-1 text-[13px]">
+          <span className="block font-bold">{lang === "bn" ? "অটো লোকেশন" : "Auto location"}</span>
+          <span className="block text-xs text-ink-faint">
+            {loc ? `${loc.city}${loc.country && loc.country !== "BD" ? `, ${loc.country}` : ""}` : (lang === "bn" ? "খোঁজা হচ্ছে…" : "Detecting…")}
+          </span>
+        </span>
+        <button onClick={refreshLocation} disabled={refreshing} className="btn-ghost shrink-0 !py-2 text-[13px] disabled:opacity-60">
+          <Icon name={refreshing ? "clock" : "pin"} size={15} />
+          {refreshing ? (lang === "bn" ? "খোঁজা হচ্ছে…" : "Locating…") : (lang === "bn" ? "রিফ্রেশ" : "Refresh")}
+        </button>
       </div>
 
       {/* prayer grid */}

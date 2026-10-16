@@ -29,19 +29,6 @@ export default function PrayerCard() {
   useEffect(() => {
     let dead = false;
     (async () => {
-      const savedCity = localStorage.getItem("praybd-city");
-      if (savedCity) {
-        const c = CITIES.find((x) => x.key === savedCity);
-        if (c) {
-          const d = await fetchPrayerData(c.lat, c.lng);
-          if (!dead) {
-            setPlace(c.name);
-            setTimes(d.times);
-            setHijri(d.hijri);
-          }
-          return;
-        }
-      }
       const loc = await detectLocation();
       if (dead) return;
       const m = CITIES.find((x) => x.key === matchCity(loc.city));
