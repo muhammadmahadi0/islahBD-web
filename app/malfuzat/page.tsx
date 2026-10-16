@@ -43,13 +43,20 @@ export default function MalfuzatPage() {
           {items.slice(0, 50).map((m: any, i: number) => (
             <div key={i} className="card p-4">
               <p className="whitespace-pre-line text-sm leading-relaxed">{m.text || m.content || m.title}</p>
-              <div className="mt-3 flex gap-2">
-                <button onClick={() => toggle(i)} className={`btn-ghost flex-1 !py-2 text-[13px] ${saved.includes(i) ? "!bg-gold-light !text-gold-dark" : ""}`}>
-                  <Icon name="bookmark" size={15} />
-                  {saved.includes(i) ? "সেভড" : "সেভ"}
+              <div className="mt-2 flex items-center gap-1.5">
+                <button
+                  onClick={() => toggle(i)}
+                  aria-label="love"
+                  className="rounded-full bg-white p-1.5 transition hover:bg-green-50 active:scale-95 dark:bg-transparent"
+                >
+                  <Icon
+                    name="heart"
+                    size={14}
+                    className={saved.includes(i) ? "fill-red-500 text-red-500" : "text-ink-soft"}
+                  />
                 </button>
+                <ShareCopy text={m.text || m.content || m.title || ""} />
               </div>
-              <div className="mt-2"><ShareCopy text={m.text || m.content || m.title || ""} /></div>
             </div>
           ))}
         </div>
