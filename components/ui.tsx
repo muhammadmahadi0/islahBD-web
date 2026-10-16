@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import { Icon } from "./icons";
 
@@ -75,8 +76,11 @@ export function PageHead({
 }
 
 export function ShareCopy({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
   const copy = () => {
     navigator.clipboard?.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1200);
   };
   const share = () => {
     const url = location.href;
@@ -84,14 +88,20 @@ export function ShareCopy({ text }: { text: string }) {
     else navigator.clipboard?.writeText(`${text}\n${url}`);
   };
   return (
-    <div className="flex gap-2">
-      <button className="btn-outline flex-1 !py-2 text-[13px]" onClick={copy}>
-        <Icon name="copy" size={16} />
-        কপি
+    <div className="flex items-center gap-1.5">
+      <button
+        onClick={copy}
+        aria-label="copy"
+        className="rounded-full bg-white p-1.5 text-ink-soft transition hover:bg-green-50 active:scale-95 dark:bg-transparent"
+      >
+        <Icon name={copied ? "check" : "copy"} size={14} className={copied ? "text-primary-600" : ""} />
       </button>
-      <button className="btn-gold flex-1 !py-2 text-[13px]" onClick={share}>
-        <Icon name="share" size={16} />
-        শেয়ার
+      <button
+        onClick={share}
+        aria-label="share"
+        className="rounded-full bg-white p-1.5 text-ink-soft transition hover:bg-green-50 active:scale-95 dark:bg-transparent"
+      >
+        <Icon name="share" size={14} />
       </button>
     </div>
   );
