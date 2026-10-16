@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "./icons";
 import {
-  CITIES, detectLocation, matchCity, fetchPrayerData,
+  detectLocation, fetchPrayerData,
   toMinutes, getNextPrayer, getCurrentKey, secsUntil,
   prayerName, toBn, hijriText,
   type PrayerTimes,
@@ -70,8 +70,9 @@ export default function PrayerCard() {
     (async () => {
       const loc = await detectLocation();
       if (dead) return;
-      const m = CITIES.find((x) => x.key === matchCity(loc.city));
-      await loadFor(loc.lat, loc.lng, m ? m.nameBn : loc.city);
+      // Show the actual detected name (same as the full prayer page),
+      // not the matched city label.
+      await loadFor(loc.lat, loc.lng, loc.city);
     })();
     const tick = setInterval(() => setNow(new Date()), 1000);
     return () => { dead = true; clearInterval(tick); };
