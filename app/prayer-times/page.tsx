@@ -132,12 +132,13 @@ export default function PrayerTimesPage() {
       cdS = special.remainSec % 60;
       cdLabel = lang === "bn" ? special.labelBn : special.labelEn;
       cdRed = special.isRed;
-    } else if (next) {
+    } else if (next && curKey) {
+      // Countdown shows the REMAINING time of the current prayer window.
       const s = secsUntil(next.time, now, next.isTomorrow);
       cdH = Math.floor(s / 3600);
       cdM = Math.floor((s % 3600) / 60);
       cdS = s % 60;
-      cdLabel = `${lang === "bn" ? "পরবর্তী নামাজ" : "Next Prayer"}: ${prayerName(next.key, lang)}${next.isTomorrow ? (lang === "bn" ? " (আগামীকাল)" : " (Tomorrow)") : ""}`;
+      cdLabel = `${prayerName(curKey, lang)} ${lang === "bn" ? "চলছে" : "in progress"}`;
     }
   }
 
