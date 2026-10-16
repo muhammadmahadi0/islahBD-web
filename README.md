@@ -37,7 +37,7 @@ No env vars needed. All upstream APIs are keyless.
 | Poems, Munajate, Malfuzat, Self-purification | `/poem`, `/munajate`, `/malfuzat`, `/self-purification` |
 | Live broadcast, Boyan, Hamd/Naat | `/live`, `/boyan`, `/hamdnaat` |
 | Library, Videos/Clips, Gallery/Wallpaper | `/library`, `/media`, `/gallery`, `/wallpaper` (`/nasheed` → `/hamdnaat`) |
-| Paribar/Baiyat, Fatwa, Notice, Notifications | `/paribar`, `/fatwa`, `/notice`, `/notifications` |
+| Paribar/Baiyat, Fatwa, Notice, Notifications | `/paribar` (family hub: biography, mission, applications, connect), `/fatwa`, `/notice`, `/notifications` |
 | Donate, Support, Settings, Others hub, Member | `/donate`, `/support`, `/settings`, `/others`, `/member` |
 
 API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/live`,
