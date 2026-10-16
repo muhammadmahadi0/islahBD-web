@@ -26,8 +26,12 @@ offline-tolerant, keyless APIs only.
 
 ### 4.1 Quran (quran.com API v4, muslimbangla-style UI)
 - Index (`/quran`): surah cards (number, transliteration, meaning,
-  Makki/Madani badge, Arabic name, ayah count) + curated topics tab
-  (`lib/quran-topics.ts`)
+  Makki/Madani badge, Arabic name, ayah count) + 7 real topic categories
+  with expandable famous verses (`lib/quran-topics.ts`)
+- Reader (`/quran/read`): sura + para (juz) modes, dual stacked Bengali
+  translations, tafsir, word-by-word, always-on transliteration, per-ayah
+  and full-surah audio, bookmarks, font size, `?surah&ayah` deep-links
+- Dedicated tafsir pages (`/quran/tafsir?surah&ayah`) with prev/next
 - Chapters with Bengali names + Bangla transliterations (`lib/surah-names.ts`,
   all 114 verified)
 - Reader: 4 Bengali translations, 3 Bengali tafsirs, word-by-word,
