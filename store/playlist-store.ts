@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { safeStringStorage } from "../lib/storage";
 import type { Track } from "./player-store";
 
 // Ported from beta (src/store/playlist-store.ts).
@@ -71,7 +72,7 @@ export const usePlaylistStore = create<PlaylistStore>()(
     }),
     {
       name: "islah-playlists",
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => safeStringStorage),
       partialize: (s) => ({ playlists: s.playlists }) as PlaylistStore,
     }
   )

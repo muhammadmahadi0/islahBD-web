@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { storageGet, storageSet, storageSetJSON, storageGetJSON } from "../../lib/storage";
 
 const DHIKRS = ["সুবহানাল্লাহ", "আলহামদুলিল্লাহ", "আল্লাহু আকবার", "লা ইলাহা ইল্লাল্লাহ", "আস্তাগফিরুল্লাহ", "দরূদ শরীফ"];
 
@@ -12,8 +13,8 @@ export default function TasbeehPage() {
   const [hist, setHist] = useState<{ d: string; c: number; t: string }[]>([]);
 
   useEffect(() => {
-    try { setHist(JSON.parse(localStorage.getItem("tasbeeh_history") || "[]")); } catch {}
-    setTarget(Number(localStorage.getItem("tasbeeh_target") || 100));
+    setHist(storageGetJSON("tasbeeh_history", []));
+    setTarget(Number(storageGet("tasbeeh_target") || 100));
   }, []);
 
   const R = 88;
@@ -28,7 +29,7 @@ export default function TasbeehPage() {
       const entry = { d: DHIKRS[dhikr], c: n, t: new Date().toLocaleString("bn-BD") };
       const next = [entry, ...hist].slice(0, 50);
       setHist(next);
-      localStorage.setItem("tasbeeh_history", JSON.stringify(next));
+      storageSetJSON("tasbeeh_history", next);
       setCount(0);
     }
   };
@@ -77,12 +78,12 @@ export default function TasbeehPage() {
           <button className="btn-ghost !py-2 text-[13px]" onClick={() => setCount(0)}>রিসেট</button>
           <input
             type="number" min={1} value={target} aria-label="target"
-            onChange={(e) => { const v = Math.max(1, Number(e.target.value) || 1); setTarget(v); localStorage.setItem("tasbeeh_target", String(v)); }}
+            onChange={(e) => { const v = Math.max(1, Number(e.target.value) || 1); setTarget(v); storageSet("tasbeeh_target", String(v)); }}
             className="input !py-2 text-center font-bold"
           />
           <button
             className="btn-ghost !py-2 text-[13px]"
-            onClick={() => { if (confirm("সব হিস্ট্রি মুছবেন?")) { setHist([]); localStorage.removeItem("tasbeeh_history"); } }}
+            onClick={() => { if (confirm("সব হিস্ট্রি মুছবেন?")) { setHist([]); storageSet("tasbeeh_history", "[]"); } }}
           >
             মুছুন
           </button>

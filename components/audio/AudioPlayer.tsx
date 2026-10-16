@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import type Hls from "hls.js";
 import { usePlayerStore } from "../../store/player-store";
 import { SEEK_EVENT } from "../../lib/yt-engine";
+import { tryPlay } from "../../lib/storage";
 
 function looksLikeHls(url: string): boolean {
   return /\.m3u8(\?|$)/i.test(url) || /\/live(\?|$)/i.test(url);
@@ -145,14 +146,19 @@ export default function AudioPlayer() {
 
     const startPlayback = () => {
       if (autoplay) {
-        audio.play().catch(() => {
-          // First-tap rejection (no usable gesture by the time the async
-          // engine finished loading): keep the intent and retry on the
-          // user's NEXT interaction anywhere — that tap carries a fresh
-          // gesture, so playback starts instead of needing a replay tap.
-          retryOnNextGesture(audio);
-          storeRef.current.setIsLoading(false);
-        });
+        // Legacy WebKit returns undefined instead of a Promise — tryPlay
+        // never throws; only real rejections arm the gesture retry.
+        const p = tryPlay(audio);
+        if (p) {
+          p.catch(() => {
+            // First-tap rejection (no usable gesture by the time the async
+            // engine finished loading): keep the intent and retry on the
+            // user's NEXT interaction anywhere — that tap carries a fresh
+            // gesture, so playback starts instead of needing a replay tap.
+            retryOnNextGesture(audio);
+            storeRef.current.setIsLoading(false);
+          });
+        }
       } else {
         storeRef.current.setIsLoading(false);
       }
@@ -261,14 +267,21 @@ export default function AudioPlayer() {
     const audio = audioRef.current;
     if (!audio) return;
     if (isPlaying) {
-      audio.play().catch(() => {
-        // Stale-gesture rejection — retry on the user's next tap and
-        // keep the playing intent so the UI doesn't lie.
-        retryOnNextGesture(audio);
-        setIsLoading(false);
-      });
+      const p = tryPlay(audio);
+      if (p) {
+        p.catch(() => {
+          // Stale-gesture rejection — retry on the user's next tap and
+          // keep the playing intent so the UI doesn't lie.
+          retryOnNextGesture(audio);
+          setIsLoading(false);
+        });
+      }
     } else {
-      audio.pause();
+      try {
+        audio.pause();
+      } catch {
+        // ignore
+      }
     }
   }, [isPlaying, currentTrack, setIsPlaying]);
 

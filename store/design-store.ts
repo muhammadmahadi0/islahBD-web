@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { safeStringStorage } from "../lib/storage";
 
 // Ported from beta (src/store/design-store.ts). Liquid Glass vs Material,
 // persisted as `islah-design`. Smart default: Material on Android,
@@ -65,6 +66,7 @@ export const useDesignStore = create<DesignState>()(
     }),
     {
       name: "islah-design",
+      storage: createJSONStorage(() => safeStringStorage),
       onRehydrateStorage: () => (state) => {
         if (state) applyDesign(state.mode);
         else if (typeof window !== "undefined") applyDesign(defaultDesignMode());

@@ -9,6 +9,7 @@ import {
   type QuranChapter,
 } from "../../../lib/quran";
 import { surahBnFull } from "../../../lib/surah-names";
+import { storageSetJSON, storageGetJSON, tryPlay } from "../../../lib/storage";
 
 const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
 const toArNum = (n: number) => String(n).replace(/[0-9]/g, (d) => AR_DIGITS[Number(d)]);
@@ -41,7 +42,7 @@ function Reader() {
       if (d.success) setChapters(d.chapters);
     }).catch(() => {});
     fetch("/data/quran_database.json").then((r) => r.json()).then(setDb).catch(() => {});
-    try { setMarks(JSON.parse(localStorage.getItem("quran_bookmarks") || "[]")); } catch {}
+    setMarks(storageGetJSON<number[]>("quran_bookmarks", []));
     audioRef.current = new Audio();
     const el = audioRef.current;
     el.addEventListener("ended", () => setPlayingKey(null));
@@ -97,7 +98,16 @@ function Reader() {
     const el = audioRef.current;
     if (!el) return;
     if (playingKey === key) {
-      el.paused ? el.play().catch(() => {}) : el.pause();
+      if (el.paused) {
+        const p = tryPlay(el);
+        if (p) p.catch(() => setPlayingKey(null));
+      } else {
+        try {
+          el.pause();
+        } catch {
+          // ignore
+        }
+      }
       return;
     }
     try {
@@ -107,7 +117,8 @@ function Reader() {
       const url = data.audio_files?.[0]?.url;
       if (!url) throw new Error();
       el.src = url;
-      await el.play();
+      const p = tryPlay(el);
+      if (p) await p;
     } catch {
       setPlayingKey(null);
     }
@@ -116,7 +127,7 @@ function Reader() {
   const toggleMark = (n: number) => {
     const next = marks.includes(n) ? marks.filter((x) => x !== n) : [...marks, n];
     setMarks(next);
-    localStorage.setItem("quran_bookmarks", JSON.stringify(next));
+    storageSetJSON("quran_bookmarks", next);
   };
 
   const current = chapters.find((c) => c.id === surah);

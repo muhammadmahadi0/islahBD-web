@@ -1,6 +1,7 @@
 // Prayer engine — ported from pray-bd (script.js), restyled for Islah.
 // Aladhan API (method=1 Karachi, school=1 Hanafi) + IP geolocation +
 // 24h caching + special morning periods + Hijri with BD moon adjustment.
+import { storageGet, storageSet, storageSetJSON, storageGetJSON } from "./storage";
 
 export interface City {
   key: string;
@@ -68,7 +69,7 @@ export interface HijriInfo {
 export async function detectLocation(): Promise<DetectedLocation> {
   const KEY = "praybd-detected-location";
   try {
-    const cached = localStorage.getItem(KEY);
+    const cached = storageGet(KEY);
     if (cached) {
       const p = JSON.parse(cached);
       if (p.detectedAt && Date.now() - p.detectedAt < 24 * 3600 * 1000) return p;
@@ -87,7 +88,7 @@ export async function detectLocation(): Promise<DetectedLocation> {
         country: d.country_code || "BD", timezone: d.timezone || "Asia/Dhaka",
         ip: d.ip || null, detectedAt: Date.now(),
       };
-      localStorage.setItem(KEY, JSON.stringify(loc));
+      storageSetJSON(KEY, loc);
       return loc;
     }
   } catch {}
@@ -101,7 +102,7 @@ export async function detectLocation(): Promise<DetectedLocation> {
           country: d.countryCode || "BD", timezone: d.timezone || "Asia/Dhaka",
           ip: d.query || null, detectedAt: Date.now(),
         };
-        localStorage.setItem(KEY, JSON.stringify(loc));
+        storageSetJSON(KEY, loc);
         return loc;
       }
     }
@@ -154,7 +155,7 @@ export async function fetchPrayerData(lat: number, lng: number): Promise<PrayerD
   const ds = dateStr(now);
   const key = `prayertimes-${lat.toFixed(2)}-${lng.toFixed(2)}-${ds}`;
   try {
-    const cached = localStorage.getItem(key);
+    const cached = storageGet(key);
     if (cached) {
       const p = JSON.parse(cached);
       if (p.date === ds && Date.now() - p.timestamp < 24 * 3600 * 1000) {
@@ -168,7 +169,7 @@ export async function fetchPrayerData(lat: number, lng: number): Promise<PrayerD
     if (!data.success) throw new Error("api");
     const out: PrayerData = { times: data.times, hijri: data.hijri || null, offline: false };
     try {
-      localStorage.setItem(key, JSON.stringify({ date: ds, times: out.times, hijri: out.hijri, timestamp: Date.now() }));
+      storageSetJSON(key, { date: ds, times: out.times, hijri: out.hijri, timestamp: Date.now() });
     } catch {}
     return out;
   } catch {

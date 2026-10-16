@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { safeStringStorage } from "../lib/storage";
 
 // Ported from beta (src/store/theme-store.ts). Dark/light theme,
 // persisted as `islah-theme`. First visit follows the OS scheme.
@@ -42,6 +43,7 @@ export const useThemeStore = create<ThemeState>()(
     }),
     {
       name: "islah-theme",
+      storage: createJSONStorage(() => safeStringStorage),
       onRehydrateStorage: () => (state) => {
         if (state) applyTheme(state.theme);
         else applyTheme(defaultTheme());

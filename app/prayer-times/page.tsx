@@ -9,6 +9,7 @@ import {
   prayerName, toBn,
   type DetectedLocation, type PrayerTimes, type Lang,
 } from "../../lib/prayer";
+import { storageGet, storageSet, safeStringStorage } from "../../lib/storage";
 
 // Prayer Times — ported from pray-bd (Aladhan Karachi/Hanafi, IP detect,
 // 8 cities, countdown with prohibited/Ishraq/Chasht, Hijri, BN/EN),
@@ -31,7 +32,7 @@ export default function PrayerTimesPage() {
   const midnightTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    setLang((localStorage.getItem("praybd-lang") as Lang) || "bn");
+    setLang((storageGet("praybd-lang") as Lang) || "bn");
   }, []);
 
   const load = useCallback(async (lat: number, lng: number) => {
@@ -46,7 +47,7 @@ export default function PrayerTimesPage() {
   useEffect(() => {
     let dead = false;
     (async () => {
-      const savedCity = localStorage.getItem("praybd-city");
+      const savedCity = storageGet("praybd-city");
       const detected = await detectLocation();
       if (dead) return;
       setLoc(detected);
@@ -86,7 +87,7 @@ export default function PrayerTimesPage() {
     if (!c) return;
     setCity(key);
     setAuto(false);
-    localStorage.setItem("praybd-city", key);
+    storageSet("praybd-city", key);
     load(c.lat, c.lng);
   };
 
@@ -94,7 +95,7 @@ export default function PrayerTimesPage() {
     navigator.geolocation?.getCurrentPosition(
       (p) => {
         setAuto(false);
-        localStorage.removeItem("praybd-city");
+        safeStringStorage.removeItem("praybd-city");
         setLoc({ city: "GPS", lat: p.coords.latitude, lng: p.coords.longitude, country: "BD", timezone: "Asia/Dhaka", ip: null, detectedAt: Date.now() });
         load(p.coords.latitude, p.coords.longitude);
       },
@@ -104,7 +105,7 @@ export default function PrayerTimesPage() {
   };
 
   const useAuto = () => {
-    localStorage.removeItem("praybd-city");
+    safeStringStorage.removeItem("praybd-city");
     setAuto(true);
     if (loc) {
       setCity(matchCity(loc.city));
@@ -115,7 +116,7 @@ export default function PrayerTimesPage() {
   const toggleLang = () => {
     const next: Lang = lang === "bn" ? "en" : "bn";
     setLang(next);
-    localStorage.setItem("praybd-lang", next);
+    storageSet("praybd-lang", next);
   };
 
   const cityObj = CITIES.find((c) => c.key === city);

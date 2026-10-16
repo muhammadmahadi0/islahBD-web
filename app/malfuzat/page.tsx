@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { PageHead, ShareCopy, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { storageSetJSON, storageGetJSON } from "../../lib/storage";
 
 export default function MalfuzatPage() {
   const [items, setItems] = useState<any[]>([]);
@@ -14,13 +15,13 @@ export default function MalfuzatPage() {
       .then((d) => setItems(Array.isArray(d) ? d : d.results || []))
       .catch(() => setItems([]))
       .finally(() => setLoading(false));
-    try { setSaved(JSON.parse(localStorage.getItem("malfuzat_bookmarks") || "[]")); } catch {}
+    setSaved(storageGetJSON<number[]>("malfuzat_bookmarks", []));
   }, []);
 
   const toggle = (i: number) => {
     const n = saved.includes(i) ? saved.filter((x) => x !== i) : [...saved, i];
     setSaved(n);
-    localStorage.setItem("malfuzat_bookmarks", JSON.stringify(n));
+    storageSetJSON("malfuzat_bookmarks", n);
   };
 
   return (

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { PageHead, EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
 import type { QuranChapter, QuranReciter } from "../../../lib/quran";
+import { storageSetJSON, storageGetJSON } from "../../../lib/storage";
 import { surahBnFull } from "../../../lib/surah-names";
 
 // Audio Quran — reciters + chapter streaming from quran.com API.
@@ -22,7 +23,7 @@ export default function QuranAudio() {
     fetch("/api/quran/chapters").then((r) => r.json()).then((d) => {
       if (d.success) setChapters(d.chapters);
     }).catch(() => {});
-    try { setSaved(JSON.parse(localStorage.getItem("quran_audio_saved") || "[]")); } catch {}
+    try { setSaved(storageGetJSON<number[]>("quran_audio_saved", [])); } catch {}
   }, []);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function QuranAudio() {
   const save = (s: number) => {
     const next = saved.includes(s) ? saved : [...saved, s];
     setSaved(next);
-    localStorage.setItem("quran_audio_saved", JSON.stringify(next));
+    storageSetJSON("quran_audio_saved", next);
   };
 
   const current = chapters.find((c) => c.id === surah);
