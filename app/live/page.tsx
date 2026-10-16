@@ -43,7 +43,7 @@ function liveToTrack(live: LiveStatus): Track | null {
 export default function LivePage() {
   const [live, setLive] = useState<LiveStatus | null>(null);
   const [loading, setLoading] = useState(true);
-  const { playTrack, currentTrack, isPlaying } = usePlayerStore();
+  const { playTrack, currentTrack, isPlaying, setIsPlaying } = usePlayerStore();
 
   const load = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
@@ -69,6 +69,11 @@ export default function LivePage() {
 
   const playLive = () => {
     if (!live) return;
+    // Tapping while this broadcast plays toggles pause — otherwise start it.
+    if (playingLive) {
+      setIsPlaying(!isPlaying);
+      return;
+    }
     const track = liveToTrack(live);
     if (track) playTrack(track);
   };
