@@ -165,19 +165,23 @@ export interface PrayerData {
 }
 
 /** Fetch Aladhan timings (via /api/prayer proxy) with 24h local cache. */
-export async function fetchPrayerData(lat: number, lng: number): Promise<PrayerData> {
+export async function fetchPrayerData(lat: number, lng: number, force = false): Promise<PrayerData> {
   const now = new Date();
   const ds = dateStr(now);
   const key = `prayertimes-${lat.toFixed(2)}-${lng.toFixed(2)}-${ds}`;
-  try {
+  if (!force) {
     const cached = storageGet(key);
     if (cached) {
-      const p = JSON.parse(cached);
-      if (p.date === ds && Date.now() - p.timestamp < 24 * 3600 * 1000) {
-        return { times: p.times, hijri: p.hijri || null, offline: false };
+      try {
+        const p = JSON.parse(cached);
+        if (p.date === ds && Date.now() - p.timestamp < 24 * 3600 * 1000) {
+          return { times: p.times, hijri: p.hijri || null, offline: false };
+        }
+      } catch {
+        safeStringStorage.removeItem(key);
       }
     }
-  } catch {}
+  }
   try {
     const res = await fetch(`/api/prayer?lat=${lat}&lng=${lng}&date=${ds}`);
     const data = await res.json();

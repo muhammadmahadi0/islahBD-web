@@ -34,8 +34,8 @@ export default function PrayerTimesPage() {
     setLang((storageGet("praybd-lang") as Lang) || "bn");
   }, []);
 
-  const load = useCallback(async (lat: number, lng: number) => {
-    const d = await fetchPrayerData(lat, lng);
+  const load = useCallback(async (lat: number, lng: number, force = false) => {
+    const d = await fetchPrayerData(lat, lng, force);
     setTimes(d.times);
     setHijri(d.hijri);
     setOffline(d.offline);
@@ -71,14 +71,14 @@ export default function PrayerTimesPage() {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  // Re-detect location on demand (skips the 24h cache).
+  // Re-detect location on demand and force fresh times.
   const refreshLocation = async () => {
     setRefreshing(true);
     try {
       const detected = await detectLocation();
       setLoc(detected);
       setCity(matchCity(detected.city));
-      await load(detected.lat, detected.lng);
+      await load(detected.lat, detected.lng, true);
     } finally {
       setRefreshing(false);
     }
