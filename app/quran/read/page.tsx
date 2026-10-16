@@ -346,11 +346,14 @@ function Reader() {
           </div>
         )}
 
-        {/* arabic */}
-        <p className="font-arabic mt-2 px-5 text-right text-[30px] leading-[2.2] md:text-4xl" dir="rtl" style={{ fontSize: viewTab === "recitation" ? undefined : fontSize + 4 }}>
-          {arabic}
-          <span className="ayah-end">{toArNum(v.verse_number)}</span>
-        </p>
+        {/* arabic — hidden while word-by-word is on (muslimbangla behavior),
+            except in recitation mode where it is the whole view */}
+        {(!showWbw || recite) && (
+          <p className="font-arabic mt-2 px-5 text-right text-[30px] leading-[2.2] md:text-4xl" dir="rtl" style={{ fontSize: viewTab === "recitation" ? undefined : fontSize + 4 }}>
+            {arabic}
+            <span className="ayah-end">{toArNum(v.verse_number)}</span>
+          </p>
+        )}
 
         {!recite && (
           <>
@@ -572,10 +575,10 @@ function Reader() {
 
       {/* main column */}
       <div className="min-w-0">
-        {/* top tab bar: অনুবাদ | তেলাওয়াত + gear */}
+        {/* top tab bar: menu + অনুবাদ | তেলাওয়াত + gear */}
         <div className="card flex items-center !rounded-2xl">
-          <button onClick={() => setDrawer(true)} className="p-2.5 text-ink-faint lg:hidden" aria-label="menu">
-            <Icon name="grid" size={22} />
+          <button onClick={() => setDrawer(true)} className="p-2.5 text-ink-faint transition hover:text-primary-700 lg:hidden" aria-label="surah menu">
+            <Icon name="menu" size={22} />
           </button>
           <div className="grid flex-1 grid-cols-2 text-center text-[15px]">
             {(["translation", "recitation"] as const).map((t) => (
@@ -639,55 +642,6 @@ function Reader() {
             <p className="mx-auto mt-2 inline-block rounded-full bg-gold px-3 py-1 text-[11px] font-bold text-[#1a1405]">
               অফলাইন ডাটাবেজ দেখানো হচ্ছে
             </p>
-          )}
-          <div className="mx-auto mt-3 flex max-w-md items-center gap-2">
-            {jump === "sura" ? (
-              <>
-                <button
-                  onClick={() => changeSurah(surah - 1)} disabled={surah <= 1}
-                  className="btn-ghost shrink-0 !rounded-2xl !p-2.5 disabled:opacity-30"
-                  aria-label="previous surah"
-                >
-                  <Icon name="back" size={17} />
-                </button>
-                <select value={surah} onChange={(e) => changeSurah(Number(e.target.value))} className="input text-center" aria-label="surah">
-                  {chapterOptions.map((c: any) => (
-                    <option key={c.id} value={c.id}>
-                      {c.id}. {surahBnFull(c.id)}{c.translated_name?.name ? ` — ${c.translated_name.name}` : ""}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  onClick={() => changeSurah(surah + 1)} disabled={surah >= 114}
-                  className="btn-ghost shrink-0 !rounded-2xl !p-2.5 disabled:opacity-30"
-                  aria-label="next surah"
-                >
-                  <Icon name="chevron" size={17} />
-                </button>
-              </>
-            ) : (
-              <select value={juz} onChange={(e) => { setJuz(Number(e.target.value)); window.scrollTo({ top: 0 }); }} className="input text-center" aria-label="juz">
-                {Array.from({ length: 30 }, (_, i) => i + 1).map((j) => (
-                  <option key={j} value={j}>{bnNum(j)} পারা (জুজ {j})</option>
-                ))}
-              </select>
-            )}
-          </div>
-          {jump === "sura" && (
-            <div className="mx-auto mt-2 flex max-w-md items-center gap-2">
-              <span className="shrink-0 text-[11px] font-bold text-ink-faint">আয়াতঃ</span>
-              <select
-                defaultValue=""
-                onChange={(e) => { if (e.target.value) jumpToAyah(Number(e.target.value)); e.target.value = ""; }}
-                className="input !py-2 !text-center !text-[13px]"
-                aria-label="jump to ayah"
-              >
-                <option value="">আয়াত বেছে নিন…</option>
-                {Array.from({ length: current?.verses_count || 286 }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={n}>আয়াত {n}</option>
-                ))}
-              </select>
-            </div>
           )}
         </div>
 

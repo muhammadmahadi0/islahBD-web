@@ -23,6 +23,7 @@ const paths: Record<string, React.ReactNode> = {
       <rect x="13.5" y="13.5" width="7" height="7" rx="2" />
     </>
   ),
+  menu: <path d="M4 7h16M4 12h16M4 17h16" />,
   bell: <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6.5 2 6.5H4S6 14 6 9Zm4.5 11a1.8 1.8 0 0 0 3 0" />,
   gear: (
     <>
