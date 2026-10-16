@@ -43,6 +43,9 @@ No test suite — `npm run build` + prod smoke test is the gate.
 - `dark:` Tailwind variants are class-based (`darkMode: "class"`); ad-hoc
   `bg-white` + theme-aware text combos break in dark mode — use the
   `.btn-*`/`.chip`/`.inner-box`/`.hero-search` classes instead.
+- Never call `audio.play().catch()` or raw `localStorage.*` directly —
+  use `tryPlay` / `storage*` from `lib/storage.ts`, or Safari/Firefox
+  private mode shows the crash screen on tap.
 - APK-asset JSON lives in `public/data`; fonts/images in
   `public/fonts|images|audios`.
 
