@@ -8,7 +8,7 @@ import {
   BN_TRANSLATIONS, BN_TAFSIRS, stripHtml,
   type QuranChapter,
 } from "../../../lib/quran";
-import { surahBnFull } from "../../../lib/surah-names";
+import { surahBnFull, surahBn } from "../../../lib/surah-names";
 import { storageSetJSON, storageGetJSON, tryPlay } from "../../../lib/storage";
 
 const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
@@ -24,7 +24,6 @@ function Reader() {
   const [tafsirId, setTafsirId] = useState(165);
   const [showTafsir, setShowTafsir] = useState(true);
   const [showWbw, setShowWbw] = useState(false);
-  const [showTranslit, setShowTranslit] = useState(false);
   const [fontSize, setFontSize] = useState(26);
   const [verses, setVerses] = useState<any[]>([]);
   const [pagination, setPagination] = useState<any>(null);
@@ -35,6 +34,8 @@ function Reader() {
   const [marks, setMarks] = useState<number[]>([]);
   const [openTafsir, setOpenTafsir] = useState<number | null>(null);
   const [playingKey, setPlayingKey] = useState<string | null>(null);
+  const [surahAudio, setSurahAudio] = useState("");
+  const [surahAudioOn, setSurahAudioOn] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -183,8 +184,8 @@ function Reader() {
             {arabic}
             <span className="ayah-end">{toArNum(v.verse_number)}</span>
           </p>
-          {showTranslit && translitOf(v) && (
-            <p className="mt-1.5 text-[13px] italic text-ink-faint" dir="ltr">{translitOf(v)}</p>
+          {translitOf(v) && (
+            <p className="mt-1.5 text-[14px] font-medium text-ink-soft" dir="ltr">{translitOf(v)}</p>
           )}
           {tr && (
             <p className="mt-2.5 border-l-[3px] border-primary-200 pl-3 text-[15px] leading-relaxed text-ink">{tr}</p>
@@ -234,15 +235,51 @@ function Reader() {
       <div className="page-hero p-6 text-center">
         <div className="relative z-10">
           <div className="font-arabic text-4xl text-white" dir="rtl">{current?.name_arabic || ""}</div>
-          <h1 className="mt-1 text-xl font-bold">{surahBnFull(surah)}</h1>
-          <p className="mt-0.5 text-xs text-white/75">
-            অর্থ: {current?.translated_name?.name || current?.name_simple || ""}
-            {current ? ` • ${current.name_simple} • ${current.revelation_place === "makkah" ? "মাক্কী" : "মাদানী"} • ${current.verses_count} আয়াত` : ""}
-          </p>
+          <h1 className="mt-1 text-xl font-bold">
+            সূরা {surahBn(surah) || current?.name_simple || surah}
+            {current?.name_arabic ? ` (${current.name_arabic})` : ""} | {current?.translated_name?.name || ""}
+          </h1>
+          <div className="mt-2 flex items-center justify-center gap-2">
+            {current && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold">
+                <Icon name={current.revelation_place === "makkah" ? "sunrise" : "moon"} size={12} />
+                {current.revelation_place === "makkah" ? "মাক্কী" : "মাদানী"}
+              </span>
+            )}
+            {current && (
+              <span className="rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold">
+                মোট আয়াতঃ {current.verses_count}
+              </span>
+            )}
+          </div>
           {offline && (
             <p className="mx-auto mt-2 inline-block rounded-full bg-gold px-3 py-1 text-[11px] font-bold text-[#1a1405]">
               অফলাইন ডাটাবেজ দেখানো হচ্ছে
             </p>
+          )}
+          <button
+            className="mx-auto mt-3 inline-flex items-center gap-1.5 rounded-full bg-gold px-4 py-1.5 text-xs font-bold text-[#1a1405] transition hover:brightness-105 active:scale-95"
+            onClick={async () => {
+              if (surahAudioOn) {
+                setSurahAudioOn(false);
+                setSurahAudio("");
+                return;
+              }
+              try {
+                const res = await fetch(`/api/quran/chapter-audio?reciter=7&chapter=${surah}`);
+                const data = await res.json();
+                if (data.audio_file?.audio_url) {
+                  setSurahAudio(data.audio_file.audio_url);
+                  setSurahAudioOn(true);
+                }
+              } catch {}
+            }}
+          >
+            <Icon name={surahAudioOn ? "pause" : "playfill"} size={14} />
+            {surahAudioOn ? "অডিও বন্ধ করুন" : "সম্পূর্ণ সূরার অডিও"}
+          </button>
+          {surahAudioOn && surahAudio && (
+            <audio key={surahAudio} controls autoPlay src={surahAudio} className="mx-auto mt-2 max-w-md" preload="none" />
           )}
           <div className="mx-auto mt-3 flex max-w-md items-center gap-2">
             <button
@@ -296,7 +333,6 @@ function Reader() {
           {(
             [
               ["wbw", showWbw, setShowWbw, "শব্দ-শব্দ"],
-              ["tr", showTranslit, setShowTranslit, "উচ্চারণ"],
               ["tf", showTafsir, setShowTafsir, "তাফসীর"],
             ] as const
           ).map(([id, on, set, label]) => (
