@@ -182,6 +182,31 @@ export const toMinutes = (t: string) => {
   return h * 60 + (m || 0);
 };
 
+/** "HH:MM" plus N minutes (wraps past midnight). */
+export function addMinutes(t: string, mins: number): string {
+  const total = ((toMinutes(t) + mins) % 1440 + 1440) % 1440;
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+export interface NaflWindows {
+  ishraqStart: string;
+  ishraqEnd: string;
+  chashtStart: string;
+  chashtEnd: string;
+}
+
+/** Morning nafl windows from pray-bd: prohibited sunrise+15, then
+ *  Ishraq (+2h), then Chasht until Dhuhr−10. */
+export function getNaflWindows(times: PrayerTimes): NaflWindows | null {
+  if (!times.sunrise || !times.dhuhr) return null;
+  const sunriseEnd = addMinutes(times.sunrise, 15);
+  const ishraqEnd = addMinutes(sunriseEnd, 120);
+  const chashtEnd = addMinutes(times.dhuhr, -10);
+  return { ishraqStart: sunriseEnd, ishraqEnd, chashtStart: ishraqEnd, chashtEnd };
+}
+
 /** 12-hour display with Bengali digits/AM-PM in BN mode. */
 export function formatTime12(t: string, lang: Lang): string {
   if (!t) return "--:--";

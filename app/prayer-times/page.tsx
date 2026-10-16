@@ -6,7 +6,7 @@ import {
   CITIES, PRAYER_ORDER, detectLocation, matchCity, fetchPrayerData,
   toMinutes, formatTime12, formatCountdown, getSpecialPeriod,
   getNextPrayer, getCurrentKey, secsUntil, hijriText, gregorianText,
-  prayerName, toBn,
+  prayerName, toBn, getNaflWindows,
   type DetectedLocation, type PrayerTimes, type Lang,
 } from "../../lib/prayer";
 import { storageGet, storageSet, safeStringStorage } from "../../lib/storage";
@@ -273,6 +273,33 @@ export default function PrayerTimesPage() {
               </div>
             );
           })}
+          {(() => {
+            const w = times ? getNaflWindows(times) : null;
+            if (!w) return null;
+            const rows = [
+              { name: lang === "bn" ? "ইশরাক" : "Ishraq", icon: "sunrise", from: w.ishraqStart, to: w.ishraqEnd },
+              { name: lang === "bn" ? "চাশত" : "Chasht", icon: "sun", from: w.chashtStart, to: w.chashtEnd },
+            ];
+            return rows.map((r) => (
+              <div key={r.name} className="card card-hover relative overflow-hidden p-4">
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-[13px] font-bold text-ink-soft">
+                    <Icon name={r.icon} size={16} className="text-gold-600" />
+                    {r.name}
+                  </span>
+                  <span className="rounded-full bg-gold-light px-2 py-0.5 text-[10px] font-bold text-gold-dark">
+                    {lang === "bn" ? "নফল" : "Nafl"}
+                  </span>
+                </div>
+                <div className="mt-1 text-[22px] font-bold tabular-nums">
+                  {formatTime12(r.from, lang)}
+                </div>
+                <div className="mt-0.5 text-[11px] font-bold text-ink-faint">
+                  {lang === "bn" ? `থেকে ${formatTime12(r.to, lang)} পর্যন্ত` : `until ${formatTime12(r.to, lang)}`}
+                </div>
+              </div>
+            ));
+          })()}
         </div>
       )}
 
