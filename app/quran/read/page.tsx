@@ -33,7 +33,6 @@ function Reader() {
   const [trans2, setTrans2] = useState(0);
   const [tafsirId, setTafsirId] = useState(165);
   const [showTafsir, setShowTafsir] = useState(true);
-  const [showTranslit, setShowTranslit] = useState(true);
   const [showWbw, setShowWbw] = useState(false);
   const [fontSize, setFontSize] = useState(30);
   const [viewTab, setViewTab] = useState<"translation" | "recitation">("translation");
@@ -252,12 +251,6 @@ function Reader() {
     jump === "sura" ? a.surahNumber === surah : a.juz === juz
   );
 
-  const translitOf = (v: any) =>
-    (v.words || [])
-      .filter((w: any) => w.char_type_name === "word" && w.transliteration?.text)
-      .map((w: any) => w.transliteration.text)
-      .join(" ");
-
   const sideSuras = chapters.filter((c) => {
     const q = sideQuery.trim().toLowerCase();
     if (!q) return true;
@@ -357,11 +350,6 @@ function Reader() {
 
         {!recite && (
           <>
-            {showTranslit && translitOf(v) && (
-              <p className="mx-5 rounded-lg bg-sand px-4 py-1.5 text-justify text-[15px] italic text-ink-soft" dir="ltr">
-                {translitOf(v)}
-              </p>
-            )}
             <div className="space-y-2 px-5 pb-1 pt-2 text-[15px]">
               {trs.map((t: string, i: number) => (
                 <div key={i} className="rounded-md border border-primary-900/10 bg-sand p-2 pb-0">
@@ -379,8 +367,7 @@ function Reader() {
                     title="শুনুন"
                   >
                     <span className="font-arabic block text-[18px] leading-snug">{w.text_uthmani}</span>
-                    <span className="block text-[10px] font-bold text-primary-700" dir="ltr">{w.transliteration?.text || ""}</span>
-                    <span className="block text-[10px] text-ink-faint" dir="ltr">{w.translation?.text || ""}</span>
+                    <span className="block text-[11px] text-ink-soft" dir="ltr">{w.translation?.text || ""}</span>
                   </button>
                 ))}
               </div>
@@ -552,10 +539,6 @@ function Reader() {
             </div>
             <div>
               <p className="mb-2 text-xs font-bold text-ink-faint">অন্যান্য</p>
-              <label className="flex cursor-pointer items-center gap-2 py-1.5 text-sm font-medium">
-                <input type="checkbox" checked={showTranslit} onChange={(e) => setShowTranslit(e.target.checked)} className="h-4 w-4 accent-primary-600" />
-                বাংলা উচ্চারণ
-              </label>
               <label className="flex cursor-pointer items-center gap-2 py-1.5 text-sm font-medium">
                 <input type="checkbox" checked={showWbw} onChange={(e) => setShowWbw(e.target.checked)} className="h-4 w-4 accent-primary-600" />
                 শব্দে শব্দে কুরআন (অডিও সহ)
