@@ -80,6 +80,26 @@ body {
   line-height: 2.1;
 }
 
+/* ---------- home entrance stagger ---------- */
+.home-rise {
+  animation: home-rise 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes home-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-rise {
+    animation: none;
+  }
+}
+
 /* ---------- surfaces ---------- */
 .card {
   @apply bg-white rounded-3xl border border-primary-900/10 shadow-card;

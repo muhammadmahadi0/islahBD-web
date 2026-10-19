@@ -51,6 +51,8 @@ API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/shorts`,
 - Dark midnight-blue mode + Liquid Glass / Material toggle (Settings,
   persisted, pre-paint script — no flash)
 - Golden signature pieces: prayer card, bottom nav, honorific title
+- Home entrance: sections/cards rise in with a 380ms slide-up and 28ms
+  inline stagger (`.home-rise`, whole sequence under 1s)
 - Kitab reader (`/library/[id]`): source-style chapter sidebar/drawer,
   justified Bengali text, text-size controls, prev/next; PDF-only books
   use an in-app PDF.js viewer (page nav, zoom, download)

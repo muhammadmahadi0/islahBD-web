@@ -9,6 +9,11 @@ import type { BoyanAudio } from "../lib/audio";
 const card =
   "bg-white dark:bg-[rgba(30,41,59,0.65)] border border-slate-200/80 dark:border-white/10 rounded-2xl shadow-sm hover:border-amber-400/50 transition cursor-pointer";
 
+// Staggered rise-in used across the home sections. 17 steps × 28ms + 380ms
+// keeps the whole sequence just under a second.
+const RISE_STEP = 0.028;
+const rise = (n: number) => ({ animationDelay: `${(n * RISE_STEP).toFixed(3)}s` });
+
 function Heading({ t, sub, link }: { t: string; sub?: string; link?: string }) {
   return (
     <div className="flex items-center justify-between">
@@ -60,15 +65,15 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="animate-fade-up lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-4">
+    <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-4">
       {/* Right rail on desktop (prayer first on mobile) */}
-      <aside className="order-first min-w-0 lg:order-2 lg:sticky lg:top-24">
+      <aside className="home-rise order-first min-w-0 lg:order-2 lg:sticky lg:top-24" style={rise(0)}>
         <PrayerCard />
       </aside>
 
       <div className="min-w-0 lg:order-1">
       {/* Live promo */}
-      <section className="my-4">
+      <section className="home-rise my-4" style={rise(1)}>
         <div className="relative flex items-center justify-between overflow-hidden rounded-2xl border border-primary-600/20 bg-gradient-to-r from-primary-600/10 to-primary-800/5 p-4 dark:from-primary-600/20 dark:to-slate-800/40">
           <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-primary-500/20 blur-xl" />
           <div className="relative">
@@ -88,15 +93,16 @@ export default function HomePage() {
 
       {/* Services */}
       <section className="my-6">
-        <div className="mb-3">
+        <div className="home-rise mb-3" style={rise(2)}>
           <Heading t="প্রয়োজনীয় সেবা" link="/others" />
         </div>
         <div className="grid grid-cols-4 gap-2.5">
-          {SERVICES.map((s) => (
+          {SERVICES.map((s, i) => (
             <Link
               key={s.bn}
               href={s.route}
-              className={`${card} group flex flex-col items-center justify-center p-3 text-center`}
+              className={`${card} home-rise group flex flex-col items-center justify-center p-3 text-center`}
+              style={rise(3 + i)}
             >
               <span className="rounded-xl bg-emerald-50 p-2.5 text-primary-600 transition group-hover:scale-110">
                 <Icon name={s.icon} size={20} />
@@ -109,12 +115,17 @@ export default function HomePage() {
 
       {/* Media */}
       <section className="my-6">
-        <div className="mb-3">
+        <div className="home-rise mb-3" style={rise(11)}>
           <Heading t="মিডিয়া" />
         </div>
         <div className="grid grid-cols-2 gap-3">
-          {MEDIA.map((m) => (
-            <Link key={m.bn} href={m.route} className={`${card} flex items-center gap-3 p-4`}>
+          {MEDIA.map((m, i) => (
+            <Link
+              key={m.bn}
+              href={m.route}
+              className={`${card} home-rise flex items-center gap-3 p-4`}
+              style={rise(12 + i)}
+            >
               <span className="rounded-xl bg-emerald-50 p-3 text-primary-600">
                 <Icon name={m.icon} size={24} />
               </span>
@@ -130,12 +141,19 @@ export default function HomePage() {
       {/* Recent boyan */}
       {recent.length > 0 && (
         <section className="my-6">
-          <div className="mb-3">
+          {/* Loaded after the API call, so this group restarts its own
+              short stagger instead of inheriting the page-level delays. */}
+          <div className="home-rise mb-3" style={rise(0)}>
             <Heading t="সাম্প্রতিক বয়ান" sub="নতুন আপলোড" link="/boyan" />
           </div>
           <div className="space-y-2.5">
             {recent.map((b, i) => (
-              <Link key={b.id} href="/boyan" className={`${card} relative flex items-center gap-3.5 p-3.5`}>
+              <Link
+                key={b.id}
+                href="/boyan"
+                className={`${card} home-rise relative flex items-center gap-3.5 p-3.5`}
+                style={rise(1 + i)}
+              >
                 {i === 0 && (
                   <span className="absolute -top-2 left-3 rounded-full bg-red-500 px-2 py-0.5 text-[9px] font-bold text-white shadow">
                     NEW
@@ -163,7 +181,7 @@ export default function HomePage() {
         </section>
       )}
 
-      <p className="mt-8 text-center text-[11px] text-ink-faint">
+      <p className="home-rise mt-8 text-center text-[11px] text-ink-faint" style={rise(16)}>
         ইসলাহ • দ্বীন জীবনের সঙ্গী
       </p>
       </div>

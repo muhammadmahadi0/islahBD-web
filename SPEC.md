@@ -99,6 +99,11 @@ offline-tolerant, keyless APIs only.
 - Theme switch plays beta's tap-bloom (`components/theme-bloom.tsx` +
   `.theme-wrap` CSS, reduced-motion safe)
 - Golden signature elements identical in both modes
+- Home entrance: every section/card carries `.home-rise` (380ms
+  `translateY(18px)` → `0`) with a 28ms inline `animation-delay` per item,
+  so the whole sequence lands in under 1s; disabled under
+  `prefers-reduced-motion`. The API-loaded “সাম্প্রতিক বয়ান” group restarts
+  a short stagger when it mounts.
 
 ## 5. Conventions
 

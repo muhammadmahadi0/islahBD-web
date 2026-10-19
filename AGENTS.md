@@ -48,6 +48,12 @@ No test suite — `npm run build` + prod smoke test is the gate.
 - Never call `audio.play().catch()` or raw `localStorage.*` directly —
   use `tryPlay` / `storage*` from `lib/storage.ts`, or Safari/Firefox
   private mode shows the crash screen on tap.
+- Home entrance animation is `.home-rise` (`app/globals.css`) + the
+  `rise(n)` delay helper in `app/page.tsx`. Keep the largest delay near
+  0.45s (step 28ms, duration 380ms) so the sequence stays under a second,
+  and avoid transform-based hover effects on `.home-rise` elements —
+  `animation-fill-mode: both` keeps `transform: translateY(0)` after the
+  run.
 - APK-asset JSON lives in `public/data`; fonts/images in
   `public/fonts|images|audios`. The library's Islami Jindegi snapshot is
   `public/data/islamijindegi-books.json` (scraped from the site's listing
