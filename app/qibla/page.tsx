@@ -2,12 +2,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { CITIES } from "../../lib/prayer";
-import { toBn } from "../../lib/prayer";
+import { CITIES, toBn } from "../../lib/prayer";
 
 const KAABA = { lat: 21.4225, lng: 39.8262 };
 
-/** Great-circle bearing from user to Kaaba (degrees from North). */
+/** Great-circle bearing from the user to the Kaaba (degrees clockwise from North). */
 function kaabaBearing(lat: number, lng: number): number {
   const la1 = (lat * Math.PI) / 180;
   const lo1 = (lng * Math.PI) / 180;
@@ -15,15 +14,20 @@ function kaabaBearing(lat: number, lng: number): number {
   const lo2 = (KAABA.lng * Math.PI) / 180;
   const y = Math.sin(lo2 - lo1);
   const x = Math.cos(la1) * Math.tan(la2) - Math.sin(la1) * Math.cos(lo2 - lo1);
-  return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
+  return norm((Math.atan2(y, x) * 180) / Math.PI);
+}
+
+function norm(deg: number): number {
+  return ((deg % 360) + 360) % 360;
 }
 
 function cardinal(deg: number): string {
   const dirs = ["উত্তর", "উত্তর-পূর্ব", "পূর্ব", "দক্ষিণ-পূর্ব", "দক্ষিণ", "দক্ষিণ-পশ্চিম", "পশ্চিম", "উত্তর-পশ্চিম"];
-  return dirs[Math.round(deg / 45) % 8];
+  return dirs[Math.round(norm(deg) / 45) % 8];
 }
 
-type SensorState = "idle" | "need-permission" | "active" | "unsupported";
+type SensorState = "idle" | "need-permission" | "starting" | "active" | "unsupported";
+type CompassEvent = DeviceOrientationEvent & { webkitCompassHeading?: number; absolute?: boolean };
 
 export default function QiblaPage() {
   const [heading, setHeading] = useState<number | null>(null);
@@ -31,97 +35,162 @@ export default function QiblaPage() {
   const [place, setPlace] = useState("ঢাকা");
   const [sensor, setSensor] = useState<SensorState>("idle");
   const [note, setNote] = useState("");
+  const [gpsBusy, setGpsBusy] = useState(false);
   const started = useRef(false);
+  const headingRef = useRef<number | null>(null);
 
   const locate = useCallback((lat: number, lng: number, label: string) => {
     setQibla(kaabaBearing(lat, lng));
     setPlace(label);
   }, []);
 
-  const locateGps = useCallback(() => {
-    if (!navigator.geolocation) {
-      setNote("এই ডিভাইসে GPS নেই — নিচ থেকে শহর বেছে নিন।");
+  const requestGps = useCallback(
+    (silent = false) => {
+      if (!navigator.geolocation) {
+        if (!silent) setNote("এই ডিভাইসে GPS নেই — নিচ থেকে শহর বেছে নিন।");
+        return;
+      }
+      setGpsBusy(true);
+      navigator.geolocation.getCurrentPosition(
+        (p) => {
+          locate(p.coords.latitude, p.coords.longitude, "আপনার অবস্থান");
+          setGpsBusy(false);
+          if (!silent) setNote("");
+        },
+        () => {
+          setGpsBusy(false);
+          if (!silent) setNote("লোকেশন পাওয়া যায়নি — নিচ থেকে শহর বেছে নিন।");
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+      );
+    },
+    [locate]
+  );
+
+  /**
+   * Only trust a real compass heading:
+   *  - iOS: `webkitCompassHeading` (clockwise magnetic degrees)
+   *  - others: `deviceorientationabsolute` alpha, where heading = 360 - alpha
+   * Relative `deviceorientation` alpha is ignored — it is not north-based
+   * and was previously overwriting the genuine heading on Android.
+   */
+  const onOrientation = useCallback((event: Event) => {
+    const e = event as CompassEvent;
+    let raw: number | null = null;
+    if (typeof e.webkitCompassHeading === "number" && Number.isFinite(e.webkitCompassHeading)) {
+      raw = e.webkitCompassHeading;
+    } else if (e.absolute === true && typeof e.alpha === "number" && Number.isFinite(e.alpha)) {
+      raw = 360 - e.alpha;
+    }
+    if (raw === null) return;
+
+    raw = norm(raw);
+    const previous = headingRef.current;
+    // Keep a continuous angle so the rose/needle take the short way around
+    // instead of spinning a full turn when heading crosses 0°/360°.
+    let next = raw;
+    if (previous !== null) {
+      const shortest = ((raw - norm(previous) + 540) % 360) - 180;
+      next = previous + shortest;
+    }
+    headingRef.current = next;
+    setHeading(next);
+    setSensor("active");
+    setNote("");
+  }, []);
+
+  const attach = useCallback(() => {
+    window.addEventListener("deviceorientationabsolute", onOrientation, true);
+    window.addEventListener("deviceorientation", onOrientation, true);
+  }, [onOrientation]);
+
+  const startCompass = useCallback(async () => {
+    if (started.current) return;
+    started.current = true;
+
+    const DOE = (window as unknown as { DeviceOrientationEvent?: typeof DeviceOrientationEvent & { requestPermission?: () => Promise<string> } }).DeviceOrientationEvent;
+    if (!DOE) {
+      setSensor("unsupported");
+      setNote("এই ব্রাউজারে কম্পাস সেন্সর সাপোর্ট করে না — নিচের ডিগ্রি দেখে কাবার দিক মিলিয়ে নিন।");
       return;
     }
-    setNote("লোকেশন নেওয়া হচ্ছে…");
-    navigator.geolocation.getCurrentPosition(
-      (p) => {
-        locate(p.coords.latitude, p.coords.longitude, "আপনার অবস্থান");
-        setNote("");
-      },
-      () => setNote("লোকেশন পাওয়া যায়নি — নিচ থেকে শহর বেছে নিন।"),
-      { timeout: 10000, maximumAge: 600000 }
-    );
-  }, [locate]);
+
+    // iOS 13+ needs an explicit permission call inside a user gesture.
+    if (typeof DOE.requestPermission === "function") {
+      setSensor("starting");
+      try {
+        const res = await DOE.requestPermission();
+        if (res !== "granted") {
+          started.current = false;
+          setSensor("need-permission");
+          setNote("কম্পাসের অনুমতি দিন — iOS সেটিংসে Motion & Fitness চালু থাকতে হবে।");
+          return;
+        }
+      } catch {
+        started.current = false;
+        setSensor("need-permission");
+        setNote("কম্পাসের অনুমতি নেওয়া যায়নি — আবার চেষ্টা করুন।");
+        return;
+      }
+    }
+
+    setSensor((current) => (current === "active" ? current : "starting"));
+    window.setTimeout(() => {
+      if (headingRef.current === null) {
+        setSensor("unsupported");
+        setNote("কম্পাস রিডিং পাওয়া যাচ্ছে না — ফোন সমতলে রেখে ৮-আকৃতিতে ঘুরিয়ে ক্যালিব্রেট করুন, অথবা নিচের ডিগ্রি দেখে কাবার দিক মিলিয়ে নিন।");
+      }
+    }, 2800);
+  }, []);
 
   useEffect(() => {
     const dhaka = CITIES[0];
     locate(dhaka.lat, dhaka.lng, dhaka.nameBn);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (p) => locate(p.coords.latitude, p.coords.longitude, "আপনার অবস্থান"),
-        () => {},
-        { timeout: 8000, maximumAge: 600000 }
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    requestGps(true);
 
-  const onOrientation = useCallback((e: any) => {
-    // iOS gives webkitCompassHeading (0=N, clockwise); others give alpha
-    // (0=N but counter-clockwise from device top) — normalize to heading.
-    let h: number | null = null;
-    if (typeof e.webkitCompassHeading === "number" && !isNaN(e.webkitCompassHeading)) {
-      h = e.webkitCompassHeading;
-    } else if (typeof e.alpha === "number" && e.alpha !== null) {
-      h = (360 - e.alpha) % 360;
+    const DOE = (window as unknown as { DeviceOrientationEvent?: typeof DeviceOrientationEvent & { requestPermission?: () => Promise<string> } }).DeviceOrientationEvent;
+    const touch = typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
+    if (!DOE) {
+      setSensor("unsupported");
+      setNote("এই ব্রাউজারে কম্পাস সেন্সর নেই — GPS বা শহর বেছে কাবার দিক দেখুন।");
+      return;
     }
-    if (h !== null && !isNaN(h)) {
-      setHeading(h);
-      setSensor("active");
-    }
-  }, []);
 
-  const startCompass = useCallback(async () => {
-    if (started.current) return;
-    const DOE = (window as any).DeviceOrientationEvent;
-    try {
-      // iOS 13+: explicit permission inside the tap gesture.
-      if (DOE && typeof DOE.requestPermission === "function") {
-        const res = await DOE.requestPermission();
-        if (res !== "granted") {
-          setSensor("need-permission");
-          setNote("কম্পাসের অনুমতি দিন — সেটিংসে Motion & Fitness চালু করুন।");
-          return;
-        }
-      }
-    } catch {
-      // continue anyway — event may still fire
+    // Listeners are harmless before iOS permission is granted; the events
+    // simply start flowing once the user allows them.
+    attach();
+    if (typeof DOE.requestPermission === "function") {
+      setSensor("need-permission");
+    } else if (touch) {
+      // Android/other touch browsers expose the compass without a prompt.
+      startCompass();
     }
-    started.current = true;
-    window.addEventListener("deviceorientationabsolute", onOrientation as any, true);
-    window.addEventListener("deviceorientation", onOrientation as any, true);
-    // If nothing arrives in 3s, sensors are unavailable here.
-    setTimeout(() => {
-      setSensor((s) => {
-        if (s === "idle" || s === "need-permission") {
-          setNote("এই ব্রাউজারে কম্পাস সেন্সর পাওয়া যায়নি — নিচের ডিগ্রি দেখে মিলিয়ে নিন।");
-          return "unsupported";
-        }
-        return s;
-      });
-    }, 3000);
-  }, [onOrientation]);
 
-  useEffect(() => {
     return () => {
-      window.removeEventListener("deviceorientationabsolute", onOrientation as any, true);
-      window.removeEventListener("deviceorientation", onOrientation as any, true);
+      window.removeEventListener("deviceorientationabsolute", onOrientation, true);
+      window.removeEventListener("deviceorientation", onOrientation, true);
     };
-  }, [onOrientation]);
+  }, [locate, requestGps, startCompass, attach, onOrientation]);
 
-  const delta = heading !== null && qibla !== null ? ((qibla - heading) % 360 + 360) % 360 : null;
+  const delta = heading !== null && qibla !== null ? norm(qibla - heading) : null;
   const aligned = delta !== null && (delta < 6 || delta > 354);
+  const roseAngle = -(heading ?? 0);
+  const needleAngle = qibla === null ? 0 : qibla - (heading ?? 0);
+  const showStart = sensor !== "active";
+
+  const statusText = (() => {
+    if (sensor === "active") {
+      if (aligned) return "কিবলার দিকে মুখ করে আছেন ✓";
+      if (delta !== null) {
+        const signed = delta > 180 ? delta - 360 : delta;
+        return `${signed >= 0 ? "ডানে" : "বামে"} ঘুরুন — ${toBn(Math.round(Math.abs(signed)))}°`;
+      }
+      return "কম্পাস পড়া হচ্ছে…";
+    }
+    if (sensor === "need-permission") return "কম্পাসের অনুমতি দিন";
+    if (sensor === "starting") return "কম্পাস চালু হচ্ছে…";
+    return "কম্পাস চালু করুন";
+  })();
 
   return (
     <div className="animate-fade-up">
@@ -129,69 +198,105 @@ export default function QiblaPage() {
 
       <div className="card mt-3 p-5 text-center sm:p-6">
         {/* dial */}
-        <div className="relative mx-auto h-60 w-60 rounded-full border-[10px] border-primary-50 bg-sand shadow-card">
-          {/* rotating rose */}
+        <div
+          className={`relative mx-auto aspect-square w-full max-w-[264px] rounded-full border-[10px] transition-colors duration-300 ${
+            aligned
+              ? "border-primary-500/70 bg-primary-50/70 dark:bg-primary-900/25"
+              : "border-primary-50 bg-sand dark:border-white/10"
+          }`}
+        >
+          {/* rotating rose: ticks + cardinal points */}
           <div
-            className="absolute inset-2 transition-transform duration-200 ease-out"
-            style={{ transform: `rotate(${-((heading ?? 0) - 0)}deg)` }}
+            className="absolute inset-2 text-ink-faint transition-transform duration-200 ease-out"
+            style={{ transform: `rotate(${roseAngle}deg)` }}
           >
-            <div className="absolute left-1/2 top-1 -translate-x-1/2 text-sm font-extrabold text-red-500">N</div>
-            <div className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[11px] font-bold text-ink-faint">S</div>
-            <div className="absolute left-1 top-1/2 -translate-y-1/2 text-[11px] font-bold text-ink-faint">W</div>
-            <div className="absolute right-1 top-1/2 -translate-y-1/2 text-[11px] font-bold text-ink-faint">E</div>
+            <svg viewBox="0 0 240 240" className="h-full w-full">
+              {Array.from({ length: 72 }).map((_, i) => {
+                const angle = (i * 5 * Math.PI) / 180;
+                const major = i % 18 === 0;
+                const medium = i % 6 === 0;
+                const inner = major ? 94 : medium ? 101 : 106;
+                const outer = 114;
+                return (
+                  <line
+                    key={i}
+                    x1={120 + inner * Math.sin(angle)}
+                    y1={120 - inner * Math.cos(angle)}
+                    x2={120 + outer * Math.sin(angle)}
+                    y2={120 - outer * Math.cos(angle)}
+                    stroke="currentColor"
+                    strokeWidth={major ? 2.4 : medium ? 1.6 : 1}
+                    strokeLinecap="round"
+                    opacity={major ? 0.9 : medium ? 0.5 : 0.28}
+                  />
+                );
+              })}
+              <text x="120" y="26" textAnchor="middle" fontSize="16" fontWeight="800" fill="#dc2626">N</text>
+              <text x="120" y="228" textAnchor="middle" fontSize="12" fontWeight="700" fill="currentColor">S</text>
+              <text x="222" y="125" textAnchor="middle" fontSize="12" fontWeight="700" fill="currentColor">E</text>
+              <text x="18" y="125" textAnchor="middle" fontSize="12" fontWeight="700" fill="currentColor">W</text>
+            </svg>
           </div>
-          {/* kaaba needle */}
+
+          {/* Kaaba needle */}
           <div
-            className="absolute left-1/2 top-1/2 h-[104px] w-2 origin-bottom rounded-full bg-gradient-to-t from-gold-600 to-gold transition-transform duration-200 ease-out"
-            style={{ transform: `translate(-50%,-100%) rotate(${delta ?? 0}deg)` }}
-          />
-          <div className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-3xl shadow-card">
+            className="absolute left-1/2 top-1/2 w-[6px] origin-bottom transition-transform duration-200 ease-out"
+            style={{ height: 94, transform: `translate(-50%,-100%) rotate(${needleAngle}deg)` }}
+          >
+            <span className="block h-full w-full rounded-full bg-gradient-to-t from-gold-600 to-gold shadow-card" />
+          </div>
+
+          {/* hub */}
+          <div className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-primary-900/10 bg-white text-3xl shadow-card dark:border-white/10 dark:bg-slate-800">
             🕋
           </div>
         </div>
 
         {/* readout */}
-        <div className="mt-4 flex items-center justify-center gap-2">
-          <span className="rounded-2xl bg-primary-50 px-4 py-2 text-lg font-bold tabular-nums text-primary-700">
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          <span className="rounded-2xl bg-primary-50 px-4 py-2 text-lg font-bold tabular-nums text-primary-700 dark:bg-white/5">
             {qibla !== null ? `${toBn(Math.round(qibla))}°` : "…"}
           </span>
           <span className="text-sm font-bold text-ink-soft">
             {qibla !== null ? `উত্তর থেকে ${cardinal(qibla)} দিকে` : ""}
           </span>
         </div>
+        {heading !== null && (
+          <p className="mt-1 text-[11px] font-medium text-ink-faint">
+            ফোনের মুখ: {toBn(Math.round(norm(heading)))}°
+          </p>
+        )}
 
         <div
-          className={`mx-auto mt-3 inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold ${
+          className={`mx-auto mt-3 inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold transition-colors ${
             aligned ? "bg-primary-600 text-white" : "bg-sand text-ink-soft"
           }`}
         >
           <Icon name={aligned ? "check" : "compass"} size={16} />
-          {sensor !== "active"
-            ? "কম্পাস চালু করুন"
-            : aligned
-              ? "কিবলার দিকে মুখ করে আছেন ✓"
-              : heading !== null
-                ? `ঘুরুন — লক্ষ্য ${toBn(Math.round(delta || 0))}°`
-                : "কম্পাস পড়া হচ্ছে…"}
+          {statusText}
         </div>
 
-        {sensor !== "active" && (
-          <button onClick={startCompass} className="btn-primary mt-4 w-full">
-            <Icon name="compass" size={18} /> কম্পাস চালু করুন
+        {showStart && (
+          <button onClick={startCompass} className="btn-primary mt-4 w-full" disabled={sensor === "starting"}>
+            <Icon name="compass" size={18} /> {sensor === "need-permission" ? "অনুমতি দিয়ে চালু করুন" : "কম্পাস চালু করুন"}
           </button>
         )}
         {note && <p className="mx-auto mt-3 max-w-xs text-[11px] leading-relaxed text-ink-faint">{note}</p>}
         <p className="mx-auto mt-2 max-w-xs text-[11px] leading-relaxed text-ink-faint">
-          সঠিক দিকের জন্য ফোন সমতলে রেখে 8-আকৃতিতে কয়েকবার ঘুরিয়ে ক্যালিব্রেট করুন। চুম্বক/মেটাল কভার দূরে রাখুন।
+          সঠিক দিকের জন্য ফোন সমতলে রেখে ৮-আকৃতিতে কয়েকবার ঘুরিয়ে ক্যালিব্রেট করুন। চুম্বক/মেটাল কভার দূরে রাখুন।
         </p>
       </div>
 
       {/* location */}
       <div className="card mt-2 p-4">
-        <div className="mb-2 flex items-center justify-between">
-          <span className="text-sm font-bold">অবস্থান: {place}</span>
-          <button onClick={locateGps} className="btn-ghost !py-1.5 !text-xs">
-            <Icon name="pin" size={14} /> GPS
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <span className="min-w-0 truncate text-sm font-bold">অবস্থান: {place}</span>
+          <button
+            onClick={() => requestGps(false)}
+            disabled={gpsBusy}
+            className="btn-ghost shrink-0 !py-1.5 !text-xs disabled:opacity-60"
+          >
+            <Icon name="pin" size={14} /> {gpsBusy ? "খোঁজা হচ্ছে…" : "GPS"}
           </button>
         </div>
         <div className="flex flex-wrap gap-1.5">

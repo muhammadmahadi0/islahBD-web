@@ -50,6 +50,14 @@ offline-tolerant, keyless APIs only.
 - Hijri from Aladhan `date.hijri`, mapped by **month number**, minus 1 day
   for BD moon sighting; Intl fallback
 - Home card shows the **current** ongoing prayer + remaining time
+- Qibla (`/qibla`): great-circle Kaaba bearing from the selected city/GPS.
+  The compass trusts only true headings — iOS `webkitCompassHeading` or
+  `deviceorientationabsolute` (`360 − alpha`); relative `alpha` is ignored
+  because it is not north-based. Headings are unwrapped into a continuous
+  angle so the rose/needle never spin the long way across 0°/360°, and the
+  rose/needle follow the short path (ডানে/বামে). Touch browsers start the
+  sensor automatically, iOS asks for Motion permission, and unsupported
+  devices fall back to a north-up dial + city/GPS bearing.
 
 ### 4.3 Media players (beta engine)
 - zustand `player-store` (persisted queue, throttled writes) + `playlist-store`
