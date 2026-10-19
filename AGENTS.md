@@ -23,8 +23,8 @@ No test suite — `npm run build` + prod smoke test is the gate.
 - Cached API proxies: `app/api/<name>/route.ts`
 - Shared UI: `components/ui.tsx` (`PageHead`, `ShareCopy`, `EmptyState`),
   `components/icons.tsx` (SVG only — never emoji), `components/AppShell.tsx`
-- Domain logic: `lib/` (`prayer.ts`, `quran.ts`, `audio.ts`, `live.ts`,
-  `yt-engine.ts`, `open-app.ts`, `surah-names.ts`, `data.ts`, `api.ts`)
+- Domain logic: `lib/` (`prayer.ts`, `quran.ts`, `audio.ts`, `shorts.ts`,
+  `live.ts`, `yt-engine.ts`, `open-app.ts`, `surah-names.ts`, `data.ts`, `api.ts`)
 - Player: `store/player-store.ts`, `store/playlist-store.ts`,
   `components/audio/{AudioPlayer,MiniPlayer,AddToPlaylistMenu}.tsx`.
   Tracks carry an optional `sharePath`; shared URLs use `?play=<track-id>`

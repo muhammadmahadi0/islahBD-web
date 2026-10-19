@@ -40,8 +40,9 @@ No env vars needed. All upstream APIs are keyless.
 | Paribar/Baiyat, Fatwa, Notice, Notifications | `/paribar` (family hub: biography, mission, applications, connect), `/mission` (Shaykh's mission, beta), `/fatwa`, `/notice`, `/notifications` |
 | Donate, Support, Settings, Others hub, Member | `/donate`, `/support`, `/settings`, `/others`, `/member` |
 
-API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/live`,
-`/api/hls/…`, `/api/prayer`, `/api/quran/chapters|verses|recitations|chapter-audio|search`.
+API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/shorts`,
+`/api/live`, `/api/hls/…`, `/api/prayer`,
+`/api/quran/chapters|verses|recitations|chapter-audio|search`.
 
 ## Design system
 
