@@ -5,12 +5,13 @@ Instructions for coding agents working in this repo (`alpha` branch).
 ## Stack
 
 Next.js 14 (App Router) + TypeScript + Tailwind 3 + zustand + hls.js.
-No test suite — `npm run build` + prod smoke test is the gate.
+Package manager: **bun** (`bun.lock`; `packageManager` pinned in `package.json`).
+No test suite — `bun run build` + prod smoke test is the gate.
 
 ## Before pushing
 
-1. `npm run build` must pass (expect 49 routes).
-2. Start prod (`npm start -- -p <port>`) and curl `/`, changed pages,
+1. `bun run build` must pass (expect 49 routes).
+2. Start prod (`bun run start -- -p <port>`) and curl `/`, changed pages,
    and any touched `/api/*` route — all must return 200 with real data.
 3. Kill the server afterwards (avoid `pkill -f` with a pattern that
    matches your own command; prefer `lsof -ti:<port>`).

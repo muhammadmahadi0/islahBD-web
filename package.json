@@ -3,6 +3,7 @@
   "version": "1.3.0",
   "description": "Islah – দ্বীনি জীবনের সাথী | Web clone of IslahBD Android app (com.islahbd.app v27)",
   "private": true,
+  "packageManager": "bun@1.4.3",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

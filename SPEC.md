@@ -125,4 +125,6 @@ offline-tolerant, keyless APIs only.
   error screens (`app/error.tsx`, `app/global-error.tsx`)
 - Favicon: `app/icon.png` + `app/apple-icon.png` + `app/favicon.ico`
   (generated from `public/images/logo.png`)
-- Verify with `npm run build` (49 routes) + prod smoke test before push
+- Toolchain: **bun** is the package manager (`bun install`, `bun run *`,
+  `bun.lock` committed, `packageManager` pinned in `package.json`)
+- Verify with `bun run build` (49 routes) + prod smoke test before push

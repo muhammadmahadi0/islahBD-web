@@ -10,9 +10,9 @@ prayer engine from `pray-bd`.
 ## Quick start
 
 ```bash
-npm install
-npm run dev      # http://localhost:3000
-npm run build && npm start
+bun install
+bun run dev      # http://localhost:3000
+bun run build && bun start
 ```
 
 No env vars needed. All upstream APIs are keyless.
