@@ -2,31 +2,15 @@ import Link from "next/link";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { homeGrid } from "../../lib/features";
-import ChannelGrid from "../../components/ChannelGrid";
+import ChannelButton from "../../components/ChannelButton";
 
 export default function OthersPage() {
   return (
     <div className="animate-fade-up">
       <PageHead title="সব ফিচার" subtitle="ইসলাহ-এর সম্পূর্ণ সংগ্রহ" icon="grid" />
 
-      {/* Channels — keyless YouTube listings from the master branch registry */}
-      <section className="mt-3">
-        <div className="mb-2 flex items-center justify-between">
-          <h2 className="flex items-center gap-2 text-sm font-bold">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary-50 text-primary-600">
-              <Icon name="youtube" size={16} />
-            </span>
-            চ্যানেল
-          </h2>
-          <Link
-            href="/channels"
-            className="rounded-full bg-slate-200/50 px-2.5 py-1 text-xs text-ink-soft transition hover:bg-slate-300 dark:bg-slate-800/50 dark:text-slate-400"
-          >
-            সব দেখুন
-          </Link>
-        </div>
-        <ChannelGrid />
-      </section>
+      {/* Channels — both channels live inside this one button (master registry) */}
+      <ChannelButton />
 
       <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">
         {homeGrid.map((f) => (

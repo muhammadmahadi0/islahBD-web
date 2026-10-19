@@ -37,12 +37,26 @@ export default function ChannelPage() {
   const [filter, setFilter] = useState<Filter>("all");
   const [sort, setSort] = useState<Sort>("newest");
   const [menuTrack, setMenuTrack] = useState<Track | null>(null);
+  const [indexing, setIndexing] = useState(false);
+  // The indexer can load 1000+ uploads; render them in windows of 60 so the
+  // DOM stays light on phones.
+  const [visible, setVisible] = useState(60);
 
   const { playTrack, currentTrack, isPlaying } = usePlayerStore();
+
+  // Background indexer (refs, not state — no re-renders) so Popular/Oldest
+  // rank the WHOLE catalog, not just the first 100 uploads.
+  const indexingRef = useRef(false);
+  const indexedForRef = useRef<string | null>(null);
+  const videosRef = useRef<ChannelVideo[]>(videos);
+  const tokenRef = useRef<string | null>(nextToken);
+  videosRef.current = videos;
+  tokenRef.current = nextToken;
 
   const load = useCallback(async () => {
     setLoading(true);
     setError("");
+    indexedForRef.current = null;
     try {
       const res = await fetch(`/api/channel/${encodeURIComponent(channelId)}`);
       const data = await res.json();
@@ -60,6 +74,56 @@ export default function ChannelPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  // Popular/Oldest must rank every upload, not just the first page. Newest is
+  // the native API order so it needs no indexing; the other two walk the
+  // continuation tokens in the background and sort as each page arrives.
+  useEffect(() => {
+    if (sort === "newest" || loading) return;
+    if (indexingRef.current) return;
+    if (indexedForRef.current === channelId) return;
+    const startToken = tokenRef.current;
+    if (!startToken) {
+      indexedForRef.current = channelId;
+      return;
+    }
+    indexingRef.current = true;
+    let cancelled = false;
+    (async () => {
+      setIndexing(true);
+      const seen = new Set(videosRef.current.map((v) => v.videoId || v.id));
+      let token: string | null = startToken;
+      while (token && !cancelled) {
+        let page: {
+          success?: boolean;
+          videos?: ChannelVideo[];
+          nextPageToken?: string;
+        } | null = null;
+        try {
+          const response: Response = await fetch(
+            `/api/channel/${encodeURIComponent(channelId)}/more/${encodeURIComponent(token)}`
+          );
+          page = await response.json();
+        } catch {
+          break;
+        }
+        if (!page?.success || !Array.isArray(page.videos)) break;
+        const fresh = page.videos.filter((v) => !seen.has(v.videoId || v.id));
+        fresh.forEach((v) => seen.add(v.videoId || v.id));
+        token = page.nextPageToken || null;
+        if (cancelled) break;
+        if (fresh.length > 0) setVideos((prev) => [...prev, ...fresh]);
+        setNextToken(token);
+      }
+      if (!cancelled) indexedForRef.current = channelId;
+      indexingRef.current = false;
+      setIndexing(false);
+    })();
+    return () => {
+      cancelled = true;
+      indexingRef.current = false;
+    };
+  }, [sort, channelId, loading]);
 
   const results = useMemo(() => {
     let list = videos;
@@ -86,6 +150,12 @@ export default function ChannelPage() {
   );
 
   const tracks = useMemo(() => results.map(toTrack), [results, toTrack]);
+  const shown = useMemo(() => results.slice(0, visible), [results, visible]);
+
+  // A new channel/filter/sort starts the window over.
+  useEffect(() => {
+    setVisible(60);
+  }, [filter, sort, channelId]);
 
   const playAt = (index: number) => {
     if (!tracks[index]) return;
@@ -199,7 +269,7 @@ export default function ChannelPage() {
       ) : (
         <>
           <div className="grid grid-cols-1 gap-x-3 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-            {results.map((video, i) => {
+            {shown.map((video, i) => {
               const id = video.videoId || video.id;
               const active = currentTrack?.videoId === id;
               const meta = [fmtViewsBn(video.views), fmtPublishedBn(video.publishedAt)]
@@ -259,10 +329,19 @@ export default function ChannelPage() {
             })}
           </div>
 
-          {nextToken && (
+          {sort !== "newest" && indexing && (
+            <p className="mt-5 text-center text-xs font-semibold text-primary-700">
+              সব ভিডিও সাজানো হচ্ছে… ({bnNum(videos.length)})
+            </p>
+          )}
+          {(visible < results.length || (sort === "newest" && !!nextToken)) && (
             <div className="mt-5 flex justify-center">
               <button
-                onClick={loadMore}
+                onClick={() => {
+                  const canReveal = visible < results.length;
+                  setVisible((v) => v + 60);
+                  if (!canReveal && sort === "newest") loadMore();
+                }}
                 disabled={loadingMore}
                 className="btn-outline !px-6 !py-2.5 text-[13px] disabled:opacity-60"
               >
