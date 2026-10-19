@@ -49,7 +49,9 @@ No test suite — `npm run build` + prod smoke test is the gate.
   use `tryPlay` / `storage*` from `lib/storage.ts`, or Safari/Firefox
   private mode shows the crash screen on tap.
 - APK-asset JSON lives in `public/data`; fonts/images in
-  `public/fonts|images|audios`.
+  `public/fonts|images|audios`. The library's Islami Jindegi snapshot is
+  `public/data/islamijindegi-books.json` (scraped from the site's listing
+  RSC payload — `initialBooks` — so PDFs/covers stay hotlinked).
 
 ## Deploy
 

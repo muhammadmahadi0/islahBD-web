@@ -36,12 +36,12 @@ No env vars needed. All upstream APIs are keyless.
 | Dua, Wazifa, Amal, Sunnat, Fazilat, Hajj/Umrah, Calendar | `/dua`, `/wazifa`, `/amal`, `/sunnat`, `/fazilat`, `/hajj-umrah`, `/calendar` |
 | Poems, Munajate, Malfuzat, Self-purification | `/poem`, `/munajate`, `/malfuzat`, `/self-purification` |
 | Live broadcast, Boyan, Hamd/Naat | `/live`, `/boyan`, `/hamdnaat` |
-| Library, Short clips, Gallery/Wallpaper | `/library`, `/media`, `/gallery`, `/wallpaper` (`/nasheed` → `/hamdnaat`) |
+| Library (IslahBD + Islami Jindegi PDFs), Short clips, Gallery/Wallpaper | `/library`, `/media`, `/gallery`, `/wallpaper` (`/nasheed` → `/hamdnaat`) |
 | Paribar/Baiyat, Fatwa, Notice, Notifications | `/paribar` (family hub: biography, mission, applications, connect), `/mission` (Shaykh's mission, beta), `/fatwa`, `/notice`, `/notifications` |
 | Donate, Support, Settings, Others hub, Member | `/donate`, `/support`, `/settings`, `/others`, `/member` |
 
 API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/shorts`,
-`/api/live`, `/api/hls/…`, `/api/prayer`,
+`/api/books`, `/api/live`, `/api/hls/…`, `/api/prayer`,
 `/api/quran/chapters|verses|recitations|chapter-audio|search`.
 
 ## Design system

@@ -70,7 +70,14 @@ offline-tolerant, keyless APIs only.
   page auto-plays that item and the expanded player's share button uses
   the same URL
 
-### 4.4 Shell & theme
+### 4.4 Books
+- `/library` merges the IslahBD book API (`/api/books`) with the Islami
+  Jindegi kitab collection (`islamijindegi.com/bn/books`)
+- Metadata/PDF links snapshot: `public/data/islamijindegi-books.json`
+  (1019 books, 1015 PDFs) — search, category chips, 48-per-page “আরও দেখুন”
+- Cards show cover, title, author, category with পড়ুন/download actions
+
+### 4.5 Shell & theme
 - `AppShell`: phone shell, header (logo, app-open deep link
   `islahbd://` with store fallback, bell, share, theme toggle),
   honorific block, bottom bar Home/Live(play)/Boyan/Family/More
