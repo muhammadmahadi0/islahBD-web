@@ -140,6 +140,20 @@ offline-tolerant, keyless APIs only.
   Videos play through the existing YouTube engine and share via
   `/channels/[id]?play=<videoId>`
 
+### 4.7 Nearest mosque (`/nearby-mosque`)
+- Data: keyless OpenStreetMap via Overpass (`/api/mosques?lat&lon`), not the
+  IslahBD API. Node route; **races all Overpass mirrors in parallel** and takes
+  the first that returns data (the rest are aborted). An “empty” reply is not
+  accepted as a win — regional mirrors answer in a second but only cover their
+  own country — so empty only stands once every mirror has failed/add nothing.
+- Queries `place_of_worship`+`religion=muslim` and `building=mosque` for both
+  nodes and ways (`out center` for way centroids), widens the radius in rings
+  (2.5 km → 8 km) under one shared time budget, then sorts by haversine
+  distance and de-dupes node/way twins (same name within 150 m)
+- The page auto-loads the IP-detected city (`detectLocation`) so it works with
+  no tap, a distinct **জিপিএস দিয়ে খুঁজুন** button refines to an exact fix, and
+  each card shows the Bengali distance + a Google Maps directions deep link
+
 ## 5. Conventions
 
 - Bengali UI strings inline (no i18n framework); dates/digits in Bengali

@@ -44,7 +44,8 @@ No env vars needed. All upstream APIs are keyless.
 API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/shorts`,
 `/api/books`, `/api/books/[id]` (kitab chapters), `/api/live`, `/api/hls/…`,
 `/api/prayer`, `/api/quran/chapters|verses|recitations|chapter-audio|search`,
-`/api/channel/[id]` (+ `/meta`, `/more/[token]` — YouTube InnerTube listings).
+`/api/channel/[id]` (+ `/meta`, `/more/[token]` — YouTube InnerTube listings),
+`/api/mosques` (nearest masjid via OpenStreetMap Overpass).
 
 ## Design system
 
