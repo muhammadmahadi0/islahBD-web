@@ -1,4 +1,4 @@
-# Islah Web — দ্বীন জীবনের সঙ্গী
+# Islah Web — দ্বীনি জীবনের সাথী
 
 Web clone of the IslahBD Android app (`com.islahbd.app` v1.3.0), built with
 **Next.js 14 + Tailwind**. Reverse-engineered from the APK (Flutter,

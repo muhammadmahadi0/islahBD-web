@@ -182,7 +182,7 @@ export default function HomePage() {
       )}
 
       <p className="home-rise mt-8 text-center text-[11px] text-ink-faint" style={rise(16)}>
-        ইসলাহ • দ্বীন জীবনের সঙ্গী
+        ইসলাহ • দ্বীনি জীবনের সাথী
       </p>
       </div>
     </div>
