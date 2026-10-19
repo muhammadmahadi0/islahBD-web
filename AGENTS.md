@@ -78,6 +78,14 @@ No test suite — `bun run build` + prod smoke test is the gate.
   base64url-wrapped (`it1_…`) because raw tokens contain `%` and break the
   path route. The clips API's `title` is often just the YouTube ID, so
   titles come from oEmbed + `lib/shorts-titles.json` (`lib/shorts-server.ts`).
+- Notifications: `public/sw.js` is the delivery path — it handles `push`,
+  `notificationclick`, and self-checks `/api/notifications` on
+  `periodicsync`/`sync`/`message` with an IndexedDB `lastSeenId`. A change to
+  the notification payload or deep-link rules must be made in **both**
+  `lib/notifications.ts` (`notifHref`) and `sw.js` (`notifUrl`). Server push
+  is optional: it only turns on when `NEXT_PUBLIC_VAPID_PUBLIC_KEY` is set
+  (and `KV_REST_API_URL`/`KV_REST_API_TOKEN` to store subscriptions) — never
+  make notifications depend on it, or enabling dead-ends.
 
 ## Deploy
 

@@ -6,6 +6,8 @@ import { Icon } from "./icons";
 import { openIslahBDApp } from "../lib/open-app";
 import { usePlayerStore, type Track } from "../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../lib/live";
+import { bnNum } from "../lib/audio";
+import { NOTIF_READ_EVENT, parseNotifications, unreadCount } from "../lib/notifications";
 
 // Paths belonging to the More hub — the More tab stays highlighted there.
 const MORE_PREFIXES = [
@@ -20,6 +22,28 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   const { playTrack, currentTrack, isPlaying, setIsPlaying } = usePlayerStore();
   const [live, setLive] = useState<LiveStatus | null>(null);
+  const [unread, setUnread] = useState(0);
+
+  // Unread notification badge. Re-read when the feed marks items read.
+  useEffect(() => {
+    let dead = false;
+    const load = async () => {
+      try {
+        const res = await fetch("/api/notifications");
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!dead && data.success) setUnread(unreadCount(parseNotifications(data.notifications)));
+      } catch {
+        // keep the current badge
+      }
+    };
+    load();
+    window.addEventListener(NOTIF_READ_EVENT, load);
+    return () => {
+      dead = true;
+      window.removeEventListener(NOTIF_READ_EVENT, load);
+    };
+  }, []);
 
   // Live status (same source as the Live page) — the Live tab plays
   // the broadcast / last recording straight from the bar, like beta.
@@ -102,8 +126,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <Icon name="external" size={14} strokeWidth={2.2} />
               অ্যাপ খুলুন
             </button>
-            <Link href="/notifications" aria-label="notifications" className={circleBtn}>
+            <Link href="/notifications" aria-label="notifications" className={`${circleBtn} relative`}>
               <Icon name="bell" size={16} />
+              {unread > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold leading-none text-white">
+                  {unread > 9 ? "৯+" : bnNum(unread)}
+                </span>
+              )}
             </Link>
           </div>
         </div>

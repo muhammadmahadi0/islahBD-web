@@ -5,6 +5,7 @@ import AppShell from "../components/AppShell";
 import AudioPlayer from "../components/audio/AudioPlayer";
 import MiniPlayer from "../components/audio/MiniPlayer";
 import EngineWarmup from "../components/audio/EngineWarmup";
+import NotificationAlerts from "../components/NotificationAlerts";
 
 const arabicFont = Noto_Naskh_Arabic({
   subsets: ["arabic", "latin"],
@@ -24,6 +25,14 @@ export const metadata: Metadata = {
   title: "islah - দ্বীনি জীবনের সাথী",
   description:
     "IslahBD ওয়েব: কুরআন, নামাজের সময়, কিবলা, তাসবীহ, দোআ, বয়ান, হামদ-নাত, হজ-ওমরাহ, লাইভ বয়ান, লাইব্রেরি ও আরও অনেক কিছু।",
+  applicationName: "islah",
+  // Installable PWA (app/manifest.ts) — required for background notifications
+  // and Web Push on iOS.
+  appleWebApp: { capable: true, title: "islah", statusBarStyle: "black-translucent" },
+  icons: {
+    icon: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
 };
 
 export const viewport: Viewport = {
@@ -41,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: PREPAINT }} />
         <AppShell>{children}</AppShell>
         <EngineWarmup />
+        <NotificationAlerts />
         <AudioPlayer />
         <MiniPlayer />
       </body>

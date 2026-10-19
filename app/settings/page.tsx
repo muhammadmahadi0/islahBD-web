@@ -1,17 +1,56 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { useThemeStore } from "../../store/theme-store";
 import { useDesignStore } from "../../store/design-store";
 import { openIslahBDApp } from "../../lib/open-app";
 import { bloomTheme } from "../../components/theme-bloom";
+import {
+  disableNotifications,
+  enableNotifications,
+  notificationPermission,
+  notificationsEnabled,
+  notificationsSupported,
+} from "../../lib/push";
 
 // Settings — beta sidebar-settings behavior (theme + design segmented
 // controls, app opener) on the Islah design system.
 export default function SettingsPage() {
   const { theme, setTheme } = useThemeStore();
   const { mode, setMode } = useDesignStore();
+
+  const [permission, setPermission] = useState<string>("default");
+  const [notifOn, setNotifOn] = useState(false);
+  const [notifBusy, setNotifBusy] = useState(false);
+
+  useEffect(() => {
+    setPermission(notificationPermission());
+    setNotifOn(notificationsEnabled());
+  }, []);
+
+  const toggleNotifications = async () => {
+    if (notifBusy) return;
+    if (notifOn) {
+      await disableNotifications();
+      setNotifOn(false);
+      return;
+    }
+    setNotifBusy(true);
+    const result = await enableNotifications();
+    setNotifBusy(false);
+    setPermission(notificationPermission());
+    setNotifOn(result.ok);
+  };
+
+  const notifStatus = !notificationsSupported()
+    ? "এই ব্রাউজারে সমর্থিত নয়"
+    : permission === "denied"
+      ? "ব্লক করা — ব্রাউজার সেটিংস থেকে অনুমতি দিন"
+      : notifOn
+        ? "চালু — নতুন আপডেট এলেই জানানো হবে"
+        : "বন্ধ — নতুন বয়ান, লাইভ ও নামাজের সময়";
 
   const seg = (active: boolean) =>
     `flex-1 rounded-xl py-2 text-[13px] font-bold transition-all active:scale-95 ${
@@ -100,15 +139,29 @@ export default function SettingsPage() {
 
         {/* notifications */}
         <button
-          className="flex w-full items-center gap-3 p-4 text-left transition hover:bg-sand/60"
-          onClick={() => (Notification as any)?.requestPermission?.()}
+          className="flex w-full items-center gap-3 p-4 text-left transition hover:bg-sand/60 disabled:opacity-60"
+          onClick={toggleNotifications}
+          disabled={notifBusy || !notificationsSupported()}
         >
           <span className="icon-tile bg-rose-50 text-rose-500"><Icon name="bell" size={20} /></span>
           <span className="flex-1">
-            <span className="block text-sm font-bold">নোটিফিকেশন অনুমতি</span>
-            <span className="block text-xs text-ink-faint">নামাজ ও বয়ান রিমাইন্ডার</span>
+            <span className="block text-sm font-bold">পুশ নোটিফিকেশন</span>
+            <span className="block text-xs text-ink-faint">
+              {notifBusy ? "চালু করা হচ্ছে…" : notifStatus}
+            </span>
           </span>
-          <Icon name="chevron" size={17} className="text-ink-faint" />
+          <span
+            aria-hidden
+            className={`relative h-6 w-11 shrink-0 rounded-full transition ${
+              notifOn ? "bg-primary-600" : "bg-slate-300 dark:bg-slate-700"
+            }`}
+          >
+            <span
+              className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${
+                notifOn ? "left-[1.375rem]" : "left-0.5"
+              }`}
+            />
+          </span>
         </button>
 
         {/* member */}

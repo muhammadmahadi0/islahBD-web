@@ -154,6 +154,30 @@ offline-tolerant, keyless APIs only.
   no tap, a distinct **জিপিএস দিয়ে খুঁজুন** button refines to an exact fix, and
   each card shows the Bengali distance + a Google Maps directions deep link
 
+### 4.8 Notifications & push
+- `/notifications` is a day-grouped feed over the cached `/api/notifications`
+  proxy of api.islahbd.com — type icons/tints, unread dots, Bengali relative
+  times, image thumbs, “পুরনো” paging, and deep links (live → `/live`,
+  `boayn` → `/boyan?play=boyan-<id>`, nasheed → `/hamdnaat?play=hamd-<id>`,
+  notice → `/notice`). Read ids live in `islah-notif-read`; the header bell
+  shows the unread count and clears when the feed opens (`islah:notif-read`
+  event).
+- **Delivery** — “notify whenever the API posts”: `public/sw.js` handles
+  `push`, `notificationclick`, and self-checks `/api/notifications` on
+  `periodicsync` / `sync` / a page `message`, keeping a `lastSeenId` in
+  IndexedDB (first run records a baseline instead of dumping the backlog), so
+  an installed PWA keeps alerting with the app closed (Chromium). With a tab
+  open, `NotificationAlerts` polls every 3 min and re-checks on tab focus, and
+  schedules today's prayer reminders. Notification `tag` is `islah-<id>` so
+  the two paths can't double-post.
+- The app is an installable PWA (`app/manifest.ts`, apple meta in
+  `app/layout.tsx`) — a prerequisite for background delivery and iOS push.
+- Settings toggles it: permission → SW registration → Periodic Background
+  Sync → optional Web Push subscribe. True server-sent push needs
+  `NEXT_PUBLIC_VAPID_PUBLIC_KEY` (plus `KV_REST_API_URL`/`KV_REST_API_TOKEN`
+  to persist subscriptions through `/api/push/subscribe`); without them the
+  worker's own polling still delivers, so enabling never dead-ends.
+
 ## 5. Conventions
 
 - Bengali UI strings inline (no i18n framework); dates/digits in Bengali
