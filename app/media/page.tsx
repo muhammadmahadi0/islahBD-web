@@ -85,8 +85,8 @@ export default function MediaPage() {
   return (
     <div className="animate-fade-up">
       <PageHead
-        title="ভিডিও"
-        subtitle={`সংক্ষিপ্ত ক্লিপস • ${bnNum(clips.length)}টি`}
+        title="সংক্ষিপ্ত ক্লিপস"
+        subtitle={`হাইলাইটস • ${bnNum(clips.length)}টি`}
         icon="play"
       />
 
