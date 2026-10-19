@@ -48,6 +48,7 @@ export function boyanToTrack(a: BoyanAudio): Track {
     videoId: "",
     audioUrl: a.audioUrl,
     location: a.location,
+    sharePath: `/boyan?play=${encodeURIComponent(`boyan-${a.id}`)}`,
   };
 }
 
@@ -61,6 +62,7 @@ export function hamdNaatToTrack(item: HamdNaatItem): Track {
     channelName: [item.artist, item.writingPlace].filter(Boolean).join(" • "),
     videoId: isVideo ? item.youtubeId : "",
     audioUrl: isVideo ? undefined : item.audioUrl || undefined,
+    sharePath: `/hamdnaat?play=${encodeURIComponent(`hamd-${item.id}`)}`,
   };
 }
 function sanitizeBoyan(item: any): BoyanAudio | null {

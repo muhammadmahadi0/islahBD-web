@@ -61,6 +61,10 @@ offline-tolerant, keyless APIs only.
 - Boyan: `/api/audios` + categories, search/filter, silent refresh, play-all
 - Hamd/Naat: `/api/nasheeds`, audio↔player / video↔YouTube engine
 - Live: `/api/live` polling (60s), in-app HLS or last recording
+- Shareable items: every track carries a `sharePath` deep link
+  (`/boyan?play=boyan-<id>`, `/hamdnaat?play=hamd-<id>`,
+  `/live?play=live|live-recording`); the target page auto-plays that item
+  and the expanded player's share button uses the same URL
 
 ### 4.4 Shell & theme
 - `AppShell`: phone shell, header (logo, app-open deep link

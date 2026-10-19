@@ -56,6 +56,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         duration: 0, channelName: live.speaker || "ইসলাহ লাইভ", videoId: "",
         hlsUrl: live.streamUrl, audioUrl: live.streamUrl,
         isLive: true, location: live.location || "",
+        sharePath: "/live?play=live",
       };
     } else if (live.recording?.audioUrl) {
       track = {
@@ -63,6 +64,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         duration: live.recording.durationSeconds || 0,
         channelName: live.recording.speaker || "ইসলাহ", videoId: "",
         audioUrl: live.recording.audioUrl, location: live.recording.location || "",
+        sharePath: "/live?play=live-recording",
       };
     }
     if (track) playTrack(track, [track], 0);

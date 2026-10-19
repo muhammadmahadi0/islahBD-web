@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
@@ -22,6 +22,7 @@ function liveToTrack(live: LiveStatus): Track | null {
       audioUrl: live.streamUrl,
       isLive: true,
       location: live.location,
+      sharePath: "/live?play=live",
     };
   }
   const rec = live.recording;
@@ -35,6 +36,7 @@ function liveToTrack(live: LiveStatus): Track | null {
       videoId: "",
       audioUrl: rec.audioUrl,
       location: rec.location,
+      sharePath: "/live?play=live-recording",
     };
   }
   return null;
@@ -77,6 +79,18 @@ export default function LivePage() {
     const track = liveToTrack(live);
     if (track) playTrack(track);
   };
+
+  // Shared link (/live?play=live) auto-plays the broadcast/recording once.
+  const autoPlayed = useRef(false);
+  useEffect(() => {
+    if (autoPlayed.current || !live) return;
+    const shared = new URLSearchParams(window.location.search).get("play");
+    if (shared !== "live" && shared !== "live-recording") return;
+    const track = liveToTrack(live);
+    if (!track) return;
+    autoPlayed.current = true;
+    playTrack(track);
+  }, [live, playTrack]);
 
   return (
     <div className="animate-fade-up">

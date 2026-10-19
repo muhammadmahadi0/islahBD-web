@@ -18,6 +18,8 @@ export interface Track {
   location?: string;
   publishedAt?: string;
   description?: string;
+  /** Relative deep link that opens the source page and auto-plays this item. */
+  sharePath?: string;
 }
 
 interface PlayerState {

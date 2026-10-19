@@ -67,6 +67,18 @@ export default function BoyanPage() {
   const playAt = (index: number) => playTrack(tracks[index], tracks, index);
   const playAll = () => { if (tracks.length) playTrack(tracks[0], tracks, 0); };
 
+  // Shared link (/boyan?play=boyan-123) auto-plays that exact item once.
+  const autoPlayed = useRef(false);
+  useEffect(() => {
+    if (autoPlayed.current || !tracks.length) return;
+    const shared = new URLSearchParams(window.location.search).get("play");
+    if (!shared) return;
+    const idx = tracks.findIndex((t) => t.id === shared);
+    if (idx < 0) return;
+    autoPlayed.current = true;
+    playTrack(tracks[idx], tracks, idx);
+  }, [tracks, playTrack]);
+
   return (
     <div className="animate-fade-up">
       <PageHead

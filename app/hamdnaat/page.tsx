@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { usePlayerStore, type Track } from "../../store/player-store";
@@ -65,6 +65,22 @@ export default function HamdNaatPage() {
     const track = hamdNaatToTrack(item);
     playTrack(track, [track, ...audioQueue], 0);
   };
+
+  // Shared link (/hamdnaat?play=hamd-45) auto-plays that exact item once.
+  const autoPlayed = useRef(false);
+  useEffect(() => {
+    if (autoPlayed.current || !items.length) return;
+    const shared = new URLSearchParams(window.location.search).get("play");
+    if (!shared) return;
+    const item = items.find((it) => `hamd-${it.id}` === shared);
+    if (!item) return;
+    const track = hamdNaatToTrack(item);
+    const queue = items.filter((it) => it.type === "audio").map(hamdNaatToTrack);
+    const idx = queue.findIndex((t) => t.id === track.id);
+    autoPlayed.current = true;
+    if (item.type === "video") playTrack(track, [track, ...queue], 0);
+    else playTrack(track, queue, Math.max(0, idx));
+  }, [items, playTrack]);
 
   const audioCount = items.filter((i) => i.type === "audio").length;
   const videoCount = items.filter((i) => i.type === "video").length;

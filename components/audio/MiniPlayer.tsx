@@ -540,9 +540,11 @@ export default function MiniPlayer() {
   };
 
   const shareTrack = () => {
-    const url = isYtTrack
-      ? `https://www.youtube.com/watch?v=${currentTrack?.videoId}`
-      : location.href;
+    const url = currentTrack?.sharePath
+      ? `${location.origin}${currentTrack.sharePath}`
+      : isYtTrack
+        ? `https://www.youtube.com/watch?v=${currentTrack?.videoId}`
+        : location.href;
     const text = currentTrack?.title || "";
     if (navigator.share) navigator.share({ title: text, text, url }).catch(() => {});
     else navigator.clipboard?.writeText(`${text}\n${url}`);
