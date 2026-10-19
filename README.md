@@ -36,13 +36,13 @@ No env vars needed. All upstream APIs are keyless.
 | Dua, Wazifa, Amal, Sunnat, Fazilat, Hajj/Umrah, Calendar | `/dua`, `/wazifa`, `/amal`, `/sunnat`, `/fazilat`, `/hajj-umrah`, `/calendar` |
 | Poems, Munajate, Malfuzat, Self-purification | `/poem`, `/munajate`, `/malfuzat`, `/self-purification` |
 | Live broadcast, Boyan, Hamd/Naat | `/live`, `/boyan`, `/hamdnaat` |
-| Library (IslahBD + Islami Jindegi PDFs), Short clips, Gallery/Wallpaper | `/library`, `/media`, `/gallery`, `/wallpaper` (`/nasheed` → `/hamdnaat`) |
+| Library + kitab reader, Short clips, Gallery/Wallpaper | `/library`, `/library/[id]` (chapter reader / PDF fallback), `/media`, `/gallery`, `/wallpaper` (`/nasheed` → `/hamdnaat`) |
 | Paribar/Baiyat, Fatwa, Notice, Notifications | `/paribar` (family hub: biography, mission, applications, connect), `/mission` (Shaykh's mission, beta), `/fatwa`, `/notice`, `/notifications` |
 | Donate, Support, Settings, Others hub, Member | `/donate`, `/support`, `/settings`, `/others`, `/member` |
 
 API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/shorts`,
-`/api/books`, `/api/live`, `/api/hls/…`, `/api/prayer`,
-`/api/quran/chapters|verses|recitations|chapter-audio|search`.
+`/api/books`, `/api/books/[id]` (kitab chapters), `/api/live`, `/api/hls/…`,
+`/api/prayer`, `/api/quran/chapters|verses|recitations|chapter-audio|search`.
 
 ## Design system
 
@@ -51,3 +51,6 @@ API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/shorts`,
 - Dark midnight-blue mode + Liquid Glass / Material toggle (Settings,
   persisted, pre-paint script — no flash)
 - Golden signature pieces: prayer card, bottom nav, honorific title
+- Kitab reader (`/library/[id]`): source-style chapter sidebar/drawer,
+  justified Bengali text, text-size controls, prev/next; PDF-only books
+  use an in-app PDF.js viewer (page nav, zoom, download)

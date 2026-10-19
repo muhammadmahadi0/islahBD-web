@@ -52,6 +52,16 @@ No test suite — `npm run build` + prod smoke test is the gate.
   `public/fonts|images|audios`. The library's Islami Jindegi snapshot is
   `public/data/islamijindegi-books.json` (scraped from the site's listing
   RSC payload — `initialBooks` — so PDFs/covers stay hotlinked).
+- The kitab reader does **not** commit chapter text. `/api/books/[id]`
+  fetches the source detail page (`lib/islamijindegi.ts`), concatenates
+  `self.__next_f.push([1,"…"])` chunks, then decodes `id:T<hex-byte-len>,`
+  text chunks (scan a latin1 view so byte offsets stay aligned). Chapter
+  bodies are `$<id>` references into that map. Strip scripts/styles/event
+  handlers before returning HTML; cache the route for a day. PDF-only
+  kitabs render `components/PdfReader.tsx` (PDF.js, one page at a time).
+  Keep `public/pdf.worker.min.mjs` byte-identical to the pinned
+  `pdfjs-dist` version — upgrading the package requires copying
+  `node_modules/pdfjs-dist/build/pdf.worker.min.mjs` again.
 
 ## Deploy
 

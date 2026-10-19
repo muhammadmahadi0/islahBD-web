@@ -162,6 +162,112 @@ select.input {
   display: none;
 }
 
+/* ---------- kitab reader ---------- */
+.reader-prose {
+  color: #23332c;
+  overflow-wrap: anywhere;
+  text-align: justify;
+}
+html.dark .reader-prose {
+  color: #e7e2d4;
+}
+.reader-prose p {
+  margin: 0 0 0.9em;
+}
+.reader-prose p:last-child {
+  margin-bottom: 0;
+}
+.reader-prose h1,
+.reader-prose h2,
+.reader-prose h3,
+.reader-prose h4,
+.reader-prose h5,
+.reader-prose h6 {
+  margin: 1.5em 0 0.55em;
+  font-weight: 700;
+  line-height: 1.45;
+  color: #0b3d2c;
+}
+.reader-prose h1 { font-size: 1.45em; }
+.reader-prose h2 { font-size: 1.3em; }
+.reader-prose h3 { font-size: 1.18em; }
+.reader-prose h4,
+.reader-prose h5,
+.reader-prose h6 { font-size: 1.05em; }
+.reader-prose h1:first-child,
+.reader-prose h2:first-child,
+.reader-prose h3:first-child,
+.reader-prose h4:first-child {
+  margin-top: 0;
+}
+html.dark .reader-prose h1,
+html.dark .reader-prose h2,
+html.dark .reader-prose h3,
+html.dark .reader-prose h4,
+html.dark .reader-prose h5,
+html.dark .reader-prose h6 {
+  color: #f1ede0;
+}
+.reader-prose [dir="rtl"] {
+  text-align: right !important;
+  font-family: var(--font-arabic), "ScheherazadeNew", "Amiri Quran", serif;
+  line-height: 2.4;
+}
+.reader-prose ul,
+.reader-prose ol {
+  margin: 0.7em 0 1em;
+  padding-inline-start: 1.6em;
+}
+.reader-prose ul { list-style: disc; }
+.reader-prose ol { list-style: decimal; }
+.reader-prose li { margin: 0.25em 0; }
+.reader-prose blockquote {
+  margin: 1em 0;
+  border-inline-start: 3px solid #0e7c5b;
+  border-radius: 0 0.75rem 0.75rem 0;
+  background: #eef7f2;
+  padding: 0.65em 0.9em;
+  color: #245544;
+}
+html.dark .reader-prose blockquote {
+  border-color: #e6ca65;
+  background: rgba(255, 255, 255, 0.05);
+  color: #c9d3c9;
+}
+.reader-prose a {
+  color: #0b6b4f;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+html.dark .reader-prose a { color: #7fd6ac; }
+.reader-prose img {
+  margin: 1rem auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.85rem;
+}
+.reader-prose hr {
+  margin: 1.5em 0;
+  border-color: rgba(11, 61, 44, 0.12);
+}
+html.dark .reader-prose hr { border-color: rgba(241, 237, 224, 0.12); }
+.reader-prose table {
+  width: 100%;
+  margin: 1em 0;
+  border-collapse: collapse;
+  font-size: 0.94em;
+}
+.reader-prose th,
+.reader-prose td {
+  border: 1px solid rgba(11, 61, 44, 0.14);
+  padding: 0.4em 0.6em;
+  text-align: start;
+}
+html.dark .reader-prose th,
+html.dark .reader-prose td { border-color: rgba(241, 237, 224, 0.14); }
+.reader-prose .tiptap-lg-font { font-size: 1.12em; font-weight: 600; }
+.reader-prose .tiptap-md-font { font-size: 1em; }
+
 /* audio element polish */
 audio {
   @apply w-full;

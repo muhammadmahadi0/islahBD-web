@@ -1,12 +1,14 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { bnNum } from "../../lib/audio";
 
 // Books — IslahBD catalog + the full Islami Jindegi kitab collection
 // (public/data/islamijindegi-books.json, scraped from
-// islamijindegi.com/bn/books). Search, category filter, PDF read/download.
+// islamijindegi.com/bn/books). Search, category sidebar/rail, and an
+// in-app reader (`/library/[id]`) with a PDF fallback for PDF-only books.
 interface Book {
   id: string;
   title: string;
@@ -19,6 +21,31 @@ interface Book {
 
 const PAGE_SIZE = 48;
 const ALL = "সব";
+
+// Islami Jindegi books open in our in-app reader; the single IslahBD entry
+// still points at its PDF.
+function BookOpen({
+  book,
+  className,
+  children,
+}: {
+  book: Book;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  if (book.source === "islamijindegi") {
+    return (
+      <Link href={`/library/${book.id}`} className={className}>
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <a href={book.pdf || undefined} target="_blank" rel="noreferrer" className={className}>
+      {children}
+    </a>
+  );
+}
 
 export default function LibraryPage() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -75,7 +102,7 @@ export default function LibraryPage() {
     <div className="animate-fade-up">
       <PageHead
         title="লাইব্রেরি"
-        subtitle={`ইসলামি বই পড়ুন ও ডাউনলোড করুন${books.length ? ` • ${bnNum(books.length)}টি` : ""}`}
+        subtitle={`ইসলামি কিতাব পড়ুন ও ডাউনলোড করুন${books.length ? ` • ${bnNum(books.length)}টি` : ""}`}
         icon="library"
       />
 
@@ -94,103 +121,152 @@ export default function LibraryPage() {
         />
       </form>
 
-      {categories.length > 0 && (
-        <div className="rail -mx-3 flex gap-2 overflow-x-auto px-3 py-3">
-          <button
-            onClick={() => { setCat(ALL); setVisible(PAGE_SIZE); }}
-            className={`chip shrink-0 !px-4 !py-2 ${cat === ALL ? "chip-active" : ""}`}
-          >
-            সব ({bnNum(books.length)})
-          </button>
-          {categories.map(([name, count]) => (
-            <button
-              key={name}
-              onClick={() => { setCat(name); setVisible(PAGE_SIZE); }}
-              className={`chip shrink-0 !px-4 !py-2 ${cat === name ? "chip-active" : ""}`}
-            >
-              {name} ({bnNum(count)})
-            </button>
-          ))}
-        </div>
-      )}
-
-      {!loading && (
-        <div className="mb-2 mt-1 text-xs font-bold text-ink-faint">
-          {bnNum(filtered.length)}টি বই
-        </div>
-      )}
-
-      {loading ? (
-        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="card animate-pulse p-3">
-              <div className="aspect-[3/4] rounded-xl bg-sand-dark" />
-              <div className="mt-2 h-3.5 w-3/4 rounded-full bg-sand-dark" />
-              <div className="mt-1.5 h-3 w-1/2 rounded-full bg-sand-dark" />
-            </div>
-          ))}
-        </div>
-      ) : filtered.length === 0 ? (
-        <div className="mt-3">
-          <EmptyState icon="library" title="বই পাওয়া যায়নি" hint="অন্য শব্দে খুঁজে দেখুন" />
-        </div>
-      ) : (
-        <>
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {list.map((b, i) => (
-              <div key={`${b.source}-${b.id}-${i}`} className="card card-hover flex flex-col overflow-hidden">
-                <a
-                  href={b.pdf || undefined}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="relative block aspect-[3/4] overflow-hidden bg-gradient-to-br from-primary-700 to-primary-900"
-                >
-                  {b.cover ? (
-                    <img
-                      src={b.cover}
-                      alt={b.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition duration-300 hover:scale-[1.03]"
-                    />
-                  ) : (
-                    <span className="flex h-full items-center justify-center text-gold-100">
-                      <Icon name="book" size={34} />
-                    </span>
-                  )}
-                </a>
-                <div className="flex flex-1 flex-col p-3">
-                  <div className="line-clamp-2 text-[13px] font-bold leading-snug">{b.title}</div>
-                  {b.author && (
-                    <div className="mt-0.5 line-clamp-1 text-[11px] text-ink-faint">{b.author}</div>
-                  )}
-                  {b.category && (
-                    <span className="mt-1 line-clamp-1 text-[10px] font-bold text-primary-700">{b.category}</span>
-                  )}
-                  {b.pdf && (
-                    <div className="mt-auto flex gap-1.5 pt-2.5">
-                      <a href={b.pdf} target="_blank" rel="noreferrer" className="btn-primary flex-1 !py-1.5 !text-[11px]">
-                        পড়ুন
-                      </a>
-                      <a href={b.pdf} download aria-label="download" className="btn-ghost !rounded-xl !p-2">
-                        <Icon name="download" size={15} />
-                      </a>
-                    </div>
-                  )}
-                </div>
+      <div className="mt-2 lg:flex lg:items-start lg:gap-5">
+        {categories.length > 0 && (
+          <aside className="hidden w-56 shrink-0 lg:block">
+            <div className="card sticky top-3 flex max-h-[calc(100vh-1.5rem)] flex-col overflow-hidden p-2">
+              <div className="flex items-center gap-1.5 px-2 pb-1 pt-2 text-[11px] font-bold text-ink-faint">
+                <Icon name="library" size={13} /> বিষয়
               </div>
-            ))}
-          </div>
+              <div className="rail min-h-0 flex-1 space-y-0.5 overflow-y-auto pb-1">
+                <button
+                  onClick={() => { setCat(ALL); setVisible(PAGE_SIZE); }}
+                  className={`flex w-full items-center justify-between gap-2 rounded-xl px-2.5 py-2 text-left text-[12px] font-bold transition ${
+                    cat === ALL
+                      ? "bg-primary-50 text-primary-700 dark:bg-primary-900/40 dark:text-gold-100"
+                      : "text-ink-soft hover:bg-sand dark:hover:bg-white/5"
+                  }`}
+                >
+                  <span>সব</span>
+                  <span className="text-[10px] font-bold tabular-nums opacity-70">{bnNum(books.length)}</span>
+                </button>
+                {categories.map(([name, count]) => (
+                  <button
+                    key={name}
+                    onClick={() => { setCat(name); setVisible(PAGE_SIZE); }}
+                    className={`flex w-full items-center justify-between gap-2 rounded-xl px-2.5 py-2 text-left text-[12px] font-bold transition ${
+                      cat === name
+                        ? "bg-primary-50 text-primary-700 dark:bg-primary-900/40 dark:text-gold-100"
+                        : "text-ink-soft hover:bg-sand dark:hover:bg-white/5"
+                    }`}
+                  >
+                    <span className="min-w-0 flex-1 leading-snug">{name}</span>
+                    <span className="text-[10px] font-bold tabular-nums opacity-70">{bnNum(count)}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </aside>
+        )}
 
-          {visible < filtered.length && (
-            <button
-              onClick={() => setVisible((v) => v + PAGE_SIZE)}
-              className="btn-outline mt-4 w-full !py-2.5 text-[13px]"
-            >
-              আরও দেখুন ({bnNum(filtered.length - visible)}টি বাকি)
-            </button>
+        <div className="min-w-0 flex-1">
+          {categories.length > 0 && (
+            <div className="rail -mx-3 flex gap-2 overflow-x-auto px-3 py-2 lg:hidden">
+              <button
+                onClick={() => { setCat(ALL); setVisible(PAGE_SIZE); }}
+                className={`chip shrink-0 !px-4 !py-2 ${cat === ALL ? "chip-active" : ""}`}
+              >
+                সব ({bnNum(books.length)})
+              </button>
+              {categories.map(([name, count]) => (
+                <button
+                  key={name}
+                  onClick={() => { setCat(name); setVisible(PAGE_SIZE); }}
+                  className={`chip shrink-0 !px-4 !py-2 ${cat === name ? "chip-active" : ""}`}
+                >
+                  {name} ({bnNum(count)})
+                </button>
+              ))}
+            </div>
           )}
-        </>
-      )}
+
+          {!loading && (
+            <div className="mb-2 mt-1 flex items-center justify-between gap-2 text-xs font-bold text-ink-faint">
+              <span>{bnNum(filtered.length)}টি বই</span>
+              {cat !== ALL && (
+                <button
+                  onClick={() => { setCat(ALL); setVisible(PAGE_SIZE); }}
+                  className="shrink-0 text-primary-700 dark:text-gold-100"
+                >
+                  সব দেখুন
+                </button>
+              )}
+            </div>
+          )}
+
+          {loading ? (
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              {[0, 1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="card animate-pulse p-3">
+                  <div className="aspect-[3/4] rounded-xl bg-sand-dark" />
+                  <div className="mt-2 h-3.5 w-3/4 rounded-full bg-sand-dark" />
+                  <div className="mt-1.5 h-3 w-1/2 rounded-full bg-sand-dark" />
+                </div>
+              ))}
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="mt-3">
+              <EmptyState icon="library" title="বই পাওয়া যায়নি" hint="অন্য শব্দে খুঁজে দেখুন" />
+            </div>
+          ) : (
+            <>
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                {list.map((b) => (
+                  <div key={`${b.source}-${b.id}`} className="card card-hover flex flex-col overflow-hidden">
+                    <BookOpen
+                      book={b}
+                      className="relative block aspect-[3/4] overflow-hidden bg-gradient-to-br from-primary-700 to-primary-900"
+                    >
+                      {b.cover ? (
+                        <img
+                          src={b.cover}
+                          alt={b.title}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition duration-300 hover:scale-[1.03]"
+                        />
+                      ) : (
+                        <span className="flex h-full items-center justify-center text-gold-100">
+                          <Icon name="book" size={34} />
+                        </span>
+                      )}
+                    </BookOpen>
+                    <div className="flex flex-1 flex-col p-3">
+                      <div className="line-clamp-2 text-[13px] font-bold leading-snug">{b.title}</div>
+                      {b.author && (
+                        <div className="mt-0.5 line-clamp-1 text-[11px] text-ink-faint">{b.author}</div>
+                      )}
+                      {b.category && (
+                        <span className="mt-1 line-clamp-1 text-[10px] font-bold text-primary-700">{b.category}</span>
+                      )}
+                      {(b.pdf || b.source === "islamijindegi") && (
+                        <div className="mt-auto flex gap-1.5 pt-2.5">
+                          <BookOpen book={b} className="btn-primary flex-1 !py-1.5 !text-[11px]">
+                            পড়ুন
+                          </BookOpen>
+                          {b.pdf && (
+                            <a href={b.pdf} download aria-label="download" className="btn-ghost !rounded-xl !p-2">
+                              <Icon name="download" size={15} />
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {visible < filtered.length && (
+                <button
+                  onClick={() => setVisible((v) => v + PAGE_SIZE)}
+                  className="btn-outline mt-4 w-full !py-2.5 text-[13px]"
+                >
+                  আরও দেখুন ({bnNum(filtered.length - visible)}টি বাকি)
+                </button>
+              )}
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

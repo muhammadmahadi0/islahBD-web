@@ -188,6 +188,7 @@ const paths: Record<string, React.ReactNode> = {
   ),
   x: <path d="M6 6l12 12M18 6 6 18" />,
   plus: <path d="M12 5v14M5 12h14" />,
+  minus: <path d="M5 12h14" />,
   mic: (
     <>
       <rect x="9" y="3" width="6" height="11" rx="3" />

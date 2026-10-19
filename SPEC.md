@@ -72,10 +72,23 @@ offline-tolerant, keyless APIs only.
 
 ### 4.4 Books
 - `/library` merges the IslahBD book API (`/api/books`) with the Islami
-  Jindegi kitab collection (`islamijindegi.com/bn/books`)
+  Jindegi kitab collection (`islamijindegi.com/bn/books`), using the
+  source listing's desktop category sidebar and mobile chip rail
 - Metadata/PDF links snapshot: `public/data/islamijindegi-books.json`
-  (1019 books, 1015 PDFs) — search, category chips, 48-per-page “আরও দেখুন”
-- Cards show cover, title, author, category with পড়ুন/download actions
+  (1019 books, 1015 PDFs) — search, categories, 48-per-page “আরও দেখুন”
+- Islami Jindegi cards open `/library/[id]`; IslahBD's single card still
+  opens its PDF. Download buttons stay PDF-only.
+- `/library/[id]` is the in-app reader. `/api/books/[id]` (cached 24h)
+  decodes the source detail page's RSC stream into chapter/subchapter HTML
+  (`$` text-chunk references resolved by byte length) and strips scripts,
+  styles, and event handlers. The reader mirrors the source: sticky
+  toolbar, desktop chapter sidebar + mobile drawer, justified Bengali
+  prose (`reader-prose`), font-size controls, prev/next, and a PDF button.
+- Books with no chapter text (many are PDF-only) render `PdfReader`
+  (`components/PdfReader.tsx`): PDF.js draws one page at a time with
+  page navigation, zoom, download, and “নতুন ট্যাবে” fallbacks. PDF.js is
+  lazy-loaded; its worker is served from `public/pdf.worker.min.mjs`,
+  matching the pinned `pdfjs-dist` version.
 
 ### 4.5 Shell & theme
 - `AppShell`: phone shell, header (logo, app-open deep link
