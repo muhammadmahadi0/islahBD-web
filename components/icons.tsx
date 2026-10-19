@@ -106,6 +106,12 @@ const paths: Record<string, React.ReactNode> = {
     </>
   ),
   playfill: <path d="M8 5.5v13l11-6.5-11-6.5Z" />,
+  youtube: (
+    <>
+      <rect x="2.5" y="5" width="19" height="14" rx="4" />
+      <path d="m10.2 9 5 3-5 3V9Z" fill="currentColor" stroke="none" />
+    </>
+  ),
   pause: (
     <>
       <rect x="6.5" y="5" width="4" height="14" rx="1.2" />

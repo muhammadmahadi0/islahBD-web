@@ -25,6 +25,7 @@ No test suite — `bun run build` + prod smoke test is the gate.
 - Shared UI: `components/ui.tsx` (`PageHead`, `ShareCopy`, `EmptyState`),
   `components/icons.tsx` (SVG only — never emoji), `components/AppShell.tsx`
 - Domain logic: `lib/` (`prayer.ts`, `quran.ts`, `audio.ts`, `shorts.ts`,
+  `shorts-server.ts`, `channels.ts`, `innertube.ts`, `channel-videos.ts`,
   `live.ts`, `yt-engine.ts`, `open-app.ts`, `surah-names.ts`, `data.ts`, `api.ts`)
 - Player: `store/player-store.ts`, `store/playlist-store.ts`,
   `components/audio/{AudioPlayer,MiniPlayer,AddToPlaylistMenu}.tsx`.
@@ -69,6 +70,14 @@ No test suite — `bun run build` + prod smoke test is the gate.
   Keep `public/pdf.worker.min.mjs` byte-identical to the pinned
   `pdfjs-dist` version — upgrading the package requires copying
   `node_modules/pdfjs-dist/build/pdf.worker.min.mjs` again.
+- Channels (`/channels`, `/channels/[id]`) come from the stable `master`
+  branch registry (`lib/channels.ts`) and list YouTube uploads through
+  youtubei.js' InnerTube API. That lib is **Node-only** — keep the channel
+  routes on the Node runtime and keep `youtubei.js` in
+  `experimental.serverComponentsExternalPackages`. Continuation tokens are
+  base64url-wrapped (`it1_…`) because raw tokens contain `%` and break the
+  path route. The clips API's `title` is often just the YouTube ID, so
+  titles come from oEmbed + `lib/shorts-titles.json` (`lib/shorts-server.ts`).
 
 ## Deploy
 

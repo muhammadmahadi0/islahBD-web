@@ -37,12 +37,14 @@ No env vars needed. All upstream APIs are keyless.
 | Poems, Munajate, Malfuzat, Self-purification | `/poem`, `/munajate`, `/malfuzat`, `/self-purification` |
 | Live broadcast, Boyan, Hamd/Naat | `/live`, `/boyan`, `/hamdnaat` |
 | Library + kitab reader, Short clips, Gallery/Wallpaper | `/library`, `/library/[id]` (chapter reader / PDF fallback), `/media`, `/gallery`, `/wallpaper` (`/nasheed` → `/hamdnaat`) |
+| Channels (YouTube) + video listing | `/channels`, `/channels/[id]` |
 | Paribar/Baiyat, Fatwa, Notice, Notifications | `/paribar` (family hub: biography, mission, applications, connect), `/mission` (Shaykh's mission, beta), `/fatwa`, `/notice`, `/notifications` |
 | Donate, Support, Settings, Others hub, Member | `/donate`, `/support`, `/settings`, `/others`, `/member` |
 
 API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/shorts`,
 `/api/books`, `/api/books/[id]` (kitab chapters), `/api/live`, `/api/hls/…`,
-`/api/prayer`, `/api/quran/chapters|verses|recitations|chapter-audio|search`.
+`/api/prayer`, `/api/quran/chapters|verses|recitations|chapter-audio|search`,
+`/api/channel/[id]` (+ `/meta`, `/more/[token]` — YouTube InnerTube listings).
 
 ## Design system
 

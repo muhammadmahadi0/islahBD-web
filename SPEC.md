@@ -118,6 +118,22 @@ offline-tolerant, keyless APIs only.
   `prefers-reduced-motion`. The API-loaded “সাম্প্রতিক বয়ান” group restarts
   a short stagger when it mounts.
 
+### 4.6 Channels (YouTube, ported from `master`)
+- Registry `lib/channels.ts` from the stable `master` branch — Islah
+  (`@islahbd`) + Islahi Ghazal (`@IslahiGhazal`); avatars come from
+  `/api/channel/[id]/meta` (name + avatar only, never the video listing)
+- `lib/innertube.ts` lists uploads through youtubei.js' keyless InnerTube
+  API (Node runtime only); `serverComponentsExternalPackages` keeps it out
+  of the server bundle. Continuation tokens are wrapped as path-safe
+  `it1_`-base64url (`toClientToken`/`fromClientToken`) because raw tokens
+  contain `%`
+- Routes: `/api/channel/[id]` (first ~100 uploads + token),
+  `/meta` (name/avatar), `/more/[token]` (next chunks)
+- Pages: `/channels` (directory, also a section on `/others`) and
+  `/channels/[id]` (video grid with সব/বয়ান/ক্লিপস + নতুন/জনপ্রিয়/পুরনো,
+  “আরও দেখুন” paging); videos play through the existing YouTube engine and
+  share via `/channels/[id]?play=<videoId>`
+
 ## 5. Conventions
 
 - Bengali UI strings inline (no i18n framework); dates/digits in Bengali
