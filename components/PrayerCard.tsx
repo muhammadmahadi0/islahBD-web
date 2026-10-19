@@ -159,16 +159,16 @@ export default function PrayerCard() {
           </button>
           <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-right backdrop-blur-md">
             <Icon name="calendar" size={14} className="text-gold-100" />
-            <span className="text-[11px] leading-tight">
+            <span className="text-xs leading-tight">
               <span className="block font-semibold text-white">{gregEn}</span>
-              <span className="block text-[10px] text-white/75">{hijriText(hijri, "bn")}</span>
+              <span className="block text-[11px] text-white/75">{hijriText(hijri, "bn")}</span>
             </span>
           </span>
         </div>
 
         {/* gauge + current prayer */}
         <div className="my-3 flex items-center justify-between rounded-2xl bg-white/10 p-3.5">
-          <div className="relative flex h-20 w-20 items-center justify-center">
+          <div className="relative flex h-24 w-24 shrink-0 items-center justify-center">
             <svg className="h-full w-full -rotate-90" viewBox="0 0 36 36">
               <path className="text-white/20" strokeWidth="3.5" stroke="currentColor" fill="none" d={`M18 2.0845 a ${R} ${R} 0 0 1 0 31.831 a ${R} ${R} 0 0 1 0 -31.831`} />
               <path
@@ -177,28 +177,28 @@ export default function PrayerCard() {
                 d={`M18 2.0845 a ${R} ${R} 0 0 1 0 31.831 a ${R} ${R} 0 0 1 0 -31.831`}
               />
             </svg>
-            <div className="absolute text-center">
-              <p className="text-[10px] text-white/75">এখন</p>
-              <p className="text-[10px] font-bold leading-tight">{remainBn}</p>
-              <p className="text-[9px] text-white/70">বাকি</p>
+            <div className="absolute px-1 text-center">
+              <p className="text-[11px] text-white/75">এখন</p>
+              <p className="text-[11px] font-bold leading-tight">{remainBn}</p>
+              <p className="text-[10px] text-white/70">বাকি</p>
             </div>
           </div>
-          <div className="ml-4 flex-1">
+          <div className="ml-3 flex-1">
             <div className="mb-2 flex items-center gap-2">
               <span className="rounded bg-gold px-2 py-0.5 text-xs font-bold text-[#1a1405]">এখন</span>
               <span className="text-2xl font-bold tracking-wide text-white">{displayName}</span>
             </div>
-            <div className="flex gap-3 text-[11px] text-white/80">
+            <div className="flex gap-3 text-xs text-white/80">
               <div>
-                <span className="block text-[10px] opacity-75">শুরু</span>
+                <span className="block text-[11px] opacity-75">শুরু</span>
                 <span className="font-semibold tabular-nums text-white">{fmt12(specialStart || times[cur])}</span>
               </div>
               <div className="border-l border-white/20 pl-3">
-                <span className="block text-[10px] opacity-75">শেষ</span>
+                <span className="block text-[11px] opacity-75">শেষ</span>
                 <span className="font-semibold tabular-nums text-white">{endTime}</span>
               </div>
             </div>
-            <Link href="/prayer-times" className="mt-2 inline-block text-[11px] font-bold text-gold-100 underline-offset-2 hover:underline">
+            <Link href="/prayer-times" className="mt-2 inline-block text-xs font-bold text-gold-100 underline-offset-2 hover:underline">
               পূর্ণ সময়সূচি →
             </Link>
           </div>
@@ -217,9 +217,9 @@ export default function PrayerCard() {
                     : "bg-white/10 text-white/90 hover:bg-white/20"
                 }`}
               >
-                <p className="mb-1 text-[11px]">{prayerName(key, "bn")}</p>
-                <p className="text-[10px] font-semibold tabular-nums">{fmt12(times[key])}</p>
-                <Icon name={icon} size={12} className="mx-auto mt-1 opacity-80" />
+                <p className="mb-1 text-xs">{prayerName(key, "bn")}</p>
+                <p className="text-[11px] font-semibold tabular-nums">{fmt12(times[key])}</p>
+                <Icon name={icon} size={13} className="mx-auto mt-1 opacity-80" />
               </div>
             );
           })}
