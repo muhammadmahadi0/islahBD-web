@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getShortClips } from "../../../lib/shorts";
+import { getShortClips } from "../../../lib/shorts-server";
 
 // Proxies the keyless IslahBD clips API with ISR caching (same pattern as
 // /api/boyan and /api/hamdnaat).

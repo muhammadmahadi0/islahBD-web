@@ -71,6 +71,11 @@ offline-tolerant, keyless APIs only.
 - Short clips (`/media`): `/api/shorts` (clips API) — audio clips ride the
   stream engine, video clips the YouTube engine; search, type filter,
   silent refresh, playlist menu
+- Clip titles: the upstream clips API stores the bare YouTube ID in
+  `title` for most videos. `lib/shorts.ts` resolves real titles via the
+  keyless YouTube oEmbed endpoint with a committed snapshot
+  (`lib/shorts-titles.json`), and normalizes `youtubeId` (bare IDs plus
+  watch/shorts/embed URLs) before thumbnails and playback
 - Live: `/api/live` polling (60s), in-app HLS or last recording
 - Shareable items: every track carries a `sharePath` deep link
   (`/boyan?play=boyan-<id>`, `/hamdnaat?play=hamd-<id>`,
