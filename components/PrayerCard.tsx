@@ -121,7 +121,11 @@ export default function PrayerCard() {
   const done = Math.min(1, Math.max(0, 1 - remainSec / total));
 
   const R = 15.9155;
-  const CIRC = 2 * Math.PI * R;
+  // Leading edge of the progress arc — a small dot makes the start/end
+  // of the countdown readable at a glance.
+  const markerA = (done * 360 * Math.PI) / 180;
+  const markerX = 18 + R * Math.sin(markerA);
+  const markerY = 18 - R * Math.cos(markerA);
 
   const rh = Math.floor(remainSec / 3600);
   const rm = Math.floor((remainSec % 3600) / 60);
@@ -175,6 +179,13 @@ export default function PrayerCard() {
                 className="text-gold-100" strokeWidth="3.5" strokeLinecap="round" stroke="currentColor" fill="none"
                 strokeDasharray={`${(done * 100).toFixed(1)}, 100`}
                 d={`M18 2.0845 a ${R} ${R} 0 0 1 0 31.831 a ${R} ${R} 0 0 1 0 -31.831`}
+              />
+              <circle
+                cx={markerX}
+                cy={markerY}
+                r="2.2"
+                className="fill-gold-100 stroke-white"
+                strokeWidth="0.7"
               />
             </svg>
             <div className="absolute px-1 text-center">
