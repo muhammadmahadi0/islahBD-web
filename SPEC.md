@@ -178,6 +178,27 @@ offline-tolerant, keyless APIs only.
   to persist subscriptions through `/api/push/subscribe`); without them the
   worker's own polling still delivers, so enabling never dead-ends.
 
+### 4.9 Islamic calendar (`/calendar`)
+- Two tabs in one hero: **ক্যালেন্ডার** (Hijri month grid) and **ঐতিহাসিক
+  ঘটনা ও তথ্য** (searchable archive over `public/data/islamic_calendar.json`,
+  165 entries in 12 month buckets, tap → jump to that day in the grid)
+- Each cell carries three dates at once — Gregorian (sky), Bangla (gold),
+  Hijri (emerald) — with a red dot on days that have a recorded event.
+  Tapping a day opens its full date + events inline. Prev/next arrows page
+  Hijri months, today is marked, and **আজ** / **চলতি মাসে ফিরুন** jump back.
+  Under the grid: that month’s events, tappable to select the day.
+- Today’s Hijri date comes from the same `/api/prayer` (Aladhan) payload the
+  homepage prayer card renders, through `adjustHijri`’s BD −1 day rule — the
+  two can never disagree. `lib/hijri.ts` is the instant/offline fallback and
+  is shifted by the API delta (normally 0) so the grid matches the card.
+- Hijri math: Umm al-Qura via `Intl` (tabular fallback) plus a month-start
+  search; month lengths come from real start dates (29/30). Bangla math:
+  Bangla Academy 2019 reform — Boishakh..Ashwin 31 days, Kartik..Magh 30,
+  Falgun 29 (30 in a leap year), Choitro 30, Pohela Boishakh = 14 April.
+  The week grid is Monday-first, matching the design reference.
+- Navigation is Hijri-based; the Gregorian span of the shown Hijri month is
+  printed under its title.
+
 ## 5. Conventions
 
 - Bengali UI strings inline (no i18n framework); dates/digits in Bengali
@@ -192,4 +213,4 @@ offline-tolerant, keyless APIs only.
   (generated from `public/images/logo.png`)
 - Toolchain: **bun** is the package manager (`bun install`, `bun run *`,
   `bun.lock` committed, `packageManager` pinned in `package.json`)
-- Verify with `bun run build` (49 routes) + prod smoke test before push
+- Verify with `bun run build` (66 routes) + prod smoke test before push

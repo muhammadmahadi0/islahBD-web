@@ -86,6 +86,14 @@ No test suite — `bun run build` + prod smoke test is the gate.
   is optional: it only turns on when `NEXT_PUBLIC_VAPID_PUBLIC_KEY` is set
   (and `KV_REST_API_URL`/`KV_REST_API_TOKEN` to store subscriptions) — never
   make notifications depend on it, or enabling dead-ends.
+- Calendar (`/calendar`): today's Hijri date must come from `/api/prayer`
+  (the same Aladhan payload as the homepage prayer card) via `adjustHijri`;
+  `lib/hijri.ts` is only the instant/offline fallback and is corrected by
+  the API delta. Bangla dates follow the **2019 Bangla Academy reform**
+  (Boishakh..Ashwin 31 days, Kartik..Magh 30, Falgun 29/30, Pohela Boishakh
+  14 April) — the old Surya Siddhanta lengths shift every Bengali date by a
+  day. Hijri month lengths are derived from real month-start dates, never
+  hard-coded alternating 30/29.
 
 ## Deploy
 
