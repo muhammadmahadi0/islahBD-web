@@ -40,7 +40,7 @@ export const homeGrid: Feature[] = [
   { route: "/boyan", titleBn: "বয়ান", titleEn: "Boyan", icon: "mic", ...T.teal },
   { route: "/hamdnaat", titleBn: "হামদ ও নাত", titleEn: "Hamd/Naat", icon: "music", ...T.violet },
   { route: "/library", titleBn: "লাইব্রেরি", titleEn: "Library", icon: "library", ...T.orange },
-  { route: "/media", titleBn: "ভিডিও", titleEn: "Videos", icon: "play", ...T.sky },
+  { route: "/media", titleBn: "সংক্ষিপ্ত ক্লিপস", titleEn: "Short Clips", icon: "play", ...T.sky },
   { route: "/nasheed", titleBn: "নাশীদ / অডিও", titleEn: "Nasheed", icon: "headphones", ...T.violet },
   { route: "/gallery", titleBn: "গ্যালারি", titleEn: "Gallery", icon: "image", ...T.indigo },
   { route: "/wallpaper", titleBn: "ওয়ালপেপার", titleEn: "Wallpaper", icon: "mountain", ...T.teal },
