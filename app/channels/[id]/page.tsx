@@ -41,6 +41,8 @@ export default function ChannelPage() {
   // The indexer can load 1000+ uploads; render them in windows of 60 so the
   // DOM stays light on phones.
   const [visible, setVisible] = useState(60);
+  const [query, setQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
 
   const { playTrack, currentTrack, isPlaying } = usePlayerStore();
 
@@ -75,11 +77,11 @@ export default function ChannelPage() {
     load();
   }, [load]);
 
-  // Popular/Oldest must rank every upload, not just the first page. Newest is
-  // the native API order so it needs no indexing; the other two walk the
-  // continuation tokens in the background and sort as each page arrives.
+  // Popular/Oldest — and any title search — must cover every upload, not just
+  // the first page. Newest with no query is the native API order, so it needs
+  // no indexing; otherwise we walk the continuation tokens in the background.
   useEffect(() => {
-    if (sort === "newest" || loading) return;
+    if (loading || (sort === "newest" && !query.trim())) return;
     if (indexingRef.current) return;
     if (indexedForRef.current === channelId) return;
     const startToken = tokenRef.current;
@@ -123,17 +125,19 @@ export default function ChannelPage() {
       cancelled = true;
       indexingRef.current = false;
     };
-  }, [sort, channelId, loading]);
+  }, [sort, channelId, loading, query]);
 
   const results = useMemo(() => {
     let list = videos;
     if (filter === "bayan") list = list.filter((v) => (v.duration || 0) > SHORT_MAX_SECONDS);
     else if (filter === "short") list = list.filter((v) => (v.duration || 0) <= SHORT_MAX_SECONDS);
+    const q = query.trim().toLowerCase();
+    if (q) list = list.filter((v) => (v.title || "").toLowerCase().includes(q));
     if (sort === "popular") return [...list].sort((a, b) => (b.views || 0) - (a.views || 0));
     // Uploads arrive in exact newest-first order, so oldest is just reversed.
     if (sort === "oldest") return [...list].reverse();
     return list;
-  }, [videos, filter, sort]);
+  }, [videos, filter, sort, query]);
 
   const toTrack = useCallback(
     (video: ChannelVideo): Track => ({
@@ -152,10 +156,10 @@ export default function ChannelPage() {
   const tracks = useMemo(() => results.map(toTrack), [results, toTrack]);
   const shown = useMemo(() => results.slice(0, visible), [results, visible]);
 
-  // A new channel/filter/sort starts the window over.
+  // A new channel/filter/sort/search starts the window over.
   useEffect(() => {
     setVisible(60);
-  }, [filter, sort, channelId]);
+  }, [filter, sort, channelId, query]);
 
   const playAt = (index: number) => {
     if (!tracks[index]) return;
@@ -216,38 +220,75 @@ export default function ChannelPage() {
         }
       />
 
-      <div className="rail -mx-3 mt-3 flex items-center gap-2 overflow-x-auto px-3 pb-1">
-        {(
-          [
-            { id: "all", label: `সব (${bnNum(videos.length)})` },
-            { id: "bayan", label: `বয়ান (${bnNum(bayanCount)})` },
-            { id: "short", label: `ক্লিপস (${bnNum(shortCount)})` },
-          ] as { id: Filter; label: string }[]
-        ).map((f) => (
-          <button
-            key={f.id}
-            onClick={() => setFilter(f.id)}
-            className={`chip shrink-0 !px-4 !py-2 ${filter === f.id ? "chip-active" : ""}`}
-          >
-            {f.label}
-          </button>
-        ))}
-        <span className="mx-1 h-5 w-px shrink-0 bg-slate-200 dark:bg-white/10" />
-        {(
-          [
-            { id: "newest", label: "নতুন" },
-            { id: "popular", label: "জনপ্রিয়" },
-            { id: "oldest", label: "পুরনো" },
-          ] as { id: Sort; label: string }[]
-        ).map((s) => (
-          <button
-            key={s.id}
-            onClick={() => setSort(s.id)}
-            className={`chip shrink-0 !px-4 !py-2 ${sort === s.id ? "chip-active" : ""}`}
-          >
-            {s.label}
-          </button>
-        ))}
+      {showSearch && (
+        <div className="mt-3 flex items-center gap-2 rounded-2xl border border-slate-200/80 bg-white px-3.5 py-2.5 dark:border-white/10 dark:bg-[rgba(30,41,59,0.65)]">
+          <Icon name="search" size={18} className="shrink-0 text-ink-faint" />
+          <input
+            autoFocus
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="এই চ্যানেলের ভিডিও খুঁজুন…"
+            className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-ink-faint"
+          />
+          {query && (
+            <button
+              onClick={() => setQuery("")}
+              aria-label="মুছুন"
+              className="shrink-0 rounded-full p-1 text-ink-faint transition hover:text-ink"
+            >
+              <Icon name="x" size={16} />
+            </button>
+          )}
+        </div>
+      )}
+
+      <div className="-mx-3 mt-3 flex items-center gap-2 px-3">
+        <div className="rail flex flex-1 items-center gap-2 overflow-x-auto pb-1">
+          {(
+            [
+              { id: "all", label: `সব (${bnNum(videos.length)})` },
+              { id: "bayan", label: `বয়ান (${bnNum(bayanCount)})` },
+              { id: "short", label: `ক্লিপস (${bnNum(shortCount)})` },
+            ] as { id: Filter; label: string }[]
+          ).map((f) => (
+            <button
+              key={f.id}
+              onClick={() => setFilter(f.id)}
+              className={`chip shrink-0 !px-4 !py-2 ${filter === f.id ? "chip-active" : ""}`}
+            >
+              {f.label}
+            </button>
+          ))}
+          <span className="mx-1 h-5 w-px shrink-0 bg-slate-200 dark:bg-white/10" />
+          {(
+            [
+              { id: "newest", label: "নতুন" },
+              { id: "popular", label: "জনপ্রিয়" },
+              { id: "oldest", label: "পুরনো" },
+            ] as { id: Sort; label: string }[]
+          ).map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setSort(s.id)}
+              className={`chip shrink-0 !px-4 !py-2 ${sort === s.id ? "chip-active" : ""}`}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={() =>
+            setShowSearch((open) => {
+              if (open) setQuery("");
+              return !open;
+            })
+          }
+          aria-label="ভিডিও খুঁজুন"
+          aria-pressed={showSearch}
+          className={`chip shrink-0 !px-3 !py-2 ${showSearch ? "chip-active" : ""}`}
+        >
+          <Icon name="search" size={16} />
+        </button>
       </div>
 
       {loading ? (
@@ -264,8 +305,16 @@ export default function ChannelPage() {
         </div>
       ) : error ? (
         <EmptyState icon="youtube" title={error} hint="পুনরায় চেষ্টা করুন" />
-      ) : results.length === 0 ? (
-        <EmptyState icon="youtube" title="কোনো ভিডিও পাওয়া যায়নি" hint="অন্য ফিল্টার চেষ্টা করুন" />
+      ) : results.length === 0 && !indexing ? (
+        <EmptyState
+          icon="search"
+          title={
+            query.trim()
+              ? `“${query.trim()}” লিখে কোনো ভিডিও পাওয়া যায়নি`
+              : "কোনো ভিডিও পাওয়া যায়নি"
+          }
+          hint={query.trim() ? "অন্য শব্দ দিয়ে খুঁজুন" : "অন্য ফিল্টার চেষ্টা করুন"}
+        />
       ) : (
         <>
           <div className="grid grid-cols-1 gap-x-3 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -329,9 +378,10 @@ export default function ChannelPage() {
             })}
           </div>
 
-          {sort !== "newest" && indexing && (
+          {indexing && (
             <p className="mt-5 text-center text-xs font-semibold text-primary-700">
-              সব ভিডিও সাজানো হচ্ছে… ({bnNum(videos.length)})
+              {query.trim() ? "সব ভিডিওতে খোঁজা হচ্ছে…" : "সব ভিডিও সাজানো হচ্ছে…"} (
+              {bnNum(videos.length)})
             </p>
           )}
           {(visible < results.length || (sort === "newest" && !!nextToken)) && (

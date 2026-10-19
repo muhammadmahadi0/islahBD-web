@@ -131,12 +131,14 @@ offline-tolerant, keyless APIs only.
   `/meta` (name/avatar), `/more/[token]` (next chunks)
 - Pages: `/channels` (directory; also surfaced as a single **চ্যানেল**
   button on `/others` that holds both channels and opens the directory) and
-  `/channels/[id]` (video grid with সব/বয়ান/ক্লিপস + নতুন/জনপ্রিয়/পুরনো).
-  Newest is the native upload order with “আরও দেখুন” paging; **জনপ্রিয়** and
-  **পুরনো rank the whole catalog** via a background indexer that walks the
-  continuation tokens (a progress line shows while indexing), and results
-  render in windows of 60 to keep the DOM light. Videos play through the
-  existing YouTube engine and share via `/channels/[id]?play=<videoId>`
+  `/channels/[id]` (video grid with সব/বয়ান/ক্লিপস + নতুন/জনপ্রিয়/পুরনো
+  and a pinned YouTube-style search button beside the sort chips).
+  Newest is the native upload order with “আরও দেখুন” paging; **জনপ্রিয়**,
+  **পুরনো**, and any **title search** cover the whole catalog via a background
+  indexer that walks the continuation tokens (a progress line shows while
+  indexing), and results render in windows of 60 to keep the DOM light.
+  Videos play through the existing YouTube engine and share via
+  `/channels/[id]?play=<videoId>`
 
 ## 5. Conventions
 
