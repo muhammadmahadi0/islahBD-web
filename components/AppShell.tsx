@@ -107,7 +107,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </div>
         {/* Honorific sub-header — home only */}
         {isHome && (
-          <div className="scholar-banner">
+          <Link href="/paribar" className="scholar-banner block transition hover:brightness-[1.02] active:scale-[0.99]">
             <p className="mx-auto max-w-sm text-[12px] font-medium leading-relaxed text-ink-soft">
               তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন
               হুসাইন সাহেব-এর খলিফা হযরত মাওলানা
@@ -115,7 +115,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <h1 className="gold-text mt-1 text-[28px] font-extrabold leading-tight tracking-wide">
               তৈয়্যেব আশরাফ সাহেব
             </h1>
-          </div>
+          </Link>
         )}
       </header>
 
