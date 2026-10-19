@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Icon } from "./icons";
 import {
   detectLocation, fetchPrayerData,
-  toMinutes, getNextPrayer, getCurrentKey, secsUntil,
+  toMinutes, getNextPrayer, getCurrentKey, getSpecialPeriod, getNaflWindows, secsUntil,
   prayerName, toBn, hijriText,
   type PrayerTimes,
 } from "../lib/prayer";
@@ -94,9 +94,26 @@ export default function PrayerCard() {
 
   const next = getNextPrayer(times, now);
   const cur = getCurrentKey(times, now);
-  const remainSec = secsUntil(next.time, now, next.isTomorrow);
+  // Match the dedicated prayer page: during the sunrise prohibition, Ishraq
+  // or Chasht, the hero shows that period's name and its remaining time.
+  const special = getSpecialPeriod(times, now);
+  const remainSec = special ? special.remainSec : secsUntil(next.time, now, next.isTomorrow);
+  const win = getNaflWindows(times);
+  const specialStart =
+    special && special.type === "prohibited"
+      ? times.sunrise
+      : special && special.type === "ishraq"
+        ? win?.ishraqStart
+        : special && special.type === "chasht"
+          ? win?.chashtStart
+          : null;
+  const displayName = special
+    ? special.type === "prohibited"
+      ? prayerName("sunrise", "bn")
+      : special.labelBn
+    : prayerName(cur, "bn");
 
-  const curStart = toMinutes(times[cur]) * 60;
+  const curStart = toMinutes(specialStart || times[cur]) * 60;
   let winStart = new Date(now);
   winStart.setHours(Math.floor(curStart / 3600), Math.floor((curStart % 3600) / 60), 0, 0);
   if (winStart.getTime() > now.getTime()) winStart.setDate(winStart.getDate() - 1);
@@ -116,6 +133,14 @@ export default function PrayerCard() {
     d.setHours(h, m, 0, 0);
     return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
   };
+
+  // Special periods count down to their own end, so show that end time
+  // rather than the next prayer's time.
+  const fmtDate12 = (d: Date) =>
+    d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+  const endTime = special
+    ? fmtDate12(new Date(now.getTime() + remainSec * 1000))
+    : fmt12(next.time);
 
   const gregEn = now.toLocaleDateString("en-US", { weekday: "short", day: "numeric", month: "short" });
 
@@ -161,16 +186,16 @@ export default function PrayerCard() {
           <div className="ml-4 flex-1">
             <div className="mb-2 flex items-center gap-2">
               <span className="rounded bg-gold px-2 py-0.5 text-xs font-bold text-[#1a1405]">এখন</span>
-              <span className="text-2xl font-bold tracking-wide text-white">{prayerName(cur, "bn")}</span>
+              <span className="text-2xl font-bold tracking-wide text-white">{displayName}</span>
             </div>
             <div className="flex gap-3 text-[11px] text-white/80">
               <div>
                 <span className="block text-[10px] opacity-75">শুরু</span>
-                <span className="font-semibold tabular-nums text-white">{fmt12(times[cur])}</span>
+                <span className="font-semibold tabular-nums text-white">{fmt12(specialStart || times[cur])}</span>
               </div>
               <div className="border-l border-white/20 pl-3">
                 <span className="block text-[10px] opacity-75">শেষ</span>
-                <span className="font-semibold tabular-nums text-white">{fmt12(next.time)}</span>
+                <span className="font-semibold tabular-nums text-white">{endTime}</span>
               </div>
             </div>
             <Link href="/prayer-times" className="mt-2 inline-block text-[11px] font-bold text-gold-100 underline-offset-2 hover:underline">
