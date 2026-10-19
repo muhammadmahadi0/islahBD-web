@@ -161,13 +161,18 @@ export default function PrayerCard() {
             <Icon name={locating ? "clock" : "pin"} size={14} className="text-gold-100" />
             <span className="font-medium text-white">{locating ? "খোঁজা হচ্ছে…" : place}</span>
           </button>
-          <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-right backdrop-blur-md">
+          <Link
+            href="/calendar"
+            title="ইসলামিক ক্যালেন্ডার দেখুন"
+            aria-label="ইসলামিক ক্যালেন্ডার দেখুন"
+            className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-right backdrop-blur-md transition hover:bg-white/25 active:scale-95"
+          >
             <Icon name="calendar" size={14} className="text-gold-100" />
             <span className="text-xs leading-tight">
               <span className="block font-semibold text-white">{gregEn}</span>
               <span className="block text-[11px] text-white/75">{hijriText(hijri, "bn")}</span>
             </span>
-          </span>
+          </Link>
         </div>
 
         {/* gauge + current prayer */}
