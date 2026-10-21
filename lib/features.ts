@@ -43,7 +43,6 @@ export const homeGrid: Feature[] = [
   { route: "/media", titleBn: "সংক্ষিপ্ত ক্লিপস", titleEn: "Short Clips", icon: "play", ...T.sky },
   { route: "/nasheed", titleBn: "নাশীদ / অডিও", titleEn: "Nasheed", icon: "headphones", ...T.violet },
   { route: "/gallery", titleBn: "গ্যালারি", titleEn: "Gallery", icon: "image", ...T.indigo },
-  { route: "/wallpaper", titleBn: "ওয়ালপেপার", titleEn: "Wallpaper", icon: "mountain", ...T.teal },
   { route: "/nearby-mosque", titleBn: "কাছের মসজিদ", titleEn: "Mosques", icon: "mosque", ...T.emerald },
   { route: "/paribar", titleBn: "পরিবার / বাইআত", titleEn: "Paribar", icon: "users", ...T.orange },
   { route: "/fatwa", titleBn: "শরঈ জিজ্ঞাসা", titleEn: "Fatwa", icon: "help", ...T.gold },
