@@ -3,48 +3,147 @@ import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 
+type Photo = { id: number; url: string; order: number };
+type Album = { id: number; title?: string; coverUrl?: string | null; photos?: Photo[]; imageCount?: number };
+type Wallpaper = { id: number; url?: string; image?: string; file?: string; title?: string };
+
+const cover = (a: Album) =>
+  a.coverUrl || a.photos?.slice().sort((x, y) => x.order - y.order)[0]?.url || "";
+const wallpaperUrl = (w: Wallpaper) => w.url || w.image || w.file || "";
+
 export default function GalleryPage() {
-  const [albums, setAlbums] = useState<any[]>([]);
-  const [walls, setWalls] = useState<any[]>([]);
+  const [albums, setAlbums] = useState<Album[]>([]);
+  const [walls, setWalls] = useState<Wallpaper[]>([]);
+  const [loadingAlbums, setLoadingAlbums] = useState(true);
+  const [loadingWalls, setLoadingWalls] = useState(true);
+  const [open, setOpen] = useState<Album | null>(null);
 
   useEffect(() => {
     fetch("https://api.islahbd.com/api/gallery-albums/?ordering=-createdAt")
-      .then((r) => r.json()).then((d) => setAlbums(Array.isArray(d) ? d : d.results || [])).catch(() => {});
+      .then((r) => r.json())
+      .then((d) => setAlbums(Array.isArray(d) ? d : d.results || []))
+      .catch(() => {})
+      .finally(() => setLoadingAlbums(false));
     fetch("https://api.islahbd.com/api/wallpapers/?ordering=-createdAt")
-      .then((r) => r.json()).then((d) => setWalls(Array.isArray(d) ? d : d.results || [])).catch(() => {});
+      .then((r) => r.json())
+      .then((d) => setWalls(Array.isArray(d) ? d : d.results || []))
+      .catch(() => {})
+      .finally(() => setLoadingWalls(false));
   }, []);
 
   return (
+    <>
     <div className="animate-fade-up">
-      <PageHead title="গ্যালারি ও ওয়ালপেপার" subtitle={`অ্যালবাম ${albums.length} • ওয়ালপেপার ${walls.length}`} icon="image" />
+      <PageHead
+        title="গ্যালারি ও ওয়ালপেপার"
+        subtitle={`অ্যালবাম ${albums.length} • ওয়ালপেপার ${walls.length}`}
+        icon="image"
+      />
+
       <div className="mb-2 mt-5 text-sm font-bold">অ্যালবাম</div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {albums.slice(0, 18).map((a: any, i: number) => (
-          <div key={i} className="card card-hover overflow-hidden">
-            {a.cover
-              ? <img src={a.cover} alt="" loading="lazy" className="h-28 w-full object-cover" />
-              : <div className="flex h-28 items-center justify-center bg-sand text-ink-faint"><Icon name="image" size={26} /></div>}
-            <div className="truncate p-2.5 text-xs font-bold">{a.title || `অ্যালবাম ${i + 1}`}</div>
-          </div>
-        ))}
-        {albums.length === 0 && <div className="card col-span-full p-4 text-center text-sm text-ink-faint">লোড হচ্ছে…</div>}
+        {albums.slice(0, 18).map((a) => {
+          const src = cover(a);
+          const count = a.photos?.length ?? a.imageCount ?? 0;
+          return (
+            <button
+              key={a.id}
+              onClick={() => setOpen(a)}
+              className="card card-hover overflow-hidden text-left"
+            >
+              {src ? (
+                <img src={src} alt="" loading="lazy" className="h-28 w-full object-cover" />
+              ) : (
+                <div className="flex h-28 items-center justify-center bg-sand text-ink-faint">
+                  <Icon name="image" size={26} />
+                </div>
+              )}
+              <div className="flex items-center justify-between gap-2 p-2.5">
+                <span className="truncate text-xs font-bold">{a.title || `অ্যালবাম ${a.id}`}</span>
+                {count > 0 && <span className="flex-shrink-0 text-[10px] text-ink-faint">{count}টি</span>}
+              </div>
+            </button>
+          );
+        })}
+        {loadingAlbums && (
+          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">লোড হচ্ছে…</div>
+        )}
+        {!loadingAlbums && albums.length === 0 && (
+          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">কোনো অ্যালবাম নেই</div>
+        )}
       </div>
+
       <div className="mb-2 mt-5 text-sm font-bold">ওয়ালপেপার</div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {walls.slice(0, 18).map((w: any, i: number) => (
-          <div key={i} className="card card-hover overflow-hidden">
-            {(w.image || w.file)
-              ? <img src={w.image || w.file} alt="" loading="lazy" className="h-40 w-full object-cover" />
-              : <div className="flex h-40 items-center justify-center bg-sand text-ink-faint"><Icon name="mountain" size={26} /></div>}
-            {(w.image || w.file) && (
-              <a href={w.image || w.file} download className="flex items-center justify-center gap-1.5 p-2.5 text-xs font-bold text-primary-700 transition hover:bg-primary-50">
-                <Icon name="download" size={14} /> ডাউনলোড
-              </a>
+        {walls.slice(0, 18).map((w) => {
+          const src = wallpaperUrl(w);
+          return (
+            <div key={w.id} className="card card-hover overflow-hidden">
+              {src ? (
+                <img src={src} alt={w.title || ""} loading="lazy" className="h-40 w-full object-cover" />
+              ) : (
+                <div className="flex h-40 items-center justify-center bg-sand text-ink-faint">
+                  <Icon name="mountain" size={26} />
+                </div>
+              )}
+              {src && (
+                <a
+                  href={src}
+                  download
+                  className="flex items-center justify-center gap-1.5 p-2.5 text-xs font-bold text-primary-700 transition hover:bg-primary-50"
+                >
+                  <Icon name="download" size={14} /> ডাউনলোড
+                </a>
+              )}
+            </div>
+          );
+        })}
+        {loadingWalls && (
+          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">লোড হচ্ছে…</div>
+        )}
+        {!loadingWalls && walls.length === 0 && (
+          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">কোনো ওয়ালপেপার নেই</div>
+        )}
+      </div>
+      </div>
+
+      {open && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+          onClick={() => setOpen(null)}
+        >
+          <div
+            className="max-h-[85vh] w-full overflow-y-auto rounded-3xl bg-white p-4 shadow-2xl dark:bg-[#0f172a] sm:max-w-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-3 flex items-start justify-between gap-3">
+              <div>
+                <div className="text-sm font-bold">{open.title || `অ্যালবাম ${open.id}`}</div>
+                <div className="mt-0.5 text-[11px] text-ink-faint">
+                  {open.photos?.length ?? 0}টি ছবি
+                </div>
+              </div>
+              <button
+                onClick={() => setOpen(null)}
+                aria-label="বন্ধ করুন"
+                className="rounded-full bg-sand p-2 text-ink-soft transition hover:text-ink"
+              >
+                <Icon name="x" size={16} />
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {(open.photos || []).slice().sort((x, y) => x.order - y.order).map((p) => (
+                <a key={p.id} href={p.url} target="_blank" rel="noreferrer" className="overflow-hidden rounded-xl">
+                  <img src={p.url} alt="" loading="lazy" className="h-32 w-full object-cover transition hover:scale-105" />
+                </a>
+              ))}
+            </div>
+            {(open.photos?.length ?? 0) === 0 && (
+              <div className="rounded-xl bg-sand p-4 text-center text-sm text-ink-faint">এই অ্যালবামে ছবি নেই</div>
             )}
           </div>
-        ))}
-        {walls.length === 0 && <div className="card col-span-full p-4 text-center text-sm text-ink-faint">লোড হচ্ছে…</div>}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }
