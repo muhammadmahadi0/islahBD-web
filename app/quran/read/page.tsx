@@ -51,15 +51,24 @@ function Reader() {
   const [db, setDb] = useState<any[]>([]);
   const [marks, setMarks] = useState<number[]>([]);
   const [playingKey, setPlayingKey] = useState<string | null>(null);
+  // Real playback state, driven by the element's own play/pause/ended events.
+  // (Deriving this from `audioRef.current.paused` during render left the icon
+  // stuck on ▶ while the recitation kept playing in the background.)
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [loadingKey, setLoadingKey] = useState<string | null>(null);
   const [openTafsir, setOpenTafsir] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
-  const [wordSrc, setWordSrc] = useState("");
   const [surahAudio, setSurahAudio] = useState("");
-  const [surahAudioOn, setSurahAudioOn] = useState(false);
+  const [surahPlaying, setSurahPlaying] = useState(false);
+  const [surahLoading, setSurahLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const wordAudioRef = useRef<HTMLAudioElement | null>(null);
+  const surahAudioRef = useRef<HTMLAudioElement | null>(null);
+  // Last tapped verse — a slower /audio fetch must never win over a newer tap.
+  const playSeq = useRef(0);
   const deepAyah = useRef<string | null>(params.get("ayah"));
-  const { currentTrack } = usePlayerStore();
+  const currentTrack = usePlayerStore((s) => s.currentTrack);
+  const globalPlaying = usePlayerStore((s) => s.isPlaying);
 
   useEffect(() => {
     fetch("/api/quran/chapters").then((r) => r.json()).then((d) => {
@@ -74,8 +83,26 @@ function Reader() {
     audioRef.current = new Audio();
     wordAudioRef.current = new Audio();
     const el = audioRef.current;
-    el.addEventListener("ended", () => setPlayingKey(null));
-    return () => { el.pause(); wordAudioRef.current?.pause(); };
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    const onEnded = () => setIsPlaying(false);
+    const onError = () => {
+      setIsPlaying(false);
+      setPlayingKey(null);
+    };
+    el.addEventListener("play", onPlay);
+    el.addEventListener("pause", onPause);
+    el.addEventListener("ended", onEnded);
+    el.addEventListener("error", onError);
+    return () => {
+      el.removeEventListener("play", onPlay);
+      el.removeEventListener("pause", onPause);
+      el.removeEventListener("ended", onEnded);
+      el.removeEventListener("error", onError);
+      el.pause();
+      wordAudioRef.current?.pause();
+      el.removeAttribute("src");
+    };
   }, []);
 
   const dbByKey = (s: number, n: number) =>
@@ -137,11 +164,30 @@ function Reader() {
 
   useEffect(() => {
     setPage(1);
-    setSurahAudioOn(false);
-    setSurahAudio("");
     load(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jump, surah, juz, trans1, trans2, tafsirId]);
+
+  // Moving to another surah/para must never leave the previous recitation
+  // running in the background.
+  useEffect(() => {
+    audioRef.current?.pause();
+    wordAudioRef.current?.pause();
+    setPlayingKey(null);
+    setIsPlaying(false);
+    setLoadingKey(null);
+    setSurahAudio("");
+    setSurahPlaying(false);
+  }, [jump, surah, juz]);
+
+  // One recitation at a time: the app-wide mini-player and the Qur'an reader
+  // pause each other instead of layering two audios.
+  useEffect(() => {
+    if (!globalPlaying) return;
+    audioRef.current?.pause();
+    wordAudioRef.current?.pause();
+    surahAudioRef.current?.pause();
+  }, [globalPlaying]);
 
   useEffect(() => {
     const target = deepAyah.current;
@@ -189,38 +235,59 @@ function Reader() {
     });
   };
 
+  // Only one recitation may sound at a time: pause every other player
+  // (verse, whole surah, word-by-word, app mini-player) before starting one.
+  const hushOthers = (except?: "ayah" | "surah" | "word") => {
+    if (except !== "ayah") audioRef.current?.pause();
+    if (except !== "surah") surahAudioRef.current?.pause();
+    if (except !== "word") wordAudioRef.current?.pause();
+    const store = usePlayerStore.getState();
+    if (store.isPlaying) store.setIsPlaying(false);
+  };
+
   const pickReciter = (id: number) => {
     setReciter(id);
     storageSet("quran_reciter", String(id));
     setPlayingKey(null);
-    try {
-      audioRef.current?.pause();
-    } catch {
-      // ignore
+    setIsPlaying(false);
+    setLoadingKey(null);
+    // Drop the loaded source so the next tap fetches the new reciter
+    // (the old one kept playing / the surah player kept its old URL).
+    const el = audioRef.current;
+    if (el) {
+      el.pause();
+      el.removeAttribute("src");
+      el.load();
     }
+    setSurahAudio("");
+    setSurahPlaying(false);
   };
 
   const playAyah = async (key: string) => {
     const el = audioRef.current;
     if (!el) return;
-    if (playingKey === key) {
+
+    // Same verse: plain play/pause toggle, no refetch.
+    if (playingKey === key && el.src) {
       if (el.paused) {
+        hushOthers("ayah");
         const { tryPlay } = await import("../../../lib/storage");
         const p = tryPlay(el);
-        if (p) p.catch(() => setPlayingKey(null));
+        if (p) p.catch(() => setIsPlaying(false));
       } else {
-        try {
-          el.pause();
-        } catch {
-          // ignore
-        }
+        el.pause();
       }
       return;
     }
+
+    const seq = ++playSeq.current;
+    hushOthers(); // stop the previous verse / surah / word instantly
+    setPlayingKey(key);
+    setLoadingKey(key);
     try {
-      setPlayingKey(key);
       const res = await fetch(`/api/quran/chapter-audio?reciter=${reciter}&key=${encodeURIComponent(key)}`);
       const data = await res.json();
+      if (seq !== playSeq.current) return; // a newer verse was tapped
       const url = data.audio_files?.[0]?.url;
       if (!url) throw new Error();
       el.src = url;
@@ -228,31 +295,56 @@ function Reader() {
       const p = tryPlay(el);
       if (p) await p;
     } catch {
-      setPlayingKey(null);
+      if (seq === playSeq.current) {
+        setPlayingKey(null);
+        setIsPlaying(false);
+      }
+    } finally {
+      if (seq === playSeq.current) setLoadingKey(null);
     }
   };
 
   const playWord = (audioUrl: string) => {
     const el = wordAudioRef.current;
     if (!el || !audioUrl) return;
+    hushOthers("word");
     el.src = `${WBW_BASE}${audioUrl}`;
+    try {
+      el.currentTime = 0;
+    } catch {
+      // ignore
+    }
     el.play().catch(() => {});
   };
 
   const toggleSurahAudio = async () => {
-    if (surahAudioOn) {
-      setSurahAudioOn(false);
-      setSurahAudio("");
+    // Already loaded: play/pause without downloading again.
+    if (surahAudio) {
+      const el = surahAudioRef.current;
+      if (!el) return;
+      if (el.paused) {
+        hushOthers("surah");
+        const { tryPlay } = await import("../../../lib/storage");
+        const p = tryPlay(el);
+        if (p) p.catch(() => setSurahPlaying(false));
+      } else {
+        el.pause();
+      }
       return;
     }
+    setSurahLoading(true);
     try {
       const res = await fetch(`/api/quran/chapter-audio?reciter=${reciter}&chapter=${surah}`);
       const data = await res.json();
       if (data.audio_file?.audio_url) {
+        hushOthers("surah");
         setSurahAudio(data.audio_file.audio_url);
-        setSurahAudioOn(true);
       }
-    } catch {}
+    } catch {
+      // stay off — the button is still there to retry
+    } finally {
+      setSurahLoading(false);
+    }
   };
 
   const shareAyah = (arabic: string, tr: string, key: string) => {
@@ -316,7 +408,8 @@ function Reader() {
       .filter(Boolean);
     if (trs.length === 0 && local?.translation) trs.push(local.translation);
     const taf = v.tafsirs?.[0]?.text || "";
-    const playing = playingKey === v.verse_key && !(audioRef.current?.paused ?? true);
+    const playing = playingKey === v.verse_key && isPlaying;
+    const loading = loadingKey === v.verse_key;
     const marked = marks.includes(v.id);
     const recite = viewTab === "recitation";
 
@@ -370,10 +463,16 @@ function Reader() {
               </button>
               <button
                 onClick={() => playAyah(v.verse_key)}
-                className="flex items-center gap-1 rounded-full bg-white px-2 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-blue-100 dark:bg-transparent"
+                disabled={loading}
+                aria-pressed={playing}
+                className="flex items-center gap-1 rounded-full bg-white px-2 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-blue-100 disabled:opacity-60 dark:bg-transparent"
                 aria-label="ayah audio"
               >
-                <Icon name={playing ? "pause" : "playfill"} size={14} />
+                <Icon
+                  name={playing ? "pause" : "playfill"}
+                  size={14}
+                  className={loading ? "animate-pulse" : undefined}
+                />
                 অডিও
               </button>
             </div>
@@ -452,9 +551,11 @@ function Reader() {
           <div className="flex justify-center pb-4">
             <button
               onClick={() => playAyah(v.verse_key)}
-              className="flex items-center gap-1.5 rounded-full bg-primary-600 px-5 py-2 text-sm font-bold text-white shadow-card transition hover:bg-primary-700 active:scale-95"
+              disabled={loading}
+              aria-pressed={playing}
+              className="flex items-center gap-1.5 rounded-full bg-primary-600 px-5 py-2 text-sm font-bold text-white shadow-card transition hover:bg-primary-700 active:scale-95 disabled:opacity-70"
             >
-              <Icon name={playing ? "pause" : "playfill"} size={16} />
+              <Icon name={playing ? "pause" : "playfill"} size={16} className={loading ? "animate-pulse" : undefined} />
               {playing ? "থামান" : "তেলাওয়াত শুনুন"}
             </button>
           </div>
@@ -671,14 +772,32 @@ function Reader() {
                 )}
                 <button
                   onClick={toggleSurahAudio}
-                  className="flex items-center gap-1 rounded-full bg-primary-50 px-3 py-1 shadow-sm transition hover:bg-primary-100 active:scale-95"
+                  disabled={surahLoading}
+                  aria-pressed={surahPlaying}
+                  className="flex items-center gap-1 rounded-full bg-primary-50 px-3 py-1 shadow-sm transition hover:bg-primary-100 active:scale-95 disabled:opacity-60"
                 >
-                  <Icon name={surahAudioOn ? "pause" : "playfill"} size={15} className="text-primary-700" />
+                  <Icon
+                    name={surahPlaying ? "pause" : "playfill"}
+                    size={15}
+                    className={`text-primary-700${surahLoading ? " animate-pulse" : ""}`}
+                  />
                   <span className="text-[13px] font-medium text-primary-700">অডিও</span>
                 </button>
               </div>
-              {surahAudioOn && surahAudio && (
-                <audio key={surahAudio} controls autoPlay src={surahAudio} className="mx-auto mt-2 max-w-md" preload="none" />
+              {surahAudio && (
+                <audio
+                  ref={surahAudioRef}
+                  key={surahAudio}
+                  controls
+                  autoPlay
+                  src={surahAudio}
+                  className="mx-auto mt-2 w-full max-w-md"
+                  preload="none"
+                  onPlay={() => setSurahPlaying(true)}
+                  onPause={() => setSurahPlaying(false)}
+                  onEnded={() => setSurahPlaying(false)}
+                  onError={() => setSurahPlaying(false)}
+                />
               )}
             </>
           ) : (
@@ -773,15 +892,16 @@ function Reader() {
       </div>
 
       {/* floating surah-audio button — hidden while the mini-player is
-          active so it never covers content */}
-      {!currentTrack && (
+          active so it never covers content, and in para mode where there
+          is no "current surah" to play */}
+      {!currentTrack && jump === "sura" && (
         <button
           onClick={toggleSurahAudio}
           aria-label="surah audio"
           className="fixed bottom-28 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-800 text-white shadow-lift transition hover:scale-105 active:scale-95 md:bottom-6"
         >
           <Icon name="headphones" size={22} />
-          {surahAudioOn && <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-white bg-gold" />}
+          {surahPlaying && <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-white bg-gold" />}
         </button>
       )}
     </div>

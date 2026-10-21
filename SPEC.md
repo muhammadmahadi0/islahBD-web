@@ -36,6 +36,11 @@ offline-tolerant, keyless APIs only.
   all 114 verified)
 - Reader: 4 Bengali translations, 3 Bengali tafsirs, word-by-word,
   transliteration, per-ayah audio, bookmarks, font-size control
+- **Audio:** exactly one recitation may sound — per-ayah, full-surah,
+  word-by-word and the app mini-player pause each other. Button icons come
+  from React state fed by the element's `play`/`pause`/`ended`/`error`
+  events (never from `audio.paused` read during render), and a newer verse
+  tap cancels an in-flight `/chapter-audio` fetch.
 - **Invariant:** `text_uthmani` must be requested via `fields=` (API omits
   it by default); render falls back Uthmani → Imlaei → offline DB so the
   Arabic line can never be blank

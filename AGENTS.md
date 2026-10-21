@@ -50,6 +50,13 @@ No test suite — `bun run build` + prod smoke test is the gate.
 - Never call `audio.play().catch()` or raw `localStorage.*` directly —
   use `tryPlay` / `storage*` from `lib/storage.ts`, or Safari/Firefox
   private mode shows the crash screen on tap.
+- Qur'an reader audio: keep the "playing" flag in React state fed by the
+  element's `play`/`pause`/`ended`/`error` events — reading
+  `audioRef.current.paused` during render leaves the ▶ icon stuck while the
+  recitation keeps playing. Starting any player must go through
+  `hushOthers()`: verse, whole surah, word-by-word and the app mini-player
+  pause each other, and a newer verse tap invalidates older fetches
+  (`playSeq`).
 - Home entrance animation is `.home-rise` (`app/globals.css`) + the
   `rise(n)` delay helper in `app/page.tsx`. Keep the largest delay near
   0.45s (step 28ms, duration 380ms) so the sequence stays under a second,
