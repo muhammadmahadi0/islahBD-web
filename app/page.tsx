@@ -43,7 +43,7 @@ const SERVICES: { route: string; bn: string; icon: string }[] = [
   { route: "/dua", bn: "দোআ", icon: "hands" },
   { route: "/wazifa", bn: "ওয়াজিফা ও দরূদ", icon: "sparkle" },
   { route: "/boyan", bn: "বয়ান", icon: "mic" },
-  { route: "/member", bn: "লাইফটাইম মেম্বার কনফারেন্স", icon: "star" },
+  { route: "/member", bn: "আজীবন সদস্য সম্মেলন", icon: "star" },
   { route: "/hajj-umrah", bn: "হজ ও ওমরাহ", icon: "kaaba" },
   { route: "/sunnat", bn: "সুন্নাত ও আদব", icon: "leaf" },
 ];
