@@ -441,67 +441,70 @@ function Reader() {
       <article
         key={v.id || v.verse_key}
         id={`ayah-${v.verse_key}`}
-        className="scroll-mt-32 overflow-hidden rounded-xl border-b border-primary-900 bg-white transition-colors dark:bg-transparent"
+        className={`scroll-mt-32 overflow-hidden rounded-xl border-b border-primary-900 bg-white transition-colors dark:bg-transparent${recite ? " pb-4" : ""}`}
       >
-        {/* centered pill action bar */}
-        {!recite && (
-          <div className="flex justify-center pt-2.5">
-            <div className="flex items-center gap-1 rounded-full border border-primary-100 bg-primary-50 p-1 dark:bg-transparent">
-              {taf && (
-                <Link
-                  href={`/quran/tafsir?surah=${sNum}&ayah=${v.verse_number}`}
-                  className="flex items-center gap-1 rounded-full bg-white px-2 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-blue-100 dark:bg-transparent"
+        {/* centered pill action bar — the audio pill looks the same in both
+            translation and recitation modes */}
+        <div className="flex justify-center pt-2.5">
+          <div className="flex items-center gap-1 rounded-full border border-primary-100 bg-primary-50 p-1 dark:bg-transparent">
+            {!recite && (
+              <>
+                {taf && (
+                  <Link
+                    href={`/quran/tafsir?surah=${sNum}&ayah=${v.verse_number}`}
+                    className="flex items-center gap-1 rounded-full bg-white px-2 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-blue-100 dark:bg-transparent"
+                  >
+                    <Icon name="book" size={14} />
+                    তাফসীর
+                  </Link>
+                )}
+                <button
+                  onClick={() => copyAyah(arabic, trs[0] || "", v.verse_key)}
+                  className="rounded-full bg-white p-1 transition hover:bg-green-50 dark:bg-transparent"
+                  aria-label="copy"
                 >
-                  <Icon name="book" size={14} />
-                  তাফসীর
-                </Link>
-              )}
-              <button
-                onClick={() => copyAyah(arabic, trs[0] || "", v.verse_key)}
-                className="rounded-full bg-white p-1 transition hover:bg-green-50 dark:bg-transparent"
-                aria-label="copy"
-              >
-                <Icon
-                  name={copiedKey === v.verse_key ? "check" : "copy"}
-                  size={13}
-                  className={copiedKey === v.verse_key ? "text-primary-600" : "text-ink-soft"}
-                />
-              </button>
-              <button
-                onClick={() => shareAyah(arabic, trs[0] || "", v.verse_key)}
-                className="rounded-full bg-white p-1 transition hover:bg-green-50 dark:bg-transparent"
-                aria-label="share"
-              >
-                <Icon name="share" size={13} className="text-ink-soft" />
-              </button>
-              <button
-                onClick={() => toggleMark(v.id)}
-                className="rounded-full bg-white p-1 transition hover:bg-purple-50 dark:bg-transparent"
-                aria-label="bookmark"
-              >
-                <Icon
-                  name="bookmark"
-                  size={14}
-                  className={marked ? "fill-gold text-gold-600" : "text-ink-faint"}
-                />
-              </button>
-              <button
-                onClick={() => playAyah(v.verse_key)}
-                disabled={loading}
-                aria-pressed={playing}
-                className="flex items-center gap-1 rounded-full bg-white px-2 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-blue-100 disabled:opacity-60 dark:bg-transparent"
-                aria-label="ayah audio"
-              >
-                <Icon
-                  name={playing ? "pause" : "playfill"}
-                  size={14}
-                  className={loading ? "animate-pulse" : undefined}
-                />
-                অডিও
-              </button>
-            </div>
+                  <Icon
+                    name={copiedKey === v.verse_key ? "check" : "copy"}
+                    size={13}
+                    className={copiedKey === v.verse_key ? "text-primary-600" : "text-ink-soft"}
+                  />
+                </button>
+                <button
+                  onClick={() => shareAyah(arabic, trs[0] || "", v.verse_key)}
+                  className="rounded-full bg-white p-1 transition hover:bg-green-50 dark:bg-transparent"
+                  aria-label="share"
+                >
+                  <Icon name="share" size={13} className="text-ink-soft" />
+                </button>
+                <button
+                  onClick={() => toggleMark(v.id)}
+                  className="rounded-full bg-white p-1 transition hover:bg-purple-50 dark:bg-transparent"
+                  aria-label="bookmark"
+                >
+                  <Icon
+                    name="bookmark"
+                    size={14}
+                    className={marked ? "fill-gold text-gold-600" : "text-ink-faint"}
+                  />
+                </button>
+              </>
+            )}
+            <button
+              onClick={() => playAyah(v.verse_key)}
+              disabled={loading}
+              aria-pressed={playing}
+              className="flex items-center gap-1 rounded-full bg-white px-2 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-blue-100 disabled:opacity-60 dark:bg-transparent"
+              aria-label="ayah audio"
+            >
+              <Icon
+                name={playing ? "pause" : "playfill"}
+                size={14}
+                className={loading ? "animate-pulse" : undefined}
+              />
+              অডিও
+            </button>
           </div>
-        )}
+        </div>
 
         {/* arabic — hidden while word-by-word is on (muslimbangla behavior),
             except in recitation mode where it is the whole view */}
@@ -570,19 +573,6 @@ function Reader() {
               </div>
             </div>
           </>
-        )}
-        {recite && (
-          <div className="flex justify-center pb-4">
-            <button
-              onClick={() => playAyah(v.verse_key)}
-              disabled={loading}
-              aria-pressed={playing}
-              className="flex items-center gap-1.5 rounded-full bg-primary-600 px-5 py-2 text-sm font-bold text-white shadow-card transition hover:bg-primary-700 active:scale-95 disabled:opacity-70"
-            >
-              <Icon name={playing ? "pause" : "playfill"} size={16} className={loading ? "animate-pulse" : undefined} />
-              {playing ? "থামান" : "তেলাওয়াত শুনুন"}
-            </button>
-          </div>
         )}
       </article>
     );
