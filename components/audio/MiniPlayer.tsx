@@ -43,7 +43,7 @@ function EqBars({ className = "" }: { className?: string }) {
  *   opt-in video mode in the same player, autoplay watchdog).
  * - Stream tracks (MP3/HLS/live) are owned by AudioPlayer; this UI only
  *   mirrors the shared store.
- * - Expanded sheet: seek, volume, queue, download, share, stop.
+ * - Expanded sheet: seek, queue, download, share, stop.
  * - Collapsed pill floats above the bottom nav.
  */
 export default function MiniPlayer() {
@@ -63,7 +63,6 @@ export default function MiniPlayer() {
     setDuration,
     setIsPlaying,
     setIsLoading,
-    setVolume,
     playTrack,
     playNext,
     playPrevious,
@@ -677,14 +676,6 @@ export default function MiniPlayer() {
 
           {/* secondary row */}
           <div className="mt-2 flex items-center justify-center gap-2">
-            <button onClick={() => setVolume(volume === 0 ? 0.8 : 0)} className="btn-ghost !rounded-xl !p-2.5" aria-label="mute">
-              <Icon name={volume === 0 ? "x" : "bell"} size={17} />
-            </button>
-            <input
-              type="range" min="0" max="1" step="0.01" value={volume}
-              onChange={(e) => setVolume(parseFloat(e.target.value))}
-              className="w-28" aria-label="volume"
-            />
             {downloadableUrl && (
               <button onClick={handleDownload} className="btn-ghost !rounded-xl !p-2.5" aria-label="ডাউনলোড">
                 {downloading ? (

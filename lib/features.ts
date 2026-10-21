@@ -41,7 +41,6 @@ export const homeGrid: Feature[] = [
   { route: "/hamdnaat", titleBn: "হামদ ও নাত", titleEn: "Hamd/Naat", icon: "music", ...T.violet },
   { route: "/library", titleBn: "লাইব্রেরি", titleEn: "Library", icon: "library", ...T.orange },
   { route: "/media", titleBn: "সংক্ষিপ্ত ক্লিপস", titleEn: "Short Clips", icon: "play", ...T.sky },
-  { route: "/nasheed", titleBn: "নাশীদ / অডিও", titleEn: "Nasheed", icon: "headphones", ...T.violet },
   { route: "/gallery", titleBn: "গ্যালারি", titleEn: "Gallery", icon: "image", ...T.indigo },
   { route: "/nearby-mosque", titleBn: "কাছের মসজিদ", titleEn: "Mosques", icon: "mosque", ...T.emerald },
   { route: "/paribar", titleBn: "পরিবার / বাইআত", titleEn: "Paribar", icon: "users", ...T.orange },
