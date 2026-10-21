@@ -40,7 +40,11 @@ offline-tolerant, keyless APIs only.
   word-by-word and the app mini-player pause each other. Button icons come
   from React state fed by the element's `play`/`pause`/`ended`/`error`
   events (never from `audio.paused` read during render), and a newer verse
-  tap cancels an in-flight `/chapter-audio` fetch.
+  tap cancels an in-flight `/chapter-audio` fetch. The whole surah is a
+  Track in the app player (`usePlayerStore`, the bayan player) rather than
+  an inline `<audio>`, so it gets the mini-player/seek bar. Reciters with
+  no `by_ayah` audio (quran.com 404s for id 13+) fall back to that whole
+  surah with an inline notice.
 - **Invariant:** `text_uthmani` must be requested via `fields=` (API omits
   it by default); render falls back Uthmani → Imlaei → offline DB so the
   Arabic line can never be blank

@@ -56,7 +56,10 @@ No test suite — `bun run build` + prod smoke test is the gate.
   recitation keeps playing. Starting any player must go through
   `hushOthers()`: verse, whole surah, word-by-word and the app mini-player
   pause each other, and a newer verse tap invalidates older fetches
-  (`playSeq`).
+  (`playSeq`). Whole-surah audio must go through the app player
+  (`playTrack` with an `audioUrl` track, id `quran-surah-<n>`) — never an
+  inline `<audio>` — and a reciter without `by_ayah` audio falls back to
+  the whole surah (quran.com 404s from reciter id 13).
 - Home entrance animation is `.home-rise` (`app/globals.css`) + the
   `rise(n)` delay helper in `app/page.tsx`. Keep the largest delay near
   0.45s (step 28ms, duration 380ms) so the sequence stays under a second,
