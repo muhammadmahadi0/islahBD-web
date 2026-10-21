@@ -1094,11 +1094,11 @@ function Reader() {
           disabled={surahLoading}
           aria-pressed={surahPlaying}
           aria-label="whole surah recitation"
-          className="fixed bottom-28 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-800 pl-0.5 text-white shadow-lift transition hover:scale-105 active:scale-95 disabled:opacity-70 md:bottom-6"
+          className="fixed bottom-28 right-4 z-40 flex h-11 w-11 items-center justify-center rounded-[15px] border border-white/25 bg-gradient-to-br from-primary-500 to-primary-800 pl-0.5 text-white shadow-[0_8px_22px_-6px_rgba(4,120,87,0.55)] ring-1 ring-primary-900/10 transition hover:-translate-y-0.5 hover:shadow-[0_10px_26px_-6px_rgba(4,120,87,0.65)] active:scale-95 disabled:opacity-70 md:bottom-6"
         >
           <Icon
             name={surahPlaying ? "pause" : "playfill"}
-            size={26}
+            size={20}
             className={surahLoading ? "animate-pulse" : undefined}
           />
         </button>

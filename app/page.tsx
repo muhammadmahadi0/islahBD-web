@@ -39,12 +39,12 @@ function Heading({ t, sub, link }: { t: string; sub?: string; link?: string }) {
 const SERVICES: { route: string; bn: string; icon: string }[] = [
   { route: "/quran", bn: "কুরআন", icon: "openbook" },
   { route: "/live", bn: "লাইভ", icon: "radio" },
-  { route: "/qibla", bn: "কিবলা", icon: "compass" },
-  { route: "/malfuzat", bn: "মালফুজাত", icon: "chat" },
+  { route: "/dua", bn: "দোআ", icon: "hands" },
+  { route: "/wazifa", bn: "ওয়াজিফা ও দরূদ", icon: "sparkle" },
   { route: "/boyan", bn: "বয়ান", icon: "mic" },
   { route: "/library", bn: "বই", icon: "library" },
-  { route: "/paribar", bn: "মাদ্রাসা", icon: "mosque" },
-  { route: "/tasbeeh", bn: "তাসবিহ", icon: "beads" },
+  { route: "/amal", bn: "আমল", icon: "check" },
+  { route: "/sunnat", bn: "সুন্নাত ও আদব", icon: "leaf" },
 ];
 
 const MEDIA = [
@@ -107,7 +107,7 @@ export default function HomePage() {
               <span className="rounded-xl bg-emerald-50 p-2.5 text-primary-600 transition group-hover:scale-110">
                 <Icon name={s.icon} size={20} />
               </span>
-              <span className="mt-2 line-clamp-1 w-full text-[11px] font-medium text-ink-soft">{s.bn}</span>
+              <span className="mt-2 line-clamp-2 w-full text-[11px] font-medium leading-tight text-ink-soft">{s.bn}</span>
             </Link>
           ))}
         </div>
