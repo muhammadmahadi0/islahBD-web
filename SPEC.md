@@ -43,6 +43,9 @@ offline-tolerant, keyless APIs only.
   resume at that verse in the saved tab. Explicit `?ayah=` deep links win.
 - Whole-sura recitation is started from a floating ▶ button (top-level,
   viewport-fixed) on the reader.
+- Para (juz) mode: the sidebar lists all 30 paras as rows (Bangla name,
+  Arabic opening name, start verse) from `lib/juz-names.ts`; the UI always
+  says পারা, never জুজ — each ayah footer reads পৃষ্ঠা … • পারা …
 - Dedicated tafsir pages (`/quran/tafsir?surah&ayah`) with prev/next
 - Chapters with Bengali names + Bangla transliterations (`lib/surah-names.ts`,
   all 114 verified)

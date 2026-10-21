@@ -9,6 +9,7 @@ import {
   type QuranChapter,
 } from "../../../lib/quran";
 import { surahBnFull, surahBn } from "../../../lib/surah-names";
+import { JUZ_NAMES } from "../../../lib/juz-names";
 import { storageSetJSON, storageGetJSON, storageSet, storageGet } from "../../../lib/storage";
 import { getLastRead, saveLastRead, type QuranViewMode } from "../../../lib/quran-progress";
 import { usePlayerStore, type Track } from "../../../store/player-store";
@@ -643,7 +644,7 @@ function Reader() {
             )}
             <div className="px-5 pb-4">
               <div className="text-[11px] font-bold text-ink-faint">
-                পৃষ্ঠা {v.page_number || local?.page} • জুজ {v.juz_number || local?.juz}
+                পৃষ্ঠা {v.page_number || local?.page} • পারা {v.juz_number || local?.juz}
               </div>
             </div>
           </>
@@ -750,20 +751,45 @@ function Reader() {
           </div>
         </div>
       ) : (
-        <div className="grid max-h-[50vh] grid-cols-3 gap-1.5 overflow-y-auto lg:max-h-[60vh]" style={{ maxHeight: "50dvh" }}>
-          {Array.from({ length: 30 }, (_, i) => i + 1).map((j) => (
-            <button
-              key={j}
-              onClick={() => { setJump("juz"); setJuz(j); setDrawer(false); window.scrollTo({ top: 0 }); }}
-              className={`rounded-xl px-2 py-2 text-[13px] font-bold tabular-nums transition ${
-                j === juz && jump === "juz"
-                  ? "bg-primary-600 text-white"
-                  : "bg-sand hover:bg-primary-50"
-              }`}
-            >
-              {bnNum(j)}
-            </button>
-          ))}
+        <div className="max-h-[50vh] overflow-y-auto lg:max-h-[60vh]" style={{ maxHeight: "50dvh" }}>
+          {JUZ_NAMES.map((j) => {
+            const active = j.n === juz && jump === "juz";
+            return (
+              <button
+                key={j.n}
+                onClick={() => {
+                  setJump("juz");
+                  setJuz(j.n);
+                  setDrawer(false);
+                  window.scrollTo({ top: 0 });
+                }}
+                className={`flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left transition ${
+                  active ? "bg-primary-600 text-white" : "hover:bg-primary-50"
+                }`}
+              >
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[13px] font-bold">
+                    {bnNum(j.n)}. {j.bn}
+                  </span>
+                  <span
+                    className={`block truncate text-[10px] ${
+                      active ? "text-white/75" : "text-ink-faint"
+                    }`}
+                  >
+                    শুরু: সূরা {surahBn(j.surah)} · আয়াত {bnNum(j.ayah)}
+                  </span>
+                </span>
+                <span
+                  className={`font-arabic shrink-0 text-[17px] leading-tight ${
+                    active ? "text-white" : "text-primary-700"
+                  }`}
+                  dir="rtl"
+                >
+                  {j.ar}
+                </span>
+              </button>
+            );
+          })}
         </div>
       )}
     </>
@@ -913,8 +939,15 @@ function Reader() {
             </>
           ) : (
             <>
-              <h1 className="text-[22px] font-bold">{bnNum(juz)} পারা</h1>
-              <p className="mt-0.5 text-xs text-ink-faint">জুজ অনুযায়ী পড়ুন</p>
+              <h1 className="text-[22px] font-bold">
+                {bnNum(juz)} পারা{" "}
+                <span className="font-arabic font-semibold text-primary-700">
+                  ({JUZ_NAMES[juz - 1]?.ar})
+                </span>
+              </h1>
+              <p className="mt-0.5 text-xs text-ink-faint">
+                {JUZ_NAMES[juz - 1]?.bn} · পারা অনুযায়ী পড়ুন
+              </p>
             </>
           )}
           {offline && (

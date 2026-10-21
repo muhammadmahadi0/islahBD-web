@@ -50,6 +50,10 @@ No test suite — `bun run build` + prod smoke test is the gate.
 - Never call `audio.play().catch()` or raw `localStorage.*` directly —
   use `tryPlay` / `storage*` from `lib/storage.ts`, or Safari/Firefox
   private mode shows the crash screen on tap.
+- Qur'an copy says **পারা**, never জুজ (including the per-ayah
+  "পৃষ্ঠা … • পারা …" footer). Para names/start verses live in
+  `lib/juz-names.ts` (`JUZ_NAMES`, 30 rows) — the sidebar uses them for the
+  named list, so add any new para metadata there rather than in the page.
 - Qur'an progress lives in `lib/quran-progress.ts` (`quran_last_read` =
   `{surah, ayah, mode, at}`) — go through `getLastRead` / `saveLastRead`,
   never raw localStorage. The reader saves the top-of-viewport verse and
