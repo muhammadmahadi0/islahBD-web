@@ -37,13 +37,13 @@ function Heading({ t, sub, link }: { t: string; sub?: string; link?: string }) {
   );
 }
 
-const SERVICES: { route: string; bn: string; icon: string; tint?: string; color?: string }[] = [
+const SERVICES: { route: string; bn: string; icon: string }[] = [
   { route: "/quran", bn: "কুরআন", icon: "openbook" },
   { route: "/live", bn: "লাইভ", icon: "radio" },
   { route: "/dua", bn: "দোআ", icon: "hands" },
   { route: "/wazifa", bn: "ওয়াজিফা ও দরূদ", icon: "sparkle" },
   { route: "/boyan", bn: "বয়ান", icon: "mic" },
-  { route: "/member", bn: "লাইফটাইম মেম্বার কনফারেন্স", icon: "star", tint: "bg-amber-50", color: "text-gold-600" },
+  { route: "/member", bn: "লাইফটাইম মেম্বার কনফারেন্স", icon: "star" },
   { route: "/hajj-umrah", bn: "হজ ও ওমরাহ", icon: "kaaba" },
   { route: "/sunnat", bn: "সুন্নাত ও আদব", icon: "leaf" },
 ];
@@ -111,7 +111,7 @@ export default function HomePage() {
               className={`${card} home-rise group flex flex-col items-center justify-center p-3 text-center`}
               style={rise(3 + i)}
             >
-              <span className={`rounded-xl p-2.5 transition group-hover:scale-110 ${s.tint || "bg-emerald-50"} ${s.color || "text-primary-600"}`}>
+              <span className="rounded-xl bg-emerald-50 p-2.5 text-primary-600 transition group-hover:scale-110">
                 <Icon name={s.icon} size={20} />
               </span>
               <span className="mt-2 line-clamp-3 w-full text-[11px] font-medium leading-tight text-ink-soft">{s.bn}</span>
