@@ -501,7 +501,7 @@ function Reader() {
                 size={14}
                 className={loading ? "animate-pulse" : undefined}
               />
-              অডিও
+              শুনুন
             </button>
           </div>
         </div>
