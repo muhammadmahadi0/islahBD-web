@@ -42,7 +42,7 @@ const SERVICES: { route: string; bn: string; icon: string }[] = [
   { route: "/dua", bn: "দোআ", icon: "hands" },
   { route: "/wazifa", bn: "ওয়াজিফা ও দরূদ", icon: "sparkle" },
   { route: "/boyan", bn: "বয়ান", icon: "mic" },
-  { route: "/library", bn: "বই", icon: "library" },
+  { route: "/member", bn: "লাইফটাইম মেম্বার কনফারেন্স", icon: "star" },
   { route: "/hajj-umrah", bn: "হজ ও ওমরাহ", icon: "kaaba" },
   { route: "/sunnat", bn: "সুন্নাত ও আদব", icon: "leaf" },
 ];
@@ -107,7 +107,7 @@ export default function HomePage() {
               <span className="rounded-xl bg-emerald-50 p-2.5 text-primary-600 transition group-hover:scale-110">
                 <Icon name={s.icon} size={20} />
               </span>
-              <span className="mt-2 line-clamp-2 w-full text-[11px] font-medium leading-tight text-ink-soft">{s.bn}</span>
+              <span className="mt-2 line-clamp-3 w-full text-[11px] font-medium leading-tight text-ink-soft">{s.bn}</span>
             </Link>
           ))}
         </div>
