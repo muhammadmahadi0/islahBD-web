@@ -10,6 +10,7 @@ import {
 } from "../../../lib/quran";
 import { surahBnFull, surahBn } from "../../../lib/surah-names";
 import { storageSetJSON, storageGetJSON, storageSet, storageGet } from "../../../lib/storage";
+import { getLastRead, saveLastRead, type QuranViewMode } from "../../../lib/quran-progress";
 import { usePlayerStore, type Track } from "../../../store/player-store";
 import { bnNum } from "../../../lib/audio";
 
@@ -38,7 +39,12 @@ function Reader() {
   const [showTafsir, setShowTafsir] = useState(true);
   const [showWbw, setShowWbw] = useState(false);
   const [fontSize, setFontSize] = useState(30);
-  const [viewTab, setViewTab] = useState<"translation" | "recitation">("translation");
+  const [viewTab, setViewTab] = useState<"translation" | "recitation">(
+    params.get("view") === "recitation" ? "recitation" : "translation"
+  );
+  // Landing on bare /quran/read: wait one tick for the saved position before
+  // fetching, so we never flash (or download) sūra 1 first.
+  const [booting, setBooting] = useState(!params.get("surah"));
   const [drawer, setDrawer] = useState(false);
   const [settings, setSettings] = useState(false);
   const [sideTab, setSideTab] = useState<"sura" | "para">("sura");
@@ -109,6 +115,26 @@ function Reader() {
     };
   }, []);
 
+  // Resume: bare /quran/read opens the last-read sūra (and the tab the user
+  // was on); ?surah=N without ?ayah also resumes that sūra at the saved
+  // verse. Explicit ?ayah= (deep links, topic cards) always wins.
+  useEffect(() => {
+    const stored = getLastRead();
+    if (!stored) {
+      setBooting(false);
+      return;
+    }
+    if (!params.get("surah")) {
+      setSurah(stored.surah);
+      setViewTab(stored.mode);
+      setBooting(false);
+    }
+    if (!params.get("ayah") && (Number(params.get("surah")) || stored.surah) === stored.surah) {
+      deepAyah.current = String(stored.ayah);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const dbByKey = (s: number, n: number) =>
     db.find((a: any) => a.surahNumber === s && a.numberInSurah === n);
 
@@ -167,10 +193,11 @@ function Reader() {
   }, [jump, surah, juz, transParam, tafsirId]);
 
   useEffect(() => {
+    if (booting) return;
     setPage(1);
     load(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jump, surah, juz, trans1, trans2, tafsirId]);
+  }, [booting, jump, surah, juz, trans1, trans2, tafsirId]);
 
   // Moving to another surah/para must never leave the previous recitation
   // running in the background — including the whole-surah track in the app
@@ -213,6 +240,49 @@ function Reader() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [verses, loading, offline]);
+
+  // Remember the reading position: whichever ayah sits at the top of the
+  // viewport is "where they left off". Re-runs when the tab flips, so the
+  // saved mode matches whether they were reading or listening.
+  useEffect(() => {
+    if (loading || offline || verses.length === 0) return;
+    let raf = 0;
+    let lastKey = "";
+    const save = (key: string) => {
+      const [s, a] = key.split(":").map(Number);
+      if (s && a) saveLastRead({ surah: s, ayah: a, mode: viewTab as QuranViewMode });
+    };
+    const pick = () => {
+      raf = 0;
+      const els = document.querySelectorAll<HTMLElement>('[id^="ayah-"]');
+      if (els.length === 0) return;
+      let key = els[0].id.slice(5);
+      let bestTop = -Infinity;
+      els.forEach((el) => {
+        const top = el.getBoundingClientRect().top;
+        if (top <= 160 && top > bestTop) {
+          bestTop = top;
+          key = el.id.slice(5);
+        }
+      });
+      if (key !== lastKey) {
+        lastKey = key;
+        save(key);
+      }
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(pick);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    // Give a pending deep-link/resume scroll time to land first.
+    const t = setTimeout(pick, 900);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(t);
+      if (raf) cancelAnimationFrame(raf);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, offline, verses, viewTab, jump, surah]);
 
   const goPage = (p: number) => {
     deepAyah.current = null;
@@ -307,6 +377,10 @@ function Reader() {
   const playAyah = async (key: string) => {
     const el = audioRef.current;
     if (!el) return;
+
+    // Playing a verse is also a reading position — remember it right away.
+    const [ps, pa] = key.split(":").map(Number);
+    if (ps && pa) saveLastRead({ surah: ps, ayah: pa, mode: viewTab as QuranViewMode });
 
     // Same verse: plain play/pause toggle, no refetch.
     if (playingKey === key && el.src) {
@@ -696,6 +770,7 @@ function Reader() {
   );
 
   return (
+    <>
     <div className="animate-fade-up lg:grid lg:grid-cols-[300px_minmax(0,1fr)] lg:items-start lg:gap-3">
       {/* desktop sidebar */}
       <aside className="card sticky top-24 hidden max-h-[calc(100vh-7rem)] flex-col overflow-hidden p-2 lg:flex" style={{ maxHeight: "calc(100dvh - 7rem)" }}>
@@ -942,19 +1017,28 @@ function Reader() {
         )}
       </div>
 
-      {/* floating surah-audio button — hidden while the mini-player is
-          active so it never covers content, and in para mode where there
-          is no "current surah" to play */}
+      </div>
+
+      {/* floating play button for the whole sūra — a plain ▶ so it reads as
+          "play the recitation" (it used to be a headphones icon). Hidden
+          while the mini-player is active so it never covers content, and in
+          para mode where there is no "current surah" to play */}
       {!currentTrack && jump === "sura" && (
         <button
           onClick={toggleSurahAudio}
-          aria-label="surah audio"
-          className="fixed bottom-28 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-800 text-white shadow-lift transition hover:scale-105 active:scale-95 md:bottom-6"
+          disabled={surahLoading}
+          aria-pressed={surahPlaying}
+          aria-label="whole surah recitation"
+          className="fixed bottom-28 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-800 pl-0.5 text-white shadow-lift transition hover:scale-105 active:scale-95 disabled:opacity-70 md:bottom-6"
         >
-          <Icon name="headphones" size={22} />
+          <Icon
+            name={surahPlaying ? "pause" : "playfill"}
+            size={26}
+            className={surahLoading ? "animate-pulse" : undefined}
+          />
         </button>
       )}
-    </div>
+    </>
   );
 }
 

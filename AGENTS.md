@@ -50,6 +50,15 @@ No test suite — `bun run build` + prod smoke test is the gate.
 - Never call `audio.play().catch()` or raw `localStorage.*` directly —
   use `tryPlay` / `storage*` from `lib/storage.ts`, or Safari/Firefox
   private mode shows the crash screen on tap.
+- Qur'an progress lives in `lib/quran-progress.ts` (`quran_last_read` =
+  `{surah, ayah, mode, at}`) — go through `getLastRead` / `saveLastRead`,
+  never raw localStorage. The reader saves the top-of-viewport verse and
+  every verse played; an explicit `?ayah=` always beats the saved position.
+- `animate-fade-up` (tailwind config) ends on `transform: none` on purpose:
+  a retained transform turns the element into a containing block, which
+  pins `fixed` descendants (the reader drawer, the floating play button) to
+  the page bottom instead of the viewport. Don't change it back to
+  `translateY(0)`, and keep viewport-fixed UI outside transformed wrappers.
 - Qur'an recitation view (তেলাওয়াত) deliberately bypasses `renderVerse`:
   it renders one justified Arabic `<p>` for the whole sura with inline
   `.ayah-dot` medallions, which are `<button>`s that call `playAyah`. Keep

@@ -8,6 +8,7 @@ import { surahBn, surahBnFull } from "../../lib/surah-names";
 import { QURAN_TOPICS } from "../../lib/quran-topics";
 import { bnNum } from "../../lib/audio";
 import { stripHtml } from "../../lib/quran";
+import { getLastRead, resumeHref, type QuranLastRead } from "../../lib/quran-progress";
 
 // Surah index in the muslimbangla.com/quran layout: title, count, search,
 // Surahs/Topics tabs, and cards with number, transliteration, meaning,
@@ -17,12 +18,18 @@ export default function QuranLanding() {
   const [q, setQ] = useState("");
   const [submitted, setSubmitted] = useState("");
   const [tab, setTab] = useState<"suras" | "topics">("suras");
+  const [lastRead, setLastRead] = useState<QuranLastRead | null>(null);
 
   useEffect(() => {
     fetch("/api/quran/chapters")
       .then((r) => r.json())
       .then((d) => { if (d.success) setChapters(d.chapters); })
       .catch(() => {});
+  }, []);
+
+  // Where the reader left off — shown first, and resumable in one tap.
+  useEffect(() => {
+    setLastRead(getLastRead());
   }, []);
 
   const suras = useMemo(() => {
@@ -127,6 +134,31 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
         icon="book"
       />
 
+      {/* continue where you left off */}
+      {lastRead && (
+        <Link
+          href={resumeHref(lastRead)}
+          className="card card-hover mt-3 flex items-center gap-3 border-l-4 !border-l-primary-500 bg-primary-50 p-3.5"
+        >
+          <span className="surah-ornament shrink-0"><span>{lastRead.surah}</span></span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[10px] font-bold uppercase tracking-wider text-primary-700">
+              যেখানে থেমেছিলেন
+            </span>
+            <span className="block truncate text-[15px] font-bold">
+              সূরা {surahBn(lastRead.surah)}
+            </span>
+            <span className="block truncate text-xs text-ink-faint">
+              আয়াত {bnNum(lastRead.ayah)} · {lastRead.mode === "recitation" ? "তেলাওয়াত" : "অনুবাদ"}
+            </span>
+          </span>
+          <span className="flex shrink-0 items-center gap-1 rounded-full bg-primary-600 px-3 py-1.5 text-[11px] font-bold text-white shadow-sm">
+            <Icon name="playfill" size={12} />
+            চালিয়ে যান
+          </span>
+        </Link>
+      )}
+
       {/* search */}
       <form
         className="relative mt-3"
@@ -191,11 +223,18 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {suras.map((c) => {
               const makki = c.revelation_place === "makkah";
+              const isLast = c.id === lastRead?.surah;
               return (
                 <Link
                   key={c.id}
-                  href={`/quran/read?surah=${c.id}`}
-                  className="card card-hover flex items-center gap-3 p-3.5"
+                  href={
+                    isLast && lastRead
+                      ? resumeHref(lastRead)
+                      : `/quran/read?surah=${c.id}`
+                  }
+                  className={`card card-hover flex items-center gap-3 p-3.5${
+                    isLast ? " ring-2 ring-primary-400" : ""
+                  }`}
                 >
                   <span className="surah-ornament"><span>{c.id}</span></span>
                   <span className="min-w-0 flex-1">
@@ -213,6 +252,12 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
                       <span className="text-[11px] font-bold text-ink-faint">
                         {bnNum(c.verses_count)} আয়াত
                       </span>
+                      {isLast && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-primary-600 px-2 py-0.5 text-[10px] font-bold text-white">
+                          <Icon name="playfill" size={9} />
+                          শেষ পড়া
+                        </span>
+                      )}
                     </span>
                   </span>
                   <span className="text-right">

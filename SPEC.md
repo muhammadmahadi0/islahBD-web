@@ -35,6 +35,14 @@ offline-tolerant, keyless APIs only.
   Arabic flow for the whole sura — no per-ayah cards, translations or
   action bars. The inline green ayah-number medallions (`.ayah-dot`) are
   also that ayah's play button (gold while playing).
+- Reader remembers the last position (`quran_last_read` in
+  `lib/quran-progress.ts`: surah, ayah, tab, timestamp). The verse at the
+  top of the viewport — and any verse played — is saved; `/quran` shows a
+  "যেখানে থেমেছিলেন" continue card and rings that surah's row with a
+  "শেষ পড়া" chip; bare `/quran/read` and `?surah=N` on the saved sura
+  resume at that verse in the saved tab. Explicit `?ayah=` deep links win.
+- Whole-sura recitation is started from a floating ▶ button (top-level,
+  viewport-fixed) on the reader.
 - Dedicated tafsir pages (`/quran/tafsir?surah&ayah`) with prev/next
 - Chapters with Bengali names + Bangla transliterations (`lib/surah-names.ts`,
   all 114 verified)
