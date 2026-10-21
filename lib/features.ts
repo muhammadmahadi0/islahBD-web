@@ -22,7 +22,7 @@ const T = {
 };
 
 export const homeGrid: Feature[] = [
-  { route: "/quran", titleBn: "কুরআন", titleEn: "Quran", icon: "book", ...T.emerald },
+  { route: "/quran", titleBn: "কুরআন", titleEn: "Quran", icon: "openbook", ...T.emerald },
   { route: "/prayer-times", titleBn: "নামাজের সময়", titleEn: "Prayer Times", icon: "clock", ...T.teal },
   { route: "/qibla", titleBn: "কিবলা", titleEn: "Qibla", icon: "compass", ...T.sky },
   { route: "/tasbeeh", titleBn: "ডিজিটাল তাসবীহ", titleEn: "Tasbeeh", icon: "beads", ...T.violet },

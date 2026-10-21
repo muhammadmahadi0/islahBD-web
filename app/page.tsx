@@ -52,7 +52,7 @@ const MEDIA = [
   { route: "/boyan", bn: "বয়ান", d: "বয়ানের অডিও", icon: "mic" },
   { route: "/media", bn: "সংক্ষিপ্ত ক্লিপস", d: "হাইলাইটস", icon: "play" },
   { route: "/hamdnaat", bn: "হামদ-নাত", d: "ইসলামিক গজল", icon: "music" },
-  { route: "/library", bn: "বই", d: "ইসলামিক বই", icon: "book" },
+  { route: "/library", bn: "বই", d: "ইসলামিক বই", icon: "library" },
 ];
 
 export default function HomePage() {
