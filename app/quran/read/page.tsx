@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
 import {
-  BN_TRANSLATIONS, BN_TAFSIRS, stripHtml,
+  BN_TRANSLATIONS, BN_TAFSIRS, stripHtml, wbwAudioUrl,
   type QuranChapter,
 } from "../../../lib/quran";
 import { surahBnFull, surahBn } from "../../../lib/surah-names";
@@ -58,6 +58,8 @@ function Reader() {
   const [db, setDb] = useState<any[]>([]);
   const [marks, setMarks] = useState<number[]>([]);
   const [playingKey, setPlayingKey] = useState<string | null>(null);
+  // Which word tile is currently sounding (`verse:position`), for the highlight.
+  const [wordKey, setWordKey] = useState<string | null>(null);
   // Real playback state, driven by the element's own play/pause/ended events.
   // (Deriving this from `audioRef.current.paused` during render left the icon
   // stuck on ▶ while the recitation kept playing in the background.)
@@ -105,11 +107,17 @@ function Reader() {
     el.addEventListener("pause", onPause);
     el.addEventListener("ended", onEnded);
     el.addEventListener("error", onError);
+    const wel = wordAudioRef.current;
+    const onWordEnded = () => setWordKey(null);
+    wel?.addEventListener("ended", onWordEnded);
+    wel?.addEventListener("error", onWordEnded);
     return () => {
       el.removeEventListener("play", onPlay);
       el.removeEventListener("pause", onPause);
       el.removeEventListener("ended", onEnded);
       el.removeEventListener("error", onError);
+      wel?.removeEventListener("ended", onWordEnded);
+      wel?.removeEventListener("error", onWordEnded);
       el.pause();
       wordAudioRef.current?.pause();
       el.removeAttribute("src");
@@ -209,6 +217,7 @@ function Reader() {
     setPlayingKey(null);
     setIsPlaying(false);
     setLoadingKey(null);
+    setWordKey(null);
     setFallbackNote(false);
     const store = usePlayerStore.getState();
     if (store.currentTrack?.id?.startsWith("quran-surah-")) store.stop();
@@ -321,7 +330,10 @@ function Reader() {
   // (verse, word-by-word, app player) before starting one.
   const hushOthers = (except?: "ayah" | "word") => {
     if (except !== "ayah") audioRef.current?.pause();
-    if (except !== "word") wordAudioRef.current?.pause();
+    if (except !== "word") {
+      wordAudioRef.current?.pause();
+      setWordKey(null);
+    }
     const store = usePlayerStore.getState();
     if (store.isPlaying) store.setIsPlaying(false);
   };
@@ -424,17 +436,32 @@ function Reader() {
     }
   };
 
-  const playWord = (audioUrl: string) => {
+  const playWord = (verseKey: string, w: any) => {
     const el = wordAudioRef.current;
-    if (!el || !audioUrl) return;
+    if (!el) return;
+    // A word tap supersedes any verse audio still being fetched (playAyah
+    // resolves async and would otherwise start over the word).
+    ++playSeq.current;
+    setPlayingKey(null);
+    setIsPlaying(false);
     hushOthers("word");
+    // Build the clip path from the word position — quran.com's own audio_url
+    // drifts after waqf marks (see wbwAudioUrl in lib/quran.ts).
+    const audioUrl = wbwAudioUrl(verseKey, w.position);
+    if (!audioUrl) {
+      wordAudioRef.current?.pause();
+      setWordKey(null);
+      return;
+    }
+    const key = `${verseKey}:${w.position}`;
+    setWordKey(key);
     el.src = `${WBW_BASE}${audioUrl}`;
     try {
       el.currentTime = 0;
     } catch {
       // ignore
     }
-    el.play().catch(() => {});
+    el.play().catch(() => setWordKey((k) => (k === key ? null : k)));
   };
 
   const toggleSurahAudio = () => {
@@ -602,8 +629,13 @@ function Reader() {
                 {v.words.filter((w: any) => w.char_type_name === "word").map((w: any) => (
                   <button
                     key={w.id}
-                    onClick={() => playWord(w.audio_url)}
-                    className="inner-box rounded-xl border border-primary-900/10 bg-white px-2.5 py-1.5 text-center transition hover:shadow-card active:scale-95"
+                    onClick={() => playWord(v.verse_key, w)}
+                    className={`inner-box rounded-xl border px-2.5 py-1.5 text-center transition hover:shadow-card active:scale-95 ${
+                      wordKey === `${v.verse_key}:${w.position}`
+                        ? "border-gold bg-gold/15 shadow-card"
+                        : "border-primary-900/10 bg-white"
+                    }`}
+                    aria-label={`${w.text_uthmani} — শুনুন`}
                     title="শুনুন"
                   >
                     <span className="font-arabic block text-[18px] leading-snug">{w.text_uthmani}</span>

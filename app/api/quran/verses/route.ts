@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { QURAN_API } from "../../../../lib/quran";
+import { QURAN_API, fixWordAudio } from "../../../../lib/quran";
 
 // Verses passthrough: /api/quran/verses?chapter=1&translations=161&tafsirs=165&words=1&page=1&per_page=20
 export const revalidate = 3600;
@@ -37,7 +37,10 @@ export async function GET(req: Request) {
       headers: { Accept: "application/json" },
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return NextResponse.json(await res.json());
+    const data = await res.json();
+    // Word clips must come from the position-numbered set (see fixWordAudio).
+    if (Array.isArray(data.verses)) data.verses = data.verses.map(fixWordAudio);
+    return NextResponse.json(data);
   } catch (e) {
     return NextResponse.json({ error: "আয়াত লোড হয়নি।" }, { status: 502 });
   }

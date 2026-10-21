@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { QURAN_API } from "../../../../lib/quran";
+import { QURAN_API, fixWordAudio } from "../../../../lib/quran";
 
 // Single verse with translation + tafsir + words:
 // /api/quran/verse?key=112:1&translations=161&tafsirs=165
@@ -32,7 +32,9 @@ export async function GET(req: Request) {
       headers: { Accept: "application/json" },
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return NextResponse.json(await res.json());
+    const data = await res.json();
+    if (data.verse) data.verse = fixWordAudio(data.verse);
+    return NextResponse.json(data);
   } catch (e) {
     return NextResponse.json({ error: "আয়াত লোড হয়নি।" }, { status: 502 });
   }

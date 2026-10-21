@@ -79,6 +79,13 @@ No test suite — `bun run build` + prod smoke test is the gate.
   (`playTrack` with an `audioUrl` track, id `quran-surah-<n>`) — never an
   inline `<audio>` — and a reciter without `by_ayah` audio falls back to
   the whole surah (quran.com 404s from reciter id 13).
+- Word-by-word audio must be built from the word **position**
+  (`wbwAudioUrl`, `wbw/SSS_AAA_PPP.mp3`) — never from quran.com's
+  `word.audio_url`. That field counts every waqf mark as an extra clip, so
+  it drifts after a pause sign and the last words of the verse 404 (silent
+  taps, or a clip of the wrong word). Verified against all 77,429 words:
+  positions are contiguous 1…N and every position-based URL exists. The
+  audio routes normalise it with `fixWordAudio` for other consumers too.
 - Home entrance animation is `.home-rise` (`app/globals.css`) + the
   `rise(n)` delay helper in `app/page.tsx`. Keep the largest delay near
   0.45s (step 28ms, duration 380ms) so the sequence stays under a second,

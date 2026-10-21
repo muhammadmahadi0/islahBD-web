@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { QURAN_API } from "../../../../lib/quran";
+import { QURAN_API, fixWordAudio } from "../../../../lib/quran";
 
 // Para (Juz) reading: /api/quran/juz?juz=30&translations=161,163&tafsirs=165&page=1&per_page=50
 export const revalidate = 3600;
@@ -32,7 +32,9 @@ export async function GET(req: Request) {
       headers: { Accept: "application/json" },
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return NextResponse.json(await res.json());
+    const data = await res.json();
+    if (Array.isArray(data.verses)) data.verses = data.verses.map(fixWordAudio);
+    return NextResponse.json(data);
   } catch (e) {
     return NextResponse.json({ error: "পারা লোড হয়নি।" }, { status: 502 });
   }
