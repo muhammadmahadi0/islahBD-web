@@ -619,13 +619,8 @@ function Reader() {
 
         {!recite && (
           <>
-            <div className="space-y-2 px-5 pb-1 pt-2 text-[15px]">
-              {trs.map((t: string, i: number) => (
-                <div key={i} className="text-justify leading-relaxed text-ink">{t}</div>
-              ))}
-            </div>
             {showWbw && v.words?.length > 0 && (
-              <div className="mx-5 mb-2 flex flex-wrap gap-1.5 rounded-xl border border-primary-900/10 bg-sand/70 p-2.5" dir="rtl">
+              <div className="mx-5 mb-2 mt-2 flex flex-wrap gap-1.5 rounded-xl border border-primary-900/10 bg-sand/70 p-2.5" dir="rtl">
                 {v.words.filter((w: any) => w.char_type_name === "word").map((w: any) => (
                   <button
                     key={w.id}
@@ -644,6 +639,11 @@ function Reader() {
                 ))}
               </div>
             )}
+            <div className="space-y-2 px-5 pb-1 pt-2 text-[15px]">
+              {trs.map((t: string, i: number) => (
+                <div key={i} className="text-justify leading-relaxed text-ink">{t}</div>
+              ))}
+            </div>
             {taf && showTafsir && (
               <div className="mx-5 mb-2 border-t border-primary-900/10 pt-2">
                 <button
