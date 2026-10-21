@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import PrayerCard from "../components/PrayerCard";
 import { Icon } from "../components/icons";
-import { timeAgoBn, bnNum } from "../lib/audio";
+import { timeAgoBn, bnNum, boyanToTrack } from "../lib/audio";
 import type { BoyanAudio } from "../lib/audio";
+import { usePlayerStore } from "../store/player-store";
 
 const card =
   "bg-white dark:bg-[rgba(30,41,59,0.65)] border border-slate-200/80 dark:border-white/10 rounded-2xl shadow-sm hover:border-amber-400/50 transition cursor-pointer";
@@ -36,13 +37,13 @@ function Heading({ t, sub, link }: { t: string; sub?: string; link?: string }) {
   );
 }
 
-const SERVICES: { route: string; bn: string; icon: string }[] = [
+const SERVICES: { route: string; bn: string; icon: string; tint?: string; color?: string }[] = [
   { route: "/quran", bn: "কুরআন", icon: "openbook" },
   { route: "/live", bn: "লাইভ", icon: "radio" },
   { route: "/dua", bn: "দোআ", icon: "hands" },
   { route: "/wazifa", bn: "ওয়াজিফা ও দরূদ", icon: "sparkle" },
   { route: "/boyan", bn: "বয়ান", icon: "mic" },
-  { route: "/member", bn: "লাইফটাইম মেম্বার কনফারেন্স", icon: "star" },
+  { route: "/member", bn: "লাইফটাইম মেম্বার কনফারেন্স", icon: "star", tint: "bg-amber-50", color: "text-gold-600" },
   { route: "/hajj-umrah", bn: "হজ ও ওমরাহ", icon: "kaaba" },
   { route: "/sunnat", bn: "সুন্নাত ও আদব", icon: "leaf" },
 ];
@@ -56,6 +57,10 @@ const MEDIA = [
 
 export default function HomePage() {
   const [recent, setRecent] = useState<BoyanAudio[]>([]);
+  const playTrack = usePlayerStore((s) => s.playTrack);
+  const togglePlay = usePlayerStore((s) => s.togglePlay);
+  const currentTrack = usePlayerStore((s) => s.currentTrack);
+  const isPlaying = usePlayerStore((s) => s.isPlaying);
 
   useEffect(() => {
     fetch("/api/boyan")
@@ -63,6 +68,8 @@ export default function HomePage() {
       .then((d) => { if (d.success) setRecent(d.audios.slice(0, 4)); })
       .catch(() => {});
   }, []);
+
+  const recentTracks = recent.map(boyanToTrack);
 
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-4">
@@ -104,7 +111,7 @@ export default function HomePage() {
               className={`${card} home-rise group flex flex-col items-center justify-center p-3 text-center`}
               style={rise(3 + i)}
             >
-              <span className="rounded-xl bg-emerald-50 p-2.5 text-primary-600 transition group-hover:scale-110">
+              <span className={`rounded-xl p-2.5 transition group-hover:scale-110 ${s.tint || "bg-emerald-50"} ${s.color || "text-primary-600"}`}>
                 <Icon name={s.icon} size={20} />
               </span>
               <span className="mt-2 line-clamp-3 w-full text-[11px] font-medium leading-tight text-ink-soft">{s.bn}</span>
@@ -147,36 +154,49 @@ export default function HomePage() {
             <Heading t="সাম্প্রতিক বয়ান" sub="নতুন আপলোড" link="/boyan" />
           </div>
           <div className="space-y-2.5">
-            {recent.map((b, i) => (
-              <Link
-                key={b.id}
-                href="/boyan"
-                className={`${card} home-rise relative flex items-center gap-3.5 p-3.5`}
-                style={rise(1 + i)}
-              >
-                {i === 0 && (
-                  <span className="absolute -top-2 left-3 rounded-full bg-red-500 px-2 py-0.5 text-[9px] font-bold text-white shadow">
-                    NEW
-                  </span>
-                )}
-                <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-primary-600">
-                  <Icon name="mic" size={20} />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-xs font-bold text-ink">{b.title}</span>
-                  <span className="mt-1 flex items-center gap-1 text-[10px] text-ink-faint">
-                    <Icon name="calendar" size={12} className="text-primary-600" />
-                    {timeAgoBn(b.uploadDate) || `বয়ান ${bnNum(b.id)}`}
-                  </span>
-                  {b.location && (
-                    <span className="mt-0.5 flex items-center gap-1 truncate text-[10px] text-ink-faint">
-                      <Icon name="pin" size={12} className="shrink-0 text-primary-600" />
-                      <span className="truncate">{b.location}</span>
+            {recent.map((b, i) => {
+              const track = recentTracks[i];
+              const active = currentTrack?.id === track.id;
+              const playing = active && isPlaying;
+              return (
+                <div
+                  key={b.id}
+                  className={`${card} home-rise relative flex items-center gap-3.5 p-3.5`}
+                  style={rise(1 + i)}
+                >
+                  {i === 0 && (
+                    <span className="absolute -top-2 left-3 rounded-full bg-red-500 px-2 py-0.5 text-[9px] font-bold text-white shadow">
+                      NEW
                     </span>
                   )}
-                </span>
-              </Link>
-            ))}
+                  <button
+                    onClick={() => (active ? togglePlay() : playTrack(track, recentTracks, i))}
+                    aria-label={`${b.title} — ${playing ? "বিরতি" : "চালান"}`}
+                    aria-pressed={playing}
+                    className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl transition active:scale-95 ${
+                      playing
+                        ? "bg-primary-600 text-white shadow-md"
+                        : "bg-emerald-50 text-primary-600 hover:bg-emerald-100"
+                    }`}
+                  >
+                    <Icon name={playing ? "pause" : "playfill"} size={20} />
+                  </button>
+                  <Link href="/boyan" className="min-w-0 flex-1">
+                    <span className="block truncate text-xs font-bold text-ink">{b.title}</span>
+                    <span className="mt-1 flex items-center gap-1 text-[10px] text-ink-faint">
+                      <Icon name="calendar" size={12} className="text-primary-600" />
+                      {timeAgoBn(b.uploadDate) || `বয়ান ${bnNum(b.id)}`}
+                    </span>
+                    {b.location && (
+                      <span className="mt-0.5 flex items-center gap-1 truncate text-[10px] text-ink-faint">
+                        <Icon name="pin" size={12} className="shrink-0 text-primary-600" />
+                        <span className="truncate">{b.location}</span>
+                      </span>
+                    )}
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         </section>
       )}
