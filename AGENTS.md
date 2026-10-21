@@ -50,6 +50,12 @@ No test suite — `bun run build` + prod smoke test is the gate.
 - Never call `audio.play().catch()` or raw `localStorage.*` directly —
   use `tryPlay` / `storage*` from `lib/storage.ts`, or Safari/Firefox
   private mode shows the crash screen on tap.
+- Qur'an recitation view (তেলাওয়াত) deliberately bypasses `renderVerse`:
+  it renders one justified Arabic `<p>` for the whole sura with inline
+  `.ayah-dot` medallions, which are `<button>`s that call `playAyah`. Keep
+  each ayah wrapped in `<span id="ayah-<surah>:<ayah>">` so `?surah&ayah`
+  deep links still scroll correctly, and keep the medallion size in `em`
+  so the font-size setting scales it.
 - Qur'an reader audio: keep the "playing" flag in React state fed by the
   element's `play`/`pause`/`ended`/`error` events — reading
   `audioRef.current.paused` during render leaves the ▶ icon stuck while the

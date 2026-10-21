@@ -31,6 +31,10 @@ offline-tolerant, keyless APIs only.
 - Reader (`/quran/read`): sura + para (juz) modes, dual stacked Bengali
   translations, tafsir, word-by-word, always-on transliteration, per-ayah
   and full-surah audio, bookmarks, font size, `?surah&ayah` deep-links
+- Recitation view (তেলাওয়াত) is mushaf-style: one continuous justified
+  Arabic flow for the whole sura — no per-ayah cards, translations or
+  action bars. The inline green ayah-number medallions (`.ayah-dot`) are
+  also that ayah's play button (gold while playing).
 - Dedicated tafsir pages (`/quran/tafsir?surah&ayah`) with prev/next
 - Chapters with Bengali names + Bangla transliterations (`lib/surah-names.ts`,
   all 114 verified)

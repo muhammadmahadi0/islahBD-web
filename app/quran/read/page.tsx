@@ -578,6 +578,43 @@ function Reader() {
     );
   };
 
+  /* Mushaf-style recitation view (muslimbangla তেলাওয়াত): one continuous,
+     justified Arabic flow instead of one card per ayah, with inline
+     ayah-number medallions that also play that ayah. */
+  const renderRecitationBlock = (items: any[]) => (
+    <div className="px-4 pb-7 pt-3 sm:px-5">
+      <p
+        dir="rtl"
+        className="font-arabic text-ink"
+        style={{ textAlign: "justify", textAlignLast: "right", fontSize: fontSize, lineHeight: 1.95 }}
+      >
+        {items.map((v) => {
+          const [sNum] = String(v.verse_key || `${surah}:${v.verse_number}`).split(":").map(Number);
+          const local = dbByKey(sNum, v.verse_number);
+          const arabic = v.text_uthmani || v.text_imlaei || local?.text || "";
+          const key = v.verse_key || `${surah}:${v.verse_number}`;
+          const playing = playingKey === key && isPlaying;
+          const loading = loadingKey === key;
+          return (
+            <span key={v.id || key} id={`ayah-${key}`} className="scroll-mt-32">
+              {arabic}{" "}
+              <button
+                type="button"
+                onClick={() => playAyah(key)}
+                disabled={loading}
+                aria-pressed={playing}
+                aria-label={`আয়াত ${bnNum(v.verse_number)} তেলাওয়াত`}
+                className={`ayah-dot${playing ? " is-on" : ""}${loading ? " is-loading" : ""}`}
+              >
+                <span>{toArNum(v.verse_number)}</span>
+              </button>{" "}
+            </span>
+          );
+        })}
+      </p>
+    </div>
+  );
+
   const sidebarBody = (
     <>
       {/* search */}
@@ -850,9 +887,15 @@ function Reader() {
                         <span className="surah-ornament !h-9 !w-9"><span className="!text-[11px]">{g.surah}</span></span>
                         <span className="text-sm font-bold">{surahBnFull(g.surah)}</span>
                       </div>
-                      <div className="space-y-2">{g.items.map(renderVerse)}</div>
+                      {viewTab === "recitation" ? (
+                        renderRecitationBlock(g.items)
+                      ) : (
+                        <div className="space-y-2">{g.items.map(renderVerse)}</div>
+                      )}
                     </div>
                   ))
+                : viewTab === "recitation"
+                ? renderRecitationBlock(verses)
                 : verses.map(renderVerse)}
             </div>
             {totalPages > 1 && (

@@ -333,6 +333,52 @@ a:hover .surah-ornament > span, button:hover .surah-ornament > span {
   color: #fff;
 }
 
+/* inline ayah-number medallion — the mushaf-style recitation view.
+   Sits inside the flowing Arabic text and doubles as that ayah's play button. */
+.ayah-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  margin-inline: 0.1em 0.3em;
+  vertical-align: -0.14em;
+  border: 0;
+  border-radius: 999px;
+  background: #0e7c5b;
+  color: #fff;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.ayah-dot > span {
+  font-size: 0.46em;
+  font-weight: 700;
+  line-height: 1;
+  transform: translateY(0.04em);
+}
+.ayah-dot:hover {
+  transform: scale(1.08);
+}
+.ayah-dot.is-on {
+  background: #c9a227;
+  color: #201703;
+  box-shadow: 0 0 0 0.08em rgba(201, 162, 39, 0.35);
+}
+.ayah-dot.is-loading {
+  animation: ayah-dot-pulse 1s ease-in-out infinite;
+}
+@keyframes ayah-dot-pulse {
+  50% { opacity: 0.5; }
+}
+html.dark .ayah-dot {
+  background: #1e8a63;
+}
+html.dark .ayah-dot.is-on {
+  background: #c9a227;
+  color: #201703;
+}
+
 /* ornamental ayah-end marker (۝ style) */
 .ayah-end {
   display: inline-flex;
