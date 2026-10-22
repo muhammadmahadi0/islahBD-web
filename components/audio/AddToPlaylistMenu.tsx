@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { Track } from "../../store/player-store";
 import { usePlaylistStore } from "../../store/playlist-store";
 import { Icon } from "../icons";
+import { useTx } from "../../store/language-store";
 
 // Simplified port of beta AddToPlaylistMenu — save any track into a
 // named playlist (persisted in localStorage).
@@ -13,13 +14,14 @@ export default function AddToPlaylistMenu({
   track: Track;
   onClose: () => void;
 }) {
+  const tx = useTx();
   const { playlists, createPlaylist, addTrack } = usePlaylistStore();
   const [name, setName] = useState("");
   const [msg, setMsg] = useState("");
 
   const save = (id: string) => {
     const r = addTrack(id, track);
-    setMsg(r === "added" ? "প্লেলিস্টে যোগ হয়েছে ✓" : "আগেই আছে");
+    setMsg(r === "added" ? tx("প্লেলিস্টে যোগ হয়েছে ✓") : tx("আগেই আছে"));
     setTimeout(onClose, 900);
   };
 
@@ -27,7 +29,7 @@ export default function AddToPlaylistMenu({
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-3 sm:items-center" onClick={onClose}>
       <div className="card w-full max-w-sm p-4" onClick={(e) => e.stopPropagation()}>
         <div className="mb-2 flex items-center justify-between">
-          <div className="font-bold">প্লেলিস্টে রাখুন</div>
+          <div className="font-bold">{tx("প্লেলিস্টে রাখুন")}</div>
           <button aria-label="close" onClick={onClose} className="rounded-xl p-1.5 text-ink-faint hover:bg-sand">
             <Icon name="x" size={18} />
           </button>
@@ -35,7 +37,7 @@ export default function AddToPlaylistMenu({
         <div className="max-h-56 space-y-1.5 overflow-auto">
           {playlists.length === 0 && (
             <p className="rounded-2xl bg-sand p-3 text-center text-[13px] text-ink-faint">
-              এখনো প্লেলিস্ট নেই — নিচে নাম লিখে বানান
+              {tx("এখনো প্লেলিস্ট নেই — নিচে নাম লিখে বানান")}
             </p>
           )}
           {playlists.map((p) => (
@@ -59,7 +61,7 @@ export default function AddToPlaylistMenu({
             setName("");
           }}
         >
-          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="নতুন প্লেলিস্টের নাম…" className="input" />
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder={tx("নতুন প্লেলিস্টের নাম…")} className="input" />
           <button className="btn-primary shrink-0" type="submit">
             <Icon name="plus" size={16} />
           </button>

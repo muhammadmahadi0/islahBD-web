@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Icon } from "../../components/icons";
-import { adjustHijri, type HijriInfo } from "../../lib/prayer";
+import { adjustHijri, gregorianText, type HijriInfo } from "../../lib/prayer";
 import {
   HIJRI_MONTHS,
   WEEKDAYS_SHORT_BN,
@@ -23,6 +23,7 @@ import {
   toBn,
   type HijriDate,
 } from "../../lib/hijri";
+import { useLang, useNum, useTx } from "../../store/language-store";
 
 type Tab = "calendar" | "history";
 
@@ -47,8 +48,14 @@ type DayCell = {
 type MonthRef = { year: number; month: number };
 
 const WD_ORDER = [1, 2, 3, 4, 5, 6, 0]; // Monday-first, like the reference design
+const WEEKDAYS_SHORT_UR: Record<number, string> = {
+  0: "اتوار", 1: "پیر", 2: "منگل", 3: "بدھ", 4: "جمعرات", 5: "جمعہ", 6: "ہفتہ",
+};
 
 export default function CalendarPage() {
+  const tx = useTx();
+  const lang = useLang();
+  const num = useNum();
   const [today, setToday] = useState<Date | null>(null);
   const [hMonth, setHMonth] = useState<MonthRef | null>(null);
   const [tab, setTab] = useState<Tab>("calendar");
@@ -261,6 +268,17 @@ export default function CalendarPage() {
   const monthMeta = HIJRI_MONTHS[hMonth.month - 1];
   const todayMeta = HIJRI_MONTHS[shownH.month - 1];
   const selectedEvents = selectedDay ? eventsByDay.get(selectedDay) || [] : [];
+  const rangeLabel = (start: Date, days: number) => {
+    if (lang === "bn") return gregorianRange(start, days);
+    const end = addDays(start, days - 1);
+    const fmt = (d: Date) => d.toLocaleDateString(lang === "ur" ? "ur-PK" : "en-GB", { day: "numeric", month: "short" });
+    return `${fmt(start)} – ${fmt(end)} ${end.getFullYear()}`;
+  };
+  const hijriDayText = (d: HijriDate) => {
+    if (lang === "bn") return hijriText(d);
+    const m = HIJRI_MONTHS[d.month - 1];
+    return `${d.day} ${lang === "ur" ? m.ar : m.en} ${d.year} ${lang === "ur" ? "ہجری" : "AH"}`;
+  };
 
   return (
     <div className="animate-fade-up">
@@ -273,26 +291,26 @@ export default function CalendarPage() {
             <div className="flex items-start justify-between">
               <span className="inline-flex h-7 items-center gap-1.5 rounded-full bg-sand px-3 text-[11.5px] font-bold text-ink-soft dark:bg-white/10">
                 <Icon name="calendar" size={13} />
-                আজকের তারিখ
+                {tx("আজকের তারিখ")}
               </span>
               <Icon name="mosque" size={34} className="-mt-1 text-primary-600/15 dark:text-white/10" />
             </div>
 
             <div className="mt-3 text-[19px] font-bold leading-snug tracking-tight">
-              {gregorianFull(today)}
+              {gregorianText(lang, today)}
             </div>
 
             <div className="mt-4 grid grid-cols-[1.45fr_1fr] gap-3 border-t border-primary-900/10 pt-3 dark:border-white/10">
               <div>
-                <div className="text-[11px] font-semibold text-ink-faint">আরবি/হিজরি তারিখ</div>
+                <div className="text-[11px] font-semibold text-ink-faint">{tx("আরবি/হিজরি তারিখ")}</div>
                 <div className="mt-1 text-[14px] font-bold leading-snug text-gold-600 dark:text-amber-400">
-                  {toBn(shownH.day)} {todayMeta.bn}{" "}
-                  <span className="font-arabic text-[13.5px] font-medium opacity-80">({todayMeta.ar})</span>{" "}
-                  {toBn(shownH.year)} হিজরী
+                  {num(shownH.day)} {lang === "en" ? todayMeta.en : lang === "ur" ? todayMeta.ar : todayMeta.bn}{" "}
+                  {lang !== "ur" && <span className="font-arabic text-[13.5px] font-medium opacity-80">({todayMeta.ar})</span>}{" "}
+                  {num(shownH.year)} {tx("হিজরী")}
                 </div>
               </div>
               <div className="border-l border-primary-900/10 pl-3 dark:border-white/10">
-                <div className="text-[11px] font-semibold text-ink-faint">বাংলা তারিখ</div>
+                <div className="text-[11px] font-semibold text-ink-faint">{tx("বাংলা তারিখ")}</div>
                 <div className="mt-1 text-[14px] font-bold leading-snug text-sky-600 dark:text-sky-400">
                   {banglaText(todayB)}
                 </div>
@@ -305,7 +323,7 @@ export default function CalendarPage() {
             <div className="relative flex items-center justify-center px-10">
               <button
                 onClick={() => goMonth(-1)}
-                aria-label="আগের মাস"
+                aria-label={tx("আগের মাস")}
                 className="absolute left-0 flex h-9 w-9 items-center justify-center rounded-full bg-primary-50 text-primary-700 transition hover:bg-primary-100 active:scale-95 dark:bg-white/10 dark:text-primary-300"
               >
                 <Icon name="back" size={15} />
@@ -313,18 +331,18 @@ export default function CalendarPage() {
 
               <div className="min-w-0 text-center">
                 <h2 className="text-[15px] font-bold leading-snug text-primary-700 dark:text-primary-300">
-                  {monthMeta.bn}{" "}
-                  <span className="font-arabic text-[14.5px] font-medium opacity-80">({monthMeta.ar})</span>{" "}
-                  <span className="text-ink-soft dark:text-ink-faint">{toBn(hMonth.year)} হিজরী</span>
+                  {lang === "en" ? monthMeta.en : lang === "ur" ? monthMeta.ar : monthMeta.bn}{" "}
+                  {lang !== "ur" && <span className="font-arabic text-[14.5px] font-medium opacity-80">({monthMeta.ar})</span>}{" "}
+                  <span className="text-ink-soft dark:text-ink-faint">{num(hMonth.year)} {tx("হিজরী")}</span>
                 </h2>
                 <p className="mt-0.5 text-[11px] font-medium text-ink-faint">
-                  {gregorianRange(meta.start, meta.days)}
+                  {rangeLabel(meta.start, meta.days)}
                 </p>
               </div>
 
               <button
                 onClick={() => goMonth(1)}
-                aria-label="পরের মাস"
+                aria-label={tx("পরের মাস")}
                 className="absolute right-0 flex h-9 w-9 items-center justify-center rounded-full bg-primary-50 text-primary-700 transition hover:bg-primary-100 active:scale-95 dark:bg-white/10 dark:text-primary-300"
               >
                 <Icon name="chevron" size={15} />
@@ -337,7 +355,7 @@ export default function CalendarPage() {
                   onClick={goToday}
                   className="rounded-full bg-primary-50 px-3 py-1 text-[10.5px] font-bold text-primary-700 transition hover:bg-primary-100 dark:bg-white/10 dark:text-primary-300"
                 >
-                  চলতি মাসে ফিরুন
+                  {tx("চলতি মাসে ফিরুন")}
                 </button>
               </div>
             )}
@@ -346,11 +364,13 @@ export default function CalendarPage() {
               {WD_ORDER.map((d) => (
                 <div key={d} className="pb-1 text-center">
                   <b className="block text-[10.5px] font-bold leading-tight text-primary-700 dark:text-primary-300">
-                    {WEEKDAYS_SHORT_BN[d]}
+                    {lang === "bn" ? WEEKDAYS_SHORT_BN[d] : lang === "ur" ? WEEKDAYS_SHORT_UR[d] : WEEKDAYS_SHORT_EN[d]}
                   </b>
-                  <span className="block text-[9px] leading-tight text-ink-faint">
-                    {WEEKDAYS_SHORT_EN[d]}
-                  </span>
+                  {lang === "bn" && (
+                    <span className="block text-[9px] leading-tight text-ink-faint">
+                      {WEEKDAYS_SHORT_EN[d]}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
@@ -379,9 +399,9 @@ export default function CalendarPage() {
                       {cell.gregorian}
                     </span>
                     <span className="mt-1 flex items-center gap-0.5 text-[10px] font-bold leading-none">
-                      <span className="text-gold-600 dark:text-amber-400">{toBn(cell.banglaDay)}</span>
+                      <span className="text-gold-600 dark:text-amber-400">{num(cell.banglaDay)}</span>
                       <span className="text-ink-faint">–</span>
-                      <span className="text-primary-700 dark:text-primary-300">{toBn(cell.hijriDay)}</span>
+                      <span className="text-primary-700 dark:text-primary-300">{num(cell.hijriDay)}</span>
                     </span>
                     {hasEvent && (
                       <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-rose-500" />
@@ -394,15 +414,15 @@ export default function CalendarPage() {
             <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3.5 gap-y-1 text-[10.5px] font-semibold text-ink-soft">
               <span className="inline-flex items-center gap-1">
                 <i className="h-2 w-2 rounded-full bg-sky-500" />
-                ইংরেজি তারিখ
+                {tx("ইংরেজি তারিখ")}
               </span>
               <span className="inline-flex items-center gap-1">
                 <i className="h-2 w-2 rounded-full bg-gold-500" />
-                বাংলা তারিখ
+                {tx("বাংলা তারিখ")}
               </span>
               <span className="inline-flex items-center gap-1">
                 <i className="h-2 w-2 rounded-full bg-primary-500" />
-                হিজরি তারিখ
+                {tx("হিজরি তারিখ")}
               </span>
             </div>
 
@@ -412,12 +432,12 @@ export default function CalendarPage() {
                   <div className="min-w-0">
                     <div className="text-[13px] font-bold">{gregorianFull(selectedDate)}</div>
                     <div className="mt-0.5 text-[11.5px] leading-relaxed text-ink-soft">
-                      {hijriText(hijriAt(selectedDate))} · {banglaText(banglaFromDate(selectedDate))}
+                      {hijriDayText(hijriAt(selectedDate))}{lang === "bn" ? ` · ${banglaText(banglaFromDate(selectedDate))}` : ""}
                     </div>
                   </div>
                   <button
                     onClick={() => setSelectedDay(null)}
-                    aria-label="বন্ধ করুন"
+                    aria-label={tx("বন্ধ করুন")}
                     className="shrink-0 rounded-full bg-white/70 p-1.5 text-ink-soft transition hover:bg-white active:scale-95 dark:bg-white/10"
                   >
                     <Icon name="x" size={14} />
@@ -436,13 +456,13 @@ export default function CalendarPage() {
                         </div>
                         <p className="mt-1 text-[11.5px] leading-relaxed text-ink-soft">{ev.description}</p>
                         {ev.reference && (
-                          <div className="mt-1 text-[10px] font-semibold text-ink-faint">সূত্র: {ev.reference}</div>
+                          <div className="mt-1 text-[10px] font-semibold text-ink-faint">{tx("সূত্র:")} {ev.reference}</div>
                         )}
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="mt-2 text-[11.5px] text-ink-faint">এ দিনে সংকলিত কোনো ঘটনা নেই।</p>
+                  <p className="mt-2 text-[11.5px] text-ink-faint">{tx("এ দিনে সংকলিত কোনো ঘটনা নেই।")}</p>
                 )}
               </div>
             )}
@@ -451,9 +471,9 @@ export default function CalendarPage() {
           {/* ------------------------------------------- month events */}
           <section className="mt-4">
             <div className="mb-2 flex items-center justify-between px-1">
-              <h2 className="text-[15px] font-bold text-ink">{monthMeta.bn} মাসের ঘটনাবলী</h2>
+              <h2 className="text-[15px] font-bold text-ink">{lang === "en" ? monthMeta.en : lang === "ur" ? monthMeta.ar : monthMeta.bn} — {tx("মাসের ঘটনাবলী")}</h2>
               <span className="text-[11px] font-semibold text-ink-faint">
-                {events === null ? "লোড হচ্ছে…" : `${toBn(monthEvents.length)}টি`}
+                {events === null ? tx("লোড হচ্ছে…") : `${num(monthEvents.length)}${tx("টি")}`}
               </span>
             </div>
 
@@ -468,7 +488,7 @@ export default function CalendarPage() {
               </div>
             ) : monthEvents.length === 0 ? (
               <div className="card p-5 text-center text-[12px] text-ink-faint">
-                এই মাসের জন্য কোনো ঘটনা সংকলিত হয়নি।
+                {tx("এই মাসের জন্য কোনো ঘটনা সংকলিত হয়নি।")}
               </div>
             ) : (
               <div className="space-y-2">
@@ -493,7 +513,7 @@ export default function CalendarPage() {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="ঘটনা, মাস বা সাল খুঁজুন…"
+              placeholder={tx("ঘটনা, মাস বা সাল খুঁজুন…")}
               className="input !pl-11 !shadow-card"
             />
           </form>
@@ -503,7 +523,7 @@ export default function CalendarPage() {
               onClick={() => setCat("all")}
               className={`chip shrink-0 !px-4 !py-2 ${cat === "all" ? "chip-active" : ""}`}
             >
-              সব মাস
+              {tx("সব মাস")}
             </button>
             {HIJRI_MONTHS.map((m, i) => (
               <button
@@ -511,14 +531,14 @@ export default function CalendarPage() {
                 onClick={() => setCat(i)}
                 className={`chip shrink-0 !px-4 !py-2 ${cat === i ? "chip-active" : ""}`}
               >
-                {m.bn}
+                {lang === "en" ? m.en : lang === "ur" ? m.ar : m.bn}
               </button>
             ))}
           </div>
 
           <div className="mb-2 flex items-center justify-between px-1 text-[11px] font-bold text-ink-faint">
-            <span>{events === null ? "লোড হচ্ছে…" : `${toBn(historyList.length)}টি ঘটনা`}</span>
-            <span>তারিখে চাপ দিলে ক্যালেন্ডারে দেখা যাবে</span>
+            <span>{events === null ? tx("লোড হচ্ছে…") : `${num(historyList.length)}${tx("টি ঘটনা")}`}</span>
+            <span>{tx("তারিখে চাপ দিলে ক্যালেন্ডারে দেখা যাবে")}</span>
           </div>
 
           {events === null ? (
@@ -536,8 +556,8 @@ export default function CalendarPage() {
               <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 dark:bg-white/10">
                 <Icon name="search" size={22} />
               </span>
-              <div className="mt-2 text-sm font-bold">কিছু পাওয়া যায়নি</div>
-              <div className="mt-1 text-[12px] text-ink-faint">অন্য শব্দ বা মাস বেছে দেখুন</div>
+              <div className="mt-2 text-sm font-bold">{tx("কিছু পাওয়া যায়নি")}</div>
+              <div className="mt-1 text-[12px] text-ink-faint">{tx("অন্য শব্দ বা মাস বেছে দেখুন")}</div>
             </div>
           ) : (
             <div className="space-y-2">
@@ -561,13 +581,14 @@ function CalendarHero({
   onTab: (tab: Tab) => void;
   onToday: () => void;
 }) {
+  const tx = useTx();
   return (
     <div className="page-hero animate-fade-up px-5 pb-0 pt-5 text-white">
       <div className="relative z-10">
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            aria-label="ফিরুন"
+            aria-label={tx("ফিরুন")}
             className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25 active:scale-95"
           >
             <Icon name="back" size={16} />
@@ -576,7 +597,7 @@ function CalendarHero({
             onClick={onToday}
             className="rounded-full bg-white/15 px-3.5 py-1.5 text-[11.5px] font-bold text-white transition hover:bg-white/25 active:scale-95"
           >
-            আজ
+            {tx("আজ")}
           </button>
         </div>
 
@@ -585,8 +606,8 @@ function CalendarHero({
             <Icon name="calendar" size={24} />
           </span>
           <div className="min-w-0">
-            <h1 className="text-[21px] font-bold leading-tight tracking-tight">ইসলামিক ক্যালেন্ডার</h1>
-            <p className="mt-0.5 text-[12px] text-white/75">হিজরি · বাংলা · ইংরেজি — একসাথে</p>
+            <h1 className="text-[21px] font-bold leading-tight tracking-tight">{tx("ইসলামিক ক্যালেন্ডার")}</h1>
+            <p className="mt-0.5 text-[12px] text-white/75">{tx("হিজরি · বাংলা · ইংরেজি — একসাথে")}</p>
           </div>
         </div>
 
@@ -599,7 +620,7 @@ function CalendarHero({
             }`}
           >
             <Icon name="calendar" size={19} />
-            ক্যালেন্ডার
+            {tx("ক্যালেন্ডার")}
             {tab === "calendar" && (
               <span className="absolute bottom-0 h-[3px] w-12 rounded-t-full bg-white" />
             )}
@@ -612,7 +633,7 @@ function CalendarHero({
             }`}
           >
             <Icon name="book" size={19} />
-            ঐতিহাসিক ঘটনা ও তথ্য
+            {tx("ঐতিহাসিক ঘটনা ও তথ্য")}
             {tab === "history" && (
               <span className="absolute bottom-0 h-[3px] w-12 rounded-t-full bg-white" />
             )}
@@ -624,12 +645,15 @@ function CalendarHero({
 }
 
 function EventCard({ ev, onOpen }: { ev: EventItem; onOpen?: () => void }) {
+  const tx = useTx();
+  const lang = useLang();
+  const num = useNum();
   const month = HIJRI_MONTHS[ev.month];
   const inner = (
     <>
       <span className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-xl bg-gold-light text-gold-600 dark:bg-gold-500/15 dark:text-amber-400">
-        <span className="text-[15px] font-bold leading-none">{toBn(ev.day)}</span>
-        <span className="mt-0.5 text-[8.5px] font-bold leading-none opacity-80">{month.bn}</span>
+        <span className="text-[15px] font-bold leading-none">{num(ev.day)}</span>
+        <span className="mt-0.5 text-[8.5px] font-bold leading-none opacity-80">{lang === "en" ? month.en : lang === "ur" ? month.ar : month.bn}</span>
       </span>
       <span className="min-w-0 flex-1">
         <span className="flex flex-wrap items-baseline gap-x-2">

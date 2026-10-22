@@ -26,11 +26,12 @@ export type PrayerKey = "fajr" | "sunrise" | "dhuhr" | "asr" | "maghrib" | "isha
 export const PRAYER_ORDER: PrayerKey[] = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 export const PRAYER_KEYS: PrayerKey[] = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
 
-export type Lang = "bn" | "en";
+export type Lang = "bn" | "ur" | "en";
 
 const NAMES: Record<Lang, Record<PrayerKey, string>> = {
   bn: { fajr: "ফজর", sunrise: "সূর্যোদয়", dhuhr: "যোহর", asr: "আসর", maghrib: "মাগরিব", isha: "এশা" },
   en: { fajr: "Fajr", sunrise: "Sunrise", dhuhr: "Dhuhr", asr: "Asr", maghrib: "Maghrib", isha: "Isha" },
+  ur: { fajr: "فجر", sunrise: "سورج طلوع", dhuhr: "ظہر", asr: "عصر", maghrib: "مغرب", isha: "عشاء" },
 };
 
 export const prayerName = (k: PrayerKey, lang: Lang) => NAMES[lang][k];
@@ -247,6 +248,7 @@ export interface SpecialPeriod {
   type: "prohibited" | "ishraq" | "chasht";
   labelBn: string;
   labelEn: string;
+  labelUr: string;
   remainSec: number;
   isRed: boolean;
 }
@@ -262,13 +264,13 @@ export function getSpecialPeriod(times: PrayerTimes, now: Date): SpecialPeriod |
   const ishraqEnd = sunriseEnd + 120;
   const chashtEnd = dhuhr - 10;
   if (cm >= sun && cm < sunriseEnd) {
-    return { type: "prohibited", labelBn: "সূর্যোদয় (নিষিদ্ধ)", labelEn: "Sunrise (prohibited)", remainSec: (sunriseEnd * 60 - cs + 86400) % 86400, isRed: true };
+    return { type: "prohibited", labelBn: "সূর্যোদয় (নিষিদ্ধ)", labelEn: "Sunrise (prohibited)", labelUr: "سورج طلوع (ممنوع)", remainSec: (sunriseEnd * 60 - cs + 86400) % 86400, isRed: true };
   }
   if (cm >= sunriseEnd && cm < ishraqEnd) {
-    return { type: "ishraq", labelBn: "ইশরাক", labelEn: "Ishraq", remainSec: (chashtEnd * 60 - cs + 86400) % 86400, isRed: false };
+    return { type: "ishraq", labelBn: "ইশরাক", labelEn: "Ishraq", labelUr: "اشراق", remainSec: (chashtEnd * 60 - cs + 86400) % 86400, isRed: false };
   }
   if (cm >= ishraqEnd && cm < chashtEnd) {
-    return { type: "chasht", labelBn: "চাশত", labelEn: "Chasht", remainSec: (chashtEnd * 60 - cs + 86400) % 86400, isRed: false };
+    return { type: "chasht", labelBn: "চাশত", labelEn: "Chasht", labelUr: "چاشت", remainSec: (chashtEnd * 60 - cs + 86400) % 86400, isRed: false };
   }
   return null;
 }
@@ -345,9 +347,10 @@ export function adjustHijri(h: HijriInfo): { day: number; month: string; year: s
 export function hijriText(h: HijriInfo | null, lang: Lang): string {
   if (h) {
     const a = adjustHijri(h);
-    const month = lang === "bn" ? HIJRI_BN[a.month] || a.month : a.month;
+    const month = lang === "bn" ? HIJRI_BN[a.month] || a.month : lang === "ur" ? HIJRI_UR[a.month] || a.month : a.month;
     const day = lang === "bn" ? toBn(a.day) : a.day;
-    return `${day} ${month}, ${lang === "bn" ? toBn(a.year) : a.year} ${lang === "bn" ? "হিজরি" : "AH"}`;
+    const suffix = lang === "bn" ? "হিজরি" : lang === "ur" ? "ہجری" : "AH";
+    return `${day} ${month}, ${lang === "bn" ? toBn(a.year) : a.year} ${suffix}`;
   }
   try {
     const s = new Intl.DateTimeFormat(lang === "bn" ? "bn-BD-u-ca-islamic-umalqura" : "en-u-ca-islamic-umalqura", {
@@ -359,10 +362,19 @@ export function hijriText(h: HijriInfo | null, lang: Lang): string {
   }
 }
 
+export const HIJRI_UR: Record<string, string> = {
+  Muharram: "محرم", Safar: "صفر", "Rabi al-Awwal": "ربیع الاول",
+  "Rabi al-Thani": "ربیع الثانی", "Jumada al-Awwal": "جمادی الاول",
+  "Jumada al-Thani": "جمادی الثانی", Rajab: "رجب", "Sha'ban": "شعبان",
+  Ramadan: "رمضان", Shawwal: "شوال", "Dhu al-Qidah": "ذیقعد",
+  "Dhu al-Hijjah": "ذیالحج",
+};
+
 const BN_DAYS = ["রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"];
 const BN_MONTHS = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
 
 export function gregorianText(lang: Lang, d = new Date()): string {
   if (lang === "bn") return `${BN_DAYS[d.getDay()]}, ${toBn(d.getDate())} ${BN_MONTHS[d.getMonth()]}, ${toBn(d.getFullYear())}`;
+  if (lang === "ur") return d.toLocaleDateString("ur-PK", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
   return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 }

@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { useTx } from "../../store/language-store";
 
 export default function NoticePage() {
+  const tx = useTx();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +19,7 @@ export default function NoticePage() {
 
   return (
     <div className="animate-fade-up">
-      <PageHead title="নোটিশ বোর্ড" subtitle="ঘোষণা ও আপডেট" icon="mega" />
+      <PageHead title={tx("নোটিশ বোর্ড")} subtitle={tx("ঘোষণা ও আপডেট")} icon="mega" />
       {loading ? (
         <div className="mt-3 space-y-2">
           {[0, 1, 2].map((i) => (
@@ -25,7 +27,7 @@ export default function NoticePage() {
           ))}
         </div>
       ) : items.length === 0 ? (
-        <div className="mt-3"><EmptyState icon="mega" title="কোনো নোটিশ নেই" /></div>
+        <div className="mt-3"><EmptyState icon="mega" title={tx("কোনো নোটিশ নেই")} /></div>
       ) : (
         <div className="mt-3 space-y-2">
           {items.slice(0, 40).map((n: any, i: number) => (
@@ -46,7 +48,7 @@ export default function NoticePage() {
                   className="btn-ghost !py-1.5 !text-xs"
                   onClick={() => navigator.clipboard?.writeText(`${n.title}\n${n.body || ""}`)}
                 >
-                  <Icon name="copy" size={14} /> কপি
+                  <Icon name="copy" size={14} /> {tx("কপি")}
                 </button>
               </div>
             </details>

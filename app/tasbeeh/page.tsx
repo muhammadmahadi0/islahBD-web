@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { storageGet, storageSet, storageSetJSON, storageGetJSON } from "../../lib/storage";
+import { useTx } from "../../store/language-store";
 
 const DHIKRS = ["সুবহানাল্লাহ", "আলহামদুলিল্লাহ", "আল্লাহু আকবার", "লা ইলাহা ইল্লাল্লাহ", "আস্তাগফিরুল্লাহ", "দরূদ শরীফ"];
 
 export default function TasbeehPage() {
+  const tx = useTx();
   const [count, setCount] = useState(0);
   const [target, setTarget] = useState(100);
   const [dhikr, setDhikr] = useState(0);
@@ -36,7 +38,7 @@ export default function TasbeehPage() {
 
   return (
     <div className="animate-fade-up">
-      <PageHead title="ডিজিটাল তাসবীহ" subtitle="যিকির গুনুন ও লক্ষ্য পূরণ করুন" icon="beads" />
+      <PageHead title={tx("ডিজিটাল তাসবীহ")} subtitle={tx("যিকির গুনুন ও লক্ষ্য পূরণ করুন")} icon="beads" />
       <div className="card mt-3 p-5 text-center">
         <select value={dhikr} onChange={(e) => { setDhikr(Number(e.target.value)); setCount(0); }} className="input !text-center !font-bold" aria-label="dhikr">
           {DHIKRS.map((d, i) => <option key={d} value={i}>{d}</option>)}
@@ -75,7 +77,7 @@ export default function TasbeehPage() {
         </button>
 
         <div className="mt-4 grid grid-cols-3 gap-2">
-          <button className="btn-ghost !py-2 text-[13px]" onClick={() => setCount(0)}>রিসেট</button>
+          <button className="btn-ghost !py-2 text-[13px]" onClick={() => setCount(0)}>{tx("রিসেট")}</button>
           <input
             type="number" min={1} value={target} aria-label="target"
             onChange={(e) => { const v = Math.max(1, Number(e.target.value) || 1); setTarget(v); storageSet("tasbeeh_target", String(v)); }}
@@ -83,9 +85,9 @@ export default function TasbeehPage() {
           />
           <button
             className="btn-ghost !py-2 text-[13px]"
-            onClick={() => { if (confirm("সব হিস্ট্রি মুছবেন?")) { setHist([]); storageSet("tasbeeh_history", "[]"); } }}
+            onClick={() => { if (confirm(tx("সব হিস্ট্রি মুছবেন?"))) { setHist([]); storageSet("tasbeeh_history", "[]"); } }}
           >
-            মুছুন
+            {tx("মুছুন")}
           </button>
         </div>
       </div>
@@ -94,7 +96,7 @@ export default function TasbeehPage() {
         <>
           <div className="mb-2 mt-5 flex items-center gap-1.5 px-1 text-sm font-bold">
             <Icon name="clock" size={16} className="text-ink-faint" />
-            হিস্ট্রি ({hist.length})
+            {tx("হিস্ট্রি")} ({hist.length})
           </div>
           <div className="space-y-1.5">
             {hist.slice(0, 20).map((h, i) => (

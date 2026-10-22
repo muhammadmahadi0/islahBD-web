@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { useNum, useTx } from "../../store/language-store";
 
 type Photo = { id: number; url: string; order: number };
 type Album = { id: number; title?: string; coverUrl?: string | null; photos?: Photo[]; imageCount?: number };
@@ -12,6 +13,8 @@ const cover = (a: Album) =>
 const wallpaperUrl = (w: Wallpaper) => w.url || w.image || w.file || "";
 
 export default function GalleryPage() {
+  const tx = useTx();
+  const num = useNum();
   const [albums, setAlbums] = useState<Album[]>([]);
   const [walls, setWalls] = useState<Wallpaper[]>([]);
   const [loadingAlbums, setLoadingAlbums] = useState(true);
@@ -35,12 +38,12 @@ export default function GalleryPage() {
     <>
     <div className="animate-fade-up">
       <PageHead
-        title="গ্যালারি ও ওয়ালপেপার"
-        subtitle={`অ্যালবাম ${albums.length} • ওয়ালপেপার ${walls.length}`}
+        title={tx("গ্যালারি ও ওয়ালপেপার")}
+        subtitle={`${tx("অ্যালবাম")} ${num(albums.length)} • ${tx("ওয়ালপেপার")} ${num(walls.length)}`}
         icon="image"
       />
 
-      <div className="mb-2 mt-5 text-sm font-bold">অ্যালবাম</div>
+      <div className="mb-2 mt-5 text-sm font-bold">{tx("অ্যালবাম")}</div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {albums.slice(0, 18).map((a) => {
           const src = cover(a);
@@ -59,21 +62,21 @@ export default function GalleryPage() {
                 </div>
               )}
               <div className="flex items-center justify-between gap-2 p-2.5">
-                <span className="truncate text-xs font-bold">{a.title || `অ্যালবাম ${a.id}`}</span>
-                {count > 0 && <span className="flex-shrink-0 text-[10px] text-ink-faint">{count}টি</span>}
+                <span className="truncate text-xs font-bold">{a.title || `${tx("অ্যালবাম")} ${num(a.id)}`}</span>
+                {count > 0 && <span className="flex-shrink-0 text-[10px] text-ink-faint">{num(count)}{tx("টি ছবি")}</span>}
               </div>
             </button>
           );
         })}
         {loadingAlbums && (
-          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">লোড হচ্ছে…</div>
+          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">{tx("লোড হচ্ছে…")}</div>
         )}
         {!loadingAlbums && albums.length === 0 && (
-          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">কোনো অ্যালবাম নেই</div>
+          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">{tx("কোনো অ্যালবাম নেই")}</div>
         )}
       </div>
 
-      <div className="mb-2 mt-5 text-sm font-bold">ওয়ালপেপার</div>
+      <div className="mb-2 mt-5 text-sm font-bold">{tx("ওয়ালপেপার")}</div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {walls.slice(0, 18).map((w) => {
           const src = wallpaperUrl(w);
@@ -92,17 +95,17 @@ export default function GalleryPage() {
                   download
                   className="flex items-center justify-center gap-1.5 p-2.5 text-xs font-bold text-primary-700 transition hover:bg-primary-50"
                 >
-                  <Icon name="download" size={14} /> ডাউনলোড
+                  <Icon name="download" size={14} /> {tx("ডাউনলোড")}
                 </a>
               )}
             </div>
           );
         })}
         {loadingWalls && (
-          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">লোড হচ্ছে…</div>
+          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">{tx("লোড হচ্ছে…")}</div>
         )}
         {!loadingWalls && walls.length === 0 && (
-          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">কোনো ওয়ালপেপার নেই</div>
+          <div className="card col-span-full p-4 text-center text-sm text-ink-faint">{tx("কোনো ওয়ালপেপার নেই")}</div>
         )}
       </div>
       </div>
@@ -118,14 +121,14 @@ export default function GalleryPage() {
           >
             <div className="mb-3 flex items-start justify-between gap-3">
               <div>
-                <div className="text-sm font-bold">{open.title || `অ্যালবাম ${open.id}`}</div>
+                <div className="text-sm font-bold">{open.title || `${tx("অ্যালবাম")} ${num(open.id)}`}</div>
                 <div className="mt-0.5 text-[11px] text-ink-faint">
-                  {open.photos?.length ?? 0}টি ছবি
+                  {num(open.photos?.length ?? 0)}{tx("টি ছবি")}
                 </div>
               </div>
               <button
                 onClick={() => setOpen(null)}
-                aria-label="বন্ধ করুন"
+                aria-label={tx("বন্ধ করুন")}
                 className="rounded-full bg-sand p-2 text-ink-soft transition hover:text-ink"
               >
                 <Icon name="x" size={16} />
@@ -139,7 +142,7 @@ export default function GalleryPage() {
               ))}
             </div>
             {(open.photos?.length ?? 0) === 0 && (
-              <div className="rounded-xl bg-sand p-4 text-center text-sm text-ink-faint">এই অ্যালবামে ছবি নেই</div>
+              <div className="rounded-xl bg-sand p-4 text-center text-sm text-ink-faint">{tx("এই অ্যালবামে ছবি নেই")}</div>
             )}
           </div>
         </div>

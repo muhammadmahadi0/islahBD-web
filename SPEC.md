@@ -142,10 +142,16 @@ offline-tolerant, keyless APIs only.
   `store/language-store.ts` + `lib/i18n.ts`. The pre-paint script sets
   `<html lang>`/`dir` (Urdu = RTL) before first paint; the store uses
   `skipHydration` and AppShell rehydrates after mount so SSR stays Bengali
-  and there is no text hydration mismatch. Scope is the shared chrome
-  (header, bottom nav, page-hero back label) and the Settings screen;
-  page content stays Bengali. Urdu UI uses the local Naskh/Nastaliq stack
-  (`html[lang="ur"]`) with Bengali falling back to Hind Siliguri.
+  and there is no text hydration mismatch. Scope is **all static UI copy**
+  (navigation, cards, labels, empty states, buttons, counts, dates) stored
+  in `lib/ui-strings.ts` and rendered through `tx("বাংলা")` / `useTx()`;
+  API content (bayan titles, dua text, articles, Qur'an Arabic/translation)
+  remains in its source language. Counts/dates use `useNum()`, so Bangla
+  digits appear only in Bengali mode. The old `praybd-lang` BN/EN toggle is
+  gone — Prayer Times follows the global language, and `lib/prayer.ts`
+  supports `bn`/`ur`/`en` names, months and time formats. Urdu UI uses the
+  local Naskh/Nastaliq stack (`html[lang="ur"]`) with Bengali falling back
+  to Hind Siliguri.
 - Theme switch plays beta's tap-bloom (`components/theme-bloom.tsx` +
   `.theme-wrap` CSS, reduced-motion safe)
 - Golden signature elements identical in both modes
@@ -238,7 +244,10 @@ offline-tolerant, keyless APIs only.
 
 ## 5. Conventions
 
-- Bengali UI strings inline (no i18n framework); dates/digits in Bengali
+- Static UI copy lives in `lib/ui-strings.ts`, keyed by its Bengali source
+  string (`[en, ur]` tuples), and is rendered with `tx("…")`; content from
+  the API stays in its source language. Dates/digits follow the UI language
+  via `useNum()` (Bengali digits in `bn` only)
 - New pages: `PageHead` hero + skeleton loaders + `EmptyState`
 - Buttons only from the `.btn-*` / `.chip` system — every variant must be
   readable in **both** light and dark (pinned colors on gold/white)

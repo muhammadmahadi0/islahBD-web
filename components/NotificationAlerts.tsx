@@ -10,6 +10,7 @@ import {
   showLocalNotification,
 } from "../lib/push";
 import { notifHref, parseNotifications } from "../lib/notifications";
+import { useLang } from "../store/language-store";
 
 // How often an open tab checks the API for new notifications.
 const POLL_MS = 3 * 60 * 1000;
@@ -24,6 +25,7 @@ const POLL_MS = 3 * 60 * 1000;
  * - Prayer reminders are scheduled for the current day while the app runs.
  */
 export default function NotificationAlerts() {
+  const lang = useLang();
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -115,9 +117,10 @@ export default function NotificationAlerts() {
           if (delay <= 0 || delay > 8 * 60 * 60 * 1000) continue;
           timers.push(
             window.setTimeout(() => {
+              const pn = prayerName(key, lang);
               showLocalNotification({
-                title: `${prayerName(key, "bn")} এর ওয়াক্ত শুরু`,
-                body: `${loc.city}-এ ${prayerName(key, "bn")} এর সময় হয়েছে।`,
+                title: lang === "bn" ? `${pn} এর ওয়াক্ত শুরু` : lang === "ur" ? `${pn} کا وقت شروع` : `${pn} time has begun`,
+                body: lang === "bn" ? `${loc.city}-এ ${pn} এর সময় হয়েছে।` : lang === "ur" ? `${loc.city} میں ${pn} کا وقت ہو گیا ہے۔` : `${pn} time has started in ${loc.city}.`,
                 url: "/prayer-times",
                 tag: `prayer-${key}`,
               });

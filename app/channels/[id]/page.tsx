@@ -13,6 +13,7 @@ import {
   type ChannelVideo,
 } from "../../../lib/channel-videos";
 import AddToPlaylistMenu from "../../../components/audio/AddToPlaylistMenu";
+import { useNum, useTx } from "../../../store/language-store";
 
 // Channel browser — keyless YouTube listings (InnerTube via /api/channel),
 // ported from the master branch and restyled for the emerald/gold theme.
@@ -24,6 +25,8 @@ type Sort = "newest" | "popular" | "oldest";
 const SHORT_MAX_SECONDS = 5 * 60;
 
 export default function ChannelPage() {
+  const tx = useTx();
+  const num = useNum();
   const params = useParams<{ id: string }>();
   const channelId = decodeURIComponent(params?.id ?? "");
   const registry = getChannelById(channelId);
@@ -67,7 +70,7 @@ export default function ChannelPage() {
       setNextToken(data.nextPageToken || null);
       if (data.channel?.avatar) setAvatar(data.channel.avatar);
     } catch {
-      setError("চ্যানেলের ভিডিও লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।");
+      setError(tx("চ্যানেলের ভিডিও লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।"));
     } finally {
       setLoading(false);
     }
@@ -208,7 +211,7 @@ export default function ChannelPage() {
     <div className="animate-fade-up">
       <PageHead
         title={registry.nameBn}
-        subtitle={`${registry.handle} • ${bnNum(results.length)}টি ভিডিও`}
+        subtitle={`${registry.handle} • ${num(results.length)}${tx("টি ভিডিও")}`}
         backHref="/channels"
         icon="youtube"
         action={
@@ -227,13 +230,13 @@ export default function ChannelPage() {
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="এই চ্যানেলের ভিডিও খুঁজুন…"
+            placeholder={tx("এই চ্যানেলের ভিডিও খুঁজুন…")}
             className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-ink-faint"
           />
           {query && (
             <button
               onClick={() => setQuery("")}
-              aria-label="মুছুন"
+              aria-label={tx("মুছুন")}
               className="shrink-0 rounded-full p-1 text-ink-faint transition hover:text-ink"
             >
               <Icon name="x" size={16} />
@@ -246,9 +249,9 @@ export default function ChannelPage() {
         <div className="rail flex flex-1 items-center gap-2 overflow-x-auto pb-1">
           {(
             [
-              { id: "all", label: `সব (${bnNum(videos.length)})` },
-              { id: "bayan", label: `বয়ান (${bnNum(bayanCount)})` },
-              { id: "short", label: `ক্লিপস (${bnNum(shortCount)})` },
+              { id: "all", label: `${tx("সব")} (${num(videos.length)})` },
+              { id: "bayan", label: `${tx("বয়ান")} (${num(bayanCount)})` },
+              { id: "short", label: `${tx("ক্লিপস")} (${num(shortCount)})` },
             ] as { id: Filter; label: string }[]
           ).map((f) => (
             <button
@@ -262,9 +265,9 @@ export default function ChannelPage() {
           <span className="mx-1 h-5 w-px shrink-0 bg-slate-200 dark:bg-white/10" />
           {(
             [
-              { id: "newest", label: "নতুন" },
-              { id: "popular", label: "জনপ্রিয়" },
-              { id: "oldest", label: "পুরনো" },
+              { id: "newest", label: tx("নতুন") },
+              { id: "popular", label: tx("জনপ্রিয়") },
+              { id: "oldest", label: tx("পুরনো") },
             ] as { id: Sort; label: string }[]
           ).map((s) => (
             <button
@@ -283,7 +286,7 @@ export default function ChannelPage() {
               return !open;
             })
           }
-          aria-label="ভিডিও খুঁজুন"
+          aria-label={tx("ভিডিও খুঁজুন")}
           aria-pressed={showSearch}
           className={`chip shrink-0 !px-3 !py-2 ${showSearch ? "chip-active" : ""}`}
         >
@@ -304,16 +307,16 @@ export default function ChannelPage() {
           ))}
         </div>
       ) : error ? (
-        <EmptyState icon="youtube" title={error} hint="পুনরায় চেষ্টা করুন" />
+        <EmptyState icon="youtube" title={error} hint={tx("পুনরায় চেষ্টা করুন")} />
       ) : results.length === 0 && !indexing ? (
         <EmptyState
           icon="search"
           title={
             query.trim()
-              ? `“${query.trim()}” লিখে কোনো ভিডিও পাওয়া যায়নি`
-              : "কোনো ভিডিও পাওয়া যায়নি"
+              ? `“${query.trim()}” ${tx("লিখে কোনো ভিডিও পাওয়া যায়নি")}`
+              : tx("কোনো ভিডিও পাওয়া যায়নি")
           }
-          hint={query.trim() ? "অন্য শব্দ দিয়ে খুঁজুন" : "অন্য ফিল্টার চেষ্টা করুন"}
+          hint={query.trim() ? tx("অন্য শব্দ দিয়ে খুঁজুন") : tx("অন্য ফিল্টার চেষ্টা করুন")}
         />
       ) : (
         <>
@@ -367,7 +370,7 @@ export default function ChannelPage() {
                     </div>
                     <button
                       onClick={() => setMenuTrack(tracks[i])}
-                      aria-label="প্লেলিস্টে রাখুন"
+                      aria-label={tx("প্লেলিস্টে রাখুন")}
                       className="shrink-0 rounded-xl p-1.5 text-ink-faint transition hover:bg-primary-50 hover:text-primary-700"
                     >
                       <Icon name="plus" size={17} />
@@ -380,7 +383,7 @@ export default function ChannelPage() {
 
           {indexing && (
             <p className="mt-5 text-center text-xs font-semibold text-primary-700">
-              {query.trim() ? "সব ভিডিওতে খোঁজা হচ্ছে…" : "সব ভিডিও সাজানো হচ্ছে…"} (
+              {query.trim() ? tx("সব ভিডিওতে খোঁজা হচ্ছে…") : tx("সব ভিডিও সাজানো হচ্ছে…")} (
               {bnNum(videos.length)})
             </p>
           )}
@@ -395,7 +398,7 @@ export default function ChannelPage() {
                 disabled={loadingMore}
                 className="btn-outline !px-6 !py-2.5 text-[13px] disabled:opacity-60"
               >
-                {loadingMore ? "লোড হচ্ছে…" : "আরও দেখুন"}
+                {loadingMore ? tx("লোড হচ্ছে…") : tx("আরও দেখুন")}
               </button>
             </div>
           )}

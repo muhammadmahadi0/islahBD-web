@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "./icons";
+import { useTx } from "../store/language-store";
 import { CHANNELS } from "../lib/channels";
 
 interface ChannelMeta {
@@ -14,6 +15,7 @@ interface ChannelMeta {
  * an monogram when the lookup fails.
  */
 export default function ChannelGrid() {
+  const tx = useTx();
   const [meta, setMeta] = useState<Record<string, ChannelMeta>>({});
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export default function ChannelGrid() {
             <span className="min-w-0 flex-1">
               <span className="block truncate text-sm font-bold">{c.nameBn}</span>
               <span className="block truncate text-xs text-ink-faint">
-                {c.handle} • ভিডিও দেখুন
+                {c.handle} • {tx("ভিডিও দেখুন")}
               </span>
             </span>
             <Icon name="chevron" size={18} className="text-ink-faint" />

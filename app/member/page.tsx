@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { toBn } from "../../lib/prayer";
+import { useTx } from "../../store/language-store";
 
 const BENEFITS = [
   "উলামায়ে কেরাম ও তালিবুল ইলমদের সাথে জুড়ে থাকা যায়।",
@@ -44,96 +45,88 @@ function useCountdown() {
 }
 
 export default function MemberPage() {
+  const tx = useTx();
   const cd = useCountdown();
 
   return (
     <div className="animate-fade-up">
-      <PageHead title="আজীবন সদস্য" subtitle="জামেআ মারকাযুল ইহসান ঢাকা" icon="star" />
+      <PageHead title={tx("আজীবন সদস্য")} subtitle={tx("জামেআ মারকাযুল ইহসান ঢাকা")} icon="star" />
 
       {/* Event banner */}
       <div className="page-hero mt-3 p-5 text-center">
         <div className="relative z-10">
-          <p className="text-xs font-bold tracking-wide text-gold-100">★ বিশেষ এলান ও দাওয়াত ★</p>
-          <h2 className="mt-1 text-xl font-bold">৫ই ডিসেম্বর ২০২৬ (শনিবার)</h2>
-          <p className="text-[13px] text-white/80">চলতি বছর আজীবন সদস্য সম্মেলন অনুষ্ঠিত হবে ইনশাআল্লাহ</p>
+          <p className="text-xs font-bold tracking-wide text-gold-100">{tx("★ বিশেষ এলান ও দাওয়াত ★")}</p>
+          <h2 className="mt-1 text-xl font-bold">{tx("৫ই ডিসেম্বর ২০২৬ (শনিবার)")}</h2>
+          <p className="text-[13px] text-white/80">{tx("চলতি বছর আজীবন সদস্য সম্মেলন অনুষ্ঠিত হবে ইনশাআল্লাহ")}</p>
           <p className="mt-1 text-[11px] text-white/70">
-            স্থান: গুলশানে আল্লামা শাহ আব্দুল মতীন কমপ্লেক্স, পাইটি, ডেমরা, ঢাকা।
+            {tx("স্থান: গুলশানে আল্লামা শাহ আব্দুল মতীন কমপ্লেক্স, পাইটি, ডেমরা, ঢাকা।")}
           </p>
           {!cd.done ? (
             <div className="mx-auto mt-3 flex max-w-xs items-center justify-center gap-2">
               {(
                 [
-                  [cd.d, "দিন"],
-                  [cd.h, "ঘণ্টা"],
-                  [cd.m, "মিনিট"],
-                  [cd.s, "সেকেন্ড"],
+                  [cd.d, tx("দিন")],
+                  [cd.h, tx("ঘণ্টা")],
+                  [cd.m, tx("মিনিট")],
+                  [cd.s, tx("সেকেন্ড")],
                 ] as const
               ).map(([v, l]) => (
                 <div key={l} className="min-w-[64px] rounded-2xl bg-white/15 px-2 py-2 backdrop-blur">
                   <div className="text-xl font-bold tabular-nums">{toBn(v)}</div>
-                  <div className="text-[10px] text-white/75">{l} বাকি</div>
+                  <div className="text-[10px] text-white/75">{l} {tx("বাকি")}</div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="mt-3 font-bold text-gold-100">সম্মেলন চলছে — শরীক হোন!</p>
+            <p className="mt-3 font-bold text-gold-100">{tx("সম্মেলন চলছে — শরীক হোন!")}</p>
           )}
         </div>
       </div>
 
       {/* About */}
       <div className="card mt-2 p-4 text-sm leading-relaxed text-ink-soft">
-        আমাদের পরম শ্রদ্ধেয় শায়েখ হযরত মাওলানা শাহ তৈয়্যেব আশরাফ সাহেব
-        (দামাত বারাকাতুহুম) এর প্রতিষ্ঠিত ও পরিচালিত দ্বীনি প্রতিষ্ঠান
-        “জামেআ মারকাযুল ইহসান ঢাকা (গুলশানে আল্লামা শাহ আব্দুল মতীন কমপ্লেক্স)”।
-        প্রতিষ্ঠানটির সামগ্রিক উন্নতি-অগ্রগতি এবং শত শত তালিবুল ইলম ও কুরআনের
-        হাফেজদের আর্থিক খেদমতের সহযোগিতাকে বেগবান করার লক্ষ্যে যাঁরা বাৎসরিক
-        নির্দিষ্ট অনুদান প্রদানের অঙ্গীকার করেন, তাঁরাই হলেন এই জামেআর
-        সম্মানিত আজীবন সদস্য। এটি দুনিয়া ও আখেরাতের এক চিরন্তন সদকায়ে জারিয়া।
+        {tx("আমাদের পরম শ্রদ্ধেয় শায়েখ হযরত মাওলানা শাহ তৈয়্যেব আশরাফ সাহেব (দামাত বারাকাতুহুম) এর প্রতিষ্ঠিত ও পরিচালিত দ্বীনি প্রতিষ্ঠান “জামেআ মারকাযুল ইহসান ঢাকা (গুলশানে আল্লামা শাহ আব্দুল মতীন কমপ্লেক্স)”। প্রতিষ্ঠানটির সামগ্রিক উন্নতি-অগ্রগতি এবং শত শত তালিবুল ইলম ও কুরআনের হাফেজদের আর্থিক খেদমতের সহযোগিতাকে বেগবান করার লক্ষ্যে যাঁরা বাৎসরিক নির্দিষ্ট অনুদান প্রদানের অঙ্গীকার করেন, তাঁরাই হলেন এই জামেআর সম্মানিত আজীবন সদস্য। এটি দুনিয়া ও আখেরাতের এক চিরন্তন সদকায়ে জারিয়া।")}
       </div>
 
       {/* Portal */}
       <div className="card mt-2 p-4">
-        <div className="font-bold">আজীবন সদস্য সেবা ও অনুদান পোর্টাল</div>
+        <div className="font-bold">{tx("আজীবন সদস্য সেবা ও অনুদান পোর্টাল")}</div>
         <p className="mt-0.5 text-[13px] text-ink-faint">
-          নতুন আবেদন অথবা বিদ্যমান সদস্যের অনুদান ও রসিদ
+          {tx("নতুন আবেদন অথবা বিদ্যমান সদস্যের অনুদান ও রসিদ")}
         </p>
         <div className="mt-3 grid gap-2">
           <a href="https://islahbd.com/lifetime-member" target="_blank" rel="noreferrer" className="btn-primary w-full">
-            <Icon name="plus" size={16} /> নতুন আজীবন সদস্য হতে আবেদন করুন
+            <Icon name="plus" size={16} /> {tx("নতুন আজীবন সদস্য হতে আবেদন করুন")}
           </a>
           <a href="https://islahbd.com/lifetime-member" target="_blank" rel="noreferrer" className="btn-ghost w-full">
-            পুরাতন সদস্য (হিসাব ও অনুদান প্রদান)
+            {tx("পুরাতন সদস্য (হিসাব ও অনুদান প্রদান)")}
           </a>
         </div>
       </div>
 
       {/* Benefits */}
-      <div className="mb-2 mt-5 px-1 text-[15px] font-bold">আজীবন সদস্য হওয়ার ফায়দা</div>
+      <div className="mb-2 mt-5 px-1 text-[15px] font-bold">{tx("আজীবন সদস্য হওয়ার ফায়দা")}</div>
       <div className="space-y-2">
         {BENEFITS.map((b, i) => (
           <div key={i} className="card flex items-start gap-2.5 p-3.5">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-primary-600 text-xs font-bold text-white">
               {toBn(i + 1)}
             </span>
-            <p className="text-[13px] leading-relaxed">{b}</p>
+            <p className="text-[13px] leading-relaxed">{tx(b)}</p>
           </div>
         ))}
       </div>
 
       {/* Fikir */}
       <div className="card mt-2 border-gold/30 bg-gold-light/50 p-4">
-        <div className="font-bold text-gold-dark">আমাদের ফিকির ও দোয়া</div>
+        <div className="font-bold text-gold-dark">{tx("আমাদের ফিকির ও দোয়া")}</div>
         <p className="mt-1 text-[13px] leading-relaxed">
-          দ্বীনি এ খেদমতে অংশগ্রহণ করার লক্ষ্যে আমরা নিজেরা সদস্য হওয়ার ও
-          নিজেদের আপনজন প্রিয়জনদেরকে সদস্য করার ফিকির করবো ইনশাআল্লাহ। সেই
-          সাথে দোয়া করবো, মহান আল্লাহ রাব্বুল আলামীন নিজ দয়া ও অনুগ্রহে খুব
-          বেশি কবুল করুন এবং সফল করুন। আমীন।
+          {tx("দ্বীনি এ খেদমতে অংশগ্রহণ করার লক্ষ্যে আমরা নিজেরা সদস্য হওয়ার ও নিজেদের আপনজন প্রিয়জনদেরকে সদস্য করার ফিকির করবো ইনশাআল্লাহ। সেই সাথে দোয়া করবো, মহান আল্লাহ রাব্বুল আলামীন নিজ দয়া ও অনুগ্রহে খুব বেশি কবুল করুন এবং সফল করুন। আমীন।")}
         </p>
       </div>
 
       {/* Helplines */}
-      <div className="mb-2 mt-5 px-1 text-[15px] font-bold">জরুরি হেল্পলাইন ও যোগাযোগ</div>
+      <div className="mb-2 mt-5 px-1 text-[15px] font-bold">{tx("জরুরি হেল্পলাইন ও যোগাযোগ")}</div>
       <div className="space-y-2">
         {HELPLINES.map((h) => (
           <div key={h.num} className="card flex items-center gap-3 p-3.5">
@@ -142,7 +135,7 @@ export default function MemberPage() {
             </span>
             <span className="min-w-0 flex-1">
               <span className="block font-bold tabular-nums" dir="ltr">{h.num}</span>
-              <span className="block text-xs text-ink-faint">{h.label}</span>
+              <span className="block text-xs text-ink-faint">{tx(h.label)}</span>
             </span>
             <a href={h.wa} target="_blank" rel="noreferrer" className="btn-ghost shrink-0 !rounded-xl !px-3 !py-2.5 text-[13px]" aria-label="whatsapp">
               WhatsApp

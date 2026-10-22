@@ -2,8 +2,11 @@
 import { useEffect, useState } from "react";
 import { PageHead, ShareCopy, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { useNum, useTx } from "../../store/language-store";
 
 export default function PoemPage() {
+  const tx = useTx();
+  const num = useNum();
   const [tab, setTab] = useState<"cats" | "hakim">("hakim");
   const [cats, setCats] = useState<any[]>([]);
   const [poems, setPoems] = useState<any[]>([]);
@@ -19,7 +22,7 @@ export default function PoemPage() {
 
   return (
     <div className="animate-fade-up">
-      <PageHead title="আধ্যাত্মিক কবিতা" subtitle={`হাকীম আখতার (রহ.) • ${poems.length}টি কবিতা`} icon="feather" />
+      <PageHead title={tx("আধ্যাত্মিক কবিতা")} subtitle={`${tx("হাকীম আখতার (রহ.)")} • ${num(poems.length)} ${tx("কবিতা")}`} icon="feather" />
       <div className="mt-3 grid grid-cols-2 gap-2 rounded-2xl bg-sand p-1 shadow-card">
         {(["hakim", "cats"] as const).map((t) => (
           <button
@@ -27,7 +30,7 @@ export default function PoemPage() {
             onClick={() => setTab(t)}
             className={`rounded-xl py-2 text-[13px] font-bold transition ${tab === t ? "bg-primary-600 text-white shadow-card" : "text-ink-faint"}`}
           >
-            {t === "hakim" ? "হাকীম আখতার" : "কবিগণ"}
+            {t === "hakim" ? tx("হাকীম আখতার") : tx("কবিগণ")}
           </button>
         ))}
       </div>
@@ -35,7 +38,7 @@ export default function PoemPage() {
         <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-faint">
           <Icon name="search" size={18} />
         </span>
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="কবিতা খুঁজুন…" className="input !pl-11 !shadow-card" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tx("কবিতা খুঁজুন…")} className="input !pl-11 !shadow-card" />
       </form>
       {tab === "cats" ? (
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -48,7 +51,7 @@ export default function PoemPage() {
           ))}
         </div>
       ) : list.length === 0 ? (
-        <div className="mt-3"><EmptyState icon="search" title="কিছু পাওয়া যায়নি" /></div>
+        <div className="mt-3"><EmptyState icon="search" title={tx("কিছু পাওয়া যায়নি")} /></div>
       ) : (
         <div className="mt-3 space-y-2">
           {list.map((p: any) => (

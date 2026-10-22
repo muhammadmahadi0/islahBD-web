@@ -16,10 +16,13 @@ import {
   parseNotifications,
   type AppNotification,
 } from "../../lib/notifications";
+import { useNum, useTx } from "../../store/language-store";
 
 const PAGE = 30;
 
 export default function NotificationsPage() {
+  const tx = useTx();
+  const num = useNum();
   const [items, setItems] = useState<AppNotification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -74,25 +77,25 @@ export default function NotificationsPage() {
   return (
     <div className="animate-fade-up">
       <PageHead
-        title="নোটিফিকেশন"
+        title={tx("নোটিফিকেশন")}
         subtitle={
           loading
-            ? "লোড হচ্ছে…"
+            ? tx("লোড হচ্ছে…")
             : error
-              ? "লোড করা যায়নি"
+              ? tx("লোড করা যায়নি")
               : unread > 0
-                ? `${bnNum(unread)}টি নতুন`
-                : "সব আপডেট এক জায়গায়"
+                ? `${num(unread)}${tx("টি নতুন")}`
+                : tx("সব আপডেট এক জায়গায়")
         }
         icon="bell"
         action={
           <button
             onClick={load}
-            aria-label="রিফ্রেশ"
+            aria-label={tx("রিফ্রেশ")}
             className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-white/25 active:scale-95"
           >
             <Icon name="search" size={13} />
-            রিফ্রেশ
+            {tx("রিফ্রেশ")}
           </button>
         }
       />
@@ -109,11 +112,11 @@ export default function NotificationsPage() {
         </div>
       ) : error ? (
         <div className="mt-3">
-          <EmptyState icon="bell" title="নোটিফিকেশন লোড করা যায়নি" hint="ইন্টারনেট চেক করে আবার চেষ্টা করুন" />
+          <EmptyState icon="bell" title={tx("নোটিফিকেশন লোড করা যায়নি")} hint={tx("ইন্টারনেট চেক করে আবার চেষ্টা করুন")} />
         </div>
       ) : items.length === 0 ? (
         <div className="mt-3">
-          <EmptyState icon="bell" title="কোনো নোটিফিকেশন নেই" hint="নতুন আপডেট এলে এখানে দেখা যাবে" />
+          <EmptyState icon="bell" title={tx("কোনো নোটিফিকেশন নেই")} hint={tx("নতুন আপডেট এলে এখানে দেখা যাবে")} />
         </div>
       ) : (
         <div className="mt-3 space-y-4">
@@ -181,7 +184,7 @@ export default function NotificationsPage() {
                 onClick={() => setVisible((v) => v + PAGE)}
                 className="btn-outline !px-6 !py-2.5 text-[13px]"
               >
-                পুরনো নোটিফিকেশন ({bnNum(items.length - visible)})
+                {tx("পুরনো নোটিফিকেশন")} ({num(items.length - visible)})
               </button>
             </div>
           )}

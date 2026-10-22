@@ -9,11 +9,15 @@ import { QURAN_TOPICS } from "../../lib/quran-topics";
 import { bnNum } from "../../lib/audio";
 import { stripHtml } from "../../lib/quran";
 import { getLastRead, resumeHref, type QuranLastRead } from "../../lib/quran-progress";
+import { useLang, useNum, useTx } from "../../store/language-store";
 
 // Surah index in the muslimbangla.com/quran layout: title, count, search,
 // Surahs/Topics tabs, and cards with number, transliteration, meaning,
 // Makki/Madani badge, Arabic name and ayah count — on the app theme.
 export default function QuranLanding() {
+  const tx = useTx();
+  const lang = useLang();
+  const num = useNum();
   const [chapters, setChapters] = useState<QuranChapter[]>([]);
   const [q, setQ] = useState("");
   const [submitted, setSubmitted] = useState("");
@@ -88,7 +92,7 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
         <span className="flex-1">
           <span className="block font-bold">{topic.title}</span>
           <span className="block text-xs text-ink-faint">
-            {topic.desc} • {bnNum(topic.verses.length)} আয়াত
+            {topic.desc} • {num(topic.verses.length)} {tx("আয়াত")}
           </span>
         </span>
         <span className={`rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform ${open ? "rotate-90" : ""}`}>
@@ -129,8 +133,8 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
   return (
     <div className="animate-fade-up">
       <PageHead
-        title="কুরআনের সূরা সমূহ"
-        subtitle={`মোট সূরা — ${bnNum(chapters.length || 114)} টি`}
+        title={tx("কুরআনের সূরা সমূহ")}
+        subtitle={`${tx("মোট সূরা")} — ${num(chapters.length || 114)}`}
         icon="book"
       />
 
@@ -143,18 +147,18 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
           <span className="surah-ornament shrink-0"><span>{lastRead.surah}</span></span>
           <span className="min-w-0 flex-1">
             <span className="block text-[10px] font-bold uppercase tracking-wider text-primary-700">
-              যেখানে থেমেছিলেন
+              {tx("যেখানে থেমেছিলেন")}
             </span>
             <span className="block truncate text-[15px] font-bold">
-              সূরা {surahBn(lastRead.surah)}
+              {tx("সূরা")} {lang === "bn" ? surahBn(lastRead.surah) : (chapters.find((c) => c.id === lastRead.surah)?.name_simple || surahBn(lastRead.surah))}
             </span>
             <span className="block truncate text-xs text-ink-faint">
-              আয়াত {bnNum(lastRead.ayah)} · {lastRead.mode === "recitation" ? "তেলাওয়াত" : "অনুবাদ"}
+              {tx("আয়াত")} {num(lastRead.ayah)} · {lastRead.mode === "recitation" ? tx("তেলাওয়াত") : tx("অনুবাদ")}
             </span>
           </span>
           <span className="flex shrink-0 items-center gap-1 rounded-full bg-primary-600 px-3 py-1.5 text-[11px] font-bold text-white shadow-sm">
             <Icon name="playfill" size={12} />
-            চালিয়ে যান
+            {tx("চালিয়ে যান")}
           </span>
         </Link>
       )}
@@ -170,7 +174,7 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="শব্দ দিয়ে অনুসন্ধান…"
+          placeholder={tx("শব্দ দিয়ে অনুসন্ধান…")}
           className="input !pl-11 !shadow-card"
         />
       </form>
@@ -185,7 +189,7 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
               tab === t ? "bg-primary-600 text-white shadow-card" : "text-ink-faint"
             }`}
           >
-            {t === "suras" ? "সূরাসমূহ" : "বিষয়ভিত্তিক"}
+            {t === "suras" ? tx("সূরাসমূহ") : tx("বিষয়ভিত্তিক")}
           </button>
         ))}
       </div>
@@ -193,9 +197,9 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
       {/* quick links */}
       <div className="mt-3 grid grid-cols-3 gap-2">
         {[
-          { href: "/quran/read", icon: "book", label: "পড়ুন" },
-          { href: "/quran/audio", icon: "headphones", label: "শুনুন" },
-          { href: "/quran/search", icon: "search", label: "সার্চ" },
+          { href: "/quran/read", icon: "book", label: tx("পড়ুন") },
+          { href: "/quran/audio", icon: "headphones", label: tx("শুনুন") },
+          { href: "/quran/search", icon: "search", label: tx("সার্চ") },
         ].map((l) => (
           <Link key={l.label} href={l.href} className="card card-hover flex items-center justify-center gap-1.5 p-3 text-sm font-bold">
             <Icon name={l.icon} size={17} className="text-primary-600" />
@@ -218,7 +222,7 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
             ))}
           </div>
         ) : suras.length === 0 ? (
-          <div className="mt-3"><EmptyState icon="search" title="কিছু পাওয়া যায়নি" /></div>
+          <div className="mt-3"><EmptyState icon="search" title={tx("কিছু পাওয়া যায়নি")} /></div>
         ) : (
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {suras.map((c) => {
@@ -239,33 +243,33 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
                   <span className="surah-ornament"><span>{c.id}</span></span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[15px] font-bold">
-                      {surahBn(c.id) || c.name_simple}
+                      {lang === "bn" ? (surahBn(c.id) || c.name_simple) : lang === "ur" ? (c.name_arabic || c.name_simple) : c.name_simple}
                     </span>
-                    <span className="block truncate text-xs text-ink-faint">
-                      {c.translated_name?.name || ""}
-                    </span>
+                    {lang === "bn" && (
+                      <span className="block truncate text-xs text-ink-faint">{c.translated_name?.name || ""}</span>
+                    )}
                     <span className="mt-1 flex items-center gap-1.5">
                       <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${makki ? "bg-gold-light text-gold-dark" : "bg-primary-50 text-primary-700"}`}>
                         <Icon name={makki ? "sunrise" : "moon"} size={11} />
-                        {makki ? "মাক্কী" : "মাদানী"}
+                        {makki ? tx("মাক্কী") : tx("মাদানী")}
                       </span>
                       <span className="text-[11px] font-bold text-ink-faint">
-                        {bnNum(c.verses_count)} আয়াত
+                        {num(c.verses_count)} {tx("আয়াত")}
                       </span>
                       {isLast && (
                         <span className="inline-flex items-center gap-1 rounded-full bg-primary-600 px-2 py-0.5 text-[10px] font-bold text-white">
                           <Icon name="playfill" size={9} />
-                          শেষ পড়া
+                          {tx("শেষ পড়া")}
                         </span>
                       )}
                     </span>
                   </span>
                   <span className="text-right">
-                    <span className="font-arabic block text-[24px] leading-snug text-primary-700">
-                      {c.name_arabic}
+                    <span className={lang === "ur" ? "block text-[13px] font-semibold leading-snug text-ink-faint" : "font-arabic block text-[24px] leading-snug text-primary-700"}>
+                      {lang === "ur" ? c.name_simple : c.name_arabic}
                     </span>
                     <span className="block text-[10px] font-bold uppercase tracking-wide text-ink-faint">
-                      {surahBnFull(c.id)}
+                      {lang === "bn" ? surahBnFull(c.id) : ""}
                     </span>
                   </span>
                 </Link>
@@ -275,7 +279,7 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
         )
       ) : (
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
-          {topics.length === 0 && <EmptyState icon="search" title="কিছু পাওয়া যায়নি" />}
+          {topics.length === 0 && <EmptyState icon="search" title={tx("কিছু পাওয়া যায়নি")} />}
           {topics.map((t) => (
             <TopicCard key={t.id} topic={t} />
           ))}

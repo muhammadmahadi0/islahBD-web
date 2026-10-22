@@ -2,17 +2,19 @@
 import Link from "next/link";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { useTx } from "../../store/language-store";
 
 export default function DonatePage() {
+  const tx = useTx();
   const copy = (t: string) => navigator.clipboard?.writeText(t);
   return (
     <div className="animate-fade-up">
-      <PageHead title="ডোনেট" subtitle="দ্বীনি খেদমতে শরিক হোন" icon="gift" />
+      <PageHead title={tx("ডোনেট")} subtitle={tx("দ্বীনি খেদমতে শরিক হোন")} icon="gift" />
       <div className="card mt-3 space-y-2.5 p-4 text-sm leading-relaxed">
-        <p className="text-ink-soft">আপনার দান দ্বীন প্রচারের কাজে ব্যয় হয়। নিচের তথ্যে পাঠিয়ে কপি চাপুন।</p>
+        <p className="text-ink-soft">{tx("আপনার দান দ্বীন প্রচারের কাজে ব্যয় হয়। নিচের তথ্যে পাঠিয়ে কপি চাপুন।")}</p>
         {[
-          { label: "বিকাশ / নগদ (মোবাইল)", value: "—" },
-          { label: "ব্যাংক হিসাব", value: "—" },
+          { label: tx("বিকাশ / নগদ (মোবাইল)"), value: "—" },
+          { label: tx("ব্যাংক হিসাব"), value: "—" },
         ].map((a) => (
           <div key={a.label} className="flex items-center gap-2 rounded-2xl bg-sand p-3">
             <div className="flex-1">
@@ -25,7 +27,7 @@ export default function DonatePage() {
           </div>
         ))}
         <Link href="/member" className="btn-gold w-full">
-          <Icon name="star" size={16} /> লাইফটাইম মেম্বার হোন
+          <Icon name="star" size={16} /> {tx("লাইফটাইম মেম্বার হোন")}
         </Link>
       </div>
     </div>

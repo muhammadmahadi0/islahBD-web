@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { useTx } from "../../store/language-store";
 
 export default function PurificationPage() {
+  const tx = useTx();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +19,7 @@ export default function PurificationPage() {
 
   return (
     <div className="animate-fade-up">
-      <PageHead title="আত্মশুদ্ধি" subtitle="নফসের পরিশুদ্ধির পথ" icon="heart" />
+      <PageHead title={tx("আত্মশুদ্ধি")} subtitle={tx("নফসের পরিশুদ্ধির পথ")} icon="heart" />
       {loading ? (
         <div className="mt-3 space-y-2">
           {[0, 1, 2].map((i) => (
@@ -27,7 +29,7 @@ export default function PurificationPage() {
           ))}
         </div>
       ) : items.length === 0 ? (
-        <div className="mt-3"><EmptyState icon="heart" title="শীঘ্রই আসছে" hint="আত্মশুদ্ধির গাইড যোগ হচ্ছে" /></div>
+        <div className="mt-3"><EmptyState icon="heart" title={tx("শীঘ্রই আসছে")} hint={tx("আত্মশুদ্ধির গাইড যোগ হচ্ছে")} /></div>
       ) : (
         <div className="mt-3 space-y-2">
           {items.slice(0, 40).map((p: any, i: number) => (
@@ -36,7 +38,7 @@ export default function PurificationPage() {
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-sm font-bold text-rose-500">
                   {i + 1}
                 </span>
-                <span className="flex-1">{p.title || `ধাপ ${i + 1}`}</span>
+                <span className="flex-1">{p.title || `${tx("ধাপ")} ${i + 1}`}</span>
                 <span className="rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform group-open:rotate-90">
                   <Icon name="chevron" size={15} />
                 </span>

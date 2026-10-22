@@ -11,6 +11,7 @@ import {
   getEngineSnapshot,
   SEEK_EVENT,
 } from "../../lib/yt-engine";
+import { useNum, useTx } from "../../store/language-store";
 
 declare global {
   interface Window {
@@ -19,12 +20,11 @@ declare global {
   }
 }
 
-function formatTime(seconds: number): string {
-  if (!seconds || isNaN(seconds) || !isFinite(seconds)) return "০:০০";
+function formatTime(seconds: number, num: (n: number | string) => string): string {
+  if (!seconds || isNaN(seconds) || !isFinite(seconds)) return num("0:00");
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
-  const bn = (n: number) => String(n).replace(/[0-9]/g, (d) => "০১২৩৪৫৬৭৮৯"[Number(d)]);
-  return `${bn(mins)}:${bn(secs).padStart(2, "০")}`;
+  return num(`${mins}:${String(secs).padStart(2, "0")}`);
 }
 
 function EqBars({ className = "" }: { className?: string }) {
@@ -47,6 +47,8 @@ function EqBars({ className = "" }: { className?: string }) {
  * - Collapsed pill floats above the bottom nav.
  */
 export default function MiniPlayer() {
+  const tx = useTx();
+  const num = useNum();
   const [isExpanded, setIsExpanded] = useState(false);
   const [queueOpen, setQueueOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -570,13 +572,13 @@ export default function MiniPlayer() {
             <button
               onClick={() => setIsExpanded(false)}
               className="btn-ghost !rounded-2xl !p-2.5"
-              aria-label="সংকুচিত করুন"
+              aria-label={tx("সংকুচিত করুন")}
             >
               <Icon name="back" size={18} className="rotate-[-90deg]" />
             </button>
             <div className="min-w-0 flex-1 text-center">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink-faint">
-                এখন বাজছে
+                {tx("এখন বাজছে")}
               </p>
               {queueTotal > 1 && queuePos !== null && (
                 <p className="text-[11px] font-bold tabular-nums text-ink-faint">
@@ -587,7 +589,7 @@ export default function MiniPlayer() {
             <button
               onClick={() => { setIsExpanded(false); stop(); }}
               className="rounded-2xl bg-red-50 p-2.5 text-red-500 transition hover:bg-red-100 active:scale-95"
-              aria-label="বন্ধ করুন"
+              aria-label={tx("বন্ধ করুন")}
             >
               <Icon name="x" size={18} />
             </button>
@@ -609,7 +611,7 @@ export default function MiniPlayer() {
             {isLive && (
               <span className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-red-500 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest text-white">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
-                লাইভ
+                {tx("লাইভ")}
               </span>
             )}
             {isYtTrack && (
@@ -617,7 +619,7 @@ export default function MiniPlayer() {
                 onClick={toggleVideo}
                 disabled={!engine.ready}
                 className="absolute bottom-2.5 right-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-black/80 disabled:opacity-40"
-                aria-label={engine.mode === "video" ? "শুধু অডিও" : "ভিডিও দেখুন"}
+                aria-label={engine.mode === "video" ? tx("শুধু অডিও") : tx("ভিডিও দেখুন")}
               >
                 <Icon name={engine.mode === "video" ? "music" : "play"} size={17} />
               </button>
@@ -648,20 +650,20 @@ export default function MiniPlayer() {
               aria-label="seek"
             />
             <div className="flex justify-between text-[11px] font-bold tabular-nums text-ink-faint">
-              <span>{isLive ? "লাইভ" : formatTime(currentTime)}</span>
-              <span>{isLive ? "" : formatTime(duration)}</span>
+              <span>{isLive ? tx("লাইভ") : formatTime(currentTime, num)}</span>
+              <span>{isLive ? "" : formatTime(duration, num)}</span>
             </div>
           </div>
 
           {/* transport */}
           <div className="mt-1 flex items-center justify-center gap-5">
-            <button onClick={playPrevious} className="btn-ghost !rounded-full !p-3" aria-label="আগেরটি">
+            <button onClick={playPrevious} className="btn-ghost !rounded-full !p-3" aria-label={tx("আগেরটি")}>
               <Icon name="prev" size={20} />
             </button>
             <button
               onClick={() => setIsPlaying(!isPlaying)}
               className="btn-primary !rounded-full !p-4"
-              aria-label={isPlaying ? "থামান" : "চালান"}
+              aria-label={isPlaying ? tx("থামান") : tx("চালান")}
             >
               {isLoading ? (
                 <span className="block h-[22px] w-[22px] animate-spin rounded-full border-2 border-white/40 border-t-white" />
@@ -669,7 +671,7 @@ export default function MiniPlayer() {
                 <Icon name={isPlaying ? "pause" : "playfill"} size={22} />
               )}
             </button>
-            <button onClick={playNext} className="btn-ghost !rounded-full !p-3" aria-label="পরেরটি">
+            <button onClick={playNext} className="btn-ghost !rounded-full !p-3" aria-label={tx("পরেরটি")}>
               <Icon name="next" size={20} />
             </button>
           </div>
@@ -677,7 +679,7 @@ export default function MiniPlayer() {
           {/* secondary row */}
           <div className="mt-2 flex items-center justify-center gap-2">
             {downloadableUrl && (
-              <button onClick={handleDownload} className="btn-ghost !rounded-xl !p-2.5" aria-label="ডাউনলোড">
+              <button onClick={handleDownload} className="btn-ghost !rounded-xl !p-2.5" aria-label={tx("ডাউনলোড")}>
                 {downloading ? (
                   <span className="block h-[17px] w-[17px] animate-spin rounded-full border-2 border-primary-600/40 border-t-primary-600" />
                 ) : (
@@ -685,10 +687,10 @@ export default function MiniPlayer() {
                 )}
               </button>
             )}
-            <button onClick={shareTrack} className="btn-ghost !rounded-xl !p-2.5" aria-label="শেয়ার">
+            <button onClick={shareTrack} className="btn-ghost !rounded-xl !p-2.5" aria-label={tx("শেয়ার")}>
               <Icon name="share" size={17} />
             </button>
-            <button onClick={() => setMenuOpen(true)} className="btn-ghost !rounded-xl !p-2.5" aria-label="প্লেলিস্ট">
+            <button onClick={() => setMenuOpen(true)} className="btn-ghost !rounded-xl !p-2.5" aria-label={tx("প্লেলিস্ট")}>
               <Icon name="plus" size={17} />
             </button>
           </div>
@@ -700,7 +702,7 @@ export default function MiniPlayer() {
             className="mt-3 flex w-full items-center gap-2 rounded-2xl bg-sand px-4 py-2.5 text-sm font-bold"
           >
             <Icon name="music" size={17} className="text-primary-600" />
-            <span>পরবর্তী</span>
+            <span>{tx("পরবর্তী")}</span>
             {queueTotal > 0 && <span className="tabular-nums text-ink-faint">({queueTotal})</span>}
             <span className="flex-1" />
             <Icon name="chevron" size={16} className={`text-ink-faint transition-transform ${queueOpen ? "rotate-90" : ""}`} />
@@ -708,7 +710,7 @@ export default function MiniPlayer() {
           {queueOpen && (
             <div ref={queueScrollRef} className="mt-2 max-h-56 overflow-y-auto rounded-2xl border border-primary-900/10">
               {playlist.length === 0 ? (
-                <p className="px-3 py-5 text-center text-[13px] text-ink-faint">সারি খালি</p>
+                <p className="px-3 py-5 text-center text-[13px] text-ink-faint">{tx("সারি খালি")}</p>
               ) : (
                 playlist.map((t, i) => {
                   const active = i === playlistIndex;
@@ -733,7 +735,7 @@ export default function MiniPlayer() {
                       {active && isPlaying ? (
                         <EqBars />
                       ) : (
-                        <span className="shrink-0 text-[11px] font-bold tabular-nums text-ink-faint">{formatTime(t.duration)}</span>
+                        <span className="shrink-0 text-[11px] font-bold tabular-nums text-ink-faint">{formatTime(t.duration, num)}</span>
                       )}
                     </button>
                   );
@@ -775,7 +777,7 @@ export default function MiniPlayer() {
                 {isLive && (
                   <span className="flex shrink-0 items-center gap-1 rounded-full bg-red-500 px-1.5 py-px text-[9px] font-extrabold uppercase tracking-widest text-white">
                     <span className="h-1 w-1 animate-pulse rounded-full bg-white" />
-                    লাইভ
+                    {tx("লাইভ")}
                   </span>
                 )}
                 <span className="truncate">{currentTrack?.title || ""}</span>
@@ -788,7 +790,7 @@ export default function MiniPlayer() {
             <button
               onClick={(e) => { e.stopPropagation(); setIsPlaying(!isPlaying); }}
               className="btn-primary shrink-0 !rounded-2xl !p-2.5"
-              aria-label={isPlaying ? "থামান" : "চালান"}
+              aria-label={isPlaying ? tx("থামান") : tx("চালান")}
             >
               {isLoading ? (
                 <span className="block h-[18px] w-[18px] animate-spin rounded-full border-2 border-white/40 border-t-white" />
@@ -799,7 +801,7 @@ export default function MiniPlayer() {
             <button
               onClick={(e) => { e.stopPropagation(); setIsExpanded(false); stop(); }}
               className="shrink-0 rounded-xl p-2 text-ink-faint transition hover:bg-sand"
-              aria-label="বন্ধ করুন"
+              aria-label={tx("বন্ধ করুন")}
             >
               <Icon name="x" size={16} />
             </button>

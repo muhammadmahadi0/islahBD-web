@@ -14,6 +14,7 @@ import { storageSetJSON, storageGetJSON, storageSet, storageGet } from "../../..
 import { getLastRead, saveLastRead, type QuranViewMode } from "../../../lib/quran-progress";
 import { usePlayerStore, type Track } from "../../../store/player-store";
 import { bnNum } from "../../../lib/audio";
+import { useLang, useNum, useTx } from "../../../store/language-store";
 
 const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
 const toArNum = (n: number) => String(n).replace(/[0-9]/g, (d) => AR_DIGITS[Number(d)]);
@@ -27,6 +28,9 @@ type Jump = "sura" | "juz";
  *  banner, pill action bars, transliteration, translation, always-open
  *  tafsir — on quran.com data + offline fallback, app theme. */
 function Reader() {
+  const tx = useTx();
+  const lang = useLang();
+  const num = useNum();
   const params = useSearchParams();
   const [jump, setJump] = useState<Jump>("sura");
   const [chapters, setChapters] = useState<QuranChapter[]>([]);
@@ -367,11 +371,11 @@ function Reader() {
       const url = data.audio_file?.audio_url;
       if (!url) throw new Error();
       hushOthers();
-      const reciterName = reciters.find((r) => r.id === reciter)?.reciter_name || "কুরআন তিলাওয়াত";
+      const reciterName = reciters.find((r) => r.id === reciter)?.reciter_name || tx("কুরআন তিলাওয়াত");
       const chapterName = chapters.find((c) => c.id === ch)?.name_simple;
       const track: Track = {
         id: `quran-surah-${ch}`,
-        title: `সূরা ${surahBn(ch) || chapterName || ch} — সম্পূর্ণ তিলাওয়াত`,
+        title: `${tx("সূরা")} ${surahBn(ch) || chapterName || ch} — ${tx("সম্পূর্ণ তিলাওয়াত")}`,
         thumbnail: "",
         duration: 0,
         channelName: reciterName,
@@ -475,7 +479,7 @@ function Reader() {
 
   const shareAyah = (arabic: string, tr: string, key: string) => {
     const text = `${arabic}\n${tr}\n(${key})`;
-    if (navigator.share) navigator.share({ title: `আয়াত ${key}`, text }).catch(() => {});
+    if (navigator.share) navigator.share({ title: `${tx("আয়াত")} ${key}`, text }).catch(() => {});
     else navigator.clipboard?.writeText(text);
   };
 
@@ -557,7 +561,7 @@ function Reader() {
                     className="flex items-center gap-1 rounded-full bg-white px-2 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-blue-100 dark:bg-transparent"
                   >
                     <Icon name="book" size={14} />
-                    তাফসীর
+                    {tx("তাফসীর")}
                   </Link>
                 )}
                 <button
@@ -603,7 +607,7 @@ function Reader() {
                 size={14}
                 className={loading ? "animate-pulse" : undefined}
               />
-              শুনুন
+              {tx("শুনুন")}
             </button>
           </div>
         </div>
@@ -630,8 +634,8 @@ function Reader() {
                         ? "border-gold bg-gold/15 shadow-card"
                         : "border-primary-900/10 bg-white"
                     }`}
-                    aria-label={`${w.text_uthmani} — শুনুন`}
-                    title="শুনুন"
+                    aria-label={`${w.text_uthmani} — ${tx("শুনুন")}`}
+                    title={tx("শুনুন")}
                   >
                     <span className="font-arabic block text-[18px] leading-snug">{w.text_uthmani}</span>
                     <span className="block text-[11px] text-ink-soft" dir="ltr">{w.translation?.text || ""}</span>
@@ -652,7 +656,7 @@ function Reader() {
                   className="flex w-full items-center gap-3 rounded-2xl px-1 py-2 text-left transition active:scale-[0.99]"
                 >
                   <span className="h-6 w-1 rounded-full bg-gold" />
-                  <span className="flex-1 text-lg font-bold">তাফসীরঃ</span>
+                  <span className="flex-1 text-lg font-bold">{tx("তাফসীরঃ")}</span>
                   <Icon
                     name="chevron"
                     size={17}
@@ -670,13 +674,13 @@ function Reader() {
                   href={`/quran/tafsir?surah=${sNum}&ayah=${v.verse_number}`}
                   className="mt-2 inline-flex items-center gap-1 text-[13px] font-bold text-primary-700"
                 >
-                  সম্পূর্ণ তাফসীর <Icon name="chevron" size={14} />
+                  {tx("সম্পূর্ণ তাফসীর")} <Icon name="chevron" size={14} />
                 </Link>
               </div>
             )}
             <div className="px-5 pb-4">
               <div className="text-[11px] font-bold text-ink-faint">
-                পৃষ্ঠা {v.page_number || local?.page} • পারা {v.juz_number || local?.juz}
+                {tx("পৃষ্ঠা")} {v.page_number || local?.page} • {tx("পারা")} {v.juz_number || local?.juz}
               </div>
             </div>
           </>
@@ -710,7 +714,7 @@ function Reader() {
                 onClick={() => playAyah(key)}
                 disabled={loading}
                 aria-pressed={playing}
-                aria-label={`আয়াত ${bnNum(v.verse_number)} তেলাওয়াত`}
+                aria-label={`${tx("আয়াত")} ${num(v.verse_number)} ${tx("তেলাওয়াত")}`}
                 className={`ayah-dot${playing ? " is-on" : ""}${loading ? " is-loading" : ""}`}
               >
                 <span>{toArNum(v.verse_number)}</span>
@@ -732,7 +736,7 @@ function Reader() {
         <input
           value={sideQuery}
           onChange={(e) => setSideQuery(e.target.value)}
-          placeholder="অনুসন্ধান করুন…"
+          placeholder={tx("অনুসন্ধান করুন…")}
           className="input !pl-11"
         />
       </div>
@@ -748,7 +752,7 @@ function Reader() {
                 : "text-ink hover:bg-primary-50"
             }`}
           >
-            {t === "sura" ? "সূরা" : "পারা"}
+            {t === "sura" ? tx("সূরা") : tx("পারা")}
           </button>
         ))}
       </div>
@@ -770,14 +774,14 @@ function Reader() {
             ))}
           </div>
           <div className="max-h-[50vh] overflow-y-auto pl-1 lg:max-h-[60vh]" style={{ maxHeight: "50dvh" }}>
-            <div className="mb-1 px-1 text-center text-[11px] font-bold text-ink-faint">আয়াত</div>
+            <div className="mb-1 px-1 text-center text-[11px] font-bold text-ink-faint">{tx("আয়াত")}</div>
             {Array.from({ length: current?.verses_count || 0 }, (_, i) => i + 1).map((n) => (
               <button
                 key={n}
                 onClick={() => jumpToAyah(n)}
                 className="block w-full rounded-lg px-3 py-1.5 text-center text-[13px] tabular-nums transition hover:bg-primary-50 hover:font-bold"
               >
-                {bnNum(n)}
+                {num(n)}
               </button>
             ))}
           </div>
@@ -801,14 +805,14 @@ function Reader() {
               >
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[13px] font-bold">
-                    {bnNum(j.n)}. {j.bn}
+                    {num(j.n)}. {j.bn}
                   </span>
                   <span
                     className={`block truncate text-[10px] ${
                       active ? "text-white/75" : "text-ink-faint"
                     }`}
                   >
-                    শুরু: সূরা {surahBn(j.surah)} · আয়াত {bnNum(j.ayah)}
+                    {tx("শুরু")}: {tx("সূরা")} {surahBn(j.surah)} · {tx("আয়াত")} {num(j.ayah)}
                   </span>
                 </span>
                 <span
@@ -841,7 +845,7 @@ function Reader() {
           <div className="absolute inset-0 bg-ink/50 backdrop-blur-sm" onClick={() => setDrawer(false)} />
           <div className="card absolute bottom-2 left-2 top-2 flex w-72 max-w-[85vw] flex-col overflow-hidden p-2">
             <div className="flex items-center justify-between px-1 pb-1">
-              <span className="text-sm font-bold">সূরা ও আয়াত</span>
+              <span className="text-sm font-bold">{tx("সূরা ও আয়াত")}</span>
               <button onClick={() => setDrawer(false)} className="rounded-xl p-1.5 text-ink-faint hover:bg-sand" aria-label="close">
                 <Icon name="x" size={18} />
               </button>
@@ -857,50 +861,50 @@ function Reader() {
           <div className="absolute inset-0 bg-ink/50 backdrop-blur-sm" onClick={() => setSettings(false)} />
           <div className="card absolute bottom-2 right-2 top-2 w-80 max-w-[90vw] space-y-4 overflow-y-auto rounded-l-3xl p-5">
             <div className="flex items-center justify-between border-b border-primary-900/10 pb-3">
-              <span className="font-bold">পড়ার সেটিংস</span>
+              <span className="font-bold">{tx("পড়ার সেটিংস")}</span>
               <button onClick={() => setSettings(false)} className="rounded-xl p-1.5 text-ink-faint hover:bg-sand" aria-label="close">
                 <Icon name="x" size={18} />
               </button>
             </div>
             <div>
-              <p className="mb-1 text-xs font-bold text-ink-faint">নির্বাচিত অনুবাদ</p>
+              <p className="mb-1 text-xs font-bold text-ink-faint">{tx("নির্বাচিত অনুবাদ")}</p>
               <select value={trans1} onChange={(e) => setTrans1(Number(e.target.value))} className="input !text-[13px]" aria-label="translation 1">
                 {BN_TRANSLATIONS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
               </select>
               <select value={trans2} onChange={(e) => setTrans2(Number(e.target.value))} className="input mt-2 !text-[13px]" aria-label="translation 2">
-                <option value={0}>২য় অনুবাদ বন্ধ</option>
+                <option value={0}>{tx("২য় অনুবাদ বন্ধ")}</option>
                 {BN_TRANSLATIONS.filter((t) => t.id !== trans1).map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
               </select>
               <select value={tafsirId} onChange={(e) => setTafsirId(Number(e.target.value))} className="input mt-2 !text-[13px]" aria-label="tafsir">
-                <option value={0}>তাফসীর বন্ধ</option>
+                <option value={0}>{tx("তাফসীর বন্ধ")}</option>
                 {BN_TAFSIRS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
               </select>
             </div>
             <div>
-              <p className="mb-1 text-xs font-bold text-ink-faint">ক্বারী (তেলাওয়াত)</p>
+              <p className="mb-1 text-xs font-bold text-ink-faint">{tx("ক্বারী (তেলাওয়াত)")}</p>
               <select value={reciter} onChange={(e) => pickReciter(Number(e.target.value))} className="input !text-[13px]" aria-label="reciter">
-                {reciters.length === 0 && <option value={7}>মিশারী রাশিদ আল-আফাসী</option>}
+                {reciters.length === 0 && <option value={7}>{tx("মিশারী রাশিদ আল-আফাসী")}</option>}
                 {reciters.map((r) => (
                   <option key={`${r.id}-${r.style}`} value={r.id}>
                     {r.reciter_name}{r.style ? ` (${r.style})` : ""}
                   </option>
                 ))}
               </select>
-              <p className="mt-1 text-[11px] text-ink-faint">পছন্দ সংরক্ষিত থাকে</p>
+              <p className="mt-1 text-[11px] text-ink-faint">{tx("পছন্দ সংরক্ষিত থাকে")}</p>
             </div>
             <div>
-              <p className="mb-2 text-xs font-bold text-ink-faint">অন্যান্য</p>
+              <p className="mb-2 text-xs font-bold text-ink-faint">{tx("অন্যান্য")}</p>
               <label className="flex cursor-pointer items-center gap-2 py-1.5 text-sm font-medium">
                 <input type="checkbox" checked={showWbw} onChange={(e) => setShowWbw(e.target.checked)} className="h-4 w-4 accent-primary-600" />
-                শব্দে শব্দে কুরআন (অডিও সহ)
+                {tx("শব্দে শব্দে কুরআন (অডিও সহ)")}
               </label>
               <label className="flex cursor-pointer items-center gap-2 py-1.5 text-sm font-medium">
                 <input type="checkbox" checked={showTafsir} onChange={(e) => setShowTafsir(e.target.checked)} className="h-4 w-4 accent-primary-600" />
-                তাফসীর দেখান
+                {tx("তাফসীর দেখান")}
               </label>
             </div>
             <div>
-              <p className="mb-2 text-xs font-bold text-ink-faint">আরবি অক্ষরের সাইজ</p>
+              <p className="mb-2 text-xs font-bold text-ink-faint">{tx("আরবি অক্ষরের সাইজ")}</p>
               <input type="range" min={20} max={38} value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} className="w-full" aria-label="font size" />
             </div>
           </div>
@@ -925,7 +929,7 @@ function Reader() {
                     : "hover:bg-primary-50"
                 }`}
               >
-                {t === "translation" ? "অনুবাদ" : "তেলাওয়াত"}
+                {t === "translation" ? tx("অনুবাদ") : tx("তেলাওয়াত")}
               </button>
             ))}
           </div>
@@ -939,19 +943,23 @@ function Reader() {
           {jump === "sura" ? (
             <>
               <h1 className="text-[22px] font-bold tracking-wide">
-                সূরা {surahBn(surah) || current?.name_simple || surah}{" "}
-                <span className="font-arabic font-semibold text-primary-700">({current?.name_arabic || ""})</span>{" "}
-                <span className="font-medium text-ink-faint">| {current?.translated_name?.name || ""}</span>
+                {tx("সূরা")} {lang === "bn" ? (surahBn(surah) || current?.name_simple || surah) : lang === "ur" ? (current?.name_arabic || surahBn(surah) || surah) : (current?.name_simple || surahBn(surah) || surah)}{" "}
+                {lang !== "ur" && (
+                  <span className="font-arabic font-semibold text-primary-700">({current?.name_arabic || ""})</span>
+                )}{" "}
+                {lang === "bn" && (
+                  <span className="font-medium text-ink-faint">| {current?.translated_name?.name || ""}</span>
+                )}
               </h1>
               <div className="mt-2 flex items-center justify-center gap-2 text-[13px]">
                 {current && (
                   <span className="rounded-full bg-primary-50 px-3 py-1 font-medium shadow-sm">
-                    {current.revelation_place === "makkah" ? "মাক্কী" : "মাদানী"}
+                    {current.revelation_place === "makkah" ? tx("মাক্কী") : tx("মাদানী")}
                   </span>
                 )}
                 {current && (
                   <span className="rounded-full bg-primary-50 px-3 py-1 font-medium shadow-sm">
-                    মোট আয়াতঃ {bnNum(current.verses_count)}
+                    {tx("মোট আয়াতঃ")} {num(current.verses_count)}
                   </span>
                 )}
                 <button
@@ -965,26 +973,26 @@ function Reader() {
                     size={15}
                     className={`text-primary-700${surahLoading ? " animate-pulse" : ""}`}
                   />
-                  <span className="text-[13px] font-medium text-primary-700">অডিও</span>
+                  <span className="text-[13px] font-medium text-primary-700">{tx("অডিও")}</span>
                 </button>
               </div>
             </>
           ) : (
             <>
               <h1 className="text-[22px] font-bold">
-                {bnNum(juz)} পারা{" "}
+                {num(juz)} {tx("পারা")}{" "}
                 <span className="font-arabic font-semibold text-primary-700">
                   ({JUZ_NAMES[juz - 1]?.ar})
                 </span>
               </h1>
               <p className="mt-0.5 text-xs text-ink-faint">
-                {JUZ_NAMES[juz - 1]?.bn} · পারা অনুযায়ী পড়ুন
+                {tx("পারা")} {num(juz)} · {tx("পারা অনুযায়ী পড়ুন")}
               </p>
             </>
           )}
           {offline && (
             <p className="mx-auto mt-2 inline-block rounded-full bg-gold px-3 py-1 text-[11px] font-bold text-[#1a1405]">
-              অফলাইন ডাটাবেজ দেখানো হচ্ছে
+              {tx("অফলাইন ডাটাবেজ দেখানো হচ্ছে")}
             </p>
           )}
         </div>
@@ -993,7 +1001,7 @@ function Reader() {
           <div className="card mt-2 flex items-start gap-2.5 p-3 text-[12px] leading-relaxed text-ink-soft">
             <Icon name="headphones" size={16} className="mt-0.5 shrink-0 text-primary-600" />
             <span>
-              এই ক্বারীর আয়াতভিত্তিক তিলাওয়াত নেই — পুরো সূরার অডিও চালানো হচ্ছে।
+              {tx("এই ক্বারীর আয়াতভিত্তিক তিলাওয়াত নেই — পুরো সূরার অডিও চালানো হচ্ছে।")}
             </span>
           </div>
         )}
@@ -1002,7 +1010,7 @@ function Reader() {
           <div className="card mt-2 overflow-hidden">
             <div className="bg-gradient-to-r from-primary-50 to-primary-100 px-4 py-3">
               <p className="font-arabic text-center text-3xl text-primary-800" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ</p>
-              <p className="mt-1 text-center font-medium text-ink-soft">পরম করুণাময় ও অসীম দয়ালু আল্লাহর নামে</p>
+              <p className="mt-1 text-center font-medium text-ink-soft">{tx("পরম করুণাময় ও অসীম দয়ালু আল্লাহর নামে")}</p>
             </div>
           </div>
         )}
@@ -1041,27 +1049,27 @@ function Reader() {
             {totalPages > 1 && (
               <div className="card mt-2 flex items-center justify-between p-3">
                 <button disabled={page <= 1} onClick={() => goPage(page - 1)} className="btn-outline disabled:opacity-40">
-                  <Icon name="back" size={15} /> আগে
+                  <Icon name="back" size={15} /> {tx("আগে")}
                 </button>
                 <span className="text-xs font-bold tabular-nums text-ink-faint">{page} / {totalPages}</span>
                 <button disabled={page >= totalPages} onClick={() => goPage(page + 1)} className="btn-outline disabled:opacity-40">
-                  পরে <Icon name="chevron" size={15} />
+                  {tx("পরে")} <Icon name="chevron" size={15} />
                 </button>
               </div>
             )}
             {jump === "sura" && (
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <button disabled={surah <= 1} onClick={() => changeSurah(surah - 1)} className="btn-ghost disabled:opacity-40">
-                  <Icon name="back" size={15} /> আগের সূরা
+                  <Icon name="back" size={15} /> {tx("আগের সূরা")}
                 </button>
                 <button disabled={surah >= 114} onClick={() => changeSurah(surah + 1)} className="btn-ghost disabled:opacity-40">
-                  পরের সূরা <Icon name="chevron" size={15} />
+                  {tx("পরের সূরা")} <Icon name="chevron" size={15} />
                 </button>
               </div>
             )}
           </>
         ) : offlineAyahs.length === 0 ? (
-          <div className="mt-2"><EmptyState icon="book" title="ডাটাবেজ লোড হয়নি" /></div>
+          <div className="mt-2"><EmptyState icon="book" title={tx("ডাটাবেজ লোড হয়নি")} /></div>
         ) : (
           <div className="mt-2 space-y-2">
             {offlineAyahs.map((a: any) => (

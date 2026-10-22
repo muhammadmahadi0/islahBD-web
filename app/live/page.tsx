@@ -6,6 +6,7 @@ import { Icon } from "../../components/icons";
 import { usePlayerStore, type Track } from "../../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../../lib/live";
 import { bnNum } from "../../lib/audio";
+import { useNum, useTx } from "../../store/language-store";
 
 // Live broadcast — beta live behavior: status polling, in-app HLS playback
 // with recording fallback (handled by AudioPlayer), listener count.
@@ -43,6 +44,8 @@ function liveToTrack(live: LiveStatus): Track | null {
 }
 
 export default function LivePage() {
+  const tx = useTx();
+  const num = useNum();
   const [live, setLive] = useState<LiveStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const { playTrack, currentTrack, isPlaying, setIsPlaying } = usePlayerStore();
@@ -95,13 +98,13 @@ export default function LivePage() {
   return (
     <div className="animate-fade-up">
       <PageHead
-        title="লাইভ"
-        subtitle="সরাসরি বয়ান ও হারামাইন"
+        title={tx("লাইভ")}
+        subtitle={tx("সরাসরি বয়ান ও হারামাইন")}
         icon="radio"
         action={
           <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ${isLive ? "bg-red-500 text-white" : "bg-white/15 text-white"}`}>
             <span className={`h-2 w-2 rounded-full ${isLive ? "animate-pulsedot bg-white" : "bg-white/50"}`} />
-            {isLive ? "লাইভ চলছে" : "অফলাইন"}
+            {isLive ? tx("লাইভ চলছে") : tx("অফলাইন")}
           </span>
         }
       />
@@ -112,7 +115,7 @@ export default function LivePage() {
           <div className="mx-auto mt-3 h-4 w-2/3 rounded-full bg-sand-dark" />
         </div>
       ) : !live ? (
-        <div className="mt-3"><EmptyState icon="radio" title="লাইভ তথ্য পাওয়া যাচ্ছে না" /></div>
+        <div className="mt-3"><EmptyState icon="radio" title={tx("লাইভ তথ্য পাওয়া যাচ্ছে না")} /></div>
       ) : (
         <div className="card mt-3 overflow-hidden">
           <div className={`p-6 text-center text-white ${isLive ? "bg-gradient-to-br from-red-600 via-red-500 to-red-700" : "page-hero !rounded-none"}`}>
@@ -121,7 +124,7 @@ export default function LivePage() {
                 <Icon name="radio" size={30} />
               </span>
               <h2 className="mt-3 text-xl font-bold leading-snug">
-                {live.title || (isLive ? "সরাসরি বয়ান চলছে" : "সর্বশেষ বয়ান")}
+                {live.title || (isLive ? tx("সরাসরি বয়ান চলছে") : tx("সর্বশেষ বয়ান"))}
               </h2>
               {(live.speaker || live.location) && (
                 <p className="mt-1 text-sm text-white/80">
@@ -130,7 +133,7 @@ export default function LivePage() {
               )}
               {isLive && live.listeners > 0 && (
                 <p className="mt-1 text-xs font-bold tabular-nums text-white/80">
-                  {bnNum(live.listeners)} জন শুনছেন
+                  {num(live.listeners)}{tx("জন শুনছেন")}
                 </p>
               )}
               <button
@@ -138,19 +141,19 @@ export default function LivePage() {
                 className="btn-white mx-auto mt-4 flex items-center gap-2 rounded-full px-7 py-3 text-sm font-bold shadow-lift transition hover:scale-105 active:scale-95"
               >
                 {playingLive && isPlaying ? (
-                  <><Icon name="pause" size={17} /> থামান</>
+                  <><Icon name="pause" size={17} /> {tx("থামান")}</>
                 ) : (
-                  <><Icon name="playfill" size={17} /> {isLive ? "লাইভ শুনুন" : "রেকর্ডিং শুনুন"}</>
+                  <><Icon name="playfill" size={17} /> {isLive ? tx("লাইভ শুনুন") : tx("রেকর্ডিং শুনুন")}</>
                 )}
               </button>
               {!isLive && live.recording && (
-                <p className="mt-2 text-[11px] text-white/70">এখন লাইভ বন্ধ — সর্বশেষ রেকর্ডিং বাজবে</p>
+                <p className="mt-2 text-[11px] text-white/70">{tx("এখন লাইভ বন্ধ — সর্বশেষ রেকর্ডিং বাজবে")}</p>
               )}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 p-3">
-            <Link2 href="https://www.youtube.com/@islahbd" icon="play" label="YouTube চ্যানেল" />
-            <Link2 href="/boyan" icon="mic" label="অডিও বয়ান" internal />
+            <Link2 href="https://www.youtube.com/@islahbd" icon="play" label={tx("YouTube চ্যানেল")} />
+            <Link2 href="/boyan" icon="mic" label={tx("অডিও বয়ান")} internal />
           </div>
         </div>
       )}
@@ -161,13 +164,13 @@ export default function LivePage() {
             <Icon name="kaaba" size={24} />
           </span>
           <div>
-            <div className="font-bold">মক্কা ও মদিনা লাইভ</div>
-            <div className="text-xs text-ink-faint">হারামাইন সরাসরি (YouTube)</div>
+            <div className="font-bold">{tx("মক্কা ও মদিনা লাইভ")}</div>
+            <div className="text-xs text-ink-faint">{tx("হারামাইন সরাসরি (YouTube)")}</div>
           </div>
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2">
-          <a href="https://www.youtube.com/results?search_query=makkah+live" target="_blank" rel="noreferrer" className="btn-outline !py-2 text-[13px]">মক্কা</a>
-          <a href="https://www.youtube.com/results?search_query=madinah+live" target="_blank" rel="noreferrer" className="btn-outline !py-2 text-[13px]">মদিনা</a>
+          <a href="https://www.youtube.com/results?search_query=makkah+live" target="_blank" rel="noreferrer" className="btn-outline !py-2 text-[13px]">{tx("মক্কা")}</a>
+          <a href="https://www.youtube.com/results?search_query=madinah+live" target="_blank" rel="noreferrer" className="btn-outline !py-2 text-[13px]">{tx("মদিনা")}</a>
         </div>
       </div>
 
@@ -177,12 +180,12 @@ export default function LivePage() {
             <Icon name="bell" size={22} />
           </span>
           <div className="flex-1">
-            <div className="font-bold">বয়ান রিমাইন্ডার</div>
-            <div className="text-xs text-ink-faint">লাইভ শুরু হলে জানুন</div>
+            <div className="font-bold">{tx("বয়ান রিমাইন্ডার")}</div>
+            <div className="text-xs text-ink-faint">{tx("লাইভ শুরু হলে জানুন")}</div>
           </div>
         </div>
         <button className="btn-gold mt-3 w-full" onClick={() => (Notification as any)?.requestPermission?.()}>
-          <Icon name="bell" size={16} /> রিমাইন্ডার অন করুন
+          <Icon name="bell" size={16} /> {tx("রিমাইন্ডার অন করুন")}
         </button>
       </div>
     </div>

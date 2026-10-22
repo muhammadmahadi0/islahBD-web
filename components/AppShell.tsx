@@ -8,7 +8,7 @@ import { usePlayerStore, type Track } from "../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../lib/live";
 import { bnNum } from "../lib/audio";
 import { NOTIF_READ_EVENT, parseNotifications, unreadCount } from "../lib/notifications";
-import { useLanguageStore, useT } from "../store/language-store";
+import { useLanguageStore, useT, useTx } from "../store/language-store";
 
 // Paths belonging to the More hub — the More tab stays highlighted there.
 const MORE_PREFIXES = [
@@ -20,6 +20,7 @@ const MORE_PREFIXES = [
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
+  const tx = useTx();
   const path = usePathname();
   const t = useT();
   const { playTrack, currentTrack, isPlaying, setIsPlaying } = usePlayerStore();
@@ -84,17 +85,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     let track: Track | null = null;
     if (live.isLive && live.streamUrl) {
       track = {
-        id: "live", title: live.title || "সরাসরি বয়ান", thumbnail: "",
-        duration: 0, channelName: live.speaker || "ইসলাহ লাইভ", videoId: "",
+        id: "live", title: live.title || tx("সরাসরি বয়ান"), thumbnail: "",
+        duration: 0, channelName: live.speaker || tx("ইসলাহ লাইভ"), videoId: "",
         hlsUrl: live.streamUrl, audioUrl: live.streamUrl,
         isLive: true, location: live.location || "",
         sharePath: "/live?play=live",
       };
     } else if (live.recording?.audioUrl) {
       track = {
-        id: "live-recording", title: live.recording.title || "সর্বশেষ বয়ান", thumbnail: "",
+        id: "live-recording", title: live.recording.title || tx("সর্বশেষ বয়ান"), thumbnail: "",
         duration: live.recording.durationSeconds || 0,
-        channelName: live.recording.speaker || "ইসলাহ", videoId: "",
+        channelName: live.recording.speaker || tx("ইসলাহ"), videoId: "",
         audioUrl: live.recording.audioUrl, location: live.recording.location || "",
         sharePath: "/live?play=live-recording",
       };
@@ -138,7 +139,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <Icon name="bell" size={16} />
               {unread > 0 && (
                 <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold leading-none text-white">
-                  {unread > 9 ? "৯+" : bnNum(unread)}
+                  {unread > 9 ? tx("৯+") : bnNum(unread)}
                 </span>
               )}
             </Link>
@@ -148,11 +149,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {isHome && (
           <Link href="/paribar" className="scholar-banner block transition hover:brightness-[1.02] active:scale-[0.99]">
             <p className="mx-auto max-w-sm text-[12px] font-medium leading-relaxed text-ink-soft">
-              তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন
-              হুসাইন সাহেব-এর খলিফা হযরত মাওলানা
+              {tx("তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন হুসাইন সাহেব-এর খলিফা হযরত মাওলানা")}
             </p>
             <h1 className="gold-text mt-1 text-[28px] font-extrabold leading-tight tracking-wide">
-              তৈয়্যেব আশরাফ সাহেব
+              {tx("তৈয়্যেব আশরাফ সাহেব")}
             </h1>
           </Link>
         )}

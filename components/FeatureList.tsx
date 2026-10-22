@@ -2,6 +2,7 @@
 import { useMemo, useState } from "react";
 import { PageHead, ShareCopy, EmptyState } from "./ui";
 import { Icon } from "./icons";
+import { useTx } from "../store/language-store";
 
 type Props = {
   file: string;
@@ -15,6 +16,7 @@ type Props = {
 // Client list view — mirrors AmalMainScreen / DuaScreen / CollapsibleDuaCard:
 // category chips + search + expandable detail cards with copy/share.
 export function FeatureListPage({ file, title, subtitle, icon = "book", backHref = "/", extra }: Props) {
+  const tx = useTx();
   const [data, setData] = useState<any>(null);
   const [failed, setFailed] = useState(false);
   const [q, setQ] = useState("");
@@ -60,7 +62,7 @@ export function FeatureListPage({ file, title, subtitle, icon = "book", backHref
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="খুঁজুন…"
+          placeholder={tx("খুঁজুন…")}
           className="input !pl-11 !shadow-card"
         />
       </form>
@@ -68,7 +70,7 @@ export function FeatureListPage({ file, title, subtitle, icon = "book", backHref
       {cats.length > 0 && (
         <div className="rail -mx-3 flex gap-2 overflow-x-auto px-3 py-3">
           <button onClick={() => setCat("all")} className={`chip shrink-0 !px-4 !py-2 ${cat === "all" ? "chip-active" : ""}`}>
-            সব
+            {tx("সব")}
           </button>
           {cats.map((c: any) => (
             <button
@@ -83,7 +85,7 @@ export function FeatureListPage({ file, title, subtitle, icon = "book", backHref
       )}
 
       <div className="mb-2 text-xs font-bold text-ink-faint">
-        {data ? `${filtered.length}টি আইটেম` : failed ? "" : "লোড হচ্ছে…"}
+        {data ? `${filtered.length}${tx("টি আইটেম")}` : failed ? "" : tx("লোড হচ্ছে…")}
       </div>
 
       {!data && !failed ? (
@@ -96,9 +98,9 @@ export function FeatureListPage({ file, title, subtitle, icon = "book", backHref
           ))}
         </div>
       ) : failed ? (
-        <EmptyState icon={icon} title="লোড করা যায়নি" />
+        <EmptyState icon={icon} title={tx("লোড করা যায়নি")} />
       ) : filtered.length === 0 ? (
-        <EmptyState icon="search" title="কিছু পাওয়া যায়নি" hint="অন্য শব্দে খুঁজে দেখুন" />
+        <EmptyState icon="search" title={tx("কিছু পাওয়া যায়নি")} hint={tx("অন্য শব্দে খুঁজে দেখুন")} />
       ) : (
         <div className="space-y-2">
           {filtered.map((it: any, i: number) => {
@@ -124,7 +126,7 @@ export function FeatureListPage({ file, title, subtitle, icon = "book", backHref
                 {isOpen && (
                   <div className="space-y-2.5 border-t border-primary-900/10 bg-sand/60 px-4 py-4">
                     {it.fazilat && (
-                      <p className="text-sm leading-relaxed"><b className="text-primary-700">ফযীলত: </b>{it.fazilat}</p>
+                      <p className="text-sm leading-relaxed"><b className="text-primary-700">{tx("ফযীলত:")} </b>{it.fazilat}</p>
                     )}
                     {amalTexts.map((a: any, j: number) => (
                       <div key={j} className="inner-box rounded-2xl border border-primary-900/10 bg-white p-3.5">

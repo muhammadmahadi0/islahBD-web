@@ -8,11 +8,14 @@ import {
   boyanToTrack, timeAgoBn, bnNum,
   type BoyanAudio, type BoyanCategory,
 } from "../../lib/audio";
+import { useNum, useTx } from "../../store/language-store";
 
 // Bayan section — beta BoyanView behavior (search, category filter, silent
 // background refresh, queue playback, playlist menu) on the app theme,
 // powered by the beta player engine (zustand + AudioPlayer + MiniPlayer).
 export default function BoyanPage() {
+  const tx = useTx();
+  const num = useNum();
   const [audios, setAudios] = useState<BoyanAudio[]>([]);
   const [categories, setCategories] = useState<BoyanCategory[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +44,7 @@ export default function BoyanPage() {
       if (Array.isArray(data.categories)) setCategories(data.categories);
       setError("");
     } catch (e) {
-      if (!silent) setError("বয়ান তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।");
+      if (!silent) setError(tx("বয়ান তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।"));
     } finally {
       if (!silent) setLoading(false);
     }
@@ -82,13 +85,13 @@ export default function BoyanPage() {
   return (
     <div className="animate-fade-up">
       <PageHead
-        title="বয়ান"
-        subtitle={`সরাসরি MP3 লেকচার • ${bnNum(audios.length)}টি বয়ান`}
+        title={tx("বয়ান")}
+        subtitle={`${tx("সরাসরি MP3 লেকচার")} • ${num(audios.length)}${tx("টি বয়ান")}`}
         icon="mic"
         action={
           results.length > 0 ? (
             <button onClick={playAll} className="inline-flex items-center gap-1.5 rounded-full bg-gold px-4 py-1.5 text-xs font-bold text-[#1a1405] transition hover:brightness-105 active:scale-95">
-              <Icon name="playfill" size={14} /> সব চালান
+              <Icon name="playfill" size={14} /> {tx("সব চালান")}
             </button>
           ) : undefined
         }
@@ -101,7 +104,7 @@ export default function BoyanPage() {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="বয়ান, বক্তা বা স্থান খুঁজুন…"
+          placeholder={tx("বয়ান, বক্তা বা স্থান খুঁজুন…")}
           className="input !pl-11 !shadow-card"
         />
       </form>
@@ -109,7 +112,7 @@ export default function BoyanPage() {
       {categories.length > 0 && (
         <div className="rail -mx-3 flex gap-2 overflow-x-auto px-3 py-3">
           <button onClick={() => setCat("all")} className={`chip shrink-0 !px-4 !py-2 ${cat === "all" ? "chip-active" : ""}`}>
-            সব
+            {tx("সব")}
           </button>
           {categories.map((c) => (
             <button
@@ -123,7 +126,7 @@ export default function BoyanPage() {
         </div>
       )}
 
-      <div className="mb-2 mt-1 text-xs font-bold text-ink-faint">{bnNum(results.length)}টি ফলাফল</div>
+      <div className="mb-2 mt-1 text-xs font-bold text-ink-faint">{num(results.length)}{tx("টি ফলাফল")}</div>
 
       {loading ? (
         <div className="space-y-2">
@@ -138,9 +141,9 @@ export default function BoyanPage() {
           ))}
         </div>
       ) : error ? (
-        <EmptyState icon="mic" title={error} hint="পুনরায় চেষ্টা করুন" />
+        <EmptyState icon="mic" title={error} hint={tx("পুনরায় চেষ্টা করুন")} />
       ) : results.length === 0 ? (
-        <EmptyState icon="search" title="কিছু পাওয়া যায়নি" hint="অন্য শব্দে খুঁজে দেখুন" />
+        <EmptyState icon="search" title={tx("কিছু পাওয়া যায়নি")} hint={tx("অন্য শব্দে খুঁজে দেখুন")} />
       ) : (
         <div className="space-y-2">
           {results.slice(0, 150).map((a, i) => {
@@ -172,7 +175,7 @@ export default function BoyanPage() {
                 ) : (
                   <button
                     onClick={(e) => { e.stopPropagation(); setMenuTrack(tracks[i]); }}
-                    aria-label="প্লেলিস্টে রাখুন"
+                    aria-label={tx("প্লেলিস্টে রাখুন")}
                     className="shrink-0 rounded-xl p-2 text-ink-faint transition hover:bg-primary-50 hover:text-primary-700"
                   >
                     <Icon name="plus" size={17} />

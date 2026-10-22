@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { CITIES, toBn } from "../../lib/prayer";
+import { useLang, useTx } from "../../store/language-store";
 
 const KAABA = { lat: 21.4225, lng: 39.8262 };
 
@@ -30,9 +31,11 @@ type SensorState = "idle" | "need-permission" | "starting" | "active" | "unsuppo
 type CompassEvent = DeviceOrientationEvent & { webkitCompassHeading?: number; absolute?: boolean };
 
 export default function QiblaPage() {
+  const tx = useTx();
+  const lang = useLang();
   const [heading, setHeading] = useState<number | null>(null);
   const [qibla, setQibla] = useState<number | null>(null);
-  const [place, setPlace] = useState("ঢাকা");
+  const [place, setPlace] = useState(tx("ঢাকা"));
   const [sensor, setSensor] = useState<SensorState>("idle");
   const [note, setNote] = useState("");
   const [gpsBusy, setGpsBusy] = useState(false);
@@ -47,19 +50,19 @@ export default function QiblaPage() {
   const requestGps = useCallback(
     (silent = false) => {
       if (!navigator.geolocation) {
-        if (!silent) setNote("এই ডিভাইসে GPS নেই — নিচ থেকে শহর বেছে নিন।");
+        if (!silent) setNote(tx("এই ডিভাইসে GPS নেই — নিচ থেকে শহর বেছে নিন।"));
         return;
       }
       setGpsBusy(true);
       navigator.geolocation.getCurrentPosition(
         (p) => {
-          locate(p.coords.latitude, p.coords.longitude, "আপনার অবস্থান");
+          locate(p.coords.latitude, p.coords.longitude, tx("আপনার অবস্থান"));
           setGpsBusy(false);
           if (!silent) setNote("");
         },
         () => {
           setGpsBusy(false);
-          if (!silent) setNote("লোকেশন পাওয়া যায়নি — নিচ থেকে শহর বেছে নিন।");
+          if (!silent) setNote(tx("লোকেশন পাওয়া যায়নি — নিচ থেকে শহর বেছে নিন।"));
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
       );
@@ -111,7 +114,7 @@ export default function QiblaPage() {
     const DOE = (window as unknown as { DeviceOrientationEvent?: typeof DeviceOrientationEvent & { requestPermission?: () => Promise<string> } }).DeviceOrientationEvent;
     if (!DOE) {
       setSensor("unsupported");
-      setNote("এই ব্রাউজারে কম্পাস সেন্সর সাপোর্ট করে না — নিচের ডিগ্রি দেখে কাবার দিক মিলিয়ে নিন।");
+      setNote(tx("এই ব্রাউজারে কম্পাস সেন্সর সাপোর্ট করে না — নিচের ডিগ্রি দেখে কাবার দিক মিলিয়ে নিন।"));
       return;
     }
 
@@ -123,13 +126,13 @@ export default function QiblaPage() {
         if (res !== "granted") {
           started.current = false;
           setSensor("need-permission");
-          setNote("কম্পাসের অনুমতি দিন — iOS সেটিংসে Motion & Fitness চালু থাকতে হবে।");
+          setNote(tx("কম্পাসের অনুমতি দিন — iOS সেটিংসে Motion & Fitness চালু থাকতে হবে।"));
           return;
         }
       } catch {
         started.current = false;
         setSensor("need-permission");
-        setNote("কম্পাসের অনুমতি নেওয়া যায়নি — আবার চেষ্টা করুন।");
+        setNote(tx("কম্পাসের অনুমতি নেওয়া যায়নি — আবার চেষ্টা করুন।"));
         return;
       }
     }
@@ -138,7 +141,7 @@ export default function QiblaPage() {
     window.setTimeout(() => {
       if (headingRef.current === null) {
         setSensor("unsupported");
-        setNote("কম্পাস রিডিং পাওয়া যাচ্ছে না — ফোন সমতলে রেখে ৮-আকৃতিতে ঘুরিয়ে ক্যালিব্রেট করুন, অথবা নিচের ডিগ্রি দেখে কাবার দিক মিলিয়ে নিন।");
+        setNote(tx("কম্পাস রিডিং পাওয়া যাচ্ছে না — ফোন সমতলে রেখে ৮-আকৃতিতে ঘুরিয়ে ক্যালিব্রেট করুন, অথবা নিচের ডিগ্রি দেখে কাবার দিক মিলিয়ে নিন।"));
       }
     }, 2800);
   }, []);
@@ -152,7 +155,7 @@ export default function QiblaPage() {
     const touch = typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
     if (!DOE) {
       setSensor("unsupported");
-      setNote("এই ব্রাউজারে কম্পাস সেন্সর নেই — GPS বা শহর বেছে কাবার দিক দেখুন।");
+      setNote(tx("এই ব্রাউজারে কম্পাস সেন্সর নেই — GPS বা শহর বেছে কাবার দিক দেখুন।"));
       return;
     }
 
@@ -180,21 +183,21 @@ export default function QiblaPage() {
 
   const statusText = (() => {
     if (sensor === "active") {
-      if (aligned) return "কিবলার দিকে মুখ করে আছেন ✓";
+      if (aligned) return tx("কিবলার দিকে মুখ করে আছেন ✓");
       if (delta !== null) {
         const signed = delta > 180 ? delta - 360 : delta;
-        return `${signed >= 0 ? "ডানে" : "বামে"} ঘুরুন — ${toBn(Math.round(Math.abs(signed)))}°`;
+        return lang === "bn" ? `${signed >= 0 ? tx("ডানে") : tx("বামে")} ঘুরুন — ${toBn(Math.round(Math.abs(signed)))}°` : lang === "ur" ? `${signed >= 0 ? "دائیں" : "بائیں"} مڑیں — ${Math.round(Math.abs(signed))}°` : `Turn ${signed >= 0 ? "right" : "left"} — ${Math.round(Math.abs(signed))}°`;
       }
-      return "কম্পাস পড়া হচ্ছে…";
+      return tx("কম্পাস পড়া হচ্ছে…");
     }
-    if (sensor === "need-permission") return "কম্পাসের অনুমতি দিন";
-    if (sensor === "starting") return "কম্পাস চালু হচ্ছে…";
-    return "কম্পাস চালু করুন";
+    if (sensor === "need-permission") return tx("কম্পাসের অনুমতি দিন");
+    if (sensor === "starting") return tx("কম্পাস চালু হচ্ছে…");
+    return tx("কম্পাস চালু করুন");
   })();
 
   return (
     <div className="animate-fade-up">
-      <PageHead title="কিবলা কম্পাস" subtitle="কাবার দিক নির্ণয়" icon="compass" />
+      <PageHead title={tx("কিবলা কম্পাস")} subtitle={tx("কাবার দিক নির্ণয়")} icon="compass" />
 
       <div className="card mt-3 p-5 text-center sm:p-6">
         {/* dial */}
@@ -255,15 +258,15 @@ export default function QiblaPage() {
         {/* readout */}
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
           <span className="rounded-2xl bg-primary-50 px-4 py-2 text-lg font-bold tabular-nums text-primary-700 dark:bg-white/5">
-            {qibla !== null ? `${toBn(Math.round(qibla))}°` : "…"}
+            {qibla !== null ? `${lang === "bn" ? toBn(Math.round(qibla)) : Math.round(qibla)}°` : "…"}
           </span>
           <span className="text-sm font-bold text-ink-soft">
-            {qibla !== null ? `উত্তর থেকে ${cardinal(qibla)} দিকে` : ""}
+            {qibla !== null ? (lang === "bn" ? `উত্তর থেকে ${tx(cardinal(qibla))} দিকে` : lang === "ur" ? `شمال سے ${tx(cardinal(qibla))} کی طرف` : `${tx(cardinal(qibla))} from north`) : ""}
           </span>
         </div>
         {heading !== null && (
           <p className="mt-1 text-[11px] font-medium text-ink-faint">
-            ফোনের মুখ: {toBn(Math.round(norm(heading)))}°
+            {tx("ফোনের মুখ:")} {lang === "bn" ? toBn(Math.round(norm(heading))) : Math.round(norm(heading))}°
           </p>
         )}
 
@@ -278,25 +281,25 @@ export default function QiblaPage() {
 
         {showStart && (
           <button onClick={startCompass} className="btn-primary mt-4 w-full" disabled={sensor === "starting"}>
-            <Icon name="compass" size={18} /> {sensor === "need-permission" ? "অনুমতি দিয়ে চালু করুন" : "কম্পাস চালু করুন"}
+            <Icon name="compass" size={18} /> {sensor === "need-permission" ? tx("অনুমতি দিয়ে চালু করুন") : tx("কম্পাস চালু করুন")}
           </button>
         )}
         {note && <p className="mx-auto mt-3 max-w-xs text-[11px] leading-relaxed text-ink-faint">{note}</p>}
         <p className="mx-auto mt-2 max-w-xs text-[11px] leading-relaxed text-ink-faint">
-          সঠিক দিকের জন্য ফোন সমতলে রেখে ৮-আকৃতিতে কয়েকবার ঘুরিয়ে ক্যালিব্রেট করুন। চুম্বক/মেটাল কভার দূরে রাখুন।
+          {tx("সঠিক দিকের জন্য ফোন সমতলে রেখে ৮-আকৃতিতে কয়েকবার ঘুরিয়ে ক্যালিব্রেট করুন। চুম্বক/মেটাল কভার দূরে রাখুন।")}
         </p>
       </div>
 
       {/* location */}
       <div className="card mt-2 p-4">
         <div className="mb-2 flex items-center justify-between gap-2">
-          <span className="min-w-0 truncate text-sm font-bold">অবস্থান: {place}</span>
+          <span className="min-w-0 truncate text-sm font-bold">{tx("অবস্থান:")} {tx(place)}</span>
           <button
             onClick={() => requestGps(false)}
             disabled={gpsBusy}
             className="btn-ghost shrink-0 !py-1.5 !text-xs disabled:opacity-60"
           >
-            <Icon name="pin" size={14} /> {gpsBusy ? "খোঁজা হচ্ছে…" : "GPS"}
+            <Icon name="pin" size={14} /> {gpsBusy ? tx("খোঁজা হচ্ছে…") : "GPS"}
           </button>
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -317,7 +320,7 @@ export default function QiblaPage() {
             rel="noreferrer"
             className="btn-outline mt-3 w-full !py-2 text-[13px]"
           >
-            <Icon name="globe" size={15} /> ম্যাপে কাবা দেখুন
+            <Icon name="globe" size={15} /> {tx("ম্যাপে কাবা দেখুন")}
           </a>
         )}
       </div>

@@ -6,6 +6,7 @@ import { Icon } from "../components/icons";
 import { timeAgoBn, bnNum, boyanToTrack } from "../lib/audio";
 import type { BoyanAudio } from "../lib/audio";
 import { usePlayerStore } from "../store/player-store";
+import { useTx } from "../store/language-store";
 
 const card =
   "bg-white dark:bg-[rgba(30,41,59,0.65)] border border-slate-200/80 dark:border-white/10 rounded-2xl shadow-sm hover:border-amber-400/50 transition cursor-pointer";
@@ -16,6 +17,7 @@ const RISE_STEP = 0.028;
 const rise = (n: number) => ({ animationDelay: `${(n * RISE_STEP).toFixed(3)}s` });
 
 function Heading({ t, sub, link }: { t: string; sub?: string; link?: string }) {
+  const tx = useTx();
   return (
     <div className="flex items-center justify-between">
       <div>
@@ -30,7 +32,7 @@ function Heading({ t, sub, link }: { t: string; sub?: string; link?: string }) {
           href={link}
           className="rounded-full bg-slate-200/50 px-2.5 py-1 text-xs text-ink-soft transition hover:bg-slate-300 dark:bg-slate-800/50 dark:text-slate-400"
         >
-          সব দেখুন
+          {tx("সব দেখুন")}
         </Link>
       )}
     </div>
@@ -56,6 +58,7 @@ const MEDIA = [
 ];
 
 export default function HomePage() {
+  const tx = useTx();
   const [recent, setRecent] = useState<BoyanAudio[]>([]);
   const playTrack = usePlayerStore((s) => s.playTrack);
   const togglePlay = usePlayerStore((s) => s.togglePlay);
@@ -84,16 +87,16 @@ export default function HomePage() {
         <div className="relative flex items-center justify-between overflow-hidden rounded-2xl border border-primary-600/20 bg-gradient-to-r from-primary-600/10 to-primary-800/5 p-4 dark:from-primary-600/20 dark:to-slate-800/40">
           <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-primary-500/20 blur-xl" />
           <div className="relative">
-            <p className="mb-0.5 text-[10px] font-semibold text-primary-700">লাইভ বয়ান</p>
-            <h3 className="text-sm font-bold text-ink">সরাসরি বয়ান শুনুন</h3>
-            <p className="mt-0.5 text-[10px] text-ink-faint">নতুন বয়ানের নোটিফিকেশন পান</p>
+            <p className="mb-0.5 text-[10px] font-semibold text-primary-700">{tx("লাইভ বয়ান")}</p>
+            <h3 className="text-sm font-bold text-ink">{tx("সরাসরি বয়ান শুনুন")}</h3>
+            <p className="mt-0.5 text-[10px] text-ink-faint">{tx("নতুন বয়ানের নোটিফিকেশন পান")}</p>
           </div>
           <Link
             href="/live"
             className="btn-gold relative flex items-center gap-1 !rounded-full px-4 py-2 text-xs shadow"
           >
             <Icon name="radio" size={14} />
-            শুনুন
+            {tx("শুনুন")}
           </Link>
         </div>
       </section>
@@ -101,7 +104,7 @@ export default function HomePage() {
       {/* Services */}
       <section className="my-6">
         <div className="home-rise mb-3" style={rise(2)}>
-          <Heading t="প্রয়োজনীয় সেবা" link="/others" />
+          <Heading t={tx("প্রয়োজনীয় সেবা")} link="/others" />
         </div>
         <div className="grid grid-cols-4 gap-2.5">
           {SERVICES.map((s, i) => (
@@ -114,7 +117,7 @@ export default function HomePage() {
               <span className="rounded-xl bg-emerald-50 p-2.5 text-primary-600 transition group-hover:scale-110">
                 <Icon name={s.icon} size={20} />
               </span>
-              <span className="mt-2 line-clamp-3 w-full text-[11px] font-medium leading-tight text-ink-soft">{s.bn}</span>
+              <span className="mt-2 line-clamp-3 w-full text-[11px] font-medium leading-tight text-ink-soft">{tx(s.bn)}</span>
             </Link>
           ))}
         </div>
@@ -123,7 +126,7 @@ export default function HomePage() {
       {/* Media */}
       <section className="my-6">
         <div className="home-rise mb-3" style={rise(11)}>
-          <Heading t="মিডিয়া" />
+          <Heading t={tx("মিডিয়া")} />
         </div>
         <div className="grid grid-cols-2 gap-3">
           {MEDIA.map((m, i) => (
@@ -137,8 +140,8 @@ export default function HomePage() {
                 <Icon name={m.icon} size={24} />
               </span>
               <span>
-                <span className="block text-sm font-bold text-ink">{m.bn}</span>
-                <span className="mt-0.5 block text-[10px] text-ink-faint">{m.d}</span>
+                <span className="block text-sm font-bold text-ink">{tx(m.bn)}</span>
+                <span className="mt-0.5 block text-[10px] text-ink-faint">{tx(m.d)}</span>
               </span>
             </Link>
           ))}
@@ -151,7 +154,7 @@ export default function HomePage() {
           {/* Loaded after the API call, so this group restarts its own
               short stagger instead of inheriting the page-level delays. */}
           <div className="home-rise mb-3" style={rise(0)}>
-            <Heading t="সাম্প্রতিক বয়ান" sub="নতুন আপলোড" link="/boyan" />
+            <Heading t={tx("সাম্প্রতিক বয়ান")} sub={tx("নতুন আপলোড")} link="/boyan" />
           </div>
           <div className="space-y-2.5">
             {recent.map((b, i) => {
@@ -171,7 +174,7 @@ export default function HomePage() {
                   )}
                   <button
                     onClick={() => (active ? togglePlay() : playTrack(track, recentTracks, i))}
-                    aria-label={`${b.title} — ${playing ? "বিরতি" : "চালান"}`}
+                    aria-label={`${b.title} — ${playing ? tx("বিরতি") : tx("চালান")}`}
                     aria-pressed={playing}
                     className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl transition active:scale-95 ${
                       playing
@@ -202,7 +205,7 @@ export default function HomePage() {
       )}
 
       <p className="home-rise mt-8 text-center text-[11px] text-ink-faint" style={rise(16)}>
-        ইসলাহ • দ্বীনি জীবনের সাথী
+        {tx("ইসলাহ • দ্বীনি জীবনের সাথী")}
       </p>
       </div>
     </div>

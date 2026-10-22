@@ -3,8 +3,11 @@ import { useEffect, useState } from "react";
 import { PageHead, ShareCopy, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { storageSetJSON, storageGetJSON } from "../../lib/storage";
+import { useNum, useTx } from "../../store/language-store";
 
 export default function MalfuzatPage() {
+  const tx = useTx();
+  const num = useNum();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState<number[]>([]);
@@ -26,7 +29,7 @@ export default function MalfuzatPage() {
 
   return (
     <div className="animate-fade-up">
-      <PageHead title="মালফুযাত" subtitle={`বুযুর্গদের বাণী • ${saved.length}টি সেভড`} icon="chat" />
+      <PageHead title={tx("মালফুযাত")} subtitle={`${tx("বুযুর্গদের বাণী")} • ${num(saved.length)} ${tx("সেভড")}`} icon="chat" />
       {loading ? (
         <div className="mt-3 space-y-2">
           {[0, 1, 2].map((i) => (
@@ -37,7 +40,7 @@ export default function MalfuzatPage() {
           ))}
         </div>
       ) : items.length === 0 ? (
-        <div className="mt-3"><EmptyState icon="chat" title="এখনো কিছু নেই" /></div>
+        <div className="mt-3"><EmptyState icon="chat" title={tx("এখনো কিছু নেই")} /></div>
       ) : (
         <div className="mt-3 space-y-2">
           {items.slice(0, 50).map((m: any, i: number) => (

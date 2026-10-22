@@ -8,6 +8,8 @@ import {
   prayerName, toBn, hijriText,
   type PrayerTimes,
 } from "../lib/prayer";
+import { useLang, useTx } from "../store/language-store";
+import { CITIES } from "../lib/prayer";
 
 // Prayer card in the islah.html layout: gold gradient, dotted texture,
 // location/date pills, gauge LEFT with remaining, current prayer RIGHT
@@ -21,9 +23,11 @@ const GRID: { key: "fajr" | "dhuhr" | "asr" | "maghrib" | "isha"; icon: string }
 ];
 
 export default function PrayerCard() {
+  const tx = useTx();
+  const lang = useLang();
   const [times, setTimes] = useState<PrayerTimes | null>(null);
   const [hijri, setHijri] = useState<any>(null);
-  const [place, setPlace] = useState("ঢাকা");
+  const [place, setPlace] = useState(tx("ঢাকা"));
   const [locating, setLocating] = useState(false);
   const [now, setNow] = useState(() => new Date());
 
@@ -109,9 +113,9 @@ export default function PrayerCard() {
           : null;
   const displayName = special
     ? special.type === "prohibited"
-      ? prayerName("sunrise", "bn")
-      : special.labelBn
-    : prayerName(cur, "bn");
+      ? prayerName("sunrise", lang)
+      : lang === "bn" ? special.labelBn : lang === "ur" ? special.labelUr : special.labelEn
+    : prayerName(cur, lang);
 
   const curStart = toMinutes(specialStart || times[cur]) * 60;
   let winStart = new Date(now);
@@ -129,7 +133,11 @@ export default function PrayerCard() {
 
   const rh = Math.floor(remainSec / 3600);
   const rm = Math.floor((remainSec % 3600) / 60);
-  const remainBn = rh > 0 ? `${toBn(rh)} ঘণ্টা ${toBn(rm)} মি.` : `${toBn(rm)} মি. ${toBn(remainSec % 60)} সে.`;
+  const remainLabel = lang === "bn"
+    ? (rh > 0 ? `${toBn(rh)} ঘণ্টা ${toBn(rm)} মি.` : `${toBn(rm)} মি. ${toBn(remainSec % 60)} সে.`)
+    : lang === "ur"
+      ? (rh > 0 ? `${rh} گھنٹے ${rm} منٹ` : `${rm} منٹ`)
+      : (rh > 0 ? `${rh}h ${rm}m` : `${rm}m`);
 
   const fmt12 = (t: string) => {
     const [h, m] = t.split(":").map(Number);
@@ -155,22 +163,25 @@ export default function PrayerCard() {
         <div className="mb-4 flex items-center justify-between text-xs">
           <button
             onClick={refreshGps}
-            title="GPS দিয়ে সঠিক লোকেশন নিন"
+            title={tx("GPS দিয়ে সঠিক লোকেশন নিন")}
             className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 backdrop-blur-md transition hover:bg-white/25 active:scale-95"
           >
             <Icon name={locating ? "clock" : "pin"} size={14} className="text-gold-100" />
-            <span className="font-medium text-white">{locating ? "খোঁজা হচ্ছে…" : place}</span>
+            <span className="font-medium text-white">{locating ? tx("খোঁজা হচ্ছে…") : (() => {
+              const c = CITIES.find((x) => x.name === place || x.nameBn === place);
+              return c ? (lang === "bn" ? c.nameBn : lang === "ur" ? tx(c.nameBn) : c.name) : tx(place);
+            })()}</span>
           </button>
           <Link
             href="/calendar"
-            title="ইসলামিক ক্যালেন্ডার দেখুন"
-            aria-label="ইসলামিক ক্যালেন্ডার দেখুন"
+            title={tx("ইসলামিক ক্যালেন্ডার দেখুন")}
+            aria-label={tx("ইসলামিক ক্যালেন্ডার দেখুন")}
             className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-right backdrop-blur-md transition hover:bg-white/25 active:scale-95"
           >
             <Icon name="calendar" size={14} className="text-gold-100" />
             <span className="text-xs leading-tight">
               <span className="block font-semibold text-white">{gregEn}</span>
-              <span className="block text-[11px] text-white/75">{hijriText(hijri, "bn")}</span>
+              <span className="block text-[11px] text-white/75">{hijriText(hijri, lang)}</span>
             </span>
           </Link>
         </div>
@@ -194,28 +205,28 @@ export default function PrayerCard() {
               />
             </svg>
             <div className="absolute px-1 text-center">
-              <p className="text-[11px] text-white/75">এখন</p>
-              <p className="text-[11px] font-bold leading-tight">{remainBn}</p>
-              <p className="text-[10px] text-white/70">বাকি</p>
+              <p className="text-[11px] text-white/75">{tx("এখন")}</p>
+              <p className="text-[11px] font-bold leading-tight">{remainLabel}</p>
+              <p className="text-[10px] text-white/70">{tx("বাকি")}</p>
             </div>
           </div>
           <div className="ml-3 flex-1">
             <div className="mb-2 flex items-center gap-2">
-              <span className="rounded bg-gold px-2 py-0.5 text-xs font-bold text-[#1a1405]">এখন</span>
+              <span className="rounded bg-gold px-2 py-0.5 text-xs font-bold text-[#1a1405]">{tx("এখন")}</span>
               <span className="text-2xl font-bold tracking-wide text-white">{displayName}</span>
             </div>
             <div className="flex gap-3 text-xs text-white/80">
               <div>
-                <span className="block text-[11px] opacity-75">শুরু</span>
+                <span className="block text-[11px] opacity-75">{tx("শুরু")}</span>
                 <span className="font-semibold tabular-nums text-white">{fmt12(specialStart || times[cur])}</span>
               </div>
               <div className="border-l border-white/20 pl-3">
-                <span className="block text-[11px] opacity-75">শেষ</span>
+                <span className="block text-[11px] opacity-75">{tx("শেষ")}</span>
                 <span className="font-semibold tabular-nums text-white">{endTime}</span>
               </div>
             </div>
             <Link href="/prayer-times" className="mt-2 inline-block text-xs font-bold text-gold-100 underline-offset-2 hover:underline">
-              পূর্ণ সময়সূচি →
+              {tx("পূর্ণ সময়সূচি →")}
             </Link>
           </div>
         </div>
@@ -233,7 +244,7 @@ export default function PrayerCard() {
                     : "bg-white/10 text-white/90 hover:bg-white/20"
                 }`}
               >
-                <p className="mb-1 text-xs">{prayerName(key, "bn")}</p>
+                <p className="mb-1 text-xs">{prayerName(key, lang)}</p>
                 <p className="text-[11px] font-semibold tabular-nums">{fmt12(times[key])}</p>
                 <Icon name={icon} size={13} className="mx-auto mt-1 opacity-80" />
               </div>

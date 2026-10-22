@@ -4,6 +4,7 @@ import Link from "next/link";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { bnNum } from "../../lib/audio";
+import { useNum, useTx } from "../../store/language-store";
 
 // Books — IslahBD catalog + the full Islami Jindegi kitab collection
 // (public/data/islamijindegi-books.json, scraped from
@@ -48,6 +49,8 @@ function BookOpen({
 }
 
 export default function LibraryPage() {
+  const tx = useTx();
+  const num = useNum();
   const [books, setBooks] = useState<Book[]>([]);
   const [q, setQ] = useState("");
   const [submitted, setSubmitted] = useState("");
@@ -101,8 +104,8 @@ export default function LibraryPage() {
   return (
     <div className="animate-fade-up">
       <PageHead
-        title="লাইব্রেরি"
-        subtitle={`ইসলামি কিতাব পড়ুন ও ডাউনলোড করুন${books.length ? ` • ${bnNum(books.length)}টি` : ""}`}
+        title={tx("লাইব্রেরি")}
+        subtitle={`${tx("ইসলামি কিতাব পড়ুন ও ডাউনলোড করুন")}${books.length ? ` • ${num(books.length)}${tx("টি বই")}` : ""}`}
         icon="library"
       />
 
@@ -116,7 +119,7 @@ export default function LibraryPage() {
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="বই বা লেখকের নাম খুঁজুন…"
+          placeholder={tx("বই বা লেখকের নাম খুঁজুন…")}
           className="input !pl-11 !shadow-card"
         />
       </form>
@@ -126,7 +129,7 @@ export default function LibraryPage() {
           <aside className="hidden w-56 shrink-0 lg:block">
             <div className="card sticky top-3 flex max-h-[calc(100vh-1.5rem)] flex-col overflow-hidden p-2">
               <div className="flex items-center gap-1.5 px-2 pb-1 pt-2 text-[11px] font-bold text-ink-faint">
-                <Icon name="library" size={13} /> বিষয়
+                <Icon name="library" size={13} /> {tx("বিষয়")}
               </div>
               <div className="rail min-h-0 flex-1 space-y-0.5 overflow-y-auto pb-1">
                 <button
@@ -137,8 +140,8 @@ export default function LibraryPage() {
                       : "text-ink-soft hover:bg-sand dark:hover:bg-white/5"
                   }`}
                 >
-                  <span>সব</span>
-                  <span className="text-[10px] font-bold tabular-nums opacity-70">{bnNum(books.length)}</span>
+                  <span>{tx("সব")}</span>
+                  <span className="text-[10px] font-bold tabular-nums opacity-70">{num(books.length)}</span>
                 </button>
                 {categories.map(([name, count]) => (
                   <button
@@ -151,7 +154,7 @@ export default function LibraryPage() {
                     }`}
                   >
                     <span className="min-w-0 flex-1 leading-snug">{name}</span>
-                    <span className="text-[10px] font-bold tabular-nums opacity-70">{bnNum(count)}</span>
+                    <span className="text-[10px] font-bold tabular-nums opacity-70">{num(count)}</span>
                   </button>
                 ))}
               </div>
@@ -166,7 +169,7 @@ export default function LibraryPage() {
                 onClick={() => { setCat(ALL); setVisible(PAGE_SIZE); }}
                 className={`chip shrink-0 !px-4 !py-2 ${cat === ALL ? "chip-active" : ""}`}
               >
-                সব ({bnNum(books.length)})
+                {tx("সব")} ({num(books.length)})
               </button>
               {categories.map(([name, count]) => (
                 <button
@@ -174,7 +177,7 @@ export default function LibraryPage() {
                   onClick={() => { setCat(name); setVisible(PAGE_SIZE); }}
                   className={`chip shrink-0 !px-4 !py-2 ${cat === name ? "chip-active" : ""}`}
                 >
-                  {name} ({bnNum(count)})
+                  {name} ({num(count)})
                 </button>
               ))}
             </div>
@@ -182,13 +185,13 @@ export default function LibraryPage() {
 
           {!loading && (
             <div className="mb-2 mt-1 flex items-center justify-between gap-2 text-xs font-bold text-ink-faint">
-              <span>{bnNum(filtered.length)}টি বই</span>
+              <span>{num(filtered.length)}{tx("টি বই")}</span>
               {cat !== ALL && (
                 <button
                   onClick={() => { setCat(ALL); setVisible(PAGE_SIZE); }}
                   className="shrink-0 text-primary-700 dark:text-gold-100"
                 >
-                  সব দেখুন
+                  {tx("সব দেখুন")}
                 </button>
               )}
             </div>
@@ -206,7 +209,7 @@ export default function LibraryPage() {
             </div>
           ) : filtered.length === 0 ? (
             <div className="mt-3">
-              <EmptyState icon="library" title="বই পাওয়া যায়নি" hint="অন্য শব্দে খুঁজে দেখুন" />
+              <EmptyState icon="library" title={tx("বই পাওয়া যায়নি")} hint={tx("অন্য শব্দে খুঁজে দেখুন")} />
             </div>
           ) : (
             <>
@@ -241,7 +244,7 @@ export default function LibraryPage() {
                       {(b.pdf || b.source === "islamijindegi") && (
                         <div className="mt-auto flex gap-1.5 pt-2.5">
                           <BookOpen book={b} className="btn-primary flex-1 !py-1.5 !text-[11px]">
-                            পড়ুন
+                            {tx("পড়ুন")}
                           </BookOpen>
                           {b.pdf && (
                             <a href={b.pdf} download aria-label="download" className="btn-ghost !rounded-xl !p-2">
@@ -260,7 +263,7 @@ export default function LibraryPage() {
                   onClick={() => setVisible((v) => v + PAGE_SIZE)}
                   className="btn-outline mt-4 w-full !py-2.5 text-[13px]"
                 >
-                  আরও দেখুন ({bnNum(filtered.length - visible)}টি বাকি)
+                  {tx("আরও দেখুন")} ({num(filtered.length - visible)}{tx("টি বাকি")})
                 </button>
               )}
             </>

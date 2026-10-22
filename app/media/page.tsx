@@ -6,6 +6,7 @@ import { usePlayerStore, type Track } from "../../store/player-store";
 import AddToPlaylistMenu from "../../components/audio/AddToPlaylistMenu";
 import { shortToTrack, type ShortClip, type ShortClipType } from "../../lib/shorts";
 import { timeAgoBn, bnNum } from "../../lib/audio";
+import { useNum, useTx } from "../../store/language-store";
 
 // Short clips — audio clips play through the stream engine, video clips
 // through the YouTube engine. Search, type filter, silent refresh, queue
@@ -13,6 +14,8 @@ import { timeAgoBn, bnNum } from "../../lib/audio";
 type TypeFilter = "all" | ShortClipType;
 
 export default function MediaPage() {
+  const tx = useTx();
+  const num = useNum();
   const [clips, setClips] = useState<ShortClip[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -39,7 +42,7 @@ export default function MediaPage() {
       });
       setError("");
     } catch {
-      if (!silent) setError("ক্লিপ তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।");
+      if (!silent) setError(tx("ক্লিপ তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।"));
     } finally {
       if (!silent) setLoading(false);
     }
@@ -85,8 +88,8 @@ export default function MediaPage() {
   return (
     <div className="animate-fade-up">
       <PageHead
-        title="সংক্ষিপ্ত ক্লিপস"
-        subtitle={`হাইলাইটস • ${bnNum(clips.length)}টি`}
+        title={tx("সংক্ষিপ্ত ক্লিপস")}
+        subtitle={`${tx("হাইলাইটস")} • ${num(clips.length)}${tx("টি")}`}
         icon="play"
       />
 
@@ -97,7 +100,7 @@ export default function MediaPage() {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="ক্লিপের নাম খুঁজুন…"
+          placeholder={tx("ক্লিপের নাম খুঁজুন…")}
           className="input !pl-11 !shadow-card"
         />
       </form>
@@ -105,9 +108,9 @@ export default function MediaPage() {
       <div className="rail -mx-3 flex items-center gap-2 overflow-x-auto px-3 py-3">
         {(
           [
-            { id: "all", label: `সব (${bnNum(clips.length)})` },
-            { id: "audio", label: `অডিও (${bnNum(audioCount)})` },
-            { id: "video", label: `ভিডিও (${bnNum(videoCount)})` },
+            { id: "all", label: `${tx("সব")} (${num(clips.length)})` },
+            { id: "audio", label: `${tx("অডিও")} (${num(audioCount)})` },
+            { id: "video", label: `${tx("ভিডিও")} (${num(videoCount)})` },
           ] as { id: TypeFilter; label: string }[]
         ).map((f) => (
           <button
@@ -120,7 +123,7 @@ export default function MediaPage() {
         ))}
       </div>
 
-      <div className="mb-2 mt-1 text-xs font-bold text-ink-faint">{bnNum(results.length)}টি ফলাফল</div>
+      <div className="mb-2 mt-1 text-xs font-bold text-ink-faint">{num(results.length)}{tx("টি ফলাফল")}</div>
 
       {loading ? (
         <div className="space-y-2">
@@ -135,9 +138,9 @@ export default function MediaPage() {
           ))}
         </div>
       ) : error ? (
-        <EmptyState icon="play" title={error} hint="পুনরায় চেষ্টা করুন" />
+        <EmptyState icon="play" title={error} hint={tx("পুনরায় চেষ্টা করুন")} />
       ) : results.length === 0 ? (
-        <EmptyState icon="search" title="কিছু পাওয়া যায়নি" hint="অন্য শব্দে খুঁজে দেখুন" />
+        <EmptyState icon="search" title={tx("কিছু পাওয়া যায়নি")} hint={tx("অন্য শব্দে খুঁজে দেখুন")} />
       ) : (
         <div className="space-y-2">
           {results.slice(0, 150).map((clip, i) => {
@@ -167,7 +170,7 @@ export default function MediaPage() {
                     <div className="mt-0.5 truncate text-xs text-ink-faint">{timeAgoBn(clip.createdAt)}</div>
                   )}
                   <span className={`mt-1 inline-block rounded-md px-1.5 py-px text-[10px] font-bold uppercase tracking-wide ${isVideo ? "bg-red-50 text-red-500" : "bg-primary-50 text-primary-700"}`}>
-                    {isVideo ? "ভিডিও" : "অডিও"}
+                    {isVideo ? tx("ভিডিও") : tx("অডিও")}
                   </span>
                 </div>
                 {active && isPlaying ? (
@@ -179,7 +182,7 @@ export default function MediaPage() {
                 ) : (
                   <button
                     onClick={(e) => { e.stopPropagation(); setMenuTrack(tracks[i]); }}
-                    aria-label="প্লেলিস্টে রাখুন"
+                    aria-label={tx("প্লেলিস্টে রাখুন")}
                     className="shrink-0 rounded-xl p-2 text-ink-faint transition hover:bg-primary-50 hover:text-primary-700"
                   >
                     <Icon name="plus" size={17} />

@@ -4,6 +4,7 @@ import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { detectLocation } from "../../lib/prayer";
 import { bnNum } from "../../lib/audio";
+import { useNum, useTx } from "../../store/language-store";
 
 interface Mosque {
   id: string;
@@ -18,16 +19,18 @@ interface Mosque {
 
 type Status = "loading" | "ready" | "error";
 
-function fmtDistance(meters: number): string {
-  if (meters < 1000) return `${bnNum(meters)} মিটার`;
-  return `${bnNum(Number((meters / 1000).toFixed(1)))} কিমি`;
+function fmtDistance(meters: number, num: (n: number | string) => string, mLabel: string, kmLabel: string): string {
+  if (meters < 1000) return `${num(meters)} ${mLabel}`;
+  return `${num(Number((meters / 1000).toFixed(1)))} ${kmLabel}`;
 }
 
-function fmtRadius(meters: number): string {
-  return `${bnNum(Number((meters / 1000).toFixed(1)))} কিমি`;
+function fmtRadius(meters: number, num: (n: number | string) => string, kmLabel: string): string {
+  return `${num(Number((meters / 1000).toFixed(1)))} ${kmLabel}`;
 }
 
 export default function NearbyMosque() {
+  const tx = useTx();
+  const num = useNum();
   const [items, setItems] = useState<Mosque[]>([]);
   const [status, setStatus] = useState<Status>("loading");
   const [place, setPlace] = useState("");
@@ -75,7 +78,7 @@ export default function NearbyMosque() {
 
   const useGps = () => {
     if (!navigator.geolocation) {
-      setNote("এই ডিভাইসে জিপিএস নেই।");
+      setNote(tx("এই ডিভাইসে জিপিএস নেই।"));
       return;
     }
     setGpsBusy(true);
@@ -83,11 +86,11 @@ export default function NearbyMosque() {
     navigator.geolocation.getCurrentPosition(
       (p) => {
         setGpsBusy(false);
-        load(p.coords.latitude, p.coords.longitude, "আপনার অবস্থান");
+        load(p.coords.latitude, p.coords.longitude, tx("আপনার অবস্থান"));
       },
       () => {
         setGpsBusy(false);
-        setNote("লোকেশন পাওয়া যায়নি — অনুমতি দিন।");
+        setNote(tx("লোকেশন পাওয়া যায়নি — অনুমতি দিন।"));
       },
       { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
     );
@@ -95,16 +98,16 @@ export default function NearbyMosque() {
 
   const subtitle =
     status === "loading"
-      ? "খোঁজা হচ্ছে…"
+      ? tx("খোঁজা হচ্ছে…")
       : status === "error"
-        ? "লোড করা যায়নি"
+        ? tx("লোড করা যায়নি")
         : place
-          ? `${place} • ${bnNum(items.length)}টি মসজিদ`
-          : "কাছের মসজিদ";
+          ? `${tx(place)} • ${num(items.length)}${tx("টি মসজিদ")}`
+          : tx("কাছের মসজিদ");
 
   return (
     <div className="animate-fade-up">
-      <PageHead title="কাছের মসজিদ" subtitle={subtitle} icon="mosque" />
+      <PageHead title={tx("কাছের মসজিদ")} subtitle={subtitle} icon="mosque" />
 
       <div className="mt-3 flex gap-2">
         <button
@@ -112,7 +115,7 @@ export default function NearbyMosque() {
           disabled={gpsBusy}
           className="btn-primary flex-1 disabled:opacity-60"
         >
-          <Icon name="pin" size={16} /> {gpsBusy ? "খোঁজা হচ্ছে…" : "জিপিএস দিয়ে খুঁজুন"}
+          <Icon name="pin" size={16} /> {gpsBusy ? tx("খোঁজা হচ্ছে…") : tx("জিপিএস দিয়ে খুঁজুন")}
         </button>
         <button
           onClick={() => {
@@ -122,14 +125,14 @@ export default function NearbyMosque() {
           disabled={status === "loading" || !lastCoords.current}
           className="btn-outline shrink-0 disabled:opacity-60"
         >
-          <Icon name="search" size={16} /> আবার
+          <Icon name="search" size={16} /> {tx("আবার")}
         </button>
       </div>
 
       {note && <p className="mt-2 text-center text-xs text-rose-500">{note}</p>}
       {radius > 0 && status === "ready" && (
         <p className="mt-2 text-center text-[11px] text-ink-faint">
-          {fmtRadius(radius)} পরিসরে, নিকটতম আগে
+          {fmtRadius(radius, num, tx("কিমি"))} {tx("পরিসরে, নিকটতম আগে")}
         </p>
       )}
 
@@ -149,16 +152,16 @@ export default function NearbyMosque() {
         <div className="mt-3">
           <EmptyState
             icon="mosque"
-            title="মসজিদের তথ্য পাওয়া যায়নি"
-            hint="আবার চেষ্টা করুন বা জিপিএস ব্যবহার করুন"
+            title={tx("মসজিদের তথ্য পাওয়া যায়নি")}
+            hint={tx("আবার চেষ্টা করুন বা জিপিএস ব্যবহার করুন")}
           />
         </div>
       ) : items.length === 0 ? (
         <div className="mt-3">
           <EmptyState
             icon="mosque"
-            title="আশেপাশে মসজিদ পাওয়া যায়নি"
-            hint="জিপিএস দিয়ে নির্ভুল অবস্থান দিয়ে খুঁজুন"
+            title={tx("আশেপাশে মসজিদ পাওয়া যায়নি")}
+            hint={tx("জিপিএস দিয়ে নির্ভুল অবস্থান দিয়ে খুঁজুন")}
           />
         </div>
       ) : (
@@ -179,14 +182,14 @@ export default function NearbyMosque() {
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-bold">{m.name}</span>
                   <span className="mt-0.5 block truncate text-xs text-ink-faint">
-                    {meta || `${bnNum(Number(m.lat.toFixed(4)))}, ${bnNum(Number(m.lon.toFixed(4)))}`}
+                    {meta || `${num(Number(m.lat.toFixed(4)))}, ${num(Number(m.lon.toFixed(4)))}`}
                   </span>
                 </span>
                 <span className="shrink-0 text-right">
                   <span className="block text-xs font-bold text-primary-700">
-                    {fmtDistance(m.distance)}
+                    {fmtDistance(m.distance, num, tx("মিটার"), tx("কিমি"))}
                   </span>
-                  <span className="block text-[10px] text-ink-faint">দিকনির্দেশনা</span>
+                  <span className="block text-[10px] text-ink-faint">{tx("দিকনির্দেশনা")}</span>
                 </span>
               </a>
             );

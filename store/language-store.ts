@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { safeStringStorage } from "../lib/storage";
-import { LANGUAGES, translate, type Lang, type TKey } from "../lib/i18n";
+import { LANGUAGES, translate, tx, type Lang, type TKey } from "../lib/i18n";
+import { toBn } from "../lib/prayer";
 
 // UI language, persisted as `islah-language`. Default stays Bengali; the
 // pre-paint script in app/layout.tsx sets lang/dir before first render so
@@ -41,8 +42,25 @@ export const useLanguageStore = create<LanguageState>()(
   )
 );
 
+/** Current UI language. */
+export function useLang() {
+  return useLanguageStore((s) => s.lang);
+}
+
+/** Format digits for the current language (Bangla digits in bn mode). */
+export function useNum() {
+  const lang = useLanguageStore((s) => s.lang);
+  return (n: number | string) => (lang === "bn" ? toBn(n) : String(n));
+}
+
 /** Translate helper bound to the current UI language. */
 export function useT() {
   const lang = useLanguageStore((s) => s.lang);
   return (key: TKey) => translate(lang, key);
+}
+
+/** Translate arbitrary Bengali UI copy (Bengali-keyed UI map). */
+export function useTx() {
+  const lang = useLanguageStore((s) => s.lang);
+  return (bn: string) => tx(lang, bn);
 }

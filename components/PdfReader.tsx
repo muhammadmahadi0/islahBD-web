@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { PDFDocumentProxy, RenderTask } from "pdfjs-dist";
 import { Icon } from "./icons";
+import { useTx } from "../store/language-store";
 
 /**
  * In-app PDF viewer for kitabs that only ship a PDF. Renders one page at a
@@ -10,6 +11,7 @@ import { Icon } from "./icons";
  * bundle.
  */
 export function PdfReader({ src, title }: { src: string; title: string }) {
+  const tx = useTx();
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const renderRef = useRef<RenderTask | null>(null);
@@ -59,7 +61,7 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
       setLoading(false);
     })().catch(() => {
       if (!dead) {
-        setError("PDF লোড করা যাচ্ছে না।");
+        setError(tx("PDF লোড করা যাচ্ছে না।"));
         setLoading(false);
       }
     });
@@ -101,7 +103,7 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
         await task.promise;
       } catch (err) {
         if (!dead && (err as { name?: string })?.name !== "RenderingCancelledException") {
-          setError("PDF পৃষ্ঠা দেখানো যাচ্ছে না।");
+          setError(tx("PDF পৃষ্ঠা দেখানো যাচ্ছে না।"));
         }
       }
     })();
@@ -123,7 +125,7 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
         <button
           onClick={() => jump(page - 1)}
           disabled={page <= 1}
-          aria-label="আগের পাতা"
+          aria-label={tx("আগের পাতা")}
           className="rounded-lg p-1.5 text-ink-faint transition hover:bg-sand disabled:opacity-35"
         >
           <Icon name="back" size={16} />
@@ -134,7 +136,7 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
         <button
           onClick={() => jump(page + 1)}
           disabled={page >= pages}
-          aria-label="পরের পাতা"
+          aria-label={tx("পরের পাতা")}
           className="rounded-lg p-1.5 text-ink-faint transition hover:bg-sand disabled:opacity-35"
         >
           <Icon name="chevron" size={16} />
@@ -143,21 +145,21 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
         <div className="ml-auto flex items-center gap-0.5">
           <button
             onClick={() => setZoom((z) => Math.max(0.6, Number((z - 0.2).toFixed(1))))}
-            aria-label="জুম আউট"
+            aria-label={tx("জুম আউট")}
             className="rounded-lg p-1.5 text-ink-faint transition hover:bg-sand"
           >
             <Icon name="minus" size={15} />
           </button>
           <button
             onClick={() => setZoom(1)}
-            aria-label="জুম রিসেট"
+            aria-label={tx("জুম রিসেট")}
             className="min-w-[42px] rounded-lg px-1 py-1 text-center text-[10px] font-bold tabular-nums text-ink-faint hover:bg-sand"
           >
             {Math.round(zoom * 100)}%
           </button>
           <button
             onClick={() => setZoom((z) => Math.min(2.6, Number((z + 0.2).toFixed(1))))}
-            aria-label="জুম ইন"
+            aria-label={tx("জুম ইন")}
             className="rounded-lg p-1.5 text-ink-faint transition hover:bg-sand"
           >
             <Icon name="plus" size={15} />
@@ -166,7 +168,7 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
             href={src}
             target="_blank"
             rel="noreferrer"
-            aria-label="নতুন ট্যাবে খুলুন"
+            aria-label={tx("নতুন ট্যাবে খুলুন")}
             className="ml-1 rounded-lg p-1.5 text-ink-faint transition hover:bg-sand"
           >
             <Icon name="external" size={15} />
@@ -174,7 +176,7 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
           <a
             href={src}
             download
-            aria-label="ডাউনলোড"
+            aria-label={tx("ডাউনলোড")}
             className="rounded-lg p-1.5 text-ink-faint transition hover:bg-sand"
           >
             <Icon name="download" size={15} />
@@ -198,17 +200,17 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
                 <p className="text-sm font-bold text-ink">{error}</p>
                 <div className="mt-1 flex gap-2">
                   <a href={src} target="_blank" rel="noreferrer" className="btn-primary !py-2 text-[12px]">
-                    নতুন ট্যাবে খুলুন
+                    {tx("নতুন ট্যাবে খুলুন")}
                   </a>
                   <a href={src} download className="btn-outline !py-2 text-[12px]">
-                    ডাউনলোড
+                    {tx("ডাউনলোড")}
                   </a>
                 </div>
               </>
             ) : (
               <>
                 <span className="h-6 w-6 animate-spin rounded-full border-2 border-primary-600 border-t-transparent" />
-                <p className="text-xs font-bold text-ink-faint">PDF লোড হচ্ছে…</p>
+                <p className="text-xs font-bold text-ink-faint">{tx("PDF লোড হচ্ছে…")}</p>
               </>
             )}
           </div>
@@ -217,7 +219,7 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
 
       <div className="flex items-center justify-between gap-2 border-t border-primary-900/10 px-3 py-1.5 text-[10px] font-bold text-ink-faint dark:border-white/10">
         <span className="truncate">{title}</span>
-        <span>পাতা {pages || "—"}</span>
+        <span>{tx("পাতা")} {pages || "—"}</span>
       </div>
     </div>
   );

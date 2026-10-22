@@ -10,6 +10,7 @@ import {
   type DetectedLocation, type PrayerTimes, type Lang,
 } from "../../lib/prayer";
 import { storageGet, storageSet } from "../../lib/storage";
+import { useLang, useTx } from "../../store/language-store";
 
 // Prayer Times — ported from pray-bd (Aladhan Karachi/Hanafi, IP detect,
 // 8 cities, countdown with prohibited/Ishraq/Chasht, Hijri, BN/EN),
@@ -20,19 +21,18 @@ const PRAYER_ICONS: Record<string, string> = {
 };
 
 export default function PrayerTimesPage() {
-  const [lang, setLang] = useState<Lang>("bn");
+  const tx = useTx();
+  const lang = useLang();
+  const L = (bn: string, en: string, ur: string) => (lang === "bn" ? bn : lang === "ur" ? ur : en);
   const [city, setCity] = useState("dhaka");
   const [loc, setLoc] = useState<DetectedLocation | null>(null);
   const [times, setTimes] = useState<PrayerTimes | null>(null);
   const [hijri, setHijri] = useState<any>(null);
   const [offline, setOffline] = useState(false);
   const [now, setNow] = useState(() => new Date());
+  const [mounted, setMounted] = useState(false);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const midnightTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    setLang((storageGet("praybd-lang") as Lang) || "bn");
-  }, []);
 
   const load = useCallback(async (lat: number, lng: number, force = false) => {
     const d = await fetchPrayerData(lat, lng, force);
@@ -41,6 +41,9 @@ export default function PrayerTimesPage() {
     setOffline(d.offline);
     setUpdatedAt(new Date());
   }, []);
+
+  // Avoid SSR/client clock mismatch: render time-dependent text after mount.
+  useEffect(() => setMounted(true), []);
 
   // init: auto-detect location → load (no manual selection)
   useEffect(() => {
@@ -84,12 +87,6 @@ export default function PrayerTimesPage() {
     }
   };
 
-  const toggleLang = () => {
-    const next: Lang = lang === "bn" ? "en" : "bn";
-    setLang(next);
-    storageSet("praybd-lang", next);
-  };
-
   const cityObj = CITIES.find((c) => c.key === city);
   const special = times ? getSpecialPeriod(times, now) : null;
   const next = times ? getNextPrayer(times, now) : null;
@@ -101,7 +98,7 @@ export default function PrayerTimesPage() {
       cdH = Math.floor(special.remainSec / 3600);
       cdM = Math.floor((special.remainSec % 3600) / 60);
       cdS = special.remainSec % 60;
-      cdLabel = lang === "bn" ? special.labelBn : special.labelEn;
+      cdLabel = lang === "bn" ? special.labelBn : lang === "ur" ? special.labelUr : special.labelEn;
       cdRed = special.isRed;
     } else if (next && curKey) {
       // Countdown shows the REMAINING time of the current prayer window.
@@ -110,47 +107,41 @@ export default function PrayerTimesPage() {
       cdM = Math.floor((s % 3600) / 60);
       cdS = s % 60;
       cdLabel =
-        lang === "bn"
-          ? `${prayerName(curKey, lang)} চলছে · বাকি ${toBn(cdH)}ঘ ${toBn(cdM)}ম`
-          : `${prayerName(curKey, lang)} in progress · ${cdH}h ${cdM}m remaining`;
+        L(
+          `${prayerName(curKey, lang)} চলছে · বাকি ${cdH > 0 ? `${toBn(cdH)}ঘ ` : ""}${toBn(cdM)}ম`,
+          `${prayerName(curKey, lang)} in progress · ${cdH > 0 ? `${cdH}h ` : ""}${cdM}m remaining`,
+          `${prayerName(curKey, lang)} جاری ہے · باقی ${cdH > 0 ? `${cdH} گھنٹے ` : ""}${cdM} منٹ`
+        );
     }
   }
 
   const clock = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
   const clockBn = lang === "bn"
-    ? toBn(clock).replace("AM", "এ এম").replace("PM", "পি এম")
+    ? toBn(clock).replace("AM", tx("এ এম")).replace("PM", tx("পি এম"))
     : clock;
 
   return (
     <div className="animate-fade-up">
       <PageHead
-        title={lang === "bn" ? "নামাজের সময়" : "Prayer Times"}
-        subtitle={cityObj ? `${lang === "bn" ? cityObj.nameBn : cityObj.name}${lang === "bn" ? " • অটো" : " • Auto"}` : ""}
+        title={tx("নামাজের সময়")}
+        subtitle={cityObj ? `${lang === "bn" ? cityObj.nameBn : lang === "ur" ? tx(cityObj.nameBn) : cityObj.name} • ${L("অটো", "Auto", "خودکار")}` : ""}
         icon="clock"
-        action={
-          <button
-            onClick={toggleLang}
-            className="rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-bold text-white transition hover:bg-white/25 active:scale-95"
-          >
-            {lang === "bn" ? "EN" : "বাং"}
-          </button>
-        }
       />
 
       {/* countdown hero */}
       <div className="card mt-3 p-6 text-center sm:p-8">
         <p className={`text-[15px] font-bold ${cdRed ? "text-red-500" : "text-gold-600"}`}>
-          {cdLabel || (lang === "bn" ? "লোড হচ্ছে…" : "Loading…")}
+          {cdLabel || tx("লোড হচ্ছে…")}
         </p>
         <div
           className={`mt-1 text-5xl font-bold tabular-nums tracking-tight sm:text-6xl ${cdRed ? "text-red-500" : "text-primary-700"}`}
         >
           {times ? formatCountdown(cdH, cdM, cdS, lang) : "--:--:--"}
         </div>
-        <p className="mt-2 text-[13px] font-bold tabular-nums text-ink-faint">{clockBn}</p>
+        <p className="mt-2 text-[13px] font-bold tabular-nums text-ink-faint">{mounted ? clockBn : "--:--:--"}</p>
         {offline && (
           <p className="mx-auto mt-2 inline-block rounded-full bg-gold-light px-3 py-1 text-[11px] font-bold text-gold-dark">
-            {lang === "bn" ? "অফলাইন সময় — কিছুটা ভিন্ন হতে পারে" : "Offline times — may differ slightly"}
+            {tx("অফলাইন সময় — কিছুটা ভিন্ন হতে পারে")}
           </p>
         )}
       </div>
@@ -159,11 +150,11 @@ export default function PrayerTimesPage() {
       <div className="card mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 p-3.5 text-[13px] font-bold">
         <span className="inline-flex items-center gap-1.5">
           <Icon name="calendar" size={16} className="text-gold-600" />
-          {gregorianText(lang, now)}
+          {mounted ? gregorianText(lang, now) : "—"}
         </span>
         <span className="inline-flex items-center gap-1.5">
           <Icon name="moon" size={16} className="text-gold-600" />
-          {hijriText(hijri, lang) || "…"}
+          {mounted ? hijriText(hijri, lang) || "…" : "…"}
         </span>
       </div>
 
@@ -173,20 +164,20 @@ export default function PrayerTimesPage() {
           <Icon name="globe" size={20} />
         </span>
         <span className="flex-1 text-[13px]">
-          <span className="block font-bold">{lang === "bn" ? "অটো লোকেশন" : "Auto location"}</span>
+          <span className="block font-bold">{tx("অটো লোকেশন")}</span>
           <span className="block text-xs text-ink-faint">
-            {loc ? `${loc.city}${loc.country && loc.country !== "BD" ? `, ${loc.country}` : ""}` : (lang === "bn" ? "খোঁজা হচ্ছে…" : "Detecting…")}
+            {loc ? `${loc.city}${loc.country && loc.country !== "BD" ? `, ${loc.country}` : ""}` : tx("খোঁজা হচ্ছে…")}
           </span>
         </span>
         <button onClick={refreshLocation} disabled={refreshing} className="btn-ghost shrink-0 !py-2 text-[13px] disabled:opacity-60">
           <Icon name={refreshing ? "clock" : "pin"} size={15} />
-          {refreshing ? (lang === "bn" ? "খোঁজা হচ্ছে…" : "Locating…") : (lang === "bn" ? "রিফ্রেশ" : "Refresh")}
+          {refreshing ? tx("খোঁজা হচ্ছে…") : tx("রিফ্রেশ")}
         </button>
       </div>
 
       {/* prayer grid */}
       <div className="mb-2 mt-5 text-[15px] font-bold">
-        {lang === "bn" ? "আজকের সময়সূচি" : "Today's schedule"}
+        {tx("আজকের সময়সূচি")}
       </div>
       {!times ? (
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -207,14 +198,14 @@ export default function PrayerTimesPage() {
             const remainCur = isCur
               ? (() => {
                   const h = Math.floor(remainSecs / 3600), m = Math.floor((remainSecs % 3600) / 60);
-                  return lang === "bn" ? `${toBn(h)}ঘ ${toBn(m)}ম বাকি` : `${h}h ${m}m left`;
+                  return L(`${h > 0 ? `${toBn(h)}ঘ ` : ""}${toBn(m)}ম বাকি`, `${h > 0 ? `${h}h ` : ""}${m}m left`, `${h > 0 ? `${h} گھنٹے ` : ""}${m} منٹ باقی`);
                 })()
               : "";
             const remain = isNextReal
               ? (() => {
                   const s = secsUntil(next.time, now, next.isTomorrow);
                   const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
-                  return lang === "bn" ? `${toBn(h)}ঘ ${toBn(m)}ম বাকি` : `${h}h ${m}m left`;
+                  return L(`${h > 0 ? `${toBn(h)}ঘ ` : ""}${toBn(m)}ম বাকি`, `${h > 0 ? `${h}h ` : ""}${m}m left`, `${h > 0 ? `${h} گھنٹے ` : ""}${m} منٹ باقی`);
                 })()
               : "";
             return (
@@ -228,7 +219,7 @@ export default function PrayerTimesPage() {
                     {prayerName(k, lang)}
                   </span>
                   {isCur && <span className="rounded-full bg-primary-600 px-2 py-0.5 text-[10px] font-bold tabular-nums text-white">{remainCur}</span>}
-                  {isNextReal && !isCur && <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-[#1a1405]">{lang === "bn" ? "পরবর্তী" : "Next"}</span>}
+                  {isNextReal && !isCur && <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-[#1a1405]">{tx("পরবর্তী")}</span>}
                 </div>
                 <div className={`mt-1 text-[22px] font-bold tabular-nums ${isNextReal ? "text-gold-dark" : isCur ? "text-primary-700" : ""}`}>
                   {formatTime12(times[k], lang)}
@@ -236,7 +227,7 @@ export default function PrayerTimesPage() {
                 {remain && <div className="mt-0.5 text-[11px] font-bold text-ink-faint">{remain}</div>}
                 {k === "sunrise" && (
                   <div className="mt-0.5 text-[11px] font-bold text-ink-faint">
-                    {lang === "bn" ? `সূর্যাস্ত ${formatTime12((times as any).sunset || "", lang)}` : `Sunset ${formatTime12((times as any).sunset || "", lang)}`}
+                    {L(`সূর্যাস্ত ${formatTime12((times as any).sunset || "", lang)}`, `Sunset ${formatTime12((times as any).sunset || "", lang)}`, `غروب ${formatTime12((times as any).sunset || "", lang)}`)}
                   </div>
                 )}
               </div>
@@ -246,8 +237,8 @@ export default function PrayerTimesPage() {
             const w = times ? getNaflWindows(times) : null;
             if (!w) return null;
             const rows = [
-              { name: lang === "bn" ? "ইশরাক" : "Ishraq", icon: "sunrise", from: w.ishraqStart, to: w.ishraqEnd },
-              { name: lang === "bn" ? "চাশত" : "Chasht", icon: "sun", from: w.chashtStart, to: w.chashtEnd },
+              { name: tx("ইশরাক"), icon: "sunrise", from: w.ishraqStart, to: w.ishraqEnd },
+              { name: tx("চাশত"), icon: "sun", from: w.chashtStart, to: w.chashtEnd },
             ];
             return rows.map((r) => (
               <div key={r.name} className="card card-hover relative overflow-hidden p-4">
@@ -257,14 +248,14 @@ export default function PrayerTimesPage() {
                     {r.name}
                   </span>
                   <span className="rounded-full bg-gold-light px-2 py-0.5 text-[10px] font-bold text-gold-dark">
-                    {lang === "bn" ? "নফল" : "Nafl"}
+                    {tx("নফল")}
                   </span>
                 </div>
                 <div className="mt-1 text-[22px] font-bold tabular-nums">
                   {formatTime12(r.from, lang)}
                 </div>
                 <div className="mt-0.5 text-[11px] font-bold text-ink-faint">
-                  {lang === "bn" ? `থেকে ${formatTime12(r.to, lang)} পর্যন্ত` : `until ${formatTime12(r.to, lang)}`}
+                  {L(`থেকে ${formatTime12(r.to, lang)} পর্যন্ত`, `until ${formatTime12(r.to, lang)}`, `سے ${formatTime12(r.to, lang)} تک`)}
                 </div>
               </div>
             ));
@@ -274,7 +265,7 @@ export default function PrayerTimesPage() {
 
       {updatedAt && (
         <p className="mt-3 text-center text-[11px] text-ink-faint">
-          {lang === "bn" ? "আপডেট" : "Updated"}: {updatedAt.toLocaleTimeString(lang === "bn" ? "bn-BD" : "en-US", { hour: "numeric", minute: "2-digit" })}
+          {tx("আপডেট")}: {updatedAt.toLocaleTimeString(lang === "bn" ? "bn-BD" : "en-US", { hour: "numeric", minute: "2-digit" })}
           {" • "}Aladhan (Karachi/Hanafi)
         </p>
       )}

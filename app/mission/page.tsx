@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { PageHead, ShareCopy } from "../../components/ui";
 import { Icon } from "../../components/icons";
@@ -11,6 +12,7 @@ import {
   MISSION_DUA,
   MISSION_AMEEN,
 } from "../../lib/mission";
+import { useTx } from "../../store/language-store";
 
 const QUOTE_STYLES: Record<string, string> = {
   gold: "border-gold/40 bg-gold-light/60 text-ink",
@@ -32,6 +34,7 @@ const SECTION_ICONS: Record<string, string> = {
 
 // Shaykh's mission — ported from beta MissionView, Bengali content only.
 export default function MissionPage() {
+  const tx = useTx();
   return (
     <div className="animate-fade-up">
       <PageHead
@@ -110,7 +113,7 @@ export default function MissionPage() {
       </div>
 
       <Link href="/paribar" className="btn-ghost mt-3 w-full">
-        <Icon name="back" size={16} /> পরিবারে ফিরুন
+        <Icon name="back" size={16} /> {tx("পরিবারে ফিরুন")}
       </Link>
     </div>
   );

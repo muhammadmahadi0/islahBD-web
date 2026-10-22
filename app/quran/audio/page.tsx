@@ -5,9 +5,11 @@ import { Icon } from "../../../components/icons";
 import type { QuranChapter, QuranReciter } from "../../../lib/quran";
 import { storageSetJSON, storageGetJSON } from "../../../lib/storage";
 import { surahBnFull } from "../../../lib/surah-names";
+import { useTx } from "../../../store/language-store";
 
 // Audio Quran — reciters + chapter streaming from quran.com API.
 export default function QuranAudio() {
+  const tx = useTx();
   const [reciters, setReciters] = useState<QuranReciter[]>([]);
   const [chapters, setChapters] = useState<QuranChapter[]>([]);
   const [reciter, setReciter] = useState(7);
@@ -47,14 +49,14 @@ export default function QuranAudio() {
   return (
     <div className="animate-fade-up">
       <PageHead
-        title="অডিও কুরআন"
-        subtitle={current ? `${current.name_arabic} • ${reciterName}` : "quran.com তিলাওয়াত"}
+        title={tx("অডিও কুরআন")}
+        subtitle={current ? `${current.name_arabic} • ${reciterName}` : tx("quran.com তিলাওয়াত")}
         icon="headphones"
         backHref="/quran"
       />
       <div className="card mt-3 space-y-3 p-4">
         <label className="block text-sm font-bold">
-          ক্বারী ({reciters.length})
+          {tx("ক্বারী")} ({reciters.length})
           <select value={reciter} onChange={(e) => setReciter(Number(e.target.value))} className="input mt-1.5">
             {reciters.map((r) => (
               <option key={`${r.id}-${r.style}`} value={r.id}>
@@ -64,7 +66,7 @@ export default function QuranAudio() {
           </select>
         </label>
         <label className="block text-sm font-bold">
-          সূরা
+          {tx("সূরা")}
           <select value={surah} onChange={(e) => setSurah(Number(e.target.value))} className="input mt-1.5">
             {chapters.map((c) => (
               <option key={c.id} value={c.id}>
@@ -78,22 +80,22 @@ export default function QuranAudio() {
         ) : src ? (
           <audio key={src} controls src={src} className="w-full" preload="none" />
         ) : (
-          <EmptyState icon="headphones" title="অডিও পাওয়া যায়নি" />
+          <EmptyState icon="headphones" title={tx("অডিও পাওয়া যায়নি")} />
         )}
         <div className="flex gap-2">
           {src && (
             <a href={src} download className="btn-primary flex-1">
-              <Icon name="download" size={16} /> ডাউনলোড
+              <Icon name="download" size={16} /> {tx("ডাউনলোড")}
             </a>
           )}
           <button className="btn-gold flex-1" onClick={() => save(surah)}>
-            <Icon name="plus" size={16} /> সংগ্রহে রাখুন
+            <Icon name="plus" size={16} /> {tx("সংগ্রহে রাখুন")}
           </button>
         </div>
       </div>
       {saved.length > 0 && (
         <div className="card mt-2 p-4">
-          <div className="mb-2 text-sm font-bold">আমার সংগ্রহ ({saved.length})</div>
+          <div className="mb-2 text-sm font-bold">{tx("আমার সংগ্রহ")} ({saved.length})</div>
           <div className="flex flex-wrap gap-1.5">
             {saved.map((s) => (
               <button key={s} onClick={() => setSurah(s)} className="chip">{surahBnFull(s)}</button>

@@ -8,12 +8,15 @@ import {
   hamdNaatToTrack, timeAgoBn, bnNum,
   type HamdNaatItem, type HamdNaatType,
 } from "../../lib/audio";
+import { useNum, useTx } from "../../store/language-store";
 
 // Hamd/Naat — beta HamdNaatView behavior (type filter, search, queue
 // playback, playlist menu, YouTube video rows) on the app theme.
 type TypeFilter = "all" | HamdNaatType;
 
 export default function HamdNaatPage() {
+  const tx = useTx();
+  const num = useNum();
   const [items, setItems] = useState<HamdNaatItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -32,7 +35,7 @@ export default function HamdNaatPage() {
       setItems(data.items);
       setError("");
     } catch (e) {
-      setError("হামদ-নাত তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।");
+      setError(tx("হামদ-নাত তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।"));
     } finally {
       setLoading(false);
     }
@@ -88,8 +91,8 @@ export default function HamdNaatPage() {
   return (
     <div className="animate-fade-up">
       <PageHead
-        title="হামদ ও নাত"
-        subtitle={`অডিও ${bnNum(audioCount)} • ভিডিও ${bnNum(videoCount)}`}
+        title={tx("হামদ ও নাত")}
+        subtitle={`${tx("অডিও")} ${num(audioCount)} • ${tx("ভিডিও")} ${num(videoCount)}`}
         icon="music"
       />
 
@@ -100,7 +103,7 @@ export default function HamdNaatPage() {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="হামদ, নাত বা শিল্পী খুঁজুন…"
+          placeholder={tx("হামদ, নাত বা শিল্পী খুঁজুন…")}
           className="input !pl-11 !shadow-card"
         />
       </form>
@@ -108,9 +111,9 @@ export default function HamdNaatPage() {
       <div className="flex gap-2 py-3">
         {(
           [
-            { id: "all", label: `সব (${bnNum(items.length)})` },
-            { id: "audio", label: `অডিও (${bnNum(audioCount)})` },
-            { id: "video", label: `ভিডিও (${bnNum(videoCount)})` },
+            { id: "all", label: `${tx("সব")} (${num(items.length)})` },
+            { id: "audio", label: `${tx("অডিও")} (${num(audioCount)})` },
+            { id: "video", label: `${tx("ভিডিও")} (${num(videoCount)})` },
           ] as { id: TypeFilter; label: string }[]
         ).map((f) => (
           <button
@@ -138,7 +141,7 @@ export default function HamdNaatPage() {
       ) : error ? (
         <EmptyState icon="music" title={error} />
       ) : results.length === 0 ? (
-        <EmptyState icon="search" title="কিছু পাওয়া যায়নি" hint="অন্য শব্দে খুঁজে দেখুন" />
+        <EmptyState icon="search" title={tx("কিছু পাওয়া যায়নি")} hint={tx("অন্য শব্দে খুঁজে দেখুন")} />
       ) : (
         <div className="space-y-2">
           {results.slice(0, 150).map((it) => {
@@ -164,7 +167,7 @@ export default function HamdNaatPage() {
                   {sub && <div className="mt-0.5 truncate text-xs text-ink-faint">{sub}</div>}
                   <div className="mt-1 flex items-center gap-1.5">
                     <span className={`rounded-md px-1.5 py-px text-[10px] font-bold uppercase tracking-wide ${isVideo ? "bg-red-50 text-red-500" : "bg-primary-50 text-primary-700"}`}>
-                      {isVideo ? "ভিডিও" : "অডিও"}
+                      {isVideo ? tx("ভিডিও") : tx("অডিও")}
                     </span>
                     {credits && <span className="truncate text-[11px] text-ink-faint">{credits}</span>}
                   </div>
@@ -186,7 +189,7 @@ export default function HamdNaatPage() {
                 ) : (
                   <button
                     onClick={(e) => { e.stopPropagation(); setMenuTrack(hamdNaatToTrack(it)); }}
-                    aria-label="প্লেলিস্টে রাখুন"
+                    aria-label={tx("প্লেলিস্টে রাখুন")}
                     className="shrink-0 rounded-xl p-2 text-ink-faint transition hover:bg-primary-50 hover:text-primary-700"
                   >
                     <Icon name="plus" size={17} />

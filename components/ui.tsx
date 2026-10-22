@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Icon } from "./icons";
-import { useT } from "../store/language-store";
+import { useT, useTx } from "../store/language-store";
 
 export function SectionTitle({
   title,
@@ -15,6 +15,7 @@ export function SectionTitle({
   link?: string;
   linkLabel?: string;
 }) {
+  const tx = useTx();
   return (
     <div className="mb-2.5 mt-6 flex items-end justify-between">
       <div>
@@ -26,7 +27,7 @@ export function SectionTitle({
           href={link}
           className="inline-flex shrink-0 items-center gap-1 rounded-full bg-primary-50 px-3 py-1.5 text-xs font-bold text-primary-700 transition hover:bg-primary-100"
         >
-          {linkLabel}
+          {tx(linkLabel)}
           <Icon name="chevron" size={14} />
         </Link>
       )}

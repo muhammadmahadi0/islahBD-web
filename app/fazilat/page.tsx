@@ -1,7 +1,16 @@
+"use client";
 import { FeatureListPage } from "../../components/FeatureList";
+import { useTx } from "../../store/language-store";
 
 export default function FazilatPage() {
-  return <FeatureListPage file="fazilat.json" title="ফযীলত লাইব্রেরি" subtitle="সূরা ও আমলের সওয়াব ও ফযীলত" backHref="/" 
+  const tx = useTx();
+  return (
+    <FeatureListPage
+      file="fazilat.json"
+      title={tx("ফযীলত লাইব্রেরি")}
+      subtitle={tx("সূরা ও আমলের সওয়াব ও ফযীলত")}
+      backHref="/"
       icon="gem"
-    />;
+    />
+  );
 }

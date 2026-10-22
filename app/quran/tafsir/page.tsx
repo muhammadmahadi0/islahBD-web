@@ -6,10 +6,12 @@ import { PageHead, ShareCopy, EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
 import { stripHtml, BN_TAFSIRS } from "../../../lib/quran";
 import { surahBnFull } from "../../../lib/surah-names";
+import { useTx } from "../../../store/language-store";
 
 // Dedicated tafsir page (muslimbangla /sura/N/tafsir/M pattern):
 // full tafsir text of one ayah with Arabic + translation on top.
 function TafsirBody() {
+  const tx = useTx();
   const params = useSearchParams();
   const surah = Math.min(114, Math.max(1, Number(params.get("surah")) || 1));
   const ayah = Math.max(1, Number(params.get("ayah")) || 1);
@@ -37,14 +39,14 @@ function TafsirBody() {
   return (
     <div className="animate-fade-up">
       <PageHead
-        title={`তাফসীর ${surah}:${ayah}`}
+        title={`${tx("তাফসীর")} ${surah}:${ayah}`}
         subtitle={surahBnFull(surah)}
         icon="doc"
         backHref={`/quran/read?surah=${surah}&ayah=${ayah}`}
       />
 
       <select value={tafsirId} onChange={(e) => setTafsirId(Number(e.target.value))} className="input mt-3" aria-label="tafsir">
-        {BN_TAFSIRS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
+        {BN_TAFSIRS.map((t) => <option key={t.id} value={t.id}>{tx(t.label)}</option>)}
       </select>
 
       {loading ? (
@@ -54,7 +56,7 @@ function TafsirBody() {
           <div className="mt-2 h-3 w-2/3 rounded-full bg-sand-dark" />
         </div>
       ) : failed || !data ? (
-        <div className="mt-3"><EmptyState icon="doc" title="তাফসীর লোড হয়নি" /></div>
+        <div className="mt-3"><EmptyState icon="doc" title={tx("তাফসীর লোড হয়নি")} /></div>
       ) : (
         <>
           <div className="card mt-3 p-4 sm:p-5">
@@ -66,25 +68,25 @@ function TafsirBody() {
           </div>
           <div className="card mt-2 border-gold/30 bg-gold-light/50 p-4 sm:p-5">
             <div className="mb-2 text-xs font-bold text-gold-dark">
-              তাফসীর — {BN_TAFSIRS.find((t) => t.id === tafsirId)?.label}
+              {tx("তাফসীর")} — {tx(BN_TAFSIRS.find((t) => t.id === tafsirId)?.label || "")}
             </div>
             {taf ? (
               <div className="whitespace-pre-line text-sm leading-loose">{stripHtml(taf)}</div>
             ) : (
-              <p className="text-sm text-ink-faint">এই আয়াতের তাফসীর পাওয়া যায়নি।</p>
+              <p className="text-sm text-ink-faint">{tx("এই আয়াতের তাফসীর পাওয়া যায়নি।")}</p>
             )}
           </div>
           <div className="card mt-2 p-4">
-            <ShareCopy text={`${data.text_uthmani || ""}\n${tr}\nতাফসীর: ${stripHtml(taf).slice(0, 500)}\n(${surah}:${ayah})`} />
+            <ShareCopy text={`${data.text_uthmani || ""}\n${tr}\n${tx("তাফসীর:")} ${stripHtml(taf).slice(0, 500)}\n(${surah}:${ayah})`} />
           </div>
           <div className="mt-2 grid grid-cols-2 gap-2">
             {ayah > 1 && (
               <Link href={`/quran/tafsir?surah=${surah}&ayah=${ayah - 1}`} className="btn-ghost">
-                <Icon name="back" size={15} /> আগের আয়াত
+                <Icon name="back" size={15} /> {tx("আগের আয়াত")}
               </Link>
             )}
             <Link href={`/quran/tafsir?surah=${surah}&ayah=${ayah + 1}`} className="btn-ghost">
-              পরের আয়াত <Icon name="chevron" size={15} />
+              {tx("পরের আয়াত")} <Icon name="chevron" size={15} />
             </Link>
           </div>
         </>

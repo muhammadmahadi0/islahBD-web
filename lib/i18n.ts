@@ -1,6 +1,7 @@
 // UI language dictionaries. The app content (bayans, duas, articles) stays in
-// Bengali — this covers the shared chrome and the settings screen. Add keys
-// here in all three languages before using them.
+// Bengali — this covers the shared chrome and every static UI string.
+import { lookupUi } from "./ui-strings";
+
 export type Lang = "bn" | "ur" | "en";
 
 export const LANGUAGES: { id: Lang; native: string; dir: "ltr" | "rtl" }[] = [
@@ -159,6 +160,12 @@ export const dictionaries: Record<Lang, Dict> = { bn, ur, en };
 
 export function translate(lang: Lang, key: TKey): string {
   return dictionaries[lang][key];
+}
+
+/** Translate arbitrary Bengali UI copy through the Bengali-keyed UI map. */
+export function tx(lang: Lang, bn: string): string {
+  if (lang === "bn") return bn;
+  return lookupUi(bn, lang) ?? bn;
 }
 
 export function isRtl(lang: Lang): boolean {

@@ -34,11 +34,13 @@ No test suite — `bun run build` + prod smoke test is the gate.
 - Theme: `store/theme-store.ts` (`islah-theme`), `store/design-store.ts`
   (`islah-design`), layers in `app/globals.css` (`html.dark`, `html.glass`)
 - Language: `store/language-store.ts` (`islah-language`, `bn` | `ur` | `en`)
-  + `lib/i18n.ts` dictionaries. Defaults to Bengali; `skipHydration` then
-  `AppShell` rehydrate avoids SSR text mismatch, so **add every new key to
-  all three dictionaries**. Translated scope today = header tagline/app
-  button, bottom nav, `PageHead` back label, Settings page. Urdu sets
-  `dir="rtl"` via the pre-paint script and the `html[lang="ur"]` font rule.
+  + `lib/i18n.ts` + `lib/ui-strings.ts`. Defaults to Bengali; `skipHydration`
+  then `AppShell` rehydrate avoids SSR text mismatch. **Every new static UI
+  string must be added to `lib/ui-strings.ts`** and rendered through
+  `tx("বাংলা")` (or `useTx()`), with `useNum()` for counts/dates; API content
+  is not translated. Urdu sets `dir="rtl"` via the pre-paint script and the
+  `html[lang="ur"]` font rule. Prayer Times uses the global language (the
+  old `praybd-lang` toggle is removed).
 
 ## Gotchas (learned the hard way)
 

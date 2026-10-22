@@ -5,7 +5,7 @@ import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { useThemeStore } from "../../store/theme-store";
 import { useDesignStore } from "../../store/design-store";
-import { useLanguageStore, useT } from "../../store/language-store";
+import { useLanguageStore, useT, useTx } from "../../store/language-store";
 import { LANGUAGES } from "../../lib/i18n";
 import { openIslahBDApp } from "../../lib/open-app";
 import { bloomTheme } from "../../components/theme-bloom";
@@ -20,6 +20,7 @@ import {
 // Settings — beta sidebar-settings behavior (theme + design segmented
 // controls, app opener) on the Islah design system.
 export default function SettingsPage() {
+  const tx = useTx();
   const { theme, setTheme } = useThemeStore();
   const { mode, setMode } = useDesignStore();
   const { lang, setLang } = useLanguageStore();
@@ -212,7 +213,7 @@ export default function SettingsPage() {
           <Icon name="chevron" size={17} className="text-ink-faint" />
         </Link>
       </div>
-      <p className="mt-4 text-center text-[11px] text-ink-faint">ইসলাহ • v1.3.0 • api.islahbd.com</p>
+      <p className="mt-4 text-center text-[11px] text-ink-faint">{tx("ইসলাহ • v1.3.0 • api.islahbd.com")}</p>
     </div>
   );
 }

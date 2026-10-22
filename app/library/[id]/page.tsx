@@ -6,6 +6,7 @@ import { Icon } from "../../../components/icons";
 import { EmptyState } from "../../../components/ui";
 import { PdfReader } from "../../../components/PdfReader";
 import type { ReaderBook } from "../../../lib/islamijindegi";
+import { useTx } from "../../../store/language-store";
 
 type Section = {
   id: string;
@@ -15,6 +16,7 @@ type Section = {
 };
 
 export default function BookReaderPage() {
+  const tx = useTx();
   const params = useParams<{ id: string }>();
   const id = typeof params?.id === "string" ? params.id : "";
   const [book, setBook] = useState<ReaderBook | null>(null);
@@ -40,7 +42,7 @@ export default function BookReaderPage() {
         setError("");
       })
       .catch(() => {
-        if (!dead) setError("কিতাবের লেখা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।");
+        if (!dead) setError(tx("কিতাবের লেখা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।"));
       })
       .finally(() => {
         if (!dead) setLoading(false);
@@ -126,17 +128,17 @@ export default function BookReaderPage() {
       {/* reader toolbar */}
       <div className="sticky top-0 z-30 -mx-3 border-b border-primary-900/10 bg-white/95 px-3 py-2 backdrop-blur dark:border-white/10 dark:bg-slate-950/95 sm:-mx-4">
         <div className="flex items-center gap-1.5">
-          <Link href="/library" aria-label="লাইব্রেরিতে ফিরুন" className="btn-ghost shrink-0 !rounded-xl !p-2">
+          <Link href="/library" aria-label={tx("লাইব্রেরিতে ফিরুন")} className="btn-ghost shrink-0 !rounded-xl !p-2">
             <Icon name="back" size={17} />
           </Link>
           <div className="min-w-0 flex-1">
-            <div className="truncate text-[13px] font-bold leading-tight">{book?.title || "কিতাব"}</div>
+            <div className="truncate text-[13px] font-bold leading-tight">{book?.title || tx("কিতাব")}</div>
             {book?.author && <div className="truncate text-[11px] text-ink-faint">{book.author}</div>}
           </div>
           {hasText && (
             <button
               onClick={() => setNavOpen(true)}
-              aria-label="সূচিপত্র"
+              aria-label={tx("সূচিপত্র")}
               className="btn-ghost shrink-0 !rounded-xl !p-2 lg:hidden"
             >
               <Icon name="menu" size={18} />
@@ -144,11 +146,11 @@ export default function BookReaderPage() {
           )}
           {hasText && (
             <div className="hidden items-center gap-1 rounded-xl border border-primary-900/10 px-1 py-0.5 dark:border-white/10 sm:flex">
-              <button onClick={() => setSize((s) => Math.max(15, s - 1))} aria-label="লেখা ছোট করুন" className="rounded-lg p-1.5 text-ink-faint hover:bg-sand">
+              <button onClick={() => setSize((s) => Math.max(15, s - 1))} aria-label={tx("লেখা ছোট করুন")} className="rounded-lg p-1.5 text-ink-faint hover:bg-sand">
                 <Icon name="chevron" size={13} className="-rotate-90" />
               </button>
               <span className="w-6 text-center text-[11px] font-bold tabular-nums text-ink-faint">{size}</span>
-              <button onClick={() => setSize((s) => Math.min(26, s + 1))} aria-label="লেখা বড় করুন" className="rounded-lg p-1.5 text-ink-faint hover:bg-sand">
+              <button onClick={() => setSize((s) => Math.min(26, s + 1))} aria-label={tx("লেখা বড় করুন")} className="rounded-lg p-1.5 text-ink-faint hover:bg-sand">
                 <Icon name="chevron" size={13} className="rotate-90" />
               </button>
             </div>
@@ -179,9 +181,9 @@ export default function BookReaderPage() {
         </div>
       ) : error ? (
         <div className="mt-4">
-          <EmptyState icon="library" title={error} hint="পুনরায় চেষ্টা করুন" />
+          <EmptyState icon="library" title={error} hint={tx("পুনরায় চেষ্টা করুন")} />
           <button onClick={() => location.reload()} className="btn-outline mt-3 w-full !py-2.5 text-[13px]">
-            <Icon name="prev" size={15} /> আবার চেষ্টা করুন
+            <Icon name="prev" size={15} /> {tx("আবার চেষ্টা করুন")}
           </button>
         </div>
       ) : !book ? null : !hasText && book.pdf ? (
@@ -199,13 +201,13 @@ export default function BookReaderPage() {
             <div className="min-w-0 flex-1">
               <div className="line-clamp-2 text-[15px] font-bold leading-snug">{book.title}</div>
               {book.author && <div className="mt-0.5 text-xs text-ink-faint">{book.author}</div>}
-              <div className="mt-1 text-[11px] font-bold text-primary-700">PDF কিতাব</div>
+              <div className="mt-1 text-[11px] font-bold text-primary-700">{tx("PDF কিতাব")}</div>
             </div>
           </div>
 
           <PdfReader src={book.pdf} title={book.title} />
           <p className="mt-2 px-1 text-[11px] leading-relaxed text-ink-faint">
-            পাতার সংখ্যা বাড়ালে বা কমালে নিচের তীর চিহ্ন ব্যবহার করুন। চাইলে মূল PDF নতুন ট্যাবে খুলতে বা ডাউনলোড করতে পারেন।
+            {tx("পাতার সংখ্যা বাড়ালে বা কমালে নিচের তীর চিহ্ন ব্যবহার করুন। চাইলে মূল PDF নতুন ট্যাবে খুলতে বা ডাউনলোড করতে পারেন।")}
           </p>
         </div>
       ) : (
@@ -215,7 +217,7 @@ export default function BookReaderPage() {
             <div className="card sticky top-[68px] flex max-h-[78vh] flex-col overflow-hidden p-2">
               <div className="flex items-center gap-1.5 px-2 py-2 text-[12px] font-bold text-ink-faint">
                 <Icon name="book" size={14} />
-                সূচিপত্র
+                {tx("সূচিপত্র")}
               </div>
               {navBody}
             </div>
@@ -255,7 +257,7 @@ export default function BookReaderPage() {
               ) : activeChapter && activeChapter.subChapters.length > 0 ? (
                 <div className="space-y-1.5">
                   <p className="mb-2 text-[12px] font-bold text-ink-faint">
-                    এই অধ্যায়ে নিম্নলিখিত বিষয়গুলো রয়েছে:
+                    {tx("এই অধ্যায়ে নিম্নলিখিত বিষয়গুলো রয়েছে:")}
                   </p>
                   {activeChapter.subChapters.map((s) => (
                     <button
@@ -270,7 +272,7 @@ export default function BookReaderPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-ink-faint">এই অংশে এখনো কোনো লেখা যোগ করা হয়নি।</p>
+                <p className="text-sm text-ink-faint">{tx("এই অংশে এখনো কোনো লেখা যোগ করা হয়নি।")}</p>
               )}
 
               {/* prev / next */}
@@ -280,21 +282,21 @@ export default function BookReaderPage() {
                   disabled={activeIndex <= 0}
                   className="btn-ghost flex-1 !py-2 text-[12px] disabled:opacity-40"
                 >
-                  <Icon name="prev" size={14} /> আগের অংশ
+                  <Icon name="prev" size={14} /> {tx("আগের অংশ")}
                 </button>
                 <button
                   onClick={() => step(1)}
                   disabled={activeIndex >= sections.length - 1}
                   className="btn-ghost flex-1 !py-2 text-[12px] disabled:opacity-40"
                 >
-                  পরের অংশ <Icon name="next" size={14} />
+                  {tx("পরের অংশ")} <Icon name="next" size={14} />
                 </button>
               </div>
             </div>
 
             {book.pdf && (
               <a href={book.pdf} target="_blank" rel="noreferrer" className="btn-outline mt-3 w-full !py-2.5 text-[12px]">
-                <Icon name="doc" size={15} /> মূল PDF দেখুন
+                <Icon name="doc" size={15} /> {tx("মূল PDF দেখুন")}
               </a>
             )}
           </div>
@@ -308,7 +310,7 @@ export default function BookReaderPage() {
           <div className="card absolute bottom-2 left-2 top-2 flex w-72 max-w-[85vw] flex-col overflow-hidden p-2">
             <div className="flex items-center justify-between px-1 pb-1">
               <span className="flex items-center gap-1.5 text-sm font-bold">
-                <Icon name="book" size={15} /> সূচিপত্র
+                <Icon name="book" size={15} /> {tx("সূচিপত্র")}
               </span>
               <button onClick={() => setNavOpen(false)} className="rounded-xl p-1.5 text-ink-faint hover:bg-sand" aria-label="close">
                 <Icon name="x" size={18} />
