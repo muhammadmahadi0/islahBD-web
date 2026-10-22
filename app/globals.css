@@ -75,6 +75,20 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Urdu UI mode (settings → language). Naskh covers Urdu letters and stays
+   compact; Nastaliq is the display fallback. Bengali content falls back to
+   Hind Siliguri because Naskh has no Bengali glyphs. */
+html[lang="ur"] body,
+[lang="ur"] {
+  font-family: var(--font-arabic), "Hind Siliguri", "Kalpurush", "NotoNastaliqUrdu", "ScheherazadeNew", serif;
+}
+
+/* Latin labels inside Urdu mode (e.g. the language switcher) keep the UI font
+   instead of inheriting the Arabic face. */
+[lang="en"] {
+  font-family: "Hind Siliguri", "Kalpurush", "Inter", sans-serif;
+}
+
 .font-arabic {
   font-family: var(--font-arabic), "ScheherazadeNew", "Amiri Quran", "NotoNastaliqUrdu", "Amiri", "Traditional Arabic", serif;
   line-height: 2.1;

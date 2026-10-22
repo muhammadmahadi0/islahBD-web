@@ -8,6 +8,7 @@ import { usePlayerStore, type Track } from "../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../lib/live";
 import { bnNum } from "../lib/audio";
 import { NOTIF_READ_EVENT, parseNotifications, unreadCount } from "../lib/notifications";
+import { useLanguageStore, useT } from "../store/language-store";
 
 // Paths belonging to the More hub — the More tab stays highlighted there.
 const MORE_PREFIXES = [
@@ -20,9 +21,16 @@ const MORE_PREFIXES = [
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
+  const t = useT();
   const { playTrack, currentTrack, isPlaying, setIsPlaying } = usePlayerStore();
   const [live, setLive] = useState<LiveStatus | null>(null);
   const [unread, setUnread] = useState(0);
+
+  // Rehydrate the language store after mount (it is skipHydration so SSR and
+  // hydration both render Bengali; the pre-paint script already set lang/dir).
+  useEffect(() => {
+    void useLanguageStore.persist.rehydrate();
+  }, []);
 
   // Unread notification badge. Re-read when the feed marks items read.
   useEffect(() => {
@@ -113,18 +121,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </span>
             <span>
               <span className="block text-xl font-bold leading-none tracking-wide">islah</span>
-              <span className="block text-[11px] font-medium text-ink-faint">দ্বীনি জীবনের সাথী</span>
+              <span className="block text-[11px] font-medium text-ink-faint">{t("tagline")}</span>
             </span>
           </Link>
           <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={openIslahBDApp}
               aria-label="Open IslahBD app"
-              title="অ্যাপ খুলুন"
+              title={t("openApp")}
               className="prayer-gold flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap !rounded-full px-3 text-xs font-bold text-white shadow-md"
             >
               <Icon name="external" size={14} strokeWidth={2.2} />
-              অ্যাপ খুলুন
+              {t("openApp")}
             </button>
             <Link href="/notifications" aria-label="notifications" className={`${circleBtn} relative`}>
               <Icon name="bell" size={16} />
@@ -156,12 +164,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="bottom-nav flex items-center justify-between rounded-full px-4 py-2.5 backdrop-blur-lg">
           <Link href="/" className={tabCls(path === "/")}>
             <Icon name="home" size={20} />
-            <span className="text-[10px]">হোম</span>
+            <span className="text-[10px]">{t("navHome")}</span>
           </Link>
           <button
             onClick={handleLive}
             disabled={!liveReady}
-            aria-label="লাইভ"
+            aria-label={t("navLive")}
             className={`${tabCls(isLiveTrackActive)} relative disabled:opacity-40`}
           >
             <span className="relative">
@@ -174,19 +182,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 <Icon name="radio" size={20} />
               )}
             </span>
-            <span className="text-[10px]">লাইভ</span>
+            <span className="text-[10px]">{t("navLive")}</span>
           </button>
           <Link href="/boyan" className={tabCls(path === "/boyan")}>
             <Icon name="mic" size={20} />
-            <span className="text-[10px]">বয়ান</span>
+            <span className="text-[10px]">{t("navBoyan")}</span>
           </Link>
           <Link href="/paribar" className={tabCls(path === "/paribar" || path.startsWith("/paribar/"))}>
             <Icon name="heart" size={20} />
-            <span className="text-[10px]">পরিবার</span>
+            <span className="text-[10px]">{t("navParibar")}</span>
           </Link>
           <Link href="/others" className={tabCls(moreActive)}>
             <Icon name="grid" size={20} />
-            <span className="text-[10px]">অন্যান্য</span>
+            <span className="text-[10px]">{t("navOthers")}</span>
           </Link>
         </div>
       </nav>

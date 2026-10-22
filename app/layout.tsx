@@ -39,9 +39,10 @@ export const viewport: Viewport = {
   themeColor: "#0B6248",
 };
 
-// Pre-paint: apply persisted theme/design before first render (no flash).
-// Mirrors beta Layout.astro — keys islah-theme / islah-design.
-const PREPAINT = `(function(){try{var t=null;try{t=JSON.parse(localStorage.getItem('islah-theme')||'null')}catch(e){}var theme=t&&t.state&&t.state.theme?t.state.theme:(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');if(theme==='dark')document.documentElement.classList.add('dark');var d=null;try{d=JSON.parse(localStorage.getItem('islah-design')||'null')}catch(e){}var mode=d&&d.state&&d.state.mode?d.state.mode:(/Android/i.test(navigator.userAgent)?'material':'liquid');if(mode==='liquid')document.documentElement.classList.add('glass');}catch(e){}})();`;
+// Pre-paint: apply persisted theme/design/language before first render (no
+// flash). Mirrors beta Layout.astro — keys islah-theme / islah-design /
+// islah-language.
+const PREPAINT = `(function(){try{var t=null;try{t=JSON.parse(localStorage.getItem('islah-theme')||'null')}catch(e){}var theme=t&&t.state&&t.state.theme?t.state.theme:(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');if(theme==='dark')document.documentElement.classList.add('dark');var d=null;try{d=JSON.parse(localStorage.getItem('islah-design')||'null')}catch(e){}var mode=d&&d.state&&d.state.mode?d.state.mode:(/Android/i.test(navigator.userAgent)?'material':'liquid');if(mode==='liquid')document.documentElement.classList.add('glass');var l=null;try{l=JSON.parse(localStorage.getItem('islah-language')||'null')}catch(e){}var lang=l&&l.state&&l.state.lang?l.state.lang:'bn';document.documentElement.lang=lang;document.documentElement.dir=lang==='ur'?'rtl':'ltr';if(lang==='ur')document.documentElement.classList.add('lang-ur');}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

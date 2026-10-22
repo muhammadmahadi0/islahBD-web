@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Icon } from "./icons";
+import { useT } from "../store/language-store";
 
 export function SectionTitle({
   title,
@@ -46,6 +47,7 @@ export function PageHead({
   icon?: string;
   action?: React.ReactNode;
 }) {
+  const t = useT();
   return (
     <div className="page-hero animate-fade-up p-5">
       <div className="relative z-10">
@@ -54,8 +56,8 @@ export function PageHead({
             href={backHref}
             className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-white/25 active:scale-95"
           >
-            <Icon name="back" size={14} />
-            ফিরুন
+            <Icon name="back" size={14} className="rtl:rotate-180" />
+            {t("back")}
           </Link>
           {action}
         </div>

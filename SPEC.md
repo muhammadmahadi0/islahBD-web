@@ -138,6 +138,14 @@ offline-tolerant, keyless APIs only.
   honorific block, bottom bar Home/Live(play)/Boyan/Family/More
 - Theme store (`islah-theme`, OS default) + design store
   (`islah-design`, Material on Android, Liquid elsewhere) + pre-paint script
+- UI language (`islah-language`: `bn` default, `ur`, `en`) via
+  `store/language-store.ts` + `lib/i18n.ts`. The pre-paint script sets
+  `<html lang>`/`dir` (Urdu = RTL) before first paint; the store uses
+  `skipHydration` and AppShell rehydrates after mount so SSR stays Bengali
+  and there is no text hydration mismatch. Scope is the shared chrome
+  (header, bottom nav, page-hero back label) and the Settings screen;
+  page content stays Bengali. Urdu UI uses the local Naskh/Nastaliq stack
+  (`html[lang="ur"]`) with Bengali falling back to Hind Siliguri.
 - Theme switch plays beta's tap-bloom (`components/theme-bloom.tsx` +
   `.theme-wrap` CSS, reduced-motion safe)
 - Golden signature elements identical in both modes
