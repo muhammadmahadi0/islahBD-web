@@ -7,13 +7,12 @@ import {
   toMinutes, formatTime12, formatCountdown, getSpecialPeriod,
   getNextPrayer, getCurrentKey, secsUntil, hijriText, gregorianText,
   prayerName, toBn, getNaflWindows,
-  type DetectedLocation, type PrayerTimes, type Lang,
+  type DetectedLocation, type PrayerTimes,
 } from "../../lib/prayer";
-import { storageGet, storageSet } from "../../lib/storage";
 import { useLang, useTx } from "../../store/language-store";
 
 // Prayer Times — ported from pray-bd (Aladhan Karachi/Hanafi, IP detect,
-// 8 cities, countdown with prohibited/Ishraq/Chasht, Hijri, BN/EN),
+// 8 cities, countdown with prohibited/Ishraq/Chasht, Hijri, BN/UR/EN),
 // restyled to the Islah design system.
 const PRAYER_ICONS: Record<string, string> = {
   fajr: "sunrise", sunrise: "sun", dhuhr: "sun", asr: "sun",
