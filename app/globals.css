@@ -494,6 +494,8 @@ html.dark .text-gold-600 { color: #e6ca65; }
 html.dark .text-gold-dark { color: #e6ca65; }
 
 html.dark .bg-sand { background-color: #1b2940; }
+html.dark .bg-sand\/70 { background-color: rgba(27, 41, 64, 0.7); }
+html.dark .bg-sand\/60 { background-color: rgba(27, 41, 64, 0.6); }
 html.dark .bg-sand-dark { background-color: #253654; }
 html.dark .bg-primary-50 { background-color: #12283a; }
 html.dark .bg-primary-100 { background-color: #1a3650; }
