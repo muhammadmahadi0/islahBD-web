@@ -1,7 +1,7 @@
-// Islami Jindegi book reader — fetches a book's detail page and decodes the
-// RSC payload (`initialBooks`-style object) into chapter HTML. The listing
-// snapshot lives in public/data/islamijindegi-books.json; chapter text is
-// pulled on demand and cached by the API route.
+// Islami Jindegi book reader — fetches a book's SvelteKit data payload
+// (`/__data.json`) and decodes its reference table into chapter HTML. The
+// listing snapshot lives in public/data/islamijindegi-books.json; chapter text
+// is pulled on demand and cached by the API route.
 export interface ReaderChapter {
   id: string;
   title: string;
@@ -32,84 +32,81 @@ function cleanHtml(html: string): string {
     .replace(/javascript:/gi, "");
 }
 
-/** Decode `self.__next_f.push([1,"..."])` chunks into one RSC string. */
-function decodeRsc(html: string): string {
-  const re = /self\.__next_f\.push\(\[1,"((?:\\.|[^"\\])*)"\]\)/g;
-  let out = "";
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(html))) {
-    try {
-      out += JSON.parse(`"${m[1]}"`);
-    } catch {
-      // Skip malformed chunk — the rest still decodes.
-    }
-  }
-  return out;
-}
-
 /**
- * Extract the text chunks (`<id>:T<byte-length>,<html>`) from the RSC
- * stream. Lengths are UTF-8 byte counts, so scan a latin1 view of the
- * buffer to keep offsets aligned with the declared lengths.
+ * SvelteKit's data endpoint stores the page payload in a flat array. Objects
+ * and arrays contain integer references into that array; negative references
+ * are special values (undefined/NaN/Infinity/...). Resolve only references and
+ * keep a cache so shared objects and cycles are safe.
  */
-function decodeTextChunks(full: string): Record<string, string> {
-  const buf = Buffer.from(full, "utf8");
-  const bin = buf.toString("latin1");
-  const re = /([0-9a-f]+):T([0-9a-f]+),/g;
-  const map: Record<string, string> = {};
-  let cursor = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(bin))) {
-    if (m.index < cursor) continue;
-    const start = m.index + m[0].length;
-    const len = parseInt(m[2], 16);
-    if (!Number.isFinite(len) || start + len > buf.length) continue;
-    map[m[1]] = buf.subarray(start, start + len).toString("utf8");
-    cursor = start + len;
-    re.lastIndex = cursor;
+function resolveRef(data: unknown[], ref: unknown, cache: Map<number, unknown>): unknown {
+  if (typeof ref !== "number") return ref;
+  if (ref < 0) {
+    if (ref === -1) return undefined;
+    if (ref === -2) return NaN;
+    if (ref === -3) return Infinity;
+    if (ref === -4) return -Infinity;
+    if (ref === -5) return -0;
+    return undefined;
   }
-  return map;
-}
+  if (ref >= data.length) return undefined;
+  if (cache.has(ref)) return cache.get(ref);
 
-/** Slice the balanced `{...}` object that starts at `start`. */
-function sliceObject(text: string, start: number): string | null {
-  let depth = 0;
-  let inString = false;
-  let escaped = false;
-  for (let i = start; i < text.length; i++) {
-    const ch = text[i];
-    if (inString) {
-      if (escaped) escaped = false;
-      else if (ch === "\\") escaped = true;
-      else if (ch === '"') inString = false;
-    } else if (ch === '"') {
-      inString = true;
-    } else if (ch === "{") {
-      depth++;
-    } else if (ch === "}") {
-      depth--;
-      if (depth === 0) return text.slice(start, i + 1);
+  const value = data[ref];
+  if (Array.isArray(value)) {
+    const out: unknown[] = [];
+    cache.set(ref, out);
+    for (const item of value) out.push(resolveRef(data, item, cache));
+    return out;
+  }
+  if (value && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    cache.set(ref, out);
+    for (const [key, item] of Object.entries(value)) {
+      out[key] = resolveRef(data, item, cache);
     }
+    return out;
   }
-  return null;
+  cache.set(ref, value);
+  return value;
 }
 
-function resolveBody(
-  chapter: any,
-  chunks: Record<string, string>
-): ReaderChapter {
-  const raw = typeof chapter?.body === "string" ? chapter.body : "";
-  const body =
-    raw.startsWith("$") && chunks[raw.slice(1)] !== undefined
-      ? chunks[raw.slice(1)]
-      : raw;
+function readerChapter(value: unknown): ReaderChapter {
+  const chapter = (value && typeof value === "object" ? value : {}) as Record<string, unknown>;
+  const body = typeof chapter.body === "string" ? chapter.body : "";
   return {
-    id: String(chapter?.id || ""),
-    title: String(chapter?.title || ""),
+    id: String(chapter.id || ""),
+    title: String(chapter.title || ""),
     body: cleanHtml(body),
-    subChapters: Array.isArray(chapter?.subChapters)
-      ? chapter.subChapters.map((s: any) => resolveBody(s, chunks))
+    subChapters: Array.isArray(chapter.subChapters)
+      ? chapter.subChapters.map(readerChapter)
       : [],
+  };
+}
+
+function readerBook(value: unknown, id: string): ReaderBook {
+  const book = (value && typeof value === "object" ? value : {}) as Record<string, unknown>;
+  const authors = Array.isArray(book.authors) ? book.authors : [];
+  const categories = Array.isArray(book.categories) ? book.categories : [];
+  const names = (items: unknown[]) =>
+    items
+      .map((item) => (item && typeof item === "object" ? (item as Record<string, unknown>).name : ""))
+      .filter(Boolean)
+      .join(", ");
+  const titles = (items: unknown[]) =>
+    items
+      .map((item) => (item && typeof item === "object" ? (item as Record<string, unknown>).title : ""))
+      .filter(Boolean)
+      .join(", ");
+
+  return {
+    id,
+    title: String(book.title || "শিরোনামহীন কিতাব"),
+    author: names(authors),
+    category: titles(categories),
+    cover: String(book.coverUrl || ""),
+    pdf: String(book.documentUrl || ""),
+    sourceUrl: `${BASE}${id}`,
+    chapters: Array.isArray(book.chapters) ? book.chapters.map(readerChapter) : [],
   };
 }
 
@@ -120,39 +117,38 @@ export async function fetchReaderBook(id: string): Promise<ReaderBook> {
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), 20000);
   try {
-    const res = await fetch(`${BASE}${id}`, {
+    const res = await fetch(`${BASE}${id}/__data.json`, {
       signal: ctl.signal,
       headers: {
-        Accept: "text/html",
+        Accept: "application/json",
         "User-Agent": "Mozilla/5.0 (compatible; IslahWebReader/1.0)",
       },
       next: { revalidate: 86400 },
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const html = await res.text();
-    const full = decodeRsc(html);
-    const marker = `{"id":"${id}"`;
-    const start = full.indexOf(marker);
-    if (start < 0) throw new Error("book data not found");
-    const json = sliceObject(full, start);
-    if (!json) throw new Error("book data incomplete");
 
-    const raw = JSON.parse(json);
-    const chunks = decodeTextChunks(full);
-    const chapters = Array.isArray(raw.chapters)
-      ? raw.chapters.map((c: any) => resolveBody(c, chunks))
-      : [];
-
-    return {
-      id,
-      title: String(raw.title || "শিরোনামহীন কিতাব"),
-      author: (raw.authors || []).map((a: any) => a?.name).filter(Boolean).join(", "),
-      category: (raw.categories || []).map((c: any) => c?.title).filter(Boolean).join(", "),
-      cover: String(raw.coverUrl || ""),
-      pdf: String(raw.documentUrl || ""),
-      sourceUrl: `${BASE}${id}`,
-      chapters,
+    const payload = (await res.json()) as {
+      nodes?: ({ data?: unknown[] } | null)[];
     };
+    if (!Array.isArray(payload?.nodes)) throw new Error("invalid data payload");
+
+    for (const node of payload.nodes) {
+      if (!node || !Array.isArray(node.data)) continue;
+      const data = node.data;
+      const rootIndex = data.findIndex(
+        (item) =>
+          !!item &&
+          typeof item === "object" &&
+          !Array.isArray(item) &&
+          "book" in (item as Record<string, unknown>)
+      );
+      if (rootIndex < 0) continue;
+
+      const root = data[rootIndex] as Record<string, unknown>;
+      const book = resolveRef(data, root.book, new Map());
+      if (book && typeof book === "object") return readerBook(book, id);
+    }
+    throw new Error("book data not found");
   } finally {
     clearTimeout(timer);
   }
