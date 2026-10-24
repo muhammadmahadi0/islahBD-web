@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { PageHead, EmptyState } from "../../../components/ui";
+import { EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
 import { usePlayerStore, type Track } from "../../../store/player-store";
 import { channelLabel, getChannelById } from "../../../lib/channels";
@@ -39,6 +39,7 @@ export default function ChannelPage() {
   const [nextToken, setNextToken] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [avatar, setAvatar] = useState("");
+  const [avatarError, setAvatarError] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
   const [sort, setSort] = useState<Sort>("newest");
   const [menuTrack, setMenuTrack] = useState<Track | null>(null);
@@ -70,7 +71,10 @@ export default function ChannelPage() {
       if (!data.success || !Array.isArray(data.videos)) throw new Error("load failed");
       setVideos(data.videos as ChannelVideo[]);
       setNextToken(data.nextPageToken || null);
-      if (data.channel?.avatar) setAvatar(data.channel.avatar);
+      if (data.channel?.avatar) {
+        setAvatar(data.channel.avatar);
+        setAvatarError(false);
+      }
     } catch {
       setError("চ্যানেলের ভিডিও লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।");
     } finally {
@@ -212,30 +216,47 @@ export default function ChannelPage() {
 
   return (
     <div className="animate-fade-up">
-      <PageHead
-        title={channelLabel(registry, lang)}
-        subtitle={`${registry.handle} • ${num(results.length)}${tx("টি ভিডিও")}`}
-        backHref="/channels"
-        icon="youtube"
-        action={
-          <div className="flex flex-col items-end gap-1.5">
-            <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white/10 text-gold-100 shadow">
-              {avatar ? (
-                <img src={avatar} alt="" className="h-full w-full object-cover" />
+      <div className="page-hero animate-fade-up p-4">
+        <div className="relative z-10">
+          <Link
+            href="/channels"
+            className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-white/25 active:scale-95"
+          >
+            <Icon name="back" size={14} className="rtl:rotate-180" />
+            {tx("ফিরুন")}
+          </Link>
+          <div className="mt-3 flex items-center gap-3">
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white/10 text-gold-100 shadow">
+              {avatar && !avatarError ? (
+                <img
+                  src={avatar}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  onError={() => setAvatarError(true)}
+                />
               ) : (
-                <Icon name="youtube" size={20} />
+                <Icon name="youtube" size={22} />
               )}
             </span>
+            <div className="min-w-0 flex-1">
+              <h1 className="truncate text-[21px] font-bold leading-tight tracking-tight">
+                {channelLabel(registry, lang)}
+              </h1>
+              <p className="mt-0.5 truncate text-[12px] text-white/75">
+                <span className="hidden min-[360px]:inline">{registry.handle} • </span>
+                {num(results.length)}{tx("টি ভিডিও")}
+              </p>
+            </div>
             <Link
               href={`/channels/${encodeURIComponent(channelId)}/playlists`}
-              className="inline-flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-md transition hover:bg-white/25 active:scale-95"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/15 px-3 py-2 text-[11px] font-bold text-white backdrop-blur-md transition hover:bg-white/25 active:scale-95"
             >
-              <Icon name="playlist" size={12} />
+              <Icon name="playlist" size={14} />
               {tx("প্লেলিস্ট")}
             </Link>
           </div>
-        }
-      />
+        </div>
+      </div>
 
       {showSearch && (
         <div className="mt-3 flex items-center gap-2 rounded-2xl border border-slate-200/80 bg-white px-3.5 py-2.5 dark:border-white/10 dark:bg-[rgba(30,41,59,0.65)]">
