@@ -13,7 +13,6 @@ import {
   fmtViews,
   type ChannelVideo,
 } from "../../../lib/channel-videos";
-import AddToPlaylistMenu from "../../../components/audio/AddToPlaylistMenu";
 import { useLang, useNum, useTx } from "../../../store/language-store";
 
 // Channel browser — keyless YouTube listings (InnerTube via /api/channel),
@@ -42,7 +41,6 @@ export default function ChannelPage() {
   const [avatarError, setAvatarError] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
   const [sort, setSort] = useState<Sort>("newest");
-  const [menuTrack, setMenuTrack] = useState<Track | null>(null);
   const [indexing, setIndexing] = useState(false);
   // The indexer can load 1000+ uploads; render them in windows of 60 so the
   // DOM stays light on phones.
@@ -398,18 +396,9 @@ export default function ChannelPage() {
                       )}
                     </span>
                   </button>
-                  <div className="flex items-start gap-2 p-3">
-                    <div className="min-w-0 flex-1">
-                      <p className="line-clamp-2 text-[13px] font-bold leading-snug">{video.title}</p>
-                      {meta && <p className="mt-1 text-[11px] text-ink-faint">{meta}</p>}
-                    </div>
-                    <button
-                      onClick={() => setMenuTrack(tracks[i])}
-                      aria-label={tx("প্লেলিস্টে রাখুন")}
-                      className="shrink-0 rounded-xl p-1.5 text-ink-faint transition hover:bg-primary-50 hover:text-primary-700"
-                    >
-                      <Icon name="plus" size={17} />
-                    </button>
+                  <div className="p-3">
+                    <p className="line-clamp-2 text-[13px] font-bold leading-snug">{video.title}</p>
+                    {meta && <p className="mt-1 text-[11px] text-ink-faint">{meta}</p>}
                   </div>
                 </div>
               );
@@ -438,8 +427,6 @@ export default function ChannelPage() {
           )}
         </>
       )}
-
-      {menuTrack && <AddToPlaylistMenu track={menuTrack} onClose={() => setMenuTrack(null)} />}
     </div>
   );
 }

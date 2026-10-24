@@ -2,8 +2,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { usePlayerStore, type Track } from "../../store/player-store";
-import AddToPlaylistMenu from "../../components/audio/AddToPlaylistMenu";
+import { usePlayerStore } from "../../store/player-store";
 import {
   boyanToTrack,
   type BoyanAudio, type BoyanCategory,
@@ -26,7 +25,6 @@ export default function BoyanPage() {
   const [query, setQuery] = useState("");
   const [submitted, setSubmitted] = useState("");
   const [cat, setCat] = useState("all");
-  const [menuTrack, setMenuTrack] = useState<Track | null>(null);
   const { playTrack, currentTrack, isPlaying } = usePlayerStore();
   const refreshTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -171,28 +169,18 @@ export default function BoyanPage() {
                 {a.duration && a.duration !== "00:00" && (
                   <span className="shrink-0 text-xs font-bold tabular-nums text-ink-faint">{a.duration}</span>
                 )}
-                {active && isPlaying ? (
+                {active && isPlaying && (
                   <span className="flex h-4 items-end gap-[3px] pr-1 text-primary-600">
                     {[0, 1, 2].map((k) => (
                       <span key={k} className="eq-bar h-full" style={{ animationDelay: `${k * 0.22}s` }} />
                     ))}
                   </span>
-                ) : (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setMenuTrack(tracks[i]); }}
-                    aria-label={tx("প্লেলিস্টে রাখুন")}
-                    className="shrink-0 rounded-xl p-2 text-ink-faint transition hover:bg-primary-50 hover:text-primary-700"
-                  >
-                    <Icon name="plus" size={17} />
-                  </button>
                 )}
               </div>
             );
           })}
         </div>
       )}
-
-      {menuTrack && <AddToPlaylistMenu track={menuTrack} onClose={() => setMenuTrack(null)} />}
     </div>
   );
 }
