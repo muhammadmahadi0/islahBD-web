@@ -133,6 +133,55 @@ html[lang="ur"] body,
   }
 }
 
+/* Live hero: one large on-air dot with expanding signal rings. */
+.live-orb {
+  position: relative;
+  display: flex;
+  width: 4.5rem;
+  height: 4.5rem;
+  align-items: center;
+  justify-content: center;
+}
+.live-orb-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1px solid rgba(254, 202, 202, 0.5);
+  background: rgba(248, 113, 113, 0.12);
+  animation: live-orb-ring 2.5s ease-out infinite;
+}
+.live-orb-ring:nth-child(2) {
+  animation-delay: 1.25s;
+}
+.live-orb-core {
+  position: relative;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  background: #ef4444;
+  box-shadow:
+    0 0 0 6px rgba(239, 68, 68, 0.14),
+    0 0 26px 7px rgba(239, 68, 68, 0.55);
+  animation: live-orb-fade 2.5s ease-in-out infinite;
+}
+@keyframes live-orb-ring {
+  0% { transform: scale(0.3); opacity: 0.8; }
+  75%, 100% { transform: scale(1); opacity: 0; }
+}
+@keyframes live-orb-fade {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.42; transform: scale(0.88); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-orb-ring,
+  .live-orb-core {
+    animation: none;
+  }
+  .live-orb-ring {
+    opacity: 0.22;
+  }
+}
+
 /* ---------- surfaces ---------- */
 .card {
   @apply bg-white rounded-3xl border border-primary-900/10 shadow-card;

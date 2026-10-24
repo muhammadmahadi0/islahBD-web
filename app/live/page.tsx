@@ -123,11 +123,25 @@ export default function LivePage() {
         <div className="mt-3"><EmptyState icon="radio" title={tx("লাইভ তথ্য পাওয়া যাচ্ছে না")} /></div>
       ) : (
         <div className="card mt-3 overflow-hidden">
-          <div className={`p-6 text-center text-white ${isLive ? "bg-gradient-to-br from-red-600 via-red-500 to-red-700" : "page-hero !rounded-none"}`}>
+          <div className="page-hero !rounded-none p-6 text-center text-white">
+            {isLive && (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[radial-gradient(ellipse_at_top,rgba(248,113,113,0.32),transparent_68%)]"
+              />
+            )}
             <div className="relative z-10">
-              <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/15">
-                <Icon name="radio" size={30} />
-              </span>
+              {isLive ? (
+                <span className="live-orb mx-auto" aria-hidden="true">
+                  <span className="live-orb-ring" />
+                  <span className="live-orb-ring" />
+                  <span className="live-orb-core" />
+                </span>
+              ) : (
+                <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/15">
+                  <Icon name="radio" size={30} />
+                </span>
+              )}
               <h2 className="mt-3 text-xl font-bold leading-snug">
                 {liveL.title || (isLive ? tx("সরাসরি বয়ান চলছে") : tx("সর্বশেষ বয়ান"))}
               </h2>
