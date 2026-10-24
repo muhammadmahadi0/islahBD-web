@@ -39,7 +39,7 @@ export default function ChannelButton() {
   }, []);
 
   return (
-    <Link href="/channels" className="card card-hover mt-3 flex items-center gap-3 p-4">
+    <Link id="channels" href="/channels" className="card card-hover mt-3 flex scroll-mt-24 items-center gap-3 p-4">
       <span className="flex -space-x-3">
         {CHANNELS.map((c) => (
           <span

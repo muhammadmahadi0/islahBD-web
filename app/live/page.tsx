@@ -171,7 +171,7 @@ export default function LivePage() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 p-3">
-            <Link2 href="https://www.youtube.com/@islahbd" icon="play" label={tx("YouTube চ্যানেল")} />
+            <Link2 href="/others#channels" icon="play" label={tx("YouTube চ্যানেল")} internal />
             <Link2 href="/boyan" icon="mic" label={tx("অডিও বয়ান")} internal />
           </div>
         </div>
