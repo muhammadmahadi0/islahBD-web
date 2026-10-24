@@ -114,6 +114,25 @@ html[lang="ur"] body,
   }
 }
 
+/* Listen button: soft on-air flicker while a live broadcast is running. */
+.live-flicker {
+  animation: live-flicker 2.2s ease-in-out infinite;
+}
+@keyframes live-flicker {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  9% { opacity: 0.72; }
+  16% { opacity: 1; filter: brightness(1.08); }
+  35% { opacity: 0.85; }
+  48% { opacity: 1; filter: brightness(1.15); }
+  62% { opacity: 0.78; }
+  78% { opacity: 1; filter: brightness(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-flicker {
+    animation: none;
+  }
+}
+
 /* ---------- surfaces ---------- */
 .card {
   @apply bg-white rounded-3xl border border-primary-900/10 shadow-card;

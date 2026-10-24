@@ -5,6 +5,7 @@ import PrayerCard from "../components/PrayerCard";
 import { Icon } from "../components/icons";
 import { boyanToTrack } from "../lib/audio";
 import type { BoyanAudio } from "../lib/audio";
+import { LIVE_POLL_MS } from "../lib/live";
 import { usePlayerStore } from "../store/player-store";
 import { useLang, useNum, useTimeAgo, useTx } from "../store/language-store";
 import { useLocalizedData } from "../lib/content-translate";
@@ -64,6 +65,7 @@ export default function HomePage() {
   const timeAgo = useTimeAgo();
   const lang = useLang();
   const [recent, setRecent] = useState<BoyanAudio[]>([]);
+  const [isLive, setIsLive] = useState(false);
   const playTrack = usePlayerStore((s) => s.playTrack);
   const togglePlay = usePlayerStore((s) => s.togglePlay);
   const currentTrack = usePlayerStore((s) => s.currentTrack);
@@ -74,6 +76,25 @@ export default function HomePage() {
       .then((r) => r.json())
       .then((d) => { if (d.success) setRecent(d.audios.slice(0, 4)); })
       .catch(() => {});
+  }, []);
+
+  // Match the live page's status poll so the Listen button flickers only
+  // while a broadcast is actually on air.
+  useEffect(() => {
+    let dead = false;
+    const load = async () => {
+      try {
+        const res = await fetch("/api/live");
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!dead && data.success) setIsLive(!!data.live?.isLive);
+      } catch {
+        // Keep the last known state; the next poll can recover.
+      }
+    };
+    load();
+    const id = setInterval(load, LIVE_POLL_MS);
+    return () => { dead = true; clearInterval(id); };
   }, []);
 
   const recentL = useLocalizedData(recent, lang);
@@ -98,7 +119,9 @@ export default function HomePage() {
           </div>
           <Link
             href="/live"
-            className="btn-gold relative flex items-center gap-1 !rounded-full px-4 py-2 text-xs shadow"
+            className={`btn-gold relative flex items-center gap-1 !rounded-full px-4 py-2 text-xs shadow ${
+              isLive ? "live-flicker" : ""
+            }`}
           >
             <Icon name="radio" size={14} />
             {tx("শুনুন")}
