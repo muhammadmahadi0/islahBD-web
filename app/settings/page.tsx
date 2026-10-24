@@ -3,7 +3,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { useThemeStore } from "../../store/theme-store";
+import {
+  systemTheme,
+  useResolvedTheme,
+  useThemeStore,
+  type Theme,
+} from "../../store/theme-store";
 import { useDesignStore } from "../../store/design-store";
 import { useLanguageStore, useT, useTx } from "../../store/language-store";
 import { LANGUAGES } from "../../lib/i18n";
@@ -22,6 +27,7 @@ import {
 export default function SettingsPage() {
   const tx = useTx();
   const { theme, setTheme } = useThemeStore();
+  const resolvedTheme = useResolvedTheme();
   const { mode, setMode } = useDesignStore();
   const { lang, setLang } = useLanguageStore();
   const t = useT();
@@ -70,9 +76,14 @@ export default function SettingsPage() {
       active ? "bg-primary-600 text-white shadow-card" : "text-ink-faint hover:text-primary-700"
     }`;
 
-  const pickTheme = (e: React.MouseEvent<HTMLElement>, to: "dark" | "light") => {
+  const pickTheme = (e: React.MouseEvent<HTMLElement>, to: Theme) => {
     if (to === theme) return;
-    bloomTheme(e, to, () => setTheme(to));
+    const target = to === "system" ? systemTheme() : to;
+    if (target === resolvedTheme) {
+      setTheme(to);
+      return;
+    }
+    bloomTheme(e, target, () => setTheme(to));
   };
 
   return (
@@ -121,17 +132,24 @@ export default function SettingsPage() {
         {/* theme */}
         <div className="flex items-center gap-3 p-4">
           <span className="icon-tile bg-indigo-50 text-indigo-500">
-            <Icon name={theme === "dark" ? "moon" : "sun"} size={22} />
+            <Icon name={resolvedTheme === "dark" ? "moon" : "sun"} size={22} />
           </span>
           <span className="flex-1">
             <span className="block text-sm font-bold">{t("theme")}</span>
             <span className="block text-xs text-ink-faint">
-              {theme === "dark" ? t("themeDarkDesc") : t("themeLightDesc")}
+              {theme === "system"
+                ? t("themeSystemDesc")
+                : resolvedTheme === "dark"
+                  ? t("themeDarkDesc")
+                  : t("themeLightDesc")}
             </span>
           </span>
         </div>
         <div className="px-4 pb-4">
-          <div className="grid grid-cols-2 gap-1 rounded-2xl bg-sand p-1">
+          <div className="grid grid-cols-3 gap-1 rounded-2xl bg-sand p-1">
+            <button onClick={(e) => pickTheme(e, "system")} className={seg(theme === "system")}>
+              🖥️ {t("themeSystem")}
+            </button>
             <button onClick={(e) => pickTheme(e, "light")} className={seg(theme === "light")}>
               ☀ {t("themeLight")}
             </button>

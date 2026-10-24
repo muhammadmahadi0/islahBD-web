@@ -8,6 +8,7 @@ import { usePlayerStore, type Track } from "../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../lib/live";
 import { NOTIF_READ_EVENT, parseNotifications, unreadCount } from "../lib/notifications";
 import { applyLang, useLanguageStore, useLang, useNum, useT, useTx } from "../store/language-store";
+import { applyTheme, useThemeStore } from "../store/theme-store";
 import { useLocalizedData } from "../lib/content-translate";
 
 // Paths belonging to the More hub — the More tab stays highlighted there.
@@ -33,6 +34,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // hydration both render Bengali; the pre-paint script already set lang/dir).
   useEffect(() => {
     void useLanguageStore.persist.rehydrate();
+  }, []);
+
+  // Follow OS theme changes while the preference is "system".
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia === "undefined") return;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const sync = () => {
+      const { theme } = useThemeStore.getState();
+      if (theme === "system") applyTheme(theme);
+    };
+    sync();
+    media.addEventListener?.("change", sync);
+    return () => media.removeEventListener?.("change", sync);
   }, []);
 
   // Next.js resets document.title to the Bengali metadata on client-side

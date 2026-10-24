@@ -32,8 +32,10 @@ type Dict = {
   language: string;
   languageDesc: string;
   theme: string;
+  themeSystem: string;
   themeLight: string;
   themeDark: string;
+  themeSystemDesc: string;
   themeLightDesc: string;
   themeDarkDesc: string;
   design: string;
@@ -70,8 +72,10 @@ const bn: Dict = {
   language: "ভাষা",
   languageDesc: "অ্যাপের ভাষা বেছে নিন",
   theme: "থিম",
+  themeSystem: "সিস্টেম",
   themeLight: "লাইট",
   themeDark: "ডার্ক",
+  themeSystemDesc: "সিস্টেম — ডিভাইস সেটিং অনুযায়ী",
   themeLightDesc: "লাইট — দিনের আলো",
   themeDarkDesc: "ডার্ক — গভীর রাতের সবুজ",
   design: "ডিজাইন",
@@ -106,8 +110,10 @@ const ur: Dict = {
   language: "زبان",
   languageDesc: "ایپ کی زبان منتخب کریں",
   theme: "تھیم",
+  themeSystem: "سسٹم",
   themeLight: "لائٹ",
   themeDark: "ڈارک",
+  themeSystemDesc: "سسٹم — ڈیوائس کی ترتیب کے مطابق",
   themeLightDesc: "لائٹ — دن کی روشنی",
   themeDarkDesc: "ڈارک — رات کا گہرا سبز",
   design: "ڈیزائن",
@@ -142,8 +148,10 @@ const en: Dict = {
   language: "Language",
   languageDesc: "Choose the app language",
   theme: "Theme",
+  themeSystem: "System",
   themeLight: "Light",
   themeDark: "Dark",
+  themeSystemDesc: "System — follows device setting",
   themeLightDesc: "Light — daylight",
   themeDarkDesc: "Dark — deep night green",
   design: "Design",
