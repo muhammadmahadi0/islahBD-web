@@ -149,18 +149,18 @@ export const prevHijriMonth = (y: number, m: number) =>
 export type BanglaDate = { year: number; month: number; day: number }; // month 0..11
 
 export const BANGLA_MONTHS = [
-  { bn: "বৈশাখ", en: "Boishakh" },
-  { bn: "জ্যৈষ্ঠ", en: "Jyoishtho" },
-  { bn: "আষাঢ়", en: "Ashar" },
-  { bn: "শ্রাবণ", en: "Srabon" },
-  { bn: "ভাদ্র", en: "Bhadro" },
-  { bn: "আশ্বিন", en: "Ashwin" },
-  { bn: "কার্তিক", en: "Kartik" },
-  { bn: "অগ্রহায়ণ", en: "Ogrohayon" },
-  { bn: "পৌষ", en: "Poush" },
-  { bn: "মাঘ", en: "Magh" },
-  { bn: "ফাল্গুন", en: "Falgun" },
-  { bn: "চৈত্র", en: "Choitro" },
+  { bn: "বৈশাখ", en: "Boishakh", ur: "بیشاکھ" },
+  { bn: "জ্যৈষ্ঠ", en: "Jyoishtho", ur: "جیٹھ" },
+  { bn: "আষাঢ়", en: "Ashar", ur: "آسرھ" },
+  { bn: "শ্রাবণ", en: "Srabon", ur: "سراون" },
+  { bn: "ভাদ্র", en: "Bhadro", ur: "بھادر" },
+  { bn: "আশ্বিন", en: "Ashwin", ur: "آشون" },
+  { bn: "কার্তিক", en: "Kartik", ur: "کاتک" },
+  { bn: "অগ্রহায়ণ", en: "Ogrohayon", ur: "اگرہاین" },
+  { bn: "পৌষ", en: "Poush", ur: "پوس" },
+  { bn: "মাঘ", en: "Magh", ur: "ماگھ" },
+  { bn: "ফাল্গুন", en: "Falgun", ur: "فالگن" },
+  { bn: "চৈত্র", en: "Choitro", ur: "چیت" },
 ] as const;
 
 const isLeapYear = (y: number) => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
@@ -215,8 +215,13 @@ export const gregorianFull = (d: Date) =>
 export const hijriText = (h: HijriDate) =>
   `${toBn(h.day)} ${HIJRI_MONTHS[h.month - 1].bn} ${toBn(h.year)} হিজরী`;
 
-export const banglaText = (b: BanglaDate) =>
-  `${toBn(b.day)} ${BANGLA_MONTHS[b.month].bn}, ${toBn(b.year)}`;
+export function banglaText(b: BanglaDate, lang: "bn" | "ur" | "en" = "bn"): string {
+  if (lang === "bn") {
+    return `${toBn(b.day)} ${BANGLA_MONTHS[b.month].bn}, ${toBn(b.year)}`;
+  }
+  const month = lang === "ur" ? BANGLA_MONTHS[b.month].ur : BANGLA_MONTHS[b.month].en;
+  return `${b.day} ${month}, ${b.year}`;
+}
 
 /** Gregorian span of a Hijri month, e.g. "১৩ অক্টোবর – ১০ নভেম্বর ২০২৬". */
 export function gregorianRange(start: Date, days: number): string {

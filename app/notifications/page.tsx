@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { timeAgoBn, bnNum } from "../../lib/audio";
 import { markSeen } from "../../lib/push";
 import {
   getReadIds,
@@ -16,13 +15,16 @@ import {
   parseNotifications,
   type AppNotification,
 } from "../../lib/notifications";
-import { useNum, useTx } from "../../store/language-store";
+import { useLang, useNum, useTimeAgo, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 const PAGE = 30;
 
 export default function NotificationsPage() {
   const tx = useTx();
   const num = useNum();
+  const lang = useLang();
+  const timeAgo = useTimeAgo();
   const [items, setItems] = useState<AppNotification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -61,18 +63,19 @@ export default function NotificationsPage() {
     markSeen(items[0].id);
   }, [items, loading]);
 
-  const shown = useMemo(() => items.slice(0, visible), [items, visible]);
+  const itemsL = useLocalizedData(items, lang);
+  const shown = useMemo(() => itemsL.slice(0, visible), [itemsL, visible]);
 
   const groups = useMemo(() => {
     const out: { label: string; items: AppNotification[] }[] = [];
     for (const n of shown) {
-      const label = notifDay(n.createdAt);
+      const label = notifDay(n.createdAt, lang);
       const last = out[out.length - 1];
       if (last && last.label === label) last.items.push(n);
       else out.push({ label, items: [n] });
     }
     return out;
-  }, [shown]);
+  }, [shown, lang]);
 
   return (
     <div className="animate-fade-up">
@@ -114,7 +117,7 @@ export default function NotificationsPage() {
         <div className="mt-3">
           <EmptyState icon="bell" title={tx("নোটিফিকেশন লোড করা যায়নি")} hint={tx("ইন্টারনেট চেক করে আবার চেষ্টা করুন")} />
         </div>
-      ) : items.length === 0 ? (
+      ) : itemsL.length === 0 ? (
         <div className="mt-3">
           <EmptyState icon="bell" title={tx("কোনো নোটিফিকেশন নেই")} hint={tx("নতুন আপডেট এলে এখানে দেখা যাবে")} />
         </div>
@@ -147,9 +150,9 @@ export default function NotificationsPage() {
                         )}
                         <span className="mt-1 flex items-center gap-1.5 text-[11px] text-ink-faint">
                           <span className="rounded-full bg-slate-200/60 px-1.5 py-0.5 font-semibold dark:bg-white/10">
-                            {notifTypeLabel(n.type)}
+                            {tx(notifTypeLabel(n.type))}
                           </span>
-                          {n.createdAt && <span>{timeAgoBn(n.createdAt)}</span>}
+                          {n.createdAt && <span>{timeAgo(n.createdAt)}</span>}
                         </span>
                       </span>
                       {n.imageUrl && (
@@ -178,13 +181,13 @@ export default function NotificationsPage() {
             </section>
           ))}
 
-          {visible < items.length && (
+          {visible < itemsL.length && (
             <div className="flex justify-center pt-1">
               <button
                 onClick={() => setVisible((v) => v + PAGE)}
                 className="btn-outline !px-6 !py-2.5 text-[13px]"
               >
-                {tx("পুরনো নোটিফিকেশন")} ({num(items.length - visible)})
+                {tx("পুরনো নোটিফিকেশন")} ({num(itemsL.length - visible)})
               </button>
             </div>
           )}

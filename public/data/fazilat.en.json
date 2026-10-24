@@ -1,0 +1,57 @@
+{
+  "source_book": "Quran and Hadith in Khazayen",
+  "author": "Hazrat Maulana Shah Hakeem Muhammad Akhtar Saheb",
+  "translator": "Maulana Abdul Mateen bin Hussain",
+  "app_version": "1.0.0",
+  "id": "fazilat_library",
+  "title": "Fazilat Library",
+  "icon": "fazilat_icon",
+  "description": "Rewards and merits from the Quran and Hadith",
+  "categories": [
+    {
+      "id": "surah_fazilat",
+      "title": "Virtues of Surahs",
+      "items": [
+        {
+          "id": "fazilat_001",
+          "title": "Reciting Surah Yasin once earns the reward of completing the Qur'an ten times.",
+          "fazilat": "Whoever recites Surah Yasin once, Allah Almighty grants him the reward of completing the Qur'an ten times.",
+          "reference": "Tirmidhi-Sharif, Meshkat Sharif 187 pages",
+          "narrator": "Hazrat Anas RA"
+        },
+        {
+          "id": "fazilat_002",
+          "title": "One complete Qur'an in one minute",
+          "fazilat": "If you recite Surah Al-Ikhlas once, you receive the reward of reciting one third of the Qur'an. Hakimul Ummat Mujaddidul Millat Maulana Shah Ashraf Ali Thanvi (R.A.) said, in light of this hadith, that reciting this Surah three times earns the reward of a complete Qur'an.",
+          "reference": "Muslim Sharif, Meshkat Sharif 185 pages",
+          "narrator": "Hazrat Abu Darda RA"
+        },
+        {
+          "id": "fazilat_003",
+          "title": "The reward of one thousand verses",
+          "fazilat": "Whoever recites Surah At-Takathur, Allah grants him the reward of reciting one thousand verses.",
+          "reference": "Tafseer-Mazhari Volume 10",
+          "narrator": "Hazrat Ibn Umar RA"
+        },
+        {
+          "id": "fazilat_004",
+          "title": "One hundred nafl Hajj rewards",
+          "fazilat": "Whoever recites SubhanAllah 100 times in the morning and 100 times in the evening, Allah grants him the reward of one hundred nafl Hajj.",
+          "reference": "Meshkat Sharif 202 pages"
+        }
+      ]
+    },
+    {
+      "id": "juma_fazilat",
+      "title": "Virtues of Jumma Day",
+      "items": [
+        {
+          "id": "fazilat_005",
+          "title": "Reward of 1 year of nafal fasting and 1 year of nafal prayer per step",
+          "fazilat": "A person who on Friday (1) washes his clothes well (2) and takes a bath (3) goes to the mosque early (4) walks, not rides (5) goes to the imam and sits (6) listens to the sermon with attention (7) refrains from any unnecessary speech, for these very simple 7 deeds, Allah Almighty will reward him with one step in exchange for him. Give reward for one year's nafl prayers and one year's nafl fasting.",
+          "reference": "Tirmidhi, Abu Dawud, Nasha'i, Ibn Majah, Meshkat 122 pages"
+        }
+      ]
+    }
+  ]
+}

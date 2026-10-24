@@ -3,12 +3,21 @@ import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { storageGet, storageSet, storageSetJSON, storageGetJSON } from "../../lib/storage";
-import { useTx } from "../../store/language-store";
+import { useLang, useNum, useTx } from "../../store/language-store";
 
-const DHIKRS = ["সুবহানাল্লাহ", "আলহামদুলিল্লাহ", "আল্লাহু আকবার", "লা ইলাহা ইল্লাল্লাহ", "আস্তাগফিরুল্লাহ", "দরূদ শরীফ"];
+const DHIKRS = [
+  { bn: "সুবহানাল্লাহ", en: "SubhanAllah", ur: "سبحان اللہ" },
+  { bn: "আলহামদুলিল্লাহ", en: "Alhamdulillah", ur: "الحمد للہ" },
+  { bn: "আল্লাহু আকবার", en: "Allahu Akbar", ur: "اللہ اکبر" },
+  { bn: "লা ইলাহা ইল্লাল্লাহ", en: "La ilaha illallah", ur: "لا الہ الا اللہ" },
+  { bn: "আস্তাগফিরুল্লাহ", en: "Astaghfirullah", ur: "استغفر اللہ" },
+  { bn: "দরূদ শরীফ", en: "Durood Sharif", ur: "درود شریف" },
+];
 
 export default function TasbeehPage() {
   const tx = useTx();
+  const lang = useLang();
+  const num = useNum();
   const [count, setCount] = useState(0);
   const [target, setTarget] = useState(100);
   const [dhikr, setDhikr] = useState(0);
@@ -28,7 +37,11 @@ export default function TasbeehPage() {
     setCount(n);
     (navigator as any).vibrate?.(12);
     if (n >= target) {
-      const entry = { d: DHIKRS[dhikr], c: n, t: new Date().toLocaleString("bn-BD") };
+      const entry = {
+        d: lang === "bn" ? DHIKRS[dhikr].bn : lang === "ur" ? DHIKRS[dhikr].ur : DHIKRS[dhikr].en,
+        c: n,
+        t: new Date().toLocaleString(lang === "bn" ? "bn-BD" : lang === "ur" ? "ur-PK" : "en-US"),
+      };
       const next = [entry, ...hist].slice(0, 50);
       setHist(next);
       storageSetJSON("tasbeeh_history", next);
@@ -41,7 +54,7 @@ export default function TasbeehPage() {
       <PageHead title={tx("ডিজিটাল তাসবীহ")} subtitle={tx("যিকির গুনুন ও লক্ষ্য পূরণ করুন")} icon="beads" />
       <div className="card mt-3 p-5 text-center">
         <select value={dhikr} onChange={(e) => { setDhikr(Number(e.target.value)); setCount(0); }} className="input !text-center !font-bold" aria-label="dhikr">
-          {DHIKRS.map((d, i) => <option key={d} value={i}>{d}</option>)}
+          {DHIKRS.map((d, i) => <option key={d.bn} value={i}>{lang === "bn" ? d.bn : lang === "ur" ? d.ur : d.en}</option>)}
         </select>
 
         <div className="relative mx-auto mt-4 h-56 w-56">
@@ -61,12 +74,12 @@ export default function TasbeehPage() {
             </defs>
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className="text-5xl font-bold tabular-nums tracking-tight">{count}</div>
-            <div className="text-xs font-bold text-ink-faint">/ {target}</div>
+            <div className="text-5xl font-bold tabular-nums tracking-tight">{num(count)}</div>
+            <div className="text-xs font-bold text-ink-faint">/ {num(target)}</div>
           </div>
         </div>
 
-        <div className="font-arabic mt-1 text-2xl text-primary-700">{DHIKRS[dhikr]}</div>
+        <div className="font-arabic mt-1 text-2xl text-primary-700">{lang === "bn" ? DHIKRS[dhikr].bn : lang === "ur" ? DHIKRS[dhikr].ur : DHIKRS[dhikr].en}</div>
 
         <button
           onClick={tap}
@@ -96,12 +109,12 @@ export default function TasbeehPage() {
         <>
           <div className="mb-2 mt-5 flex items-center gap-1.5 px-1 text-sm font-bold">
             <Icon name="clock" size={16} className="text-ink-faint" />
-            {tx("হিস্ট্রি")} ({hist.length})
+            {tx("হিস্ট্রি")} ({num(hist.length)})
           </div>
           <div className="space-y-1.5">
             {hist.slice(0, 20).map((h, i) => (
               <div key={i} className="card flex items-center justify-between !rounded-2xl px-3.5 py-2.5 text-sm">
-                <span className="font-bold">{h.d} <span className="text-primary-700">× {h.c}</span></span>
+                <span className="font-bold">{h.d} <span className="text-primary-700">× {num(h.c)}</span></span>
                 <span className="text-[11px] text-ink-faint">{h.t}</span>
               </div>
             ))}

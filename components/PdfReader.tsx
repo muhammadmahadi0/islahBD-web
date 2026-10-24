@@ -61,7 +61,7 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
       setLoading(false);
     })().catch(() => {
       if (!dead) {
-        setError(tx("PDF লোড করা যাচ্ছে না।"));
+        setError("PDF লোড করা যাচ্ছে না।");
         setLoading(false);
       }
     });
@@ -103,7 +103,7 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
         await task.promise;
       } catch (err) {
         if (!dead && (err as { name?: string })?.name !== "RenderingCancelledException") {
-          setError(tx("PDF পৃষ্ঠা দেখানো যাচ্ছে না।"));
+          setError("PDF পৃষ্ঠা দেখানো যাচ্ছে না।");
         }
       }
     })();
@@ -197,7 +197,7 @@ export function PdfReader({ src, title }: { src: string; title: string }) {
             {error ? (
               <>
                 <Icon name="doc" size={26} className="text-ink-faint" />
-                <p className="text-sm font-bold text-ink">{error}</p>
+                <p className="text-sm font-bold text-ink">{tx(error)}</p>
                 <div className="mt-1 flex gap-2">
                   <a href={src} target="_blank" rel="noreferrer" className="btn-primary !py-2 text-[12px]">
                     {tx("নতুন ট্যাবে খুলুন")}

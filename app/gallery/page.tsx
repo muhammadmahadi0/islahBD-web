@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { useNum, useTx } from "../../store/language-store";
+import { useLang, useNum, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 type Photo = { id: number; url: string; order: number };
 type Album = { id: number; title?: string; coverUrl?: string | null; photos?: Photo[]; imageCount?: number };
@@ -15,6 +16,7 @@ const wallpaperUrl = (w: Wallpaper) => w.url || w.image || w.file || "";
 export default function GalleryPage() {
   const tx = useTx();
   const num = useNum();
+  const lang = useLang();
   const [albums, setAlbums] = useState<Album[]>([]);
   const [walls, setWalls] = useState<Wallpaper[]>([]);
   const [loadingAlbums, setLoadingAlbums] = useState(true);
@@ -34,18 +36,22 @@ export default function GalleryPage() {
       .finally(() => setLoadingWalls(false));
   }, []);
 
+  const albumsL = useLocalizedData(albums, lang);
+  const wallsL = useLocalizedData(walls, lang);
+  const openL = useLocalizedData(open, lang);
+
   return (
     <>
     <div className="animate-fade-up">
       <PageHead
         title={tx("গ্যালারি ও ওয়ালপেপার")}
-        subtitle={`${tx("অ্যালবাম")} ${num(albums.length)} • ${tx("ওয়ালপেপার")} ${num(walls.length)}`}
+        subtitle={`${tx("অ্যালবাম")} ${num(albumsL.length)} • ${tx("ওয়ালপেপার")} ${num(wallsL.length)}`}
         icon="image"
       />
 
       <div className="mb-2 mt-5 text-sm font-bold">{tx("অ্যালবাম")}</div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {albums.slice(0, 18).map((a) => {
+        {albumsL.slice(0, 18).map((a) => {
           const src = cover(a);
           const count = a.photos?.length ?? a.imageCount ?? 0;
           return (
@@ -71,14 +77,14 @@ export default function GalleryPage() {
         {loadingAlbums && (
           <div className="card col-span-full p-4 text-center text-sm text-ink-faint">{tx("লোড হচ্ছে…")}</div>
         )}
-        {!loadingAlbums && albums.length === 0 && (
+        {!loadingAlbums && albumsL.length === 0 && (
           <div className="card col-span-full p-4 text-center text-sm text-ink-faint">{tx("কোনো অ্যালবাম নেই")}</div>
         )}
       </div>
 
       <div className="mb-2 mt-5 text-sm font-bold">{tx("ওয়ালপেপার")}</div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {walls.slice(0, 18).map((w) => {
+        {wallsL.slice(0, 18).map((w) => {
           const src = wallpaperUrl(w);
           return (
             <div key={w.id} className="card card-hover overflow-hidden">
@@ -104,13 +110,13 @@ export default function GalleryPage() {
         {loadingWalls && (
           <div className="card col-span-full p-4 text-center text-sm text-ink-faint">{tx("লোড হচ্ছে…")}</div>
         )}
-        {!loadingWalls && walls.length === 0 && (
+        {!loadingWalls && wallsL.length === 0 && (
           <div className="card col-span-full p-4 text-center text-sm text-ink-faint">{tx("কোনো ওয়ালপেপার নেই")}</div>
         )}
       </div>
       </div>
 
-      {open && (
+      {openL && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
           onClick={() => setOpen(null)}
@@ -121,9 +127,9 @@ export default function GalleryPage() {
           >
             <div className="mb-3 flex items-start justify-between gap-3">
               <div>
-                <div className="text-sm font-bold">{open.title || `${tx("অ্যালবাম")} ${num(open.id)}`}</div>
+                <div className="text-sm font-bold">{openL.title || `${tx("অ্যালবাম")} ${num(openL.id)}`}</div>
                 <div className="mt-0.5 text-[11px] text-ink-faint">
-                  {num(open.photos?.length ?? 0)}{tx("টি ছবি")}
+                  {num(openL.photos?.length ?? 0)}{tx("টি ছবি")}
                 </div>
               </div>
               <button
@@ -135,13 +141,13 @@ export default function GalleryPage() {
               </button>
             </div>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {(open.photos || []).slice().sort((x, y) => x.order - y.order).map((p) => (
+              {(openL.photos || []).slice().sort((x, y) => x.order - y.order).map((p) => (
                 <a key={p.id} href={p.url} target="_blank" rel="noreferrer" className="overflow-hidden rounded-xl">
                   <img src={p.url} alt="" loading="lazy" className="h-32 w-full object-cover transition hover:scale-105" />
                 </a>
               ))}
             </div>
-            {(open.photos?.length ?? 0) === 0 && (
+            {(openL.photos?.length ?? 0) === 0 && (
               <div className="rounded-xl bg-sand p-4 text-center text-sm text-ink-faint">{tx("এই অ্যালবামে ছবি নেই")}</div>
             )}
           </div>

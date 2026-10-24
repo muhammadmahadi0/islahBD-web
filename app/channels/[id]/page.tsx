@@ -4,16 +4,16 @@ import { useParams } from "next/navigation";
 import { PageHead, EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
 import { usePlayerStore, type Track } from "../../../store/player-store";
-import { getChannelById } from "../../../lib/channels";
-import { bnNum } from "../../../lib/audio";
+import { channelLabel, getChannelById } from "../../../lib/channels";
+import { useLocalizedData } from "../../../lib/content-translate";
 import {
   fmtDuration,
-  fmtPublishedBn,
-  fmtViewsBn,
+  fmtPublished,
+  fmtViews,
   type ChannelVideo,
 } from "../../../lib/channel-videos";
 import AddToPlaylistMenu from "../../../components/audio/AddToPlaylistMenu";
-import { useNum, useTx } from "../../../store/language-store";
+import { useLang, useNum, useTx } from "../../../store/language-store";
 
 // Channel browser — keyless YouTube listings (InnerTube via /api/channel),
 // ported from the master branch and restyled for the emerald/gold theme.
@@ -27,6 +27,7 @@ const SHORT_MAX_SECONDS = 5 * 60;
 export default function ChannelPage() {
   const tx = useTx();
   const num = useNum();
+  const lang = useLang();
   const params = useParams<{ id: string }>();
   const channelId = decodeURIComponent(params?.id ?? "");
   const registry = getChannelById(channelId);
@@ -70,7 +71,7 @@ export default function ChannelPage() {
       setNextToken(data.nextPageToken || null);
       if (data.channel?.avatar) setAvatar(data.channel.avatar);
     } catch {
-      setError(tx("চ্যানেলের ভিডিও লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।"));
+      setError("চ্যানেলের ভিডিও লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।");
     } finally {
       setLoading(false);
     }
@@ -130,8 +131,9 @@ export default function ChannelPage() {
     };
   }, [sort, channelId, loading, query]);
 
+  const videosL = useLocalizedData(videos, lang);
   const results = useMemo(() => {
-    let list = videos;
+    let list = videosL;
     if (filter === "bayan") list = list.filter((v) => (v.duration || 0) > SHORT_MAX_SECONDS);
     else if (filter === "short") list = list.filter((v) => (v.duration || 0) <= SHORT_MAX_SECONDS);
     const q = query.trim().toLowerCase();
@@ -140,7 +142,7 @@ export default function ChannelPage() {
     // Uploads arrive in exact newest-first order, so oldest is just reversed.
     if (sort === "oldest") return [...list].reverse();
     return list;
-  }, [videos, filter, sort, query]);
+  }, [videosL, filter, sort, query]);
 
   const toTrack = useCallback(
     (video: ChannelVideo): Track => ({
@@ -148,12 +150,12 @@ export default function ChannelPage() {
       title: video.title,
       thumbnail: video.thumbnail,
       duration: video.duration || 0,
-      channelName: registry.nameBn,
+      channelName: channelLabel(registry, lang),
       videoId: video.videoId || video.id,
       publishedAt: video.publishedAt || "",
       sharePath: `/channels/${channelId}?play=${encodeURIComponent(video.videoId || video.id)}`,
     }),
-    [channelId, registry.nameBn]
+    [channelId, registry, lang]
   );
 
   const tracks = useMemo(() => results.map(toTrack), [results, toTrack]);
@@ -204,13 +206,13 @@ export default function ChannelPage() {
     }
   };
 
-  const bayanCount = videos.filter((v) => (v.duration || 0) > SHORT_MAX_SECONDS).length;
-  const shortCount = videos.length - bayanCount;
+  const bayanCount = videosL.filter((v) => (v.duration || 0) > SHORT_MAX_SECONDS).length;
+  const shortCount = videosL.length - bayanCount;
 
   return (
     <div className="animate-fade-up">
       <PageHead
-        title={registry.nameBn}
+        title={channelLabel(registry, lang)}
         subtitle={`${registry.handle} • ${num(results.length)}${tx("টি ভিডিও")}`}
         backHref="/channels"
         icon="youtube"
@@ -249,7 +251,7 @@ export default function ChannelPage() {
         <div className="rail flex flex-1 items-center gap-2 overflow-x-auto pb-1">
           {(
             [
-              { id: "all", label: `${tx("সব")} (${num(videos.length)})` },
+              { id: "all", label: `${tx("সব")} (${num(videosL.length)})` },
               { id: "bayan", label: `${tx("বয়ান")} (${num(bayanCount)})` },
               { id: "short", label: `${tx("ক্লিপস")} (${num(shortCount)})` },
             ] as { id: Filter; label: string }[]
@@ -307,7 +309,7 @@ export default function ChannelPage() {
           ))}
         </div>
       ) : error ? (
-        <EmptyState icon="youtube" title={error} hint={tx("পুনরায় চেষ্টা করুন")} />
+        <EmptyState icon="youtube" title={tx(error)} hint={tx("পুনরায় চেষ্টা করুন")} />
       ) : results.length === 0 && !indexing ? (
         <EmptyState
           icon="search"
@@ -324,7 +326,7 @@ export default function ChannelPage() {
             {shown.map((video, i) => {
               const id = video.videoId || video.id;
               const active = currentTrack?.videoId === id;
-              const meta = [fmtViewsBn(video.views), fmtPublishedBn(video.publishedAt)]
+              const meta = [fmtViews(video.views, lang), fmtPublished(video.publishedAt, lang)]
                 .filter(Boolean)
                 .join(" • ");
               const duration = fmtDuration(video.duration);
@@ -383,8 +385,7 @@ export default function ChannelPage() {
 
           {indexing && (
             <p className="mt-5 text-center text-xs font-semibold text-primary-700">
-              {query.trim() ? tx("সব ভিডিওতে খোঁজা হচ্ছে…") : tx("সব ভিডিও সাজানো হচ্ছে…")} (
-              {bnNum(videos.length)})
+              {query.trim() ? tx("সব ভিডিওতে খোঁজা হচ্ছে…") : tx("সব ভিডিও সাজানো হচ্ছে…")} ({num(videosL.length)})
             </p>
           )}
           {(visible < results.length || (sort === "newest" && !!nextToken)) && (

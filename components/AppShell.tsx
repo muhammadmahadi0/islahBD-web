@@ -6,9 +6,9 @@ import { Icon } from "./icons";
 import { openIslahBDApp } from "../lib/open-app";
 import { usePlayerStore, type Track } from "../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../lib/live";
-import { bnNum } from "../lib/audio";
 import { NOTIF_READ_EVENT, parseNotifications, unreadCount } from "../lib/notifications";
-import { useLanguageStore, useT, useTx } from "../store/language-store";
+import { applyLang, useLanguageStore, useLang, useNum, useT, useTx } from "../store/language-store";
+import { useLocalizedData } from "../lib/content-translate";
 
 // Paths belonging to the More hub — the More tab stays highlighted there.
 const MORE_PREFIXES = [
@@ -21,6 +21,8 @@ const MORE_PREFIXES = [
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const tx = useTx();
+  const num = useNum();
+  const lang = useLang();
   const path = usePathname();
   const t = useT();
   const { playTrack, currentTrack, isPlaying, setIsPlaying } = usePlayerStore();
@@ -32,6 +34,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     void useLanguageStore.persist.rehydrate();
   }, []);
+
+  // Next.js resets document.title to the Bengali metadata on client-side
+  // navigation. Re-apply the selected language's document chrome after each
+  // route change (and when the language itself changes).
+  useEffect(() => {
+    applyLang(lang);
+  }, [lang, path]);
 
   // Unread notification badge. Re-read when the feed marks items read.
   useEffect(() => {
@@ -73,38 +82,39 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     return () => { dead = true; clearInterval(id); };
   }, []);
 
+  const liveL = useLocalizedData(live, lang);
   const isLiveTrackActive =
     !!currentTrack && (currentTrack.id === "live" || currentTrack.id === "live-recording");
 
   const handleLive = useCallback(() => {
-    if (!live) return;
+    if (!liveL) return;
     if (isLiveTrackActive) {
       setIsPlaying(!isPlaying);
       return;
     }
     let track: Track | null = null;
-    if (live.isLive && live.streamUrl) {
+    if (liveL.isLive && liveL.streamUrl) {
       track = {
-        id: "live", title: live.title || tx("সরাসরি বয়ান"), thumbnail: "",
-        duration: 0, channelName: live.speaker || tx("ইসলাহ লাইভ"), videoId: "",
-        hlsUrl: live.streamUrl, audioUrl: live.streamUrl,
-        isLive: true, location: live.location || "",
+        id: "live", title: liveL.title || tx("সরাসরি বয়ান"), thumbnail: "",
+        duration: 0, channelName: liveL.speaker || tx("ইসলাহ লাইভ"), videoId: "",
+        hlsUrl: liveL.streamUrl, audioUrl: liveL.streamUrl,
+        isLive: true, location: liveL.location || "",
         sharePath: "/live?play=live",
       };
-    } else if (live.recording?.audioUrl) {
+    } else if (liveL.recording?.audioUrl) {
       track = {
-        id: "live-recording", title: live.recording.title || tx("সর্বশেষ বয়ান"), thumbnail: "",
-        duration: live.recording.durationSeconds || 0,
-        channelName: live.recording.speaker || tx("ইসলাহ"), videoId: "",
-        audioUrl: live.recording.audioUrl, location: live.recording.location || "",
+        id: "live-recording", title: liveL.recording.title || tx("সর্বশেষ বয়ান"), thumbnail: "",
+        duration: liveL.recording.durationSeconds || 0,
+        channelName: liveL.recording.speaker || tx("ইসলাহ"), videoId: "",
+        audioUrl: liveL.recording.audioUrl, location: liveL.recording.location || "",
         sharePath: "/live?play=live-recording",
       };
     }
     if (track) playTrack(track, [track], 0);
-  }, [live, isLiveTrackActive, isPlaying, setIsPlaying, playTrack]);
+  }, [liveL, isLiveTrackActive, isPlaying, setIsPlaying, playTrack]);
 
   const moreActive = MORE_PREFIXES.some((p) => path === p || path.startsWith(p + "/"));
-  const liveReady = !!live && (live.isLive || !!live.recording?.audioUrl);
+  const liveReady = !!liveL && (liveL.isLive || !!liveL.recording?.audioUrl);
   const isHome = path === "/";
 
   const circleBtn =
@@ -139,7 +149,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <Icon name="bell" size={16} />
               {unread > 0 && (
                 <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold leading-none text-white">
-                  {unread > 9 ? tx("৯+") : bnNum(unread)}
+                  {unread > 9 ? `${num(9)}+` : num(unread)}
                 </span>
               )}
             </Link>

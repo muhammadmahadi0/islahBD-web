@@ -1,10 +1,11 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { bnNum } from "../../lib/audio";
-import { useNum, useTx } from "../../store/language-store";
+import { useLang, useNum, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 // Books — IslahBD catalog + the full Islami Jindegi kitab collection
 // (public/data/islamijindegi-books.json, scraped from
@@ -21,7 +22,7 @@ interface Book {
 }
 
 const PAGE_SIZE = 48;
-const ALL = "সব";
+const ALL = "__all";
 
 // Islami Jindegi books open in our in-app reader; the single IslahBD entry
 // still points at its PDF.
@@ -51,18 +52,27 @@ function BookOpen({
 export default function LibraryPage() {
   const tx = useTx();
   const num = useNum();
+  const lang = useLang();
   const [books, setBooks] = useState<Book[]>([]);
   const [q, setQ] = useState("");
   const [submitted, setSubmitted] = useState("");
   const [cat, setCat] = useState(ALL);
   const [visible, setVisible] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(true);
+  const loadSeq = useRef(0);
 
   const load = useCallback(async () => {
+    const seq = ++loadSeq.current;
     setLoading(true);
+    const localFile = lang === "bn" ? "islamijindegi-books.json" : `islamijindegi-books.${lang}.json`;
     const [islah, jindegi] = await Promise.allSettled([
       fetch("/api/books").then((r) => r.json()),
-      fetch("/data/islamijindegi-books.json").then((r) => r.json()),
+      fetch(`/data/${localFile}`)
+        .then((r) => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        })
+        .catch(() => fetch("/data/islamijindegi-books.json").then((r) => r.json())),
     ]);
 
     const merged: Book[] = [];
@@ -76,28 +86,32 @@ export default function LibraryPage() {
         merged.push({ ...b, source: "islamijindegi" });
       }
     }
+    if (seq !== loadSeq.current) return;
     setBooks(merged);
     setLoading(false);
-  }, []);
+  }, [lang]);
 
   useEffect(() => { load(); }, [load]);
+  useEffect(() => { setCat(ALL); }, [lang]);
+
+  const booksL = useLocalizedData(books, lang);
 
   const categories = useMemo(() => {
     const counts = new Map<string, number>();
-    for (const b of books) {
+    for (const b of booksL) {
       if (b.category) counts.set(b.category, (counts.get(b.category) || 0) + 1);
     }
     return [...counts.entries()].sort((a, b) => b[1] - a[1]);
-  }, [books]);
+  }, [booksL]);
 
   const filtered = useMemo(() => {
     const term = submitted.trim().toLowerCase();
-    return books.filter((b) => {
+    return booksL.filter((b) => {
       if (cat !== ALL && b.category !== cat) return false;
       if (!term) return true;
       return `${b.title} ${b.author} ${b.category}`.toLowerCase().includes(term);
     });
-  }, [books, submitted, cat]);
+  }, [booksL, submitted, cat]);
 
   const list = filtered.slice(0, visible);
 
@@ -105,7 +119,7 @@ export default function LibraryPage() {
     <div className="animate-fade-up">
       <PageHead
         title={tx("লাইব্রেরি")}
-        subtitle={`${tx("ইসলামি কিতাব পড়ুন ও ডাউনলোড করুন")}${books.length ? ` • ${num(books.length)}${tx("টি বই")}` : ""}`}
+        subtitle={`${tx("ইসলামি কিতাব পড়ুন ও ডাউনলোড করুন")}${booksL.length ? ` • ${num(booksL.length)}${tx("টি বই")}` : ""}`}
         icon="library"
       />
 
@@ -141,7 +155,7 @@ export default function LibraryPage() {
                   }`}
                 >
                   <span>{tx("সব")}</span>
-                  <span className="text-[10px] font-bold tabular-nums opacity-70">{num(books.length)}</span>
+                  <span className="text-[10px] font-bold tabular-nums opacity-70">{num(booksL.length)}</span>
                 </button>
                 {categories.map(([name, count]) => (
                   <button
@@ -169,7 +183,7 @@ export default function LibraryPage() {
                 onClick={() => { setCat(ALL); setVisible(PAGE_SIZE); }}
                 className={`chip shrink-0 !px-4 !py-2 ${cat === ALL ? "chip-active" : ""}`}
               >
-                {tx("সব")} ({num(books.length)})
+                {tx("সব")} ({num(booksL.length)})
               </button>
               {categories.map(([name, count]) => (
                 <button

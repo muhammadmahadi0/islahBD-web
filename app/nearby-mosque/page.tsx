@@ -4,7 +4,8 @@ import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { detectLocation } from "../../lib/prayer";
 import { bnNum } from "../../lib/audio";
-import { useNum, useTx } from "../../store/language-store";
+import { useLang, useNum, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 interface Mosque {
   id: string;
@@ -31,6 +32,7 @@ function fmtRadius(meters: number, num: (n: number | string) => string, kmLabel:
 export default function NearbyMosque() {
   const tx = useTx();
   const num = useNum();
+  const lang = useLang();
   const [items, setItems] = useState<Mosque[]>([]);
   const [status, setStatus] = useState<Status>("loading");
   const [place, setPlace] = useState("");
@@ -78,7 +80,7 @@ export default function NearbyMosque() {
 
   const useGps = () => {
     if (!navigator.geolocation) {
-      setNote(tx("এই ডিভাইসে জিপিএস নেই।"));
+      setNote("এই ডিভাইসে জিপিএস নেই।");
       return;
     }
     setGpsBusy(true);
@@ -90,19 +92,20 @@ export default function NearbyMosque() {
       },
       () => {
         setGpsBusy(false);
-        setNote(tx("লোকেশন পাওয়া যায়নি — অনুমতি দিন।"));
+        setNote("লোকেশন পাওয়া যায়নি — অনুমতি দিন।");
       },
       { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
     );
   };
 
+  const itemsL = useLocalizedData(items, lang);
   const subtitle =
     status === "loading"
       ? tx("খোঁজা হচ্ছে…")
       : status === "error"
         ? tx("লোড করা যায়নি")
         : place
-          ? `${tx(place)} • ${num(items.length)}${tx("টি মসজিদ")}`
+          ? `${tx(place)} • ${num(itemsL.length)}${tx("টি মসজিদ")}`
           : tx("কাছের মসজিদ");
 
   return (
@@ -129,7 +132,7 @@ export default function NearbyMosque() {
         </button>
       </div>
 
-      {note && <p className="mt-2 text-center text-xs text-rose-500">{note}</p>}
+      {note && <p className="mt-2 text-center text-xs text-rose-500">{tx(note)}</p>}
       {radius > 0 && status === "ready" && (
         <p className="mt-2 text-center text-[11px] text-ink-faint">
           {fmtRadius(radius, num, tx("কিমি"))} {tx("পরিসরে, নিকটতম আগে")}
@@ -166,7 +169,7 @@ export default function NearbyMosque() {
         </div>
       ) : (
         <div className="mt-3 space-y-2">
-          {items.map((m) => {
+          {itemsL.map((m) => {
             const meta = [m.address, m.hours].filter(Boolean).join(" • ");
             return (
               <a

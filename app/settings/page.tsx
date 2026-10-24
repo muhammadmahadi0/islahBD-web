@@ -112,7 +112,7 @@ export default function SettingsPage() {
                 aria-pressed={lang === l.id}
                 className={seg(lang === l.id)}
               >
-                {l.native}
+                {lang === "bn" ? l.native : lang === "ur" ? l.ur : l.en}
               </button>
             ))}
           </div>

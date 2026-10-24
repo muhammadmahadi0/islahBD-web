@@ -37,10 +37,14 @@ No test suite — `bun run build` + prod smoke test is the gate.
   + `lib/i18n.ts` + `lib/ui-strings.ts`. Defaults to Bengali; `skipHydration`
   then `AppShell` rehydrate avoids SSR text mismatch. **Every new static UI
   string must be added to `lib/ui-strings.ts`** and rendered through
-  `tx("বাংলা")` (or `useTx()`), with `useNum()` for counts/dates; API content
-  is not translated. Urdu sets `dir="rtl"` via the pre-paint script and the
-  `html[lang="ur"]` font rule. Prayer Times uses the global language (the
-  old `praybd-lang` toggle is removed).
+  `tx("বাংলা")` (or `useTx()`), with `useNum()` for counts/dates. App-owned
+  content has pre-built `public/data/*.en.json` / `*.ur.json` packs; upstream
+  API/YouTube text is localized with `useLocalizedData()` /
+  `translateText()` (`lib/content-translate.ts` + `/api/translate`). Quran
+  translations/tafsir and book chapter bodies/PDFs stay in Bengali by design.
+  The pre-paint script keeps `dir="ltr"` in every language (Urdu text still
+  uses Unicode bidi) and adds `html[lang="ur"]` for the Urdu font. Prayer
+  Times uses the global language (the old `praybd-lang` toggle is removed).
 
 ## Gotchas (learned the hard way)
 

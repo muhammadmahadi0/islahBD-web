@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "./icons";
-import { CHANNELS } from "../lib/channels";
-import { useTx } from "../store/language-store";
+import { CHANNELS, channelLabel } from "../lib/channels";
+import { useLang, useTx } from "../store/language-store";
 
 /**
  * Single "চ্যানেল" button for the Others page — both channels live inside it
@@ -11,6 +11,7 @@ import { useTx } from "../store/language-store";
  */
 export default function ChannelButton() {
   const tx = useTx();
+  const lang = useLang();
   const [avatars, setAvatars] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function ChannelButton() {
           {tx("চ্যানেল")}
         </span>
         <span className="block truncate text-xs text-ink-faint">
-          {CHANNELS.map((c) => c.nameBn).join(" • ")}
+          {CHANNELS.map((c) => channelLabel(c, lang)).join(" • ")}
         </span>
       </span>
       <Icon name="chevron" size={18} className="text-ink-faint" />

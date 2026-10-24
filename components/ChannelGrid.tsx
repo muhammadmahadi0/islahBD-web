@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "./icons";
-import { useTx } from "../store/language-store";
-import { CHANNELS } from "../lib/channels";
+import { useLang, useTx } from "../store/language-store";
+import { CHANNELS, channelLabel } from "../lib/channels";
 
 interface ChannelMeta {
   avatar: string;
@@ -16,6 +16,7 @@ interface ChannelMeta {
  */
 export default function ChannelGrid() {
   const tx = useTx();
+  const lang = useLang();
   const [meta, setMeta] = useState<Record<string, ChannelMeta>>({});
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function ChannelGrid() {
               )}
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-bold">{c.nameBn}</span>
+              <span className="block truncate text-sm font-bold">{channelLabel(c, lang)}</span>
               <span className="block truncate text-xs text-ink-faint">
                 {c.handle} • {tx("ভিডিও দেখুন")}
               </span>

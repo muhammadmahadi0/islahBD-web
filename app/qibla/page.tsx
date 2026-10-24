@@ -35,7 +35,7 @@ export default function QiblaPage() {
   const lang = useLang();
   const [heading, setHeading] = useState<number | null>(null);
   const [qibla, setQibla] = useState<number | null>(null);
-  const [place, setPlace] = useState(tx("ঢাকা"));
+  const [place, setPlace] = useState("ঢাকা");
   const [sensor, setSensor] = useState<SensorState>("idle");
   const [note, setNote] = useState("");
   const [gpsBusy, setGpsBusy] = useState(false);
@@ -50,7 +50,7 @@ export default function QiblaPage() {
   const requestGps = useCallback(
     (silent = false) => {
       if (!navigator.geolocation) {
-        if (!silent) setNote(tx("এই ডিভাইসে GPS নেই — নিচ থেকে শহর বেছে নিন।"));
+        if (!silent) setNote("এই ডিভাইসে GPS নেই — নিচ থেকে শহর বেছে নিন।");
         return;
       }
       setGpsBusy(true);
@@ -62,7 +62,7 @@ export default function QiblaPage() {
         },
         () => {
           setGpsBusy(false);
-          if (!silent) setNote(tx("লোকেশন পাওয়া যায়নি — নিচ থেকে শহর বেছে নিন।"));
+          if (!silent) setNote("লোকেশন পাওয়া যায়নি — নিচ থেকে শহর বেছে নিন।");
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
       );
@@ -114,7 +114,7 @@ export default function QiblaPage() {
     const DOE = (window as unknown as { DeviceOrientationEvent?: typeof DeviceOrientationEvent & { requestPermission?: () => Promise<string> } }).DeviceOrientationEvent;
     if (!DOE) {
       setSensor("unsupported");
-      setNote(tx("এই ব্রাউজারে কম্পাস সেন্সর সাপোর্ট করে না — নিচের ডিগ্রি দেখে কাবার দিক মিলিয়ে নিন।"));
+      setNote("এই ব্রাউজারে কম্পাস সেন্সর সাপোর্ট করে না — নিচের ডিগ্রি দেখে কাবার দিক মিলিয়ে নিন।");
       return;
     }
 
@@ -126,13 +126,13 @@ export default function QiblaPage() {
         if (res !== "granted") {
           started.current = false;
           setSensor("need-permission");
-          setNote(tx("কম্পাসের অনুমতি দিন — iOS সেটিংসে Motion & Fitness চালু থাকতে হবে।"));
+          setNote("কম্পাসের অনুমতি দিন — iOS সেটিংসে Motion & Fitness চালু থাকতে হবে।");
           return;
         }
       } catch {
         started.current = false;
         setSensor("need-permission");
-        setNote(tx("কম্পাসের অনুমতি নেওয়া যায়নি — আবার চেষ্টা করুন।"));
+        setNote("কম্পাসের অনুমতি নেওয়া যায়নি — আবার চেষ্টা করুন।");
         return;
       }
     }
@@ -141,7 +141,7 @@ export default function QiblaPage() {
     window.setTimeout(() => {
       if (headingRef.current === null) {
         setSensor("unsupported");
-        setNote(tx("কম্পাস রিডিং পাওয়া যাচ্ছে না — ফোন সমতলে রেখে ৮-আকৃতিতে ঘুরিয়ে ক্যালিব্রেট করুন, অথবা নিচের ডিগ্রি দেখে কাবার দিক মিলিয়ে নিন।"));
+        setNote("কম্পাস রিডিং পাওয়া যাচ্ছে না — ফোন সমতলে রেখে ৮-আকৃতিতে ঘুরিয়ে ক্যালিব্রেট করুন, অথবা নিচের ডিগ্রি দেখে কাবার দিক মিলিয়ে নিন।");
       }
     }, 2800);
   }, []);
@@ -155,7 +155,7 @@ export default function QiblaPage() {
     const touch = typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
     if (!DOE) {
       setSensor("unsupported");
-      setNote(tx("এই ব্রাউজারে কম্পাস সেন্সর নেই — GPS বা শহর বেছে কাবার দিক দেখুন।"));
+      setNote("এই ব্রাউজারে কম্পাস সেন্সর নেই — GPS বা শহর বেছে কাবার দিক দেখুন।");
       return;
     }
 
@@ -284,7 +284,7 @@ export default function QiblaPage() {
             <Icon name="compass" size={18} /> {sensor === "need-permission" ? tx("অনুমতি দিয়ে চালু করুন") : tx("কম্পাস চালু করুন")}
           </button>
         )}
-        {note && <p className="mx-auto mt-3 max-w-xs text-[11px] leading-relaxed text-ink-faint">{note}</p>}
+        {note && <p className="mx-auto mt-3 max-w-xs text-[11px] leading-relaxed text-ink-faint">{tx(note)}</p>}
         <p className="mx-auto mt-2 max-w-xs text-[11px] leading-relaxed text-ink-faint">
           {tx("সঠিক দিকের জন্য ফোন সমতলে রেখে ৮-আকৃতিতে কয়েকবার ঘুরিয়ে ক্যালিব্রেট করুন। চুম্বক/মেটাল কভার দূরে রাখুন।")}
         </p>
@@ -309,7 +309,7 @@ export default function QiblaPage() {
               onClick={() => locate(c.lat, c.lng, c.nameBn)}
               className={`chip !px-3 !py-1.5 ${place === c.nameBn ? "chip-active" : ""}`}
             >
-              {c.nameBn}
+              {tx(c.nameBn)}
             </button>
           ))}
         </div>

@@ -2,11 +2,12 @@
 import { useEffect, useState } from "react";
 import { PageHead, ShareCopy, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { useNum, useTx } from "../../store/language-store";
+import { useLang, useNum, useTx } from "../../store/language-store";
 
 export default function PoemPage() {
   const tx = useTx();
   const num = useNum();
+  const lang = useLang();
   const [tab, setTab] = useState<"cats" | "hakim">("hakim");
   const [cats, setCats] = useState<any[]>([]);
   const [poems, setPoems] = useState<any[]>([]);
@@ -14,9 +15,20 @@ export default function PoemPage() {
   const [submitted, setSubmitted] = useState("");
 
   useEffect(() => {
-    fetch("/data/spiritual_poetry.json").then((r) => r.json()).then((d) => setCats(d.categories || [])).catch(() => {});
-    fetch("/data/hakim_akhtar.json").then((r) => r.json()).then((d) => setPoems(d.poems || [])).catch(() => {});
-  }, []);
+    let live = true;
+    const suffix = lang === "bn" ? "" : `.${lang}`;
+    fetch(`/data/spiritual_poetry${suffix}.json`)
+      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .catch(() => fetch("/data/spiritual_poetry.json").then((r) => r.json()))
+      .then((d) => { if (live) setCats(d.categories || []); })
+      .catch(() => {});
+    fetch(`/data/hakim_akhtar${suffix}.json`)
+      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .catch(() => fetch("/data/hakim_akhtar.json").then((r) => r.json()))
+      .then((d) => { if (live) setPoems(d.poems || []); })
+      .catch(() => {});
+    return () => { live = false; };
+  }, [lang]);
 
   const list = poems.filter((p: any) => !submitted.trim() || JSON.stringify(p).includes(submitted.trim())).slice(0, 80);
 

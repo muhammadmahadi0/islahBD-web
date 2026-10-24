@@ -1,13 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PageHead, ShareCopy, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { storageSetJSON, storageGetJSON } from "../../lib/storage";
-import { useNum, useTx } from "../../store/language-store";
+import { useLang, useNum, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 export default function MalfuzatPage() {
   const tx = useTx();
   const num = useNum();
+  const lang = useLang();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState<number[]>([]);
@@ -21,6 +23,8 @@ export default function MalfuzatPage() {
     setSaved(storageGetJSON<number[]>("malfuzat_bookmarks", []));
   }, []);
 
+  const visibleItems = useMemo(() => items.slice(0, 50), [items]);
+  const itemsL = useLocalizedData(visibleItems, lang);
   const toggle = (i: number) => {
     const n = saved.includes(i) ? saved.filter((x) => x !== i) : [...saved, i];
     setSaved(n);
@@ -39,11 +43,11 @@ export default function MalfuzatPage() {
             </div>
           ))}
         </div>
-      ) : items.length === 0 ? (
+      ) : itemsL.length === 0 ? (
         <div className="mt-3"><EmptyState icon="chat" title={tx("এখনো কিছু নেই")} /></div>
       ) : (
         <div className="mt-3 space-y-2">
-          {items.slice(0, 50).map((m: any, i: number) => (
+          {itemsL.slice(0, 50).map((m: any, i: number) => (
             <div key={i} className="card p-4">
               <p className="whitespace-pre-line text-sm leading-relaxed">{m.text || m.content || m.title}</p>
               <div className="mt-2 flex items-center gap-1.5">

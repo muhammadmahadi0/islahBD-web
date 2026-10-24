@@ -165,7 +165,9 @@ export default function PrayerTimesPage() {
         <span className="flex-1 text-[13px]">
           <span className="block font-bold">{tx("অটো লোকেশন")}</span>
           <span className="block text-xs text-ink-faint">
-            {loc ? `${loc.city}${loc.country && loc.country !== "BD" ? `, ${loc.country}` : ""}` : tx("খোঁজা হচ্ছে…")}
+            {loc
+              ? `${cityObj ? (lang === "bn" ? cityObj.nameBn : lang === "ur" ? tx(cityObj.nameBn) : cityObj.name) : tx(loc.city)}${loc.country && loc.country !== "BD" ? `, ${loc.country}` : ""}`
+              : tx("খোঁজা হচ্ছে…")}
           </span>
         </span>
         <button onClick={refreshLocation} disabled={refreshing} className="btn-ghost shrink-0 !py-2 text-[13px] disabled:opacity-60">
@@ -264,7 +266,7 @@ export default function PrayerTimesPage() {
 
       {updatedAt && (
         <p className="mt-3 text-center text-[11px] text-ink-faint">
-          {tx("আপডেট")}: {updatedAt.toLocaleTimeString(lang === "bn" ? "bn-BD" : "en-US", { hour: "numeric", minute: "2-digit" })}
+          {tx("আপডেট")}: {updatedAt.toLocaleTimeString(lang === "bn" ? "bn-BD" : lang === "ur" ? "ur-PK" : "en-US", { hour: "numeric", minute: "2-digit" })}
           {" • "}Aladhan (Karachi/Hanafi)
         </p>
       )}

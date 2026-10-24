@@ -1,0 +1,318 @@
+{
+  "source_book": "Quran and Hadith in Khazayen",
+  "author": "Hazrat Maulana Shah Hakeem Muhammad Akhtar Saheb",
+  "translator": "Maulana Abdul Mateen bin Hussain",
+  "app_version": "1.0.0",
+  "id": "dua",
+  "title": "Duas",
+  "icon": "dua_icon",
+  "description": "Topical and daily supplications",
+  "categories": [
+    {
+      "id": "hefajot_dua",
+      "title": "Dua for protection",
+      "items": [
+        {
+          "id": "dua_001",
+          "title": "Dua for protection of wealth, religion, faith and family",
+          "fazilat": "If this dua is recited in the morning and in the evening, with its blessings, Allah protects his religion, faith, life, property, family, and the doer's heart is freed from worries and worries about them.",
+          "reference": "Kanyul-Ummal 2nd volume, 636 pages",
+          "amal_text": [
+            {
+              "arabic": "بِسْمِ اللَّهِ عَلَى دِينِي وَنَفْسِي وَوَلَدِي وَأَهْلِي وَمَالِي",
+              "bangla_translation": "(Protect) my religion, my life, my children, my family and my wealth in the name of Allah.",
+              "recite_count": "morning and evening"
+            }
+          ]
+        },
+        {
+          "id": "dua_002",
+          "title": "Dua to keep house, wealth and family safe from fire and all kinds of dangers",
+          "fazilat": "A person who recites this dua at the beginning of the day will be protected from all dangers till evening. There is a tradition that there will be no danger in himself, in his family and in his wealth.",
+          "reference": "Ushwaye Rasoole-Akram, 311 pages",
+          "narrator": "Hazrat Abu Darda RA",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ أَنتَ رَبِّي لَا إِلَهَ إِلَّا أَنتَ عَلَيْكَ تَوَكَّلْتُ وَأَنتَ رَبُّ الْعَرْشِ الْعَظِيمِ مَا شَاءَ اللَّهُ كَانَ وَمَا لَمْ يَشَأْ لَمْ يَكُن وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ أَعْلَمُ أَنَّ اللَّهَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ وَأَنَّ اللَّهَ قَدْ أَحَاطَ بِكُلِّ شَيْءٍ عِلْماً",
+              "bangla_translation": "O Allah, You are my Lord, there is no god but You. You alone are my trust. You are the owner of Arshe Azeem. What God wills, happens. And what he does not want, does not happen. Without the help of Almighty Allah, there is no way to escape from sin, nor is there any power to worship. I know for sure that Allah is all-powerful and all-encompassing in His knowledge.",
+              "recite_count": "1 time in the morning"
+            }
+          ]
+        },
+        {
+          "id": "dua_new_01",
+          "title": "Prayer for protection from all kinds of harm in the morning and evening",
+          "fazilat": "If you recite this dua 3 times in the morning and evening, nothing in heaven and earth can harm him.",
+          "reference": "Abu Dawud 5088, Tirmidhi 3388",
+          "narrator": "Hazrat Uthman Bin Affan RA",
+          "amal_text": [
+            {
+              "arabic": "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+              "bangla_translation": "In the name of Allah, whose name nothing in the heavens and the earth can harm. He is All-Hearing, All-Knowing.",
+              "recite_count": "3 times in the morning and evening"
+            }
+          ]
+        },
+        {
+          "id": "dua_new_02",
+          "title": "Prayer to seek refuge from the evil of creation",
+          "fazilat": "A person who recites this dua three times in the evening, no poisonous animal or harmful thing can harm him that night.",
+          "reference": "Sahih Muslim 2709",
+          "narrator": "Hazrat Abu Huraira RA",
+          "amal_text": [
+            {
+              "arabic": "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
+              "bangla_translation": "I seek refuge in Allah's perfect words from the evils of all His creations.",
+              "recite_count": "3 times in the morning and evening"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rin_dushinta_dua",
+      "title": "Prayer for freedom from debt and worry",
+      "items": [
+        {
+          "id": "dua_003",
+          "title": "Prayer for freedom from debt and worry",
+          "fazilat": "Allah Almighty will pay all your duties and remove all your worries. The said man said, I started its practice in the morning and evening as usual as per the instructions of Huzu Pak. As a result, Allah Almighty freed me from all my duties and from all worries.",
+          "reference": "Abu Dawud, Meshkat, 215 pages",
+          "narrator": "Hazrat Abu Saeed Khudri RA",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحُزْنِ وَأَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ وَأَعُوذُ بِكَ مِنَ الْبُخْلِ وَالْجُبْنِ وَأَعُوذُ بِكَ مِن غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ",
+              "bangla_translation": "O Allah, I seek refuge in You from anxiety, more refuge from incapacity and laziness, more refuge from being burdened with debt and facing pressure from people.",
+              "recite_count": "morning and evening"
+            }
+          ]
+        },
+        {
+          "id": "dua_new_03",
+          "title": "Dua to pay debt equivalent to mountains",
+          "fazilat": "Even if there is a debt equivalent to a mountain, Allah will make arrangements to pay it with the blessing of this prayer.",
+          "reference": "Tirmidhi 3563",
+          "narrator": "Hazrat Ali",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ",
+              "bangla_translation": "O Allah! Save me from Your forbidden things with Your Halal sustenance and keep me from facing all but You by Your grace.",
+              "recite_count": "regular"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "neamat_shanti_dua",
+      "title": "Prayer for peace and blessings",
+      "items": [
+        {
+          "id": "dua_004",
+          "title": "Dua for peace, prosperity and a safe life from dangers",
+          "fazilat": "With the blessings of this period, happiness, peace and security of wealth, body-mind-life and religion-faith continue.",
+          "reference": "Muslim Sharif, Meshkat Sharif 217 pages",
+          "narrator": "Hazrat Abdullah Ibn-Umar RA",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِن زَوَالِ نِعْمَتِكَ وَتَحَوُّلِ عَافِيَتِكَ وَفُجَاءَةِ نِقْمَتِكَ وَجَمِيعِ سَخَطِكَ",
+              "bangla_translation": "O Allah, I seek refuge in You from the loss and destruction of Your Neamat (immutable), from the evil changes in Your Affiyyah (happiness, peace and health of body, mind and life), from sudden calamities and from Your displeasure.",
+              "recite_count": "regular"
+            }
+          ]
+        },
+        {
+          "id": "dua_005",
+          "title": "Dua for guidance, piety, protection from evil and wealth",
+          "fazilat": "Allah gives guidance, piety, protection from evil and wealth.",
+          "reference": "Jawaherul Bokhari 575 pages",
+          "narrator": "Hazrat Abdullah Ibn-Masud RA",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى",
+              "bangla_translation": "O Allah, I ask You for guidance, piety, protection from evil and wealth.",
+              "recite_count": "regular"
+            }
+          ]
+        },
+        {
+          "id": "dua_new_04",
+          "title": "Dua for the overall welfare of the world and the hereafter",
+          "fazilat": "The Prophet (peace and blessings of Allah be upon him) used to recite this supplication mentioned in the Quran. It includes all the benefits of this world and the hereafter.",
+          "reference": "Surah Baqarah: 201, Sahih Bukhari 4522",
+          "narrator": "Hazrat Anas",
+          "amal_text": [
+            {
+              "arabic": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+              "bangla_translation": "O our Lord! Grant us good in this world and good in the Hereafter and save us from the punishment of Hellfire.",
+              "recite_count": "any time"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mahabbat_dua",
+      "title": "Prayer for the love of Allah",
+      "items": [
+        {
+          "id": "dua_006",
+          "title": "Prayer for the love of Allah, the love of Allah's saints, and good deeds",
+          "fazilat": "With the blessing of this prayer, the love of God, the love of God's saints is achieved, the love of God is achieved by means of all the deeds, those deeds are also blessed and the love of God in the heart becomes more and deeper than the love of life and wealth.",
+          "reference": "Tirmidhi, Jawaharlal-Bokhari 572 pages",
+          "narrator": "Hazrat Abu Darda RA",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ حُبَّكَ وَحُبَّ مَن يُحِبُّكَ وَالْعَمَلَ الَّذِي يُبَلِّغُنِي حُبَّكَ اللَّهُمَّ اجْعَلْ حُبَّكَ أَحَبَّ إِلَيَّ مِن نَّفْسِي وَأَهْلِي وَمِنَ الْمَاءِ الْبَارِدِ",
+              "bangla_translation": "O Allah, I seek Your love, I seek the love of those who love You, and I seek the alms of deeds and actions that will lead me to Your love. O Allah, make Your love dearer to me than my soul, my children and relatives and cold water.",
+              "recite_count": "regular"
+            }
+          ]
+        },
+        {
+          "id": "dua_new_05",
+          "title": "Dua for Allah's satisfaction and Paradise",
+          "fazilat": "Through this dua, one seeks Allah's pleasure and Paradise and seeks refuge from His displeasure and Hell.",
+          "reference": "Sunan Ibn Majah",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ رِضَاكَ وَالْجَنَّةَ وَأَعُوذُ بِكَ مِنْ سَخَطِكَ وَالنَّارِ",
+              "bangla_translation": "O Allah! I ask You for Your pleasure and Paradise and seek refuge from Your displeasure and Hell.",
+              "recite_count": "regular"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shirk_mafi_dua",
+      "title": "Dua for protection from shirk and for forgiveness",
+      "items": [
+        {
+          "id": "dua_007",
+          "title": "Dua to protect shirk from khafi (subtle shirk).",
+          "fazilat": "There is good news of the guarantee of freedom from shirk and receiving the great wealth of Ikhlas for those who regularly read the said dua.",
+          "reference": "Kanyul-Ummal, Volume 2, 816 pages",
+          "narrator": "Hazrat Abu Bakr Siddique Radiyallahu Anhu",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَن أُشْرِكَ بِكَ وَأَنَا أَعْلَمُ وَأَسْتَغْفِرُكَ لِمَا لَا أَعْلَمُ",
+              "bangla_translation": "O Allah, I sincerely seek refuge from You knowingly and knowingly. And if I commit shirk without knowing or understanding, I ask you for forgiveness.",
+              "recite_count": "regular"
+            }
+          ]
+        },
+        {
+          "id": "dua_008",
+          "title": "A prayer that arranges forgiveness and forgiveness from Allah",
+          "fazilat": "There are some traditions that Huzoor sallallahu alaihi wasallam said to make this dua on the night of Qadr. Therefore, this dua should be recited with more importance on Shabbat-Qadr.",
+          "reference": "Jawaharlal-Bokhari 570 pages",
+          "narrator": "Hazrat Ayesha Radiyallahu Anha",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنَّكَ عَفُوٌّ كَرِيمٌ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
+              "bangla_translation": "Oh God! Surely You are Most Forgiving, You are Selfless-Kind. You love to forgive (forgiving is your favorite thing). So, forgive me.",
+              "recite_count": "Especially in Shabbat"
+            }
+          ]
+        },
+        {
+          "id": "dua_new_06",
+          "title": "Sayyedul Istighfar (The Best Forgiveness)",
+          "fazilat": "If he recites this dua in the morning with strong faith and dies in the evening of that day, he will enter paradise. And if he falls in the evening and dies that night, he will also enter Paradise.",
+          "reference": "Sahih Bukhari 6306",
+          "narrator": "Hazrat Shaddad Ibn Aws RA",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+              "bangla_translation": "O Allah! You are my Lord, there is no god but You. You created me and I am Your servant. I stand by your promise and commitment to the best of my ability. I seek refuge with you from the evil of my deeds. I acknowledge the blessings you have given me and I also acknowledge my sins. So please forgive me. Because there is no one to forgive sins except you.",
+              "recite_count": "1 time in the morning, 1 time in the evening"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kobor_azab_dua",
+      "title": "Prayer for protection from grave punishment and hell",
+      "items": [
+        {
+          "id": "dua_009",
+          "title": "Dua to be saved from grave punishment, hell, loss of wealth and loss of poverty",
+          "fazilat": "Seek refuge in Allah from the distress of the grave, from the punishment of Hell, and from the loss and harm of wealth and scarcity.",
+          "reference": "Abu Dawud, Tirmidhi, Jawaharlal-Bukhari 570 pages",
+          "narrator": "Ummul-Momineen Hazrat Ayesha Radiyallahu Anha",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِن فِتْنَةِ الْقَبْرِ وَعَذَابِ النَّارِ وَمِن شَرِّ الْغِنَى وَالْفَقْرِ",
+              "bangla_translation": "O Allah, I seek refuge in You from the distress of the grave, from the torment of Hell and from the loss and harm of wealth and poverty.",
+              "recite_count": "regular"
+            }
+          ]
+        },
+        {
+          "id": "dua_new_07",
+          "title": "Prayer for protection from Hell, the torment of the grave and the fitnah of Dajjal",
+          "fazilat": "The Messenger of Allah (peace and blessings of Allah be upon him) ordered this dua to be recited after reciting Tashahhud and Durood at the last sitting of every prayer.",
+          "reference": "Sahih Muslim 588",
+          "narrator": "Hazrat Abu Huraira RA",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ جَهَنَّمَ، وَمِنْ عَذَابِ الْقَبْرِ، وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ، وَمِنْ شَرِّ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ",
+              "bangla_translation": "O Allah! I seek refuge with You from the punishment of Hell, from the punishment of the grave, from the trial of life and death, and from the evil of the trial of Masih Dajjal.",
+              "recite_count": "At the last prayer meeting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pereshani_mukti_dua",
+      "title": "Prayer for freedom from trouble and turmoil",
+      "items": [
+        {
+          "id": "dua_010",
+          "title": "Prayer for freedom from all kinds of trouble and turmoil",
+          "fazilat": "Whenever Rasulullah ﷺ saw any trouble, he used to recite this dua.",
+          "reference": "Merkat, Volume 5, page 221",
+          "narrator": "Hazrat Anas",
+          "amal_text": [
+            {
+              "arabic": "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ",
+              "bangla_translation": "O Eternal One, O Mighty Sustainer, relying on Your mercy I seek Your help.",
+              "recite_count": "In any situation"
+            }
+          ]
+        },
+        {
+          "id": "dua_011",
+          "title": "Prayer for protection from severe dangers and enemies",
+          "fazilat": "Seek refuge in Allah from severe calamities, from the attacks of misfortune, from harmful judgments and from the joy of the enemies.",
+          "reference": "Merkat Volume 5, 222 pages",
+          "narrator": "Hazrat Abu Hurairah",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِن جَهْدِ الْبَلَاءِ وَدَرَكِ الشَّقَاءِ وَسُوءِ الْقَضَاءِ وَشَمَاتَةِ الْأَعْدَاءِ",
+              "bangla_translation": "O Allah, I seek refuge in You from extreme danger, from the onslaught of misfortune, from harmful judgments and from the joy of enemies.",
+              "recite_count": "Read at your peril"
+            }
+          ]
+        },
+        {
+          "id": "dua_new_08",
+          "title": "Dua to Remove Dangers and Worries (Duay Yunus)",
+          "fazilat": "This is the dua of Hazrat Yunus (AS). If you read this dua in any danger or worry, Allah removes it.",
+          "reference": "At-Tirmidhi 3505, Surah Ambiya: 87",
+          "narrator": "Hazrat Saad Ibn Abi Waqqas RA",
+          "amal_text": [
+            {
+              "arabic": "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
+              "bangla_translation": "There is no god but You, You are the Holy, the Great. Surely I am among the wrongdoers.",
+              "recite_count": "Read more at risk"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

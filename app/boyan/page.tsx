@@ -5,10 +5,11 @@ import { Icon } from "../../components/icons";
 import { usePlayerStore, type Track } from "../../store/player-store";
 import AddToPlaylistMenu from "../../components/audio/AddToPlaylistMenu";
 import {
-  boyanToTrack, timeAgoBn, bnNum,
+  boyanToTrack,
   type BoyanAudio, type BoyanCategory,
 } from "../../lib/audio";
-import { useNum, useTx } from "../../store/language-store";
+import { useLang, useNum, useTimeAgo, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 // Bayan section — beta BoyanView behavior (search, category filter, silent
 // background refresh, queue playback, playlist menu) on the app theme,
@@ -16,6 +17,8 @@ import { useNum, useTx } from "../../store/language-store";
 export default function BoyanPage() {
   const tx = useTx();
   const num = useNum();
+  const timeAgo = useTimeAgo();
+  const lang = useLang();
   const [audios, setAudios] = useState<BoyanAudio[]>([]);
   const [categories, setCategories] = useState<BoyanCategory[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,7 +47,7 @@ export default function BoyanPage() {
       if (Array.isArray(data.categories)) setCategories(data.categories);
       setError("");
     } catch (e) {
-      if (!silent) setError(tx("বয়ান তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।"));
+      if (!silent) setError("বয়ান তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।");
     } finally {
       if (!silent) setLoading(false);
     }
@@ -56,14 +59,16 @@ export default function BoyanPage() {
     return () => { if (refreshTimer.current) clearInterval(refreshTimer.current); };
   }, [load]);
 
+  const audiosL = useLocalizedData(audios, lang);
+  const categoriesL = useLocalizedData(categories, lang);
   const results = useMemo(() => {
     const q = submitted.trim().toLowerCase();
-    return audios.filter((a) => {
+    return audiosL.filter((a) => {
       if (cat !== "all" && a.category !== cat) return false;
       if (!q) return true;
       return [a.title, a.speaker, a.location, a.category].some((s) => s.toLowerCase().includes(q));
     });
-  }, [audios, submitted, cat]);
+  }, [audiosL, submitted, cat]);
 
   const tracks = useMemo(() => results.map(boyanToTrack), [results]);
 
@@ -86,7 +91,7 @@ export default function BoyanPage() {
     <div className="animate-fade-up">
       <PageHead
         title={tx("বয়ান")}
-        subtitle={`${tx("সরাসরি MP3 লেকচার")} • ${num(audios.length)}${tx("টি বয়ান")}`}
+        subtitle={`${tx("সরাসরি MP3 লেকচার")} • ${num(audiosL.length)}${tx("টি বয়ান")}`}
         icon="mic"
         action={
           results.length > 0 ? (
@@ -109,12 +114,12 @@ export default function BoyanPage() {
         />
       </form>
 
-      {categories.length > 0 && (
+      {categoriesL.length > 0 && (
         <div className="rail -mx-3 flex gap-2 overflow-x-auto px-3 py-3">
           <button onClick={() => setCat("all")} className={`chip shrink-0 !px-4 !py-2 ${cat === "all" ? "chip-active" : ""}`}>
             {tx("সব")}
           </button>
-          {categories.map((c) => (
+          {categoriesL.map((c) => (
             <button
               key={c.id}
               onClick={() => setCat(c.name)}
@@ -141,14 +146,14 @@ export default function BoyanPage() {
           ))}
         </div>
       ) : error ? (
-        <EmptyState icon="mic" title={error} hint={tx("পুনরায় চেষ্টা করুন")} />
+        <EmptyState icon="mic" title={tx(error)} hint={tx("পুনরায় চেষ্টা করুন")} />
       ) : results.length === 0 ? (
         <EmptyState icon="search" title={tx("কিছু পাওয়া যায়নি")} hint={tx("অন্য শব্দে খুঁজে দেখুন")} />
       ) : (
         <div className="space-y-2">
           {results.slice(0, 150).map((a, i) => {
             const active = currentTrack?.id === `boyan-${a.id}`;
-            const sub = [a.speaker, a.location, timeAgoBn(a.uploadDate)].filter(Boolean).join(" • ");
+            const sub = [a.speaker, a.location, timeAgo(a.uploadDate)].filter(Boolean).join(" • ");
             return (
               <div
                 key={a.id}

@@ -1040,6 +1040,10 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
     "Tafsir off",
     "تفسیر بند"
   ],
+  "নোটিশ": [
+    "Notice",
+    "نوٹس"
+  ],
   "নোটিশ বোর্ড": [
     "Notice board",
     "نوٹس بورڈ"
@@ -1347,6 +1351,10 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
   "তাফসীর": [
     "Tafsir",
     "تفسیر"
+  ],
+  "তাফসীর:": [
+    "Tafsir:",
+    "تفسیر:"
   ],
   "দক্ষিণ": [
     "South",

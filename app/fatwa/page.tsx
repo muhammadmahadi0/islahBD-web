@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { useTx } from "../../store/language-store";
+import { useLang, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 export default function FatwaPage() {
   const tx = useTx();
+  const lang = useLang();
   const [cats, setCats] = useState<any[]>([]);
   const [qs, setQs] = useState<any[]>([]);
   const [q, setQ] = useState("");
@@ -22,16 +24,18 @@ export default function FatwaPage() {
     }).finally(() => setLoading(false));
   }, []);
 
-  const list = qs
+  const catsL = useLocalizedData(cats, lang);
+  const qsL = useLocalizedData(qs, lang);
+  const list = qsL
     .filter((x: any) => !submitted.trim() || JSON.stringify(x).includes(submitted.trim()))
     .slice(0, 40);
 
   return (
     <div className="animate-fade-up">
       <PageHead title={tx("শরঈ জিজ্ঞাসা")} subtitle={tx("মাসআলা-মাসায়েলের উত্তর")} icon="help" />
-      {cats.length > 0 && (
+      {catsL.length > 0 && (
         <div className="rail -mx-3 mt-3 flex gap-2 overflow-x-auto px-3">
-          {cats.slice(0, 20).map((c: any, i: number) => (
+          {catsL.slice(0, 20).map((c: any, i: number) => (
             <span key={i} className="chip shrink-0">{c.title || c.name}</span>
           ))}
         </div>

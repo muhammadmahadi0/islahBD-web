@@ -144,24 +144,56 @@ export function formatSecs(sec: number): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-/** ISO date → Bengali relative time ("৩ দিন আগে"). */
 const BN_DIGITS = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+type UiLang = "bn" | "ur" | "en";
+
 export function bnNum(n: number): string {
   return String(n).replace(/[0-9]/g, (d) => BN_DIGITS[Number(d)]);
 }
 
-export function timeAgoBn(iso: string): string {
+/** Format digits for the selected UI language (Bangla digits only in bn). */
+export function localizeDigits(value: number | string, lang: UiLang): string {
+  const s = String(value);
+  if (lang === "bn") return s.replace(/[0-9]/g, (d) => BN_DIGITS[Number(d)]);
+  return s.replace(/[০-৯]/g, (d) => String(BN_DIGITS.indexOf(d)));
+}
+
+/** ISO date → relative time in the selected UI language. */
+export function timeAgo(iso: string, lang: UiLang = "bn"): string {
   if (!iso) return "";
   const t = new Date(iso).getTime();
   if (isNaN(t)) return "";
   const mins = Math.floor((Date.now() - t) / 60000);
-  if (mins < 1) return "এইমাত্র";
-  if (mins < 60) return `${bnNum(mins)} মিনিট আগে`;
+  if (mins < 1) return lang === "bn" ? "এইমাত্র" : lang === "ur" ? "ابھی" : "just now";
+  if (lang === "bn") {
+    if (mins < 60) return `${bnNum(mins)} মিনিট আগে`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `${bnNum(hours)} ঘণ্টা আগে`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) return `${bnNum(days)} দিন আগে`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${bnNum(months)} মাস আগে`;
+    return `${bnNum(Math.floor(months / 12))} বছর আগে`;
+  }
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${bnNum(hours)} ঘণ্টা আগে`;
   const days = Math.floor(hours / 24);
-  if (days < 30) return `${bnNum(days)} দিন আগে`;
   const months = Math.floor(days / 30);
-  if (months < 12) return `${bnNum(months)} মাস আগে`;
-  return `${bnNum(Math.floor(months / 12))} বছর আগে`;
+  const years = Math.floor(months / 12);
+  if (lang === "ur") {
+    if (mins < 60) return `${mins} منٹ پہلے`;
+    if (hours < 24) return `${hours} گھنٹے پہلے`;
+    if (days < 30) return `${days} دن پہلے`;
+    if (months < 12) return `${months} مہینے پہلے`;
+    return `${years} سال پہلے`;
+  }
+  const unit = (n: number, one: string, many: string) => (n === 1 ? one : many);
+  if (mins < 60) return `${mins} ${unit(mins, "minute", "minutes")} ago`;
+  if (hours < 24) return `${hours} ${unit(hours, "hour", "hours")} ago`;
+  if (days < 30) return `${days} ${unit(days, "day", "days")} ago`;
+  if (months < 12) return `${months} ${unit(months, "month", "months")} ago`;
+  return `${years} ${unit(years, "year", "years")} ago`;
+}
+
+export function timeAgoBn(iso: string): string {
+  return timeAgo(iso, "bn");
 }

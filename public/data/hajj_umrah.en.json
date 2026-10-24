@@ -1,0 +1,573 @@
+{
+  "source_book": "Easy Umrah and Tamattu Hajj",
+  "author": "Maulana Shah Abdul Mateen Bin Hussain (Khalifay Arefbillah Hazrat Maulana Shah Hakeem Muhammad Akhtar Saheb)",
+  "publisher": "Hakimul Ummat Publications, Islami Tower, 11 Banglabazar, Dhaka",
+  "publication_date": "Zilqad 1437 Hijri, August 2016 Christian",
+  "app_version": "1.0.0",
+  "id": "hajj_umrah",
+  "title": "Hajj and Umrah",
+  "icon": "kaaba",
+  "description": "A complete step-by-step guide to Tamattu Hajj and Umrah — including supplications, rules and etiquette",
+  "categories": [
+    {
+      "id": "hajj_virtues",
+      "title": "Virtues of Hajj and Umrah",
+      "subtitle": "Virtues of Hajj and Umrah in light of Quran and Hadith",
+      "items": [
+        {
+          "id": "hajj_001",
+          "serial": "১",
+          "title": "The essence of Hajj-Umrah",
+          "fazilat": "The essence of Hajj-Umrah is to go to the house of God in search of God and surrender to God. All the acts of Hajj-Umrah, its whole picture is filled with the love of Allah.\n\nSaying Tawaf ki Sai, Mina-Arafa-Muzdalifah worship-worship, supplication, dhikr and tears, the scene of pelting stones in the Jamarat, the scene of cutting hair or shaving the head, the sound of Ihram clothes and the sound of labbaik-labbaik — these are all acts and behaviors filled with the fire of Allah's love. The whole journey is a picture of manners, love, self-absorption, search and bewilderment and tears and pleas.\n\nMay Allah bless all the pilgrims of the Kaaba with 'hearts filled with the love of Allah' and 'lives devoted to Allah'. Accept this Mubarak visit very much everyone. amen",
+          "reference": "Easy Umrah and Tamattu Hajj — two words",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_002",
+          "serial": "২",
+          "title": "Using this guide",
+          "fazilat": "Keeping it with you during the Mubarak visit to the Holy Haramain will be very beneficial inshaAllah.\n\nFor detailed matters one must refer to Kitabadi of respected learned Mufti Saheban. Consult the learned mufti about any mistake, doubt or need to know about Hajj. One or two wise people of your country can keep Mufti Sahib's mobile number with you — so that you can contact him if necessary.",
+          "reference": "Easy Umrah and Tamattu Hajj",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_033",
+          "serial": "১",
+          "title": "Looking towards the Kaaba Sharif",
+          "fazilat": "It is mustahab to recite this dua whenever you look at the Kaaba while staying in Makkah.\n\nImam Azraqi narrates that Tabi Saeed Ibnul-Musayyab (RA) said: Whoever looks at the Kaaba with faith will be as free from sin as the day he was born from his mother's womb. — Durrul Manchur\n\nTabee' Ata bin Abi-Rabah (R.A.) said: 'Looking once' at the 'Baytullah' without any prayer or Tawaf is equivalent to one year of Nafl Ibadah, i.e. standing in prayer for one year, and lying in Ruku-Sijdah for one year. (This amount will be the reward.) — Durrul Mansoor\n\nAbus-Shayib al-Madani (RA) said: Whoever looks at the Kaaba with faith and sincere belief, his sins fall away like the leaves of a tree. — Durrul Manchur",
+          "reference": "Durrul Manchur, Tabrani",
+          "amal_text": [
+            {
+              "name": "Dua of Kaaba darshan",
+              "arabic": "اللَّهُمَّ زِدْ بَيْتَكَ هَذَا تَشْرِيفًا وَتَعْظِيمًا وَتَكْرِيمًا وَبِرًّا وَمَهَابَةً",
+              "transliteration": "Allahumma Zid Baitaka Haja Tashrifan, wa Ta'ziman, wa Takriman, wa Birran wa Mahabatan.",
+              "bangla_translation": "O Allah! Increase the honor, dignity, greatness, welfare and greatness of this house of yours.",
+              "recite_count": "Whenever looking at the Kaaba Sharif",
+              "description": "It is mustahab to read"
+            }
+          ]
+        },
+        {
+          "id": "hajj_034",
+          "serial": "২",
+          "title": "Benefits of delay",
+          "fazilat": "The wall between Hajre-Aswad and the door of the Kaaba is called Multazam.\n\nAt the end of Tawaf (in addition to similar Tawaf) it is an important mustahab act to make supplication to Allah by placing both hands on the wall above the head and touching the chest with Multazam and sometimes touching the right cheek, sometimes the left cheek to the wall and crying very humbly.\n\nSince Multazam is smeared with Khushbu, Multazam cannot be touched in the state of Ihram. Other times may be considered as opportunistic if there is no 'dangerous crowd'.\n\nIbn Abbas (may Allah be pleased with him) said: Whatever is asked in Multazam, Allah grants it.",
+          "reference": "Abdur Razak in Musannah",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_035",
+          "serial": "৩",
+          "title": "Virtues of Hajre-Aswad and Rukne-Yamani",
+          "fazilat": "Hadith: Touching Hajre-Aswad and Rukne-Yamani washes away sins. — Tirmidhi, Musnad Ahmad\n\nIbn-Abbas (may Allah be pleased with him) said: He who touches Rukne-Yamani — even if it is as fast as lightning — then supplicates, it will surely be accepted. — Musannaf Abdur Razak\n\nAfter Tawaf (in addition to similar Tawaf) it is Mustahab to kiss Hajre-Aswad.\n\nWarning: Undoubtedly this kiss is a dignified Mustahab act. But many passionate people put themselves and others in grave danger to kiss Hazret-Aswad as if it were an obligatory act and as if all the sins of causing harm to others were absolved for it! Whereas Hazrat Hasan Basri (RA) said: 'Abrar' (Paradise people) are those who do not agree to bad deeds and do not harm even an ant.\n\nWrote in Bahrur-Raiq: It is Sunnah to touch and kiss Hajre-Aswad — without causing pain to anyone. It is obligatory to refrain from causing pain.\n\nHazrat Umar (RA) used to forbid crowding and jostling in Hajre-Aswad.\n\n💡 If it is not possible to touch and kiss Hajre-Aswad without hurting someone, then one should 'gesture' with both palms and kiss with one's own hand. — Al-Muhitul Burhani, Volume 5\n\nCurrently Hazre-Aswad is very crowded. People are sometimes hurt and sometimes injured due to their own mistakes by pushing and shoving there. Multazam is also very crowded. But Rukne-Yamani is not so crowded. And if one sits and looks at the Kaaba Sharif, there is no problem. But how many benefits!",
+          "reference": "Tirmidhi, Musnad Ahmad, Al-Muhitul Burhani",
+          "amal_text": []
+        }
+      ]
+    },
+    {
+      "id": "umrah_guide",
+      "title": "Umrah",
+      "subtitle": "Complete procedure of Umrah from start to finish",
+      "items": [
+        {
+          "id": "hajj_004",
+          "serial": "ধাপ ১",
+          "title": "Preparation for Ihram",
+          "fazilat": "First perform ablution for Ihram before leaving for the trip. Then wear Ihram clothes. (It is not necessary to make the intention of Umrah or Haj immediately after wearing Ihram clothes. It can be done later if convenient.)\n\nWear a chador instead of a korta, and a chador instead of a lungi. The ground sheet of the lungi can be stitched together from both sides with a thick needle. Or because of carelessness while lying down, many people open their stomachs. And the sin of breaking open is a difficult matter.\n\nWomen will wear normal clothes and normal shoes and socks. In order not to hide the burqa niqab, put a 'special type of cap' on the head and hang the niqab on the face over that cap.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 6-7",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_005",
+          "serial": "ধাপ ২",
+          "title": "Niyat and Talbiya of Ihram",
+          "fazilat": "After boarding the airplane with ablution, whenever the airplane takes off, just perform Umrah like this: 'O Allah! I am performing Umrah for your satisfaction. You take it easy and accept it.'\n\nYou can also make an appointment before boarding the plane. You can schedule your departure time in your own home. But outwardly, getting on an airplane is much more risk-free.\n\nRecite the Ihram Dua (Talbiya) immediately after Niyat. This is a must read. Otherwise Ihram will not be. (Note that there is no other dua in the entire journey of Hajj-Umrah except this single dua without which Hajj or Umrah will not take place.)\n\nThus your 'Ihram' is complete with the recitation of Niyyat and Labbaik. Now keep reciting 'Labbaik, Allahumma Labbaik' (full) repeatedly as often as you can.\n\nThe great opportunity and good fortune of reading 'Bishda e Talbiya' is only in this state of Ihram of Hajj-Umrah.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 7-10",
+          "amal_text": [
+            {
+              "name": "Talbia",
+              "arabic": "لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ",
+              "transliteration": "Labbaik, Allahumma Labbaik. Labbaika, la-sharika laka labbaik. Innal-hamda wanni'mata laka wal-mulk. La-Sharika Lak.",
+              "bangla_translation": "I appear again and again to call you O Allah! I appeared again and again. I appear again and again at your call. You have no partner, I appear again and again at your call. Undoubtedly Yours is all the praise, all the blessings and the kingdom. You have no partner.",
+              "recite_count": "Definitely once after Ihram, later as much as possible",
+              "description": "Its name is 'Talbia'. It must be recited, otherwise there will be no Ihram."
+            }
+          ]
+        },
+        {
+          "id": "hajj_006",
+          "serial": "ধাপ ৩",
+          "title": "Prohibitions in the state of Ihram",
+          "fazilat": "The following actions cannot be done in the state of Ihram:\n\n• Use of any perfumes\n• Use of scented soaps and oils\n• Cut nails\n• Mustache or any hair cut or torn\n• Combing or combing the hair\n• Covering the head or face\n• Wearing socks on hands and feet\n\nHowever, women will cover their heads and wear socks on their hands and feet. Women will refrain from revealing their faces in front of other men for the pleasure of Allah Almighty.\n\nMen wear sandals in the state of Ihram. Do not wear shoes that cover the instep or high part of the foot. There is nothing wrong with wearing shoes that only cover the toes.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 9-10",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_007",
+          "serial": "ধাপ ৪",
+          "title": "Entering Makkah Sharif",
+          "fazilat": "Recite Istegfar, Durood and Talbiyah i.e. 'Labbaik, Allahumma Labbaik' (full) repeatedly while entering Makkah Sharif.\n\nAfter reaching Makkah Sharif, after completing the necessary work, take a little rest and go to the Kaaba while reading 'Labbaik, Allahumma Labbaik' (full) slowly with ablution.\n\nJust like all mosques, when entering the mosques of Makkah-Madinah, you will recite the dua upon entering the mosque and make the intention of ``Itakaf.''",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 10-11",
+          "amal_text": [
+            {
+              "name": "Prayer to enter the mosque",
+              "arabic": "بِسْمِ اللهِ وَالصَّلَاةُ وَالسَّلَامُ عَلَى رَسُولِ اللهِ، اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ",
+              "transliteration": "Bismillah, Wassalatu Wassalamu ala Rasulillahi. Allahumma Fatahli Abwaba Rahmatik.",
+              "bangla_translation": "In the name of Allah; Salat and peace be upon the Messenger of Allah. O Allah! Open for me the doors of your mercy.",
+              "recite_count": "On entering the mosque",
+              "description": ""
+            }
+          ]
+        },
+        {
+          "id": "hajj_008",
+          "serial": "ধাপ ৫",
+          "title": "Kaaba Sharif first sight",
+          "fazilat": "If you enter the Masjid-ul-Haram and walk a little further, you will notice the Kaaba Sharif.\n\nTo see the Holy Kaaba Sharif —\n• 'Allahu Akbar' 3 times\n• Recite 'La-Ilaha Illallah' 3 times\n• Then Durood Sharif\n• Then raise your hands and pray a lot\n\nIt's dua kabool time — keep asking Allah for whatever you want at this special moment.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 11",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_009",
+          "serial": "ধাপ ৬",
+          "title": "Preparation for Tawaf — Yatiba and Ramal",
+          "fazilat": "Before starting Tawaf, you can discuss with each other about 'Ramal' and 'Yaztaba'.\n\nYataba (Sharh): Before starting Tawaf, the right side of the cloth of Ihram is pulled under the right armpit and placed over the left shoulder.\n\nRamal: Walking at a slightly faster pace with both shoulders hunched in a gallant manner. Not jumping around. 'Ramal' is only for men.\n\nTawaf is obligatory along with ablution. Now the Tawaf will begin — so do Izteba. Women don't have yateba and ramal.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 11-12",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_010",
+          "serial": "ধাপ ৭",
+          "title": "Intention of Tawaf",
+          "fazilat": "Now make the intention of Tawaf along 'Hajre-Aswad' moving closer to the place from which Tawaf starts:\n\n\"O Allah! I intend to circumambulate your house for Umrah. Make it easy for me and accept it.\"\n\n• It is obligatory to perform Tawaf.\n• Stop Talbiya (recitation of Labbaik) while intending Tawaf.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 12-13",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_011",
+          "serial": "ধাপ ৮",
+          "title": "Start of Tawaf — Hajre-Aswad",
+          "fazilat": "Now face Hajre-Aswad and lift both hands up to the ears (shoulders for women) as in prayer and recite once:\n\n[See Arabic Dua below]\n\nIn this case only this should be recited: 'Bismillahi Allahu Akbar'.\n\nSaying this, lower your hands and point towards Hajre-Aswad with both palms, turn towards the right side with a silent kiss on the palms and start Tawaf.\n\nIf you start Tawaf from the place along Hajre-Aswad and reach Hajre-Aswad again, it will be one circle. One Tawaf in seven circles.\n\n• Perform Tawaf with the first 3 rounds of 'Ramal'.\n\nEspecially noteworthy: During Tawaf, men are different from women, women are different from men, of course, they must save themselves and walk in a restrained manner so that the body does not touch the body. Do not neglect this. This moment is the moment of 'private worship'. If there is a sincere effort in the fear of Allah, there will be 'success', Insha'Allah.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 13-14",
+          "amal_text": [
+            {
+              "name": "Hajre-Aswad Kissing Dua (Full)",
+              "arabic": "بِسْمِ اللهِ اللهُ أَكْبَرُ لَا إِلَهَ إِلَّا اللهُ وَلِلهِ الْحَمْدُ وَالصَّلَاةُ وَالسَّلَامُ عَلَى رَسُولِ اللهِ",
+              "transliteration": "Bismillah Allahu Akbar. La-ilaha illallah. Wa-Lillahil Hamd. Wassalatu Wassalamu ala Rasoolillah.",
+              "bangla_translation": "In the name of Allah, Allah is great. There is no god but Allah. All praise belongs to Allah. Salat and peace be upon the Messenger of Allah.",
+              "recite_count": "Start time of each cycle (hand raised in 1st cycle, no hand raised thereafter)"
+            },
+            {
+              "name": "Abbreviation",
+              "arabic": "بِسْمِ اللهِ اللهُ أَكْبَرُ",
+              "transliteration": "Bismillah Allahu Akbar",
+              "bangla_translation": "In the name of Allah, Allah is great.",
+              "recite_count": "It is sufficient if time is short"
+            }
+          ]
+        },
+        {
+          "id": "hajj_012",
+          "serial": "ধাপ ৯",
+          "title": "Kalima and Dua to be recited during Tawaf",
+          "fazilat": "If you recite these kalaemas without speaking during Tawaf, 10 good deeds, 10 sins will be forgiven and 10 deaths will be exalted.\n\n• Do not raise both hands up to the ears or shoulders at the beginning of a cycle from the second cycle.\n• At the end of each cycle, keep an account (by pulling the grain of 7 tasbi's or by twisting the thread).\n• Silently (Arabic-Bengali) make different duas without raising your hands during Tawaf. There is no specific dua to be recited for the circuits of Tawaf.\n\nIt is mustahab to recite this dua from Rukne-Yamani to Hajre-Aswad. There are 70 angels assigned to Rukne-Yamani. When this prayer is recited, the angels say 'Amen'. (Ibn-Majah Sharif)",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 15-16",
+          "amal_text": [
+            {
+              "name": "Kalema to be recited during Chakkar",
+              "arabic": "سُبْحَانَ اللهِ، وَالْحَمْدُ لِلَّهِ، وَلَا إِلَهَ إِلَّا اللهُ، وَاللهُ أَكْبَرُ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ",
+              "transliteration": "Subhanallah, wal-hamdu lillah, wa la-ilaha illallahu, wallahu akbar. Wa la-hawla wa la-quwata illa billah.",
+              "bangla_translation": "Glory be to God, all praise be to God, there is no god but God, God is great. Without the help of Allah, there is no power to avoid sin and worship.",
+              "recite_count": "Tawaf per cycle",
+              "description": "Every time 10 good deeds, 10 sins will be forgiven and 10 status will be raised"
+            },
+            {
+              "name": "Dua of Rukne-Yamani",
+              "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+              "transliteration": "Allahumma Inni Asalukal-Afwa Wal-Afiata Fid-Duniya Wal-Akhirati. Rabbana atina fid-duniya hasanatan, wa fil-akhirati hasanatan, wakina azaban-nar.",
+              "bangla_translation": "O Allah! I ask you for forgiveness and well-being in this world and the hereafter. O our Lord! Grant us good in this world and good in the Hereafter and save us from the punishment of Hellfire.",
+              "recite_count": "From Rukne-Yamani to Hajre-Aswad in each cycle",
+              "description": "70 angels say Amen to this Dua (Ibn-Majah)"
+            }
+          ]
+        },
+        {
+          "id": "hajj_013",
+          "serial": "ধাপ ১০",
+          "title": "Rukne-Yamani touch",
+          "fazilat": "It is also mustahab to touch the Rukne-Yamani with the right hand or both hands during Tawaf. Many sins are forgiven. Many prayers are accepted here.\n\nHowever, if perfume is applied to the Rukne-Yamani, it cannot be touched in the state of Ihram.\n\n(Rukne-Yamani can be held and supplicated after Nafal Tawaf and without Tawaf.)",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 17",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_014",
+          "serial": "ধাপ ১১",
+          "title": "Completion of Tawaf",
+          "fazilat": "Close the ramal after three cycles. Walk normally for the rest of the Tawaf without Ramla. But be careful.\n\nTawaf is complete when seven rounds are completed. At this very moment, face the Ka'ba along Hajre-Aswad and say 'Bismillahi Allahu Akbar, Wa Lillahil Hamd' with both hands and kiss the hands.\n\nNow leave Yatiba, wear the garment normally.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 17-18",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_015",
+          "serial": "ধাপ ১২",
+          "title": "Tawaf is an obligatory prayer",
+          "fazilat": "Then if easily and safely possible by placing 'Makame Ibrahim' in front; Or pray two rakat wajib prayers on any side of the 'Mataf' or inside the Masjid-ul-Haram and pray a lot.\n\nCarefully select a relatively crowd-free place for prayer.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 18",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_016",
+          "serial": "ধাপ ১৩",
+          "title": "Get exercise",
+          "fazilat": "Then say 'Bismillah' in three breaths and drink the yam. At the end say 'Alhamdulillah'.\n\nTake a small amount of water on your head, face, and body.\n\nHadith Sharif states: 'The intention for which the yam is drunk will be fulfilled'.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 18-19",
+          "amal_text": [
+            {
+              "name": "Prayer for drinking water",
+              "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا وَاسِعًا، وَشِفَاءً مِنْ كُلِّ دَاءٍ",
+              "transliteration": "Allahumma inni asaluka ilman nafian, wa rizqan wasian, wa shifaan min kulli da-in.",
+              "bangla_translation": "O Allah! I pray to you for beneficial knowledge, ample sustenance and healing of all diseases.",
+              "recite_count": "At the beginning or at the end of Yamayama Pan"
+            }
+          ]
+        },
+        {
+          "id": "hajj_017",
+          "serial": "ধাপ ১৪",
+          "title": "Safa-Marwar Sai — Beginning",
+          "fazilat": "Now it's Sai of Safa-Marwa. For the sake of Allah's pleasure, going from Safa hill to Marwa and from Marwa hill to Safa is called 'Sai'.\n\n'Saee' is best with ablution.\n\nFace towards Hajre-Aswad for Sa'i and say 'Bismillahi Allahu Akbar, Wa Lillahil Hamd', point with both hands and kiss the hand and move towards Safa'.\n\nFirst go to Safa. Face the Ka'ba and raise your hands in the same manner as you raise them in prayer and recite 3 times:",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 19-20",
+          "amal_text": [
+            {
+              "name": "Readable up to Safa-Marwa (1st)",
+              "arabic": "الْحَمْدُ لِلَّهِ اللهُ أَكْبَرُ لَا إِلَهَ إِلَّا اللهُ",
+              "transliteration": "Alhamdulillah, Allahu Akbar, La-ilaha illallah.",
+              "bangla_translation": "All praise is to Allah, Allah is great, there is no god but Allah.",
+              "recite_count": "Facing the Kaaba 3 times in both Safa and Marwa",
+              "description": "It is mustahab to read. After that Durood. Then pray. At this time the prayer is accepted."
+            },
+            {
+              "name": "Dua (Mustahab) at the time of running",
+              "arabic": "رَبِّ اغْفِرْ وَارْحَمْ وَأَنْتَ الْأَعَزُّ الْأَكْرَمُ",
+              "transliteration": "Rabbigfir Warham, Wa Antal Aazul Akram.",
+              "bangla_translation": "O Lord! Forgive and have mercy. You are the Great-Mighty, the Great-Glorified.",
+              "recite_count": "Running time from green light to second green light",
+              "description": "Women will not run but walk normally. But read this dua."
+            }
+          ]
+        },
+        {
+          "id": "hajj_018",
+          "serial": "ধাপ ১৫",
+          "title": "Counting Sai cycle",
+          "fazilat": "(Mustahab says that act is rewarded if you do it, if you don't there is no sin.)\n\nNow keep on walking towards Marwa with the pull of love.\n\nFrom the green light to the second green light, keep jogging lightly.\n\nGo to Marwah and recite the same dua 3 times while facing the Kaaba. Then Durood. Then raise both hands and pray. This prayer is also accepted.\n\nCycle count:\n• If you reach Marwa from Safa = one circuit\n• If you reach Safa from Marwa = one circuit\n• Thus Sai will end in seven cycles.\n\nSo still walk from Marwa to Safa with love and azmat. As before, run lightly from green light to green light and keep reciting the above dua while running.\n\nEvery time you reach Safa and Marwa, you will pray and pray according to the same rules.\n\nSai will be fulfilled by going to Marwa. Then pray two rakats next to the Mataf or in the Masjid al-Haram. These two rakats are mustahab.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 20-22",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_019",
+          "serial": "ধাপ ১৬",
+          "title": "Cutting hair and being free of Ihram",
+          "fazilat": "Now men shave their heads. Women must gather their hair together and cut a minimum of one inch from the 'hairline'.\n\nOnce this practice is over, you become free of Ihram, your Umrah is complete.\n\nNow you are free of ihram and back to normal.\n\nThis is where Umrah ends.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 22",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_020",
+          "serial": "১",
+          "title": "Daily practice",
+          "fazilat": "During the days of stay in Makkah after the completion of Umrah till the departure for Mina on the 7th or 8th of Zilhaj—\n• Zikir\n• Istegfar\n• Dua\n• And perform Nafal Tawaf every day as per opportunity.\n\nNafal Tawaf does not have Izteba and Ramal. However, after each Nafal Tawaf, it is obligatory to perform 2 Rakat Namaz.\n\nWomen will sit and look at the Ka'ba Shareef if there is no opportunity for Nafal Tawaf because of the crowd of men. A single glance at the Kaaba is a precious act of worship. Moreover, there will be various prayers and dhikr.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 23",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_021",
+          "serial": "২",
+          "title": "Virtues of time in Masjid al-Haram",
+          "fazilat": "Allah Almighty sends down 120 blessings on the worshipers of this Masjid al-Haram in Makkah every day:\n\n• 60 — for those doing Tawaf\n• 40 — for worshippers\n• 20 — for those looking towards the Kaaba\n\n— Tabrani, Baihaqi",
+          "reference": "Tabrani, Baihaqi",
+          "amal_text": []
+        }
+      ]
+    },
+    {
+      "id": "hajj_guide",
+      "title": "Hajj",
+      "subtitle": "All directions for Hajj from start to finish",
+      "items": [
+        {
+          "id": "hajj_003",
+          "serial": "১",
+          "title": "Complete steps of Tamattu Hajj",
+          "fazilat": "In the case of Tamattu Hajj, only the Niyat of Umrah and the Ihram of Umrah should be performed at the time of departure. Go to Makkah Sharif and perform Umrah and become Ihram-free and become 'normal'.\n\nAfter 7/8 Zil Hajj, Niyat of Hajj and Ihram should be done.\n\n(If someone wants to do Umrah at any time of the year, he should do Umrah according to this rule.)",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 5-6",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_022",
+          "serial": "ধাপ ১",
+          "title": "Ihram for Hajj (7/8 Zil Hajj)",
+          "fazilat": "Before leaving for Mina on the 7th or 8th of Zil-Hajj, assume the 'Ihram' of Hajj.\n\nPerform ablution and put on the clothes of Ihram, if possible, after two rak'ats of Nafal, make the first intention:\n\n\"O Allah! I intend Hajj. Make it easy for you and accept it.\"\n\nThen read Talbiya once. Now the Ihram of Hajj is completed.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 24",
+          "amal_text": [
+            {
+              "name": "Talbiya of Hajj",
+              "arabic": "لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ",
+              "transliteration": "Labbaik, Allahumma Labbaik. Labbaik, La-Sharika Laka Labbaik. Innal-hamda wanni'mata laka wal-mulk. La-Sharika Lak.",
+              "bangla_translation": "I appear again and again to call you O Allah! You have no partner. All praise and glory and dominion belong to You.",
+              "recite_count": "Once during Hajj Ihram, later more often"
+            }
+          ]
+        },
+        {
+          "id": "hajj_023",
+          "serial": "ধাপ ২",
+          "title": "8th — Position at Mina",
+          "fazilat": "Positioned at Mina on 8th. Here—\n\n✓ Perform 5 times prayer very carefully\n✓ Being too busy in dhikr, istegfar, too much talbiya and dua\n\n✗ Gossip, idle talk, quarrels\n✗ Disturbing another's sleep or comfort\n\n- I definitely want to avoid these things.\n\nFrom Fajr on the 9th to Asr on the 13th, it is wajib to say Takbeer-Tashreek once aloud after salam of the five daily prayers. Talbiya will be recited immediately after Takbeer-Tashreek. Women will read silently.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 25",
+          "amal_text": [
+            {
+              "name": "Takbeer-Tashreek",
+              "arabic": "اللهُ أَكْبَرُ، اللهُ أَكْبَرُ، لَا إِلَهَ إِلَّا اللهُ، وَاللهُ أَكْبَرُ، اللهُ أَكْبَرُ، وَلِلَّهِ الْحَمْدُ",
+              "transliteration": "Allahu Akbar, Allahu Akbar, La-Ilaha Illallahu, Wallahu Akbar, Allahu Akbar, Wa Lillahil Hamd.",
+              "bangla_translation": "God is great, God is great, there is no god but God, God is great, God is great, all praise belongs to God.",
+              "recite_count": "From 9th Zilhaj Fajr to 13th Zilhaj Asr, once after every obligatory prayer.",
+              "description": "It is obligatory"
+            }
+          ]
+        },
+        {
+          "id": "hajj_024",
+          "serial": "ধাপ ৩",
+          "title": "9th — Standing at Arafa (Uquf-Arafa)",
+          "fazilat": "Staying at Arafa from sunset on the 9th until sunset.\n\n'Staying at 'Arafa' ('Uquf-Arafa') is the 'greatest obligatory' act of Hajj. It is not permissible to go out of Arafah before sunset.\n\nThe period of stay in Arafa is:\n• Praying and crying a lot\n• To repent with heart and soul\n• Apologize\n• Seeking tawfiq for a life fully directed towards God\n\nThe Messenger of Allah, may God bless him and grant him peace, said: The best dua is ``Arafah Dua'' and the best dua between me and the previous prophets is -\n\nOn the 9th, read Zohr at the time of Zohr and Asr at the time of Asr. If you pray in a tent in the field of Arafah, you will pray at the time of Zuhr and Asr.\n\nIf one prays here 'in congregation' at the time of Zuhr and Asr at the time of Zuhr, then the prayer will be Sahih according to the great Imams. There is no need to debate this.\n\nBut if someone falls behind the imam in the mosque-namira, he will recite Zohr and Asr together at the time of Zohr.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 25-27",
+          "amal_text": [
+            {
+              "name": "The best dua of Arafah",
+              "arabic": "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+              "transliteration": "La-ilaha illallahu wahdahu la-sharika lahu, lahul-mulku wa lahul-hamdu, wa hua ala kulli shayin qadir.",
+              "bangla_translation": "There is no god but Allah, He alone, He has no partners. To Him is the kingdom, to Him is all praise, and He has power over all things.",
+              "recite_count": "More at Arafah — this is the best dua",
+              "description": "The Prophet ﷺ said — This is the best dua of me and the previous prophets"
+            }
+          ]
+        },
+        {
+          "id": "hajj_025",
+          "serial": "ধাপ ৪",
+          "title": "9th Night — Stay at Muzdalifah",
+          "fazilat": "I want to leave for Muzdalifah immediately after sunset and go there and offer Maghrib and Isha prayers at Isha time.\n\nRules:\n1. First call to prayer\n2. Then in one Ekamat, first Maghrib is 3 rakats\n3. Then the prayer is obligatory\n4. Then the Sunnah of Maghrib and Isha (it is not necessary for the traveler to recite the Sunnah).\n5. Then perform the final prayer\n6. Then rest\n\nRead Fajr as soon as Fajr begins. Then make dua and some dhikr of Allah. Read Tasbeeh-Fatemi and Istegfar and Durood.\n\nThis position of 'short time' after the start of 'Fajr Waqt' is called 'Uquf-Muzdalifa'. It is obligatory.\n\nHere it is mustahab to pick up 7 pebbles from Muzdalifah. You can also take the full 49 — although it is not necessary to take it from here. Can also be taken from Mina. A few precautions can also be taken. The size of the pebbles will be like a gram boot. No bigger than a palm seed.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 27-28",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_026",
+          "serial": "ধাপ ৫",
+          "title": "10th — Throwing stones at Mina",
+          "fazilat": "Then, after 10 Zilhaj four days are very fair, before sunrise, leave for Mina.\n\n10th is the time of stoning in big 'Jamra' (7) all day and at the end of the day at night till dawn-Sadiq.\n\nIn today's age, stoning at night 'due to overcrowding' is not makruh at all. So, returning to Mina from Muzdalifah, avoiding the 'dangerous crowd', Kankar died quietly in the afternoon or even at night. It is easier and more secure.\n\nSay 'Bismillahi Allahu Akbar' and throw one stone at a time. You can also recite this dua while hitting each pebble 'if you have the opportunity'.\n\nIn this way, after throwing a total of 7 pebbles, you will come there without any prayer.\n\n🔔 It is to be remembered that 'Talbiya' should be stopped from the time of throwing the first pebble. After that, there is no Talbiyyah period.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 29-30",
+          "amal_text": [
+            {
+              "name": "Dua for throwing pebbles (if possible)",
+              "arabic": "اللَّهُمَّ اجْعَلْهُ حَجًّا مَبْرُورًا، وَذَنْبًا مَغْفُورًا، وَسَعْيًا مَشْكُورًا",
+              "transliteration": "AllahummajAllahu Hajjam Mabrura, Wa Jambam Magfura, Wa Sa'yam Mashkura.",
+              "bangla_translation": "O Allah! Make it a 'Maqbool Hajj', a forgiveness of sins and a worthy deed in your eyes.",
+              "recite_count": "Time per pebble throw (if available)"
+            }
+          ]
+        },
+        {
+          "id": "hajj_027",
+          "serial": "ধাপ ৬",
+          "title": "Sacrifice and head shaving",
+          "fazilat": "After throwing 7 pebbles it is obligatory to perform 'Dame Shokar' i.e. 'Haj Qurbani'.\n\nAfter 'sacrifice' men shave their heads and women cut their hair to the length of a finger (one inch) to become 'Halal' (Ihram-free).\n\nAs a result of Ihram, everything that was forbidden, except for the easy 'special relationship' between husband and wife, now became legal.\n\nNow take off the Ihram clothes and put on normal clothes.\n\nCaution: Shaving the head or cutting the hair before Qurbani is not 'Halal'.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 30",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_028",
+          "serial": "ধাপ ৭",
+          "title": "Tawaf-Ziyarat (The Most Important Obligation)",
+          "fazilat": "'Tawaf-Ziyarat' is a very important duty of Hajj. It is important to perform Tawaf physically even for a sick person. It should be remembered that Hajj-Umrah Tawaf and Sa'i are not replaced.\n\n(Note that Nafal Tawaf can be performed for others with the intention of Tawab.)\n\nDuring this Tawaf day and night from after dawn on the 10th of Zilhaj until sunset on the 12th; Although the 10th is better. So it is not necessary to do it immediately on the 10th. Why read 'risky crowd' for no reason!\n\nIt should be noted that after Tawaf-Ziyarat, you will become 'Fully Halal'. That is, then the private affairs of husband and wife will also become lawful.\n\n🔔 It is to be remembered here that after the Tawaf there is 'Saee', the first three rounds of that Tawaf are 'Ramal' Sunnah.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 31-32",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_029",
+          "serial": "ধাপ ৮",
+          "title": "Sai after Tawaf-Ziyarat",
+          "fazilat": "'Sa'ee' is obligatory after 'Tawaf-Ziyarat'. It is Sunnah not to delay Sa'i.\n\nThis Sa'i will also be completed in seven cycles starting from Safa like the previous Sa'i of Umrah.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 31-32",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_030",
+          "serial": "ধাপ ৯",
+          "title": "11th and 12th Zilhaj — gravel in three jamras",
+          "fazilat": "11th and 12th Zilhaj between the time after the sun sets at noon and till the night of Subha-Sadiq—\n\n• Small Jamra — 7 pebbles\n• Middle jamra — 7 pebbles\n• Big jamra — 7 pebbles\n\nA total of 21 kankar mara is wajib.\n\nAfter throwing pebbles in the small and middle jamra, move a little away and pray towards the Qibla.\n\nFinally, there is no dua-monajat after stoning the big jamra.\n\nOn the 12th, he will leave Mina and go to Makkah. Presently by the afternoon of the 12th the minar tents were largely deserted. Then the position there seems insecure.\n\nRemember, 11th and 12th will not be correct if you throw pebbles in the morning till sunset.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 32-33",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_031",
+          "serial": "ধাপ ১০",
+          "title": "13 Jilhaj — Extra gravel (if any)",
+          "fazilat": "If one stays in the Mina on the night of the 12th day until dawn-Sadiq, then on the 13th, 7 stones will be wajib in each of the three jamras.\n\nOn the 13th, after Subhe-Sadiq until sunset, the time for that kankar is thrown.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 33",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_032",
+          "serial": "ধাপ ১১",
+          "title": "Farewell Tawaf",
+          "fazilat": "It is wajib to perform 'farewell tawaf' before leaving Makkah.\n\n✅ So far all the deeds related to Hajj have been completed.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 33",
+          "amal_text": []
+        }
+      ]
+    },
+    {
+      "id": "hajj_guidelines",
+      "title": "Important guidelines for Hajj and Umrah",
+      "subtitle": "The deeds of the predecessors, the manners and precautions of Makkah-Madinah",
+      "items": [
+        {
+          "id": "hajj_040",
+          "serial": "১",
+          "title": "Only for the pleasure of Allah",
+          "fazilat": "I want to perform Hajj-Umrah only for the pleasure of Allah. By performing 'Hajj' with such intention, the servant becomes 'innocent' like a child born from the mother's womb.\n\nPeople would call Haji or the arduous journey of Hajj-Umrah for any other worldly purpose 'futile labour' and 'grave sin'.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 40",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_041",
+          "serial": "২",
+          "title": "Pay attention to manners",
+          "fazilat": "In Makkah-Madinah, I always want to pay attention to manners in speech and behavior. Never be rude.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 40",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_042",
+          "serial": "৩",
+          "title": "Don't hurt anyone",
+          "fazilat": "I don't want to hurt anyone anywhere in Makkah-Madinah. Voluntarily putting oneself under hardship and pressure for any mustahab act or pushing, causing hardship to others is very unjust and harmful.\n\nFor example:\n• For kissing in Hazre-Aswad\n• For access to Hatim\n• For salam in Riazul-Jannat or Rawza Sharif\n\nConducting such misbehavior while leaving.\n\n💡 We must refrain from hurting the servants of Allah out of fear of Allah.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 40-41",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_043",
+          "serial": "৪",
+          "title": "Nazar Hefazat",
+          "fazilat": "During the entire journey of Hajj-Umrah—\n• Men are different from women\n• Women are different from men\n\nStrictly watch out.\n\nThe sin of looking is a serious sin. In this, the heart becomes black, the death of Hajj-Umrah is also a big loss.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 41",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_044",
+          "serial": "৫",
+          "title": "Special advice for mothers and sisters",
+          "fazilat": "For mothers and sisters to go to Hajre-Aswad, Multazam or any other place in the crowd of men during Hajj-Umrah is definitely a 'sinful act'.\n\nThere will be no reward for going to work like this. rather—\n\n💎 By avoiding 'such situations' with the intention of avoiding sin, one will get immense goodness, high merit and the satisfaction of Almighty Allah.\n\nMay Allah protect us. Give understanding and courage to the path of God's pleasure. amen",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 41-42",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_045",
+          "serial": "৬",
+          "title": "Communication with Mufti Sahib",
+          "fazilat": "Special Note: Consult the learned mufti for any mistake, doubt or need to know about Hajj.\n\nOne or two wise people of your country can keep Mufti Sahib's mobile number with you — so that you can contact him if necessary.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 42",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_036",
+          "serial": "১",
+          "title": "Madinah manners and love",
+          "fazilat": "May the heart be awakened and filled with respect and love for Medina. Let there be no lapse of manners in speech and behavior.\n\nIf you go to Madinah before leaving your country, you don't have to put on 'Ihram', but instead go in normal clothes. Ihram must be put on before leaving Madinah for Makkah.\n\nGo to Madinah Sharif first or go later — Madinah Sharif is doing—\n\n• Performing five times prayer in Masjid-Nawabi\n• To present Durood and Salam with great love and manners by appearing to the fasting person as often as possible.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 37-38",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_037",
+          "serial": "২",
+          "title": "Peace be upon the Prophet ﷺ",
+          "fazilat": "Salutation can be done like this:",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 38-39",
+          "amal_text": [
+            {
+              "name": "Peace be upon the Prophet ﷺ (1)",
+              "arabic": "اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا رَسُولَ اللهِ",
+              "transliteration": "Assalatu Wassalamu Alaika Ya Rasulullah.",
+              "bangla_translation": "O Messenger of God! Salat and peace be upon you."
+            },
+            {
+              "name": "Peace be upon the Messenger of Allah ﷺ (2)",
+              "arabic": "اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا نَبِيَّ اللهِ",
+              "transliteration": "Assalatu Wassalamu Alaika Ya Nabiyallah.",
+              "bangla_translation": "O Prophet of God! Salat and peace be upon you."
+            },
+            {
+              "name": "Peace be upon the Messenger of Allah ﷺ (3)",
+              "arabic": "اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا حَبِيبَ اللهِ",
+              "transliteration": "Assalatu Wassalamu Alaika Ya Habiballah.",
+              "bangla_translation": "O Habib of God! Salat and peace be upon you."
+            }
+          ]
+        },
+        {
+          "id": "hajj_038",
+          "serial": "৩",
+          "title": "Salam to Hazrat Abu Bakr and Umar (RA).",
+          "fazilat": "Then move a little to the right and greet Hazrat Abu Bakr (RA). Then move a little to the right and greet Hazrat Umar (RA).",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 39",
+          "amal_text": [
+            {
+              "name": "Salam to Hazrat Abu Bakr (RA).",
+              "arabic": "اَلسَّلَامُ عَلَيْكَ يَا خَلِيفَةَ رَسُولِ اللهِ",
+              "transliteration": "Assalamu Alaika Ya Khalifa Rasoolillah.",
+              "bangla_translation": "O Caliph of the Messenger of God! Peace be upon you."
+            },
+            {
+              "name": "Salutations to Hazrat Umar (RA).",
+              "arabic": "اَلسَّلَامُ عَلَيْكَ يَا أَمِيرَ الْمُؤْمِنِينَ",
+              "transliteration": "Assalamu Alaika Ya Amiral Mu'minin.",
+              "bangla_translation": "O Ameerul Mu'minin! Peace be upon you."
+            }
+          ]
+        },
+        {
+          "id": "hajj_039",
+          "serial": "৪",
+          "title": "Period of stay in Madinah",
+          "fazilat": "It is always good to read more Durood Sharif while staying in Madinah Sharif.\n\nIf given the opportunity—\n• Try to perform 2/4 Rakat Nafal Namaz in Riyazul-Jannah occasionally\n• To pray more and more for all the noble purposes of this world and the hereafter — this is the glorious place of acceptance of prayers.\n• Sometimes visiting the graveyard called Jannat al-Baqi next to the Masjid-Nababi — many Sahaabah, Tabeeen, Deen are buried here.\n• It is better to go to Masjid-Quba' and pray two rakat nafal if possible",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 39-40",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_046",
+          "serial": "১",
+          "title": "Of course, things to take",
+          "fazilat": "Things to keep in mind on this trip:\n\nDocuments:\n• Passport\n• Real\n\nItems of worship:\n• Soil of Tayammum\n• 2/3 sets of Ihram clothes\n• 2 pairs of sandals\n• 1/2 Messwalk\n\nHealth Products:\n• Necessary medication\n• 5/7 packet Orsaline\n\nEveryday:\n• 3/4 set of clothes for general use\n• Towels or towels\n• Pumping pillow\n• Bed sheets\n• Dastarkhan\n• Tissue\n\nOthers:\n• Hand bags\n• Notebook and pen\n• Mobile charger\n• Nail cutter\n\nSweet chocolate, dates or sugar should be kept with diabetes patients.",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 43-44",
+          "amal_text": []
+        },
+        {
+          "id": "hajj_047",
+          "serial": "১",
+          "title": "Prayers for all",
+          "fazilat": "May Allah make Hajj-Umrah and this blessed trip easy for everyone, accept it. Grant all the good prayers of all by your grace. amen",
+          "reference": "Easy Umrah and Tamattu Hajj, p. 42-43",
+          "amal_text": []
+        }
+      ]
+    },
+    {
+      "id": "hajj_faq",
+      "title": "Any query related to Hajj and Umrah",
+      "subtitle": "Coming Soon",
+      "items": []
+    }
+  ]
+}

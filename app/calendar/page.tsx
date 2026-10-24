@@ -11,7 +11,6 @@ import {
   banglaFromDate,
   banglaText,
   dayNumber,
-  gregorianFull,
   gregorianRange,
   hijriFromDate,
   hijriMonthMeta,
@@ -79,8 +78,14 @@ export default function CalendarPage() {
 
   useEffect(() => {
     let dead = false;
-    fetch("/data/islamic_calendar.json")
-      .then((r) => r.json())
+    setEvents(null);
+    const file = lang === "bn" ? "islamic_calendar.json" : `islamic_calendar.${lang}.json`;
+    fetch(`/data/${file}`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .catch(() => fetch("/data/islamic_calendar.json").then((r) => r.json()))
       .then((data: { categories?: { items?: Record<string, unknown>[] }[] }) => {
         if (dead) return;
         const list: EventItem[] = [];
@@ -108,7 +113,7 @@ export default function CalendarPage() {
     return () => {
       dead = true;
     };
-  }, []);
+  }, [lang]);
 
   // Same source as the homepage prayer card (/api/prayer → Aladhan), so the
   // calendar's "today" can never disagree with it.
@@ -312,7 +317,7 @@ export default function CalendarPage() {
               <div className="border-l border-primary-900/10 pl-3 dark:border-white/10">
                 <div className="text-[11px] font-semibold text-ink-faint">{tx("বাংলা তারিখ")}</div>
                 <div className="mt-1 text-[14px] font-bold leading-snug text-sky-600 dark:text-sky-400">
-                  {banglaText(todayB)}
+                  {banglaText(todayB, lang)}
                 </div>
               </div>
             </div>
@@ -386,7 +391,7 @@ export default function CalendarPage() {
                     key={dayNumber(cell.date) + "-" + i}
                     disabled={!cell.inMonth}
                     onClick={() => setSelectedDay(isSelected ? null : cell.hijriDay)}
-                    aria-label={`${gregorianFull(cell.date)}`}
+                    aria-label={gregorianText(lang, cell.date)}
                     className={`relative flex h-[58px] flex-col items-center justify-center rounded-xl border transition-colors ${
                       !cell.inMonth
                         ? "border-transparent opacity-30"
@@ -430,9 +435,9 @@ export default function CalendarPage() {
               <div className="mt-3 animate-fade-up rounded-2xl border border-gold-500/25 bg-gold-light/70 p-3 dark:border-gold-500/20 dark:bg-gold-500/10">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <div className="text-[13px] font-bold">{gregorianFull(selectedDate)}</div>
+                    <div className="text-[13px] font-bold">{gregorianText(lang, selectedDate)}</div>
                     <div className="mt-0.5 text-[11.5px] leading-relaxed text-ink-soft">
-                      {hijriDayText(hijriAt(selectedDate))}{lang === "bn" ? ` · ${banglaText(banglaFromDate(selectedDate))}` : ""}
+                      {hijriDayText(hijriAt(selectedDate))} · {banglaText(banglaFromDate(selectedDate), lang)}
                     </div>
                   </div>
                   <button

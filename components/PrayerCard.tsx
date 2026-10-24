@@ -27,7 +27,7 @@ export default function PrayerCard() {
   const lang = useLang();
   const [times, setTimes] = useState<PrayerTimes | null>(null);
   const [hijri, setHijri] = useState<any>(null);
-  const [place, setPlace] = useState(tx("ঢাকা"));
+  const [place, setPlace] = useState("ঢাকা");
   const [locating, setLocating] = useState(false);
   const [now, setNow] = useState(() => new Date());
 
@@ -139,22 +139,26 @@ export default function PrayerCard() {
       ? (rh > 0 ? `${rh} گھنٹے ${rm} منٹ` : `${rm} منٹ`)
       : (rh > 0 ? `${rh}h ${rm}m` : `${rm}m`);
 
+  const timeLocale = lang === "bn" ? "bn-BD" : lang === "ur" ? "ur-PK" : "en-US";
+  const fmtDate12 = (d: Date) => {
+    let out = d.toLocaleTimeString(timeLocale, { hour: "2-digit", minute: "2-digit", hour12: true });
+    if (lang === "bn") out = out.replace("AM", tx("এ এম")).replace("PM", tx("পি এম"));
+    return out;
+  };
   const fmt12 = (t: string) => {
     const [h, m] = t.split(":").map(Number);
     const d = new Date();
     d.setHours(h, m, 0, 0);
-    return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+    return fmtDate12(d);
   };
-
-  // Special periods count down to their own end, so show that end time
-  // rather than the next prayer's time.
-  const fmtDate12 = (d: Date) =>
-    d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
   const endTime = special
     ? fmtDate12(new Date(now.getTime() + remainSec * 1000))
     : fmt12(next.time);
 
-  const gregEn = now.toLocaleDateString("en-US", { weekday: "short", day: "numeric", month: "short" });
+  const gregText = now.toLocaleDateString(
+    lang === "bn" ? "bn-BD" : lang === "ur" ? "ur-PK" : "en-GB",
+    { weekday: "short", day: "numeric", month: "short" }
+  );
 
   return (
     <div className="page-hero mx-1 my-2 p-4 text-white shadow-xl">
@@ -180,7 +184,7 @@ export default function PrayerCard() {
           >
             <Icon name="calendar" size={14} className="text-gold-100" />
             <span className="text-xs leading-tight">
-              <span className="block font-semibold text-white">{gregEn}</span>
+              <span className="block font-semibold text-white">{gregText}</span>
               <span className="block text-[11px] text-white/75">{hijriText(hijri, lang)}</span>
             </span>
           </Link>

@@ -1,16 +1,32 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { FAMILY_PROFILE, SOCIALS } from "../../lib/family-profile";
-import { useTx } from "../../store/language-store";
+import { useLang, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 // Family hub — ported from beta FamilyView (welcome, biography expander,
 // mission, applications, connect, socials) on the Islah design system.
 export default function ParibarPage() {
   const tx = useTx();
+  const lang = useLang();
+  const [profile, setProfile] = useState(FAMILY_PROFILE);
   const [profileOpen, setProfileOpen] = useState(false);
+  useEffect(() => {
+    let live = true;
+    if (lang === "bn") {
+      setProfile(FAMILY_PROFILE);
+      return;
+    }
+    fetch(`/data/family-profile.${lang}.json`)
+      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .then((next) => { if (live && Array.isArray(next)) setProfile(next); })
+      .catch(() => { if (live) setProfile(FAMILY_PROFILE); });
+    return () => { live = false; };
+  }, [lang]);
+  const profileL = useLocalizedData(profile, lang);
   const [sent, setSent] = useState(false);
 
   return (
@@ -53,7 +69,7 @@ export default function ParibarPage() {
               {tx("হযরতের পরিচিতি")}
             </p>
             <div className="mt-4 space-y-5">
-              {FAMILY_PROFILE.map((s) => (
+              {profileL.map((s) => (
                 <div key={s.heading}>
                   <p className="text-sm font-bold text-primary-700">{s.heading}:</p>
                   {s.paragraphs.map((p, i) => (

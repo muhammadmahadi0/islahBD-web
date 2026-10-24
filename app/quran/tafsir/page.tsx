@@ -6,12 +6,13 @@ import { PageHead, ShareCopy, EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
 import { stripHtml, BN_TAFSIRS } from "../../../lib/quran";
 import { surahBnFull } from "../../../lib/surah-names";
-import { useTx } from "../../../store/language-store";
+import { useLang, useTx } from "../../../store/language-store";
 
 // Dedicated tafsir page (muslimbangla /sura/N/tafsir/M pattern):
 // full tafsir text of one ayah with Arabic + translation on top.
 function TafsirBody() {
   const tx = useTx();
+  const lang = useLang();
   const params = useSearchParams();
   const surah = Math.min(114, Math.max(1, Number(params.get("surah")) || 1));
   const ayah = Math.max(1, Number(params.get("ayah")) || 1);
@@ -40,7 +41,7 @@ function TafsirBody() {
     <div className="animate-fade-up">
       <PageHead
         title={`${tx("তাফসীর")} ${surah}:${ayah}`}
-        subtitle={surahBnFull(surah)}
+        subtitle={lang === "bn" ? surahBnFull(surah) : `${tx("সূরা")} ${surah}`}
         icon="doc"
         backHref={`/quran/read?surah=${surah}&ayah=${ayah}`}
       />

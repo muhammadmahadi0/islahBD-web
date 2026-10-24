@@ -5,8 +5,8 @@ import { Icon } from "../../components/icons";
 import { usePlayerStore, type Track } from "../../store/player-store";
 import AddToPlaylistMenu from "../../components/audio/AddToPlaylistMenu";
 import { shortToTrack, type ShortClip, type ShortClipType } from "../../lib/shorts";
-import { timeAgoBn, bnNum } from "../../lib/audio";
-import { useNum, useTx } from "../../store/language-store";
+import { useLang, useNum, useTimeAgo, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 // Short clips — audio clips play through the stream engine, video clips
 // through the YouTube engine. Search, type filter, silent refresh, queue
@@ -16,6 +16,8 @@ type TypeFilter = "all" | ShortClipType;
 export default function MediaPage() {
   const tx = useTx();
   const num = useNum();
+  const timeAgo = useTimeAgo();
+  const lang = useLang();
   const [clips, setClips] = useState<ShortClip[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -42,7 +44,7 @@ export default function MediaPage() {
       });
       setError("");
     } catch {
-      if (!silent) setError(tx("ক্লিপ তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।"));
+      if (!silent) setError("ক্লিপ তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।");
     } finally {
       if (!silent) setLoading(false);
     }
@@ -54,14 +56,15 @@ export default function MediaPage() {
     return () => { if (refreshTimer.current) clearInterval(refreshTimer.current); };
   }, [load]);
 
+  const clipsL = useLocalizedData(clips, lang);
   const results = useMemo(() => {
     const q = submitted.trim().toLowerCase();
-    return clips.filter((c) => {
+    return clipsL.filter((c) => {
       if (type !== "all" && c.type !== type) return false;
       if (!q) return true;
       return c.title.toLowerCase().includes(q);
     });
-  }, [clips, submitted, type]);
+  }, [clipsL, submitted, type]);
 
   const tracks = useMemo(() => results.map(shortToTrack), [results]);
 
@@ -82,14 +85,14 @@ export default function MediaPage() {
     playTrack(tracks[idx], tracks, idx);
   }, [tracks, playTrack]);
 
-  const audioCount = clips.filter((c) => c.type === "audio").length;
-  const videoCount = clips.filter((c) => c.type === "video").length;
+  const audioCount = clipsL.filter((c) => c.type === "audio").length;
+  const videoCount = clipsL.filter((c) => c.type === "video").length;
 
   return (
     <div className="animate-fade-up">
       <PageHead
         title={tx("সংক্ষিপ্ত ক্লিপস")}
-        subtitle={`${tx("হাইলাইটস")} • ${num(clips.length)}${tx("টি")}`}
+        subtitle={`${tx("হাইলাইটস")} • ${num(clipsL.length)}${tx("টি")}`}
         icon="play"
       />
 
@@ -108,7 +111,7 @@ export default function MediaPage() {
       <div className="rail -mx-3 flex items-center gap-2 overflow-x-auto px-3 py-3">
         {(
           [
-            { id: "all", label: `${tx("সব")} (${num(clips.length)})` },
+            { id: "all", label: `${tx("সব")} (${num(clipsL.length)})` },
             { id: "audio", label: `${tx("অডিও")} (${num(audioCount)})` },
             { id: "video", label: `${tx("ভিডিও")} (${num(videoCount)})` },
           ] as { id: TypeFilter; label: string }[]
@@ -138,7 +141,7 @@ export default function MediaPage() {
           ))}
         </div>
       ) : error ? (
-        <EmptyState icon="play" title={error} hint={tx("পুনরায় চেষ্টা করুন")} />
+        <EmptyState icon="play" title={tx(error)} hint={tx("পুনরায় চেষ্টা করুন")} />
       ) : results.length === 0 ? (
         <EmptyState icon="search" title={tx("কিছু পাওয়া যায়নি")} hint={tx("অন্য শব্দে খুঁজে দেখুন")} />
       ) : (
@@ -167,7 +170,7 @@ export default function MediaPage() {
                 <div className="min-w-0 flex-1">
                   <div className={`truncate text-sm font-bold leading-snug ${active ? "text-primary-700" : ""}`}>{clip.title}</div>
                   {clip.createdAt && (
-                    <div className="mt-0.5 truncate text-xs text-ink-faint">{timeAgoBn(clip.createdAt)}</div>
+                    <div className="mt-0.5 truncate text-xs text-ink-faint">{timeAgo(clip.createdAt)}</div>
                   )}
                   <span className={`mt-1 inline-block rounded-md px-1.5 py-px text-[10px] font-bold uppercase tracking-wide ${isVideo ? "bg-red-50 text-red-500" : "bg-primary-50 text-primary-700"}`}>
                     {isVideo ? tx("ভিডিও") : tx("অডিও")}

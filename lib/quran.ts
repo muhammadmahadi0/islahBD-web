@@ -6,15 +6,19 @@ export const QURAN_API = "https://api.quran.com/api/v4";
 export interface QuranTranslation {
   id: number;
   label: string;
+  labelEn: string;
+  labelUr: string;
   author: string;
+  authorEn: string;
+  authorUr: string;
 }
 
 // Bengali translations (verified via /resources/translations)
 export const BN_TRANSLATIONS: QuranTranslation[] = [
-  { id: 161, label: "তাইসিরুল কুরআন", author: "তাওহীদ পাবলিকেশন্স" },
-  { id: 163, label: "শাইখ মুজিবুর রহমান", author: "দারুসসালাম" },
-  { id: 162, label: "রাওয়াই আল-বায়ান", author: "বায়ান ফাউন্ডেশন" },
-  { id: 213, label: "ড. আবু বকর যাকারিয়া", author: "কিং ফাহদ কমপ্লেক্স" },
+  { id: 161, label: "তাইসিরুল কুরআন", labelEn: "Taisirul Quran", labelUr: "تیسیر القرآن", author: "তাওহীদ পাবলিকেশন্স", authorEn: "Tawheed Publications", authorUr: "توحید پبلیکیشنز" },
+  { id: 163, label: "শাইখ মুজিবুর রহমান", labelEn: "Shaykh Mujibur Rahman", labelUr: "شیخ مجیب الرحمٰن", author: "দারুসসালাম", authorEn: "Darussalam", authorUr: "دار السلام" },
+  { id: 162, label: "রাওয়াই আল-বায়ান", labelEn: "Rawai al-Bayan", labelUr: "روائع البیان", author: "বায়ান ফাউন্ডেশন", authorEn: "Bayan Foundation", authorUr: "بیان فاؤنڈیشن" },
+  { id: 213, label: "ড. আবু বকর যাকারিয়া", labelEn: "Dr. Abu Bakr Zakaria", labelUr: "ڈاکٹر ابو بکر زکریا", author: "কিং ফাহদ কমপ্লেক্স", authorEn: "King Fahd Complex", authorUr: "کنگ فہد کمپلیکس" },
 ];
 
 export interface QuranTafsir {

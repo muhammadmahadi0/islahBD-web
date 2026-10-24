@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import PrayerCard from "../components/PrayerCard";
 import { Icon } from "../components/icons";
-import { timeAgoBn, bnNum, boyanToTrack } from "../lib/audio";
+import { boyanToTrack } from "../lib/audio";
 import type { BoyanAudio } from "../lib/audio";
 import { usePlayerStore } from "../store/player-store";
-import { useTx } from "../store/language-store";
+import { useLang, useNum, useTimeAgo, useTx } from "../store/language-store";
+import { useLocalizedData } from "../lib/content-translate";
 
 const card =
   "bg-white dark:bg-[rgba(30,41,59,0.65)] border border-slate-200/80 dark:border-white/10 rounded-2xl shadow-sm hover:border-amber-400/50 transition cursor-pointer";
@@ -59,6 +60,9 @@ const MEDIA = [
 
 export default function HomePage() {
   const tx = useTx();
+  const num = useNum();
+  const timeAgo = useTimeAgo();
+  const lang = useLang();
   const [recent, setRecent] = useState<BoyanAudio[]>([]);
   const playTrack = usePlayerStore((s) => s.playTrack);
   const togglePlay = usePlayerStore((s) => s.togglePlay);
@@ -72,7 +76,8 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
-  const recentTracks = recent.map(boyanToTrack);
+  const recentL = useLocalizedData(recent, lang);
+  const recentTracks = recentL.map(boyanToTrack);
 
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-4">
@@ -149,7 +154,7 @@ export default function HomePage() {
       </section>
 
       {/* Recent boyan */}
-      {recent.length > 0 && (
+      {recentL.length > 0 && (
         <section className="my-6">
           {/* Loaded after the API call, so this group restarts its own
               short stagger instead of inheriting the page-level delays. */}
@@ -157,7 +162,7 @@ export default function HomePage() {
             <Heading t={tx("সাম্প্রতিক বয়ান")} sub={tx("নতুন আপলোড")} link="/boyan" />
           </div>
           <div className="space-y-2.5">
-            {recent.map((b, i) => {
+            {recentL.map((b, i) => {
               const track = recentTracks[i];
               const active = currentTrack?.id === track.id;
               const playing = active && isPlaying;
@@ -188,7 +193,7 @@ export default function HomePage() {
                     <span className="block truncate text-xs font-bold text-ink">{b.title}</span>
                     <span className="mt-1 flex items-center gap-1 text-[10px] text-ink-faint">
                       <Icon name="calendar" size={12} className="text-primary-600" />
-                      {timeAgoBn(b.uploadDate) || `বয়ান ${bnNum(b.id)}`}
+                      {timeAgo(b.uploadDate) || `${tx("বয়ান")} ${num(b.id)}`}
                     </span>
                     {b.location && (
                       <span className="mt-0.5 flex items-center gap-1 truncate text-[10px] text-ink-faint">

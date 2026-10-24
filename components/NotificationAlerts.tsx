@@ -11,6 +11,7 @@ import {
 } from "../lib/push";
 import { notifHref, parseNotifications } from "../lib/notifications";
 import { useLang } from "../store/language-store";
+import { translateText } from "../lib/content-translate";
 
 // How often an open tab checks the API for new notifications.
 const POLL_MS = 3 * 60 * 1000;
@@ -65,9 +66,13 @@ export default function NotificationAlerts() {
           .slice(0, 4)
           .reverse();
         for (const n of fresh) {
+          const [title, body] = await Promise.all([
+            translateText(n.title, lang),
+            translateText(n.body, lang),
+          ]);
           await showLocalNotification({
-            title: n.title,
-            body: n.body,
+            title,
+            body,
             url: notifHref(n) || "/notifications",
             tag: `islah-${n.id}`,
           });
@@ -92,7 +97,7 @@ export default function NotificationAlerts() {
       document.removeEventListener("visibilitychange", recheck);
       window.removeEventListener("focus", recheck);
     };
-  }, [enabled]);
+  }, [enabled, lang]);
 
   // Prayer-time reminders for today (real background alarms need a server
   // push service — see SPEC §4.8).
@@ -136,7 +141,7 @@ export default function NotificationAlerts() {
       dead = true;
       timers.forEach((t) => window.clearTimeout(t));
     };
-  }, [enabled]);
+  }, [enabled, lang]);
 
   return null;
 }

@@ -6,15 +6,18 @@ import { Icon } from "../../components/icons";
 import { usePlayerStore, type Track } from "../../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../../lib/live";
 import { bnNum } from "../../lib/audio";
-import { useNum, useTx } from "../../store/language-store";
+import { useLang, useNum, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 // Live broadcast — beta live behavior: status polling, in-app HLS playback
 // with recording fallback (handled by AudioPlayer), listener count.
-function liveToTrack(live: LiveStatus): Track | null {
+function liveToTrack(live: LiveStatus, lang: "bn" | "ur" | "en"): Track | null {
+  const fallbackLive = lang === "bn" ? "সরাসরি বয়ান" : lang === "ur" ? "براہ راست بیان" : "Live bayan";
+  const fallbackRec = lang === "bn" ? "সর্বশেষ বয়ান" : lang === "ur" ? "تازہ ترین بیان" : "Latest bayan";
   if (live.isLive && live.streamUrl) {
     return {
       id: "live",
-      title: live.title || "সরাসরি বয়ান",
+      title: live.title || fallbackLive,
       thumbnail: "",
       duration: 0,
       channelName: [live.speaker, live.location].filter(Boolean).join(" • "),
@@ -30,7 +33,7 @@ function liveToTrack(live: LiveStatus): Track | null {
   if (rec?.audioUrl) {
     return {
       id: `live-recording`,
-      title: rec.title || "সর্বশেষ বয়ান",
+      title: rec.title || fallbackRec,
       thumbnail: "",
       duration: rec.durationSeconds || 0,
       channelName: [rec.speaker, rec.location].filter(Boolean).join(" • "),
@@ -46,6 +49,7 @@ function liveToTrack(live: LiveStatus): Track | null {
 export default function LivePage() {
   const tx = useTx();
   const num = useNum();
+  const lang = useLang();
   const [live, setLive] = useState<LiveStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const { playTrack, currentTrack, isPlaying, setIsPlaying } = usePlayerStore();
@@ -69,31 +73,32 @@ export default function LivePage() {
     return () => clearInterval(id);
   }, [load]);
 
-  const isLive = !!live?.isLive;
+  const liveL = useLocalizedData(live, lang);
+  const isLive = !!liveL?.isLive;
   const playingLive = currentTrack?.id === "live" || currentTrack?.id === "live-recording";
 
   const playLive = () => {
-    if (!live) return;
+    if (!liveL) return;
     // Tapping while this broadcast plays toggles pause — otherwise start it.
     if (playingLive) {
       setIsPlaying(!isPlaying);
       return;
     }
-    const track = liveToTrack(live);
+    const track = liveToTrack(liveL, lang);
     if (track) playTrack(track);
   };
 
   // Shared link (/live?play=live) auto-plays the broadcast/recording once.
   const autoPlayed = useRef(false);
   useEffect(() => {
-    if (autoPlayed.current || !live) return;
+    if (autoPlayed.current || !liveL) return;
     const shared = new URLSearchParams(window.location.search).get("play");
     if (shared !== "live" && shared !== "live-recording") return;
-    const track = liveToTrack(live);
+    const track = liveToTrack(liveL, lang);
     if (!track) return;
     autoPlayed.current = true;
     playTrack(track);
-  }, [live, playTrack]);
+  }, [liveL, playTrack]);
 
   return (
     <div className="animate-fade-up">
@@ -109,12 +114,12 @@ export default function LivePage() {
         }
       />
 
-      {loading && !live ? (
+      {loading && !liveL ? (
         <div className="card mt-3 animate-pulse p-8">
           <div className="mx-auto h-16 w-16 rounded-full bg-sand-dark" />
           <div className="mx-auto mt-3 h-4 w-2/3 rounded-full bg-sand-dark" />
         </div>
-      ) : !live ? (
+      ) : !liveL ? (
         <div className="mt-3"><EmptyState icon="radio" title={tx("লাইভ তথ্য পাওয়া যাচ্ছে না")} /></div>
       ) : (
         <div className="card mt-3 overflow-hidden">
@@ -124,16 +129,16 @@ export default function LivePage() {
                 <Icon name="radio" size={30} />
               </span>
               <h2 className="mt-3 text-xl font-bold leading-snug">
-                {live.title || (isLive ? tx("সরাসরি বয়ান চলছে") : tx("সর্বশেষ বয়ান"))}
+                {liveL.title || (isLive ? tx("সরাসরি বয়ান চলছে") : tx("সর্বশেষ বয়ান"))}
               </h2>
-              {(live.speaker || live.location) && (
+              {(liveL.speaker || liveL.location) && (
                 <p className="mt-1 text-sm text-white/80">
-                  {[live.speaker, live.location].filter(Boolean).join(" • ")}
+                  {[liveL.speaker, liveL.location].filter(Boolean).join(" • ")}
                 </p>
               )}
-              {isLive && live.listeners > 0 && (
+              {isLive && liveL.listeners > 0 && (
                 <p className="mt-1 text-xs font-bold tabular-nums text-white/80">
-                  {num(live.listeners)}{tx("জন শুনছেন")}
+                  {num(liveL.listeners)}{tx("জন শুনছেন")}
                 </p>
               )}
               <button
@@ -146,7 +151,7 @@ export default function LivePage() {
                   <><Icon name="playfill" size={17} /> {isLive ? tx("লাইভ শুনুন") : tx("রেকর্ডিং শুনুন")}</>
                 )}
               </button>
-              {!isLive && live.recording && (
+              {!isLive && liveL.recording && (
                 <p className="mt-2 text-[11px] text-white/70">{tx("এখন লাইভ বন্ধ — সর্বশেষ রেকর্ডিং বাজবে")}</p>
               )}
             </div>

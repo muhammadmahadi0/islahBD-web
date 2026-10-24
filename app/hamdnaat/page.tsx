@@ -5,10 +5,11 @@ import { Icon } from "../../components/icons";
 import { usePlayerStore, type Track } from "../../store/player-store";
 import AddToPlaylistMenu from "../../components/audio/AddToPlaylistMenu";
 import {
-  hamdNaatToTrack, timeAgoBn, bnNum,
+  hamdNaatToTrack,
   type HamdNaatItem, type HamdNaatType,
 } from "../../lib/audio";
-import { useNum, useTx } from "../../store/language-store";
+import { useLang, useNum, useTimeAgo, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 // Hamd/Naat — beta HamdNaatView behavior (type filter, search, queue
 // playback, playlist menu, YouTube video rows) on the app theme.
@@ -17,6 +18,8 @@ type TypeFilter = "all" | HamdNaatType;
 export default function HamdNaatPage() {
   const tx = useTx();
   const num = useNum();
+  const timeAgo = useTimeAgo();
+  const lang = useLang();
   const [items, setItems] = useState<HamdNaatItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -35,7 +38,7 @@ export default function HamdNaatPage() {
       setItems(data.items);
       setError("");
     } catch (e) {
-      setError(tx("হামদ-নাত তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।"));
+      setError("হামদ-নাত তালিকা লোড করা যাচ্ছে না — ইন্টারনেট চেক করুন।");
     } finally {
       setLoading(false);
     }
@@ -43,15 +46,16 @@ export default function HamdNaatPage() {
 
   useEffect(() => { load(); }, [load]);
 
+  const itemsL = useLocalizedData(items, lang);
   const results = useMemo(() => {
     const q = submitted.trim().toLowerCase();
-    return items.filter((it) => {
+    return itemsL.filter((it) => {
       if (type !== "all" && it.type !== type) return false;
       if (!q) return true;
       return [it.title, it.artist, it.lyricist, it.composer, it.writingPlace]
         .some((s) => s.toLowerCase().includes(q));
     });
-  }, [items, submitted, type]);
+  }, [itemsL, submitted, type]);
 
   const audioQueue = useMemo(
     () => results.filter((r) => r.type === "audio").map(hamdNaatToTrack),
@@ -72,21 +76,21 @@ export default function HamdNaatPage() {
   // Shared link (/hamdnaat?play=hamd-45) auto-plays that exact item once.
   const autoPlayed = useRef(false);
   useEffect(() => {
-    if (autoPlayed.current || !items.length) return;
+    if (autoPlayed.current || !itemsL.length) return;
     const shared = new URLSearchParams(window.location.search).get("play");
     if (!shared) return;
-    const item = items.find((it) => `hamd-${it.id}` === shared);
+    const item = itemsL.find((it) => `hamd-${it.id}` === shared);
     if (!item) return;
     const track = hamdNaatToTrack(item);
-    const queue = items.filter((it) => it.type === "audio").map(hamdNaatToTrack);
+    const queue = itemsL.filter((it) => it.type === "audio").map(hamdNaatToTrack);
     const idx = queue.findIndex((t) => t.id === track.id);
     autoPlayed.current = true;
     if (item.type === "video") playTrack(track, [track, ...queue], 0);
     else playTrack(track, queue, Math.max(0, idx));
-  }, [items, playTrack]);
+  }, [itemsL, playTrack]);
 
-  const audioCount = items.filter((i) => i.type === "audio").length;
-  const videoCount = items.filter((i) => i.type === "video").length;
+  const audioCount = itemsL.filter((i) => i.type === "audio").length;
+  const videoCount = itemsL.filter((i) => i.type === "video").length;
 
   return (
     <div className="animate-fade-up">
@@ -139,7 +143,7 @@ export default function HamdNaatPage() {
           ))}
         </div>
       ) : error ? (
-        <EmptyState icon="music" title={error} />
+        <EmptyState icon="music" title={tx(error)} />
       ) : results.length === 0 ? (
         <EmptyState icon="search" title={tx("কিছু পাওয়া যায়নি")} hint={tx("অন্য শব্দে খুঁজে দেখুন")} />
       ) : (
@@ -147,7 +151,7 @@ export default function HamdNaatPage() {
           {results.slice(0, 150).map((it) => {
             const isVideo = it.type === "video";
             const active = currentTrack?.id === `hamd-${it.id}`;
-            const sub = [it.artist, it.writingPlace, timeAgoBn(it.createdAt)].filter(Boolean).join(" • ");
+            const sub = [it.artist, it.writingPlace, timeAgo(it.createdAt)].filter(Boolean).join(" • ");
             const credits = [it.lyricist, it.composer].filter(Boolean).join(" • ");
             return (
               <div

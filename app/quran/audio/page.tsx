@@ -5,11 +5,12 @@ import { Icon } from "../../../components/icons";
 import type { QuranChapter, QuranReciter } from "../../../lib/quran";
 import { storageSetJSON, storageGetJSON } from "../../../lib/storage";
 import { surahBnFull } from "../../../lib/surah-names";
-import { useTx } from "../../../store/language-store";
+import { useLang, useTx } from "../../../store/language-store";
 
 // Audio Quran — reciters + chapter streaming from quran.com API.
 export default function QuranAudio() {
   const tx = useTx();
+  const lang = useLang();
   const [reciters, setReciters] = useState<QuranReciter[]>([]);
   const [chapters, setChapters] = useState<QuranChapter[]>([]);
   const [reciter, setReciter] = useState(7);
@@ -45,6 +46,13 @@ export default function QuranAudio() {
 
   const current = chapters.find((c) => c.id === surah);
   const reciterName = reciters.find((r) => r.id === reciter)?.reciter_name || "";
+  const surahLabel = (id: number) => {
+    if (lang === "bn") return surahBnFull(id);
+    const chapter = chapters.find((c) => c.id === id);
+    return chapter
+      ? (lang === "ur" ? chapter.name_arabic : chapter.name_simple)
+      : `${tx("সূরা")} ${id}`;
+  };
 
   return (
     <div className="animate-fade-up">
@@ -70,7 +78,7 @@ export default function QuranAudio() {
           <select value={surah} onChange={(e) => setSurah(Number(e.target.value))} className="input mt-1.5">
             {chapters.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.id}. {surahBnFull(c.id)}{c.translated_name?.name ? ` — ${c.translated_name.name}` : ""}
+                {c.id}. {surahLabel(c.id)}
               </option>
             ))}
           </select>
@@ -98,7 +106,7 @@ export default function QuranAudio() {
           <div className="mb-2 text-sm font-bold">{tx("আমার সংগ্রহ")} ({saved.length})</div>
           <div className="flex flex-wrap gap-1.5">
             {saved.map((s) => (
-              <button key={s} onClick={() => setSurah(s)} className="chip">{surahBnFull(s)}</button>
+              <button key={s} onClick={() => setSurah(s)} className="chip">{surahLabel(s)}</button>
             ))}
           </div>
         </div>

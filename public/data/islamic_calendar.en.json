@@ -1,0 +1,1912 @@
+{
+  "source_book": "Sirat Ibn Hisham, Ar-Raheeq Al-Makhtum, Al-Bidayah wan-Nihayah, Tarikh al-Khulafa, Siyar A'lam an-Nubala",
+  "author": "Compiled",
+  "translator": "Compiled",
+  "app_version": "2.0.0",
+  "id": "islamic_calendar",
+  "title": "Islamic calendar and history",
+  "icon": "calendar_icon",
+  "description": "A comprehensive chronology of Islamic history — Prophets, Companions, battles, caliphate and later eras",
+  "note": "Important events of Islamic history are arranged in detail according to the Hijri months and dates.",
+  "categories": [
+    {
+      "id": "muharram",
+      "title": "Muharram",
+      "title_ar": "ٱلْمُحَرَّم",
+      "items": [
+        {
+          "id": "muh_01",
+          "title": "Hijri New Year",
+          "title_ar": "رَأْسُ السَّنَةِ الْهِجْرِيَّة",
+          "date": "1 Muharram",
+          "date_en": "1 Muharram",
+          "month": "Muharram",
+          "description": "During the caliphate of Umar (R.A.), the Hijri year was calculated based on the migration of the Prophet (peace and blessings of Allah be upon him).",
+          "type": "history",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "muh_02",
+          "title": "Martyrdom of Umar (RA).",
+          "title_ar": "اسْتِشْهَادُ عُمَرَ رَضِيَ اللهُ عَنْهُ",
+          "date": "1 Muharram",
+          "date_en": "1 Muharram, 24 AH (644 CE)",
+          "month": "Muharram",
+          "description": "The 2nd Caliph of Islam Hazrat Umar Ibnul Khattab (RA) was martyred by the stabbing of Abu Lulu Firoz.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "muh_03",
+          "title": "The Caliphate of Uthman (RA) begins",
+          "title_ar": "بَيْعَةُ عُثْمَانَ بْنِ عَفَّانَ",
+          "date": "1 Muharram",
+          "date_en": "1 Muharram, 24 AH",
+          "month": "Muharram",
+          "description": "After the martyrdom of Umar (RA) Uthman (RA) was elected as the third caliph through the Shura Committee.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "muh_04",
+          "title": "The ark of Noah (a.s.) is on Mount Judi",
+          "title_ar": "اسْتِوَاءُ سَفِينَةِ نُوحٍ عَلَى الْجُودِيِّ",
+          "date": "1 Muharram",
+          "date_en": "1 Muharram",
+          "month": "Muharram",
+          "description": "According to commentators, on this day the ark of Noah (A.S.) settled on Judi Hill after the Great Flood.",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "muh_05",
+          "title": "Commemorating the Martyrdom of Zayd Ibn Haresa (RA).",
+          "title_ar": "ذِكْرَى اسْتِشْهَادِ زَيْدِ بْنِ حَارِثَةَ",
+          "date": "2 Muharram",
+          "date_en": "2 Muharram",
+          "month": "Muharram",
+          "description": "Zayd (RA), the beloved companion and beloved son of the Prophet (PBUH), was martyred as the first commander in the Battle of Mutah.",
+          "type": "sahaba",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "muh_06",
+          "title": "Rescue of Yusuf (a.s.) from the well",
+          "title_ar": "إِنْقَاذُ يُوسُفَ مِنَ الْبِئْرِ",
+          "date": "3 Muharram",
+          "date_en": "3 Muharram",
+          "month": "Muharram",
+          "description": "According to commentators, on this day Yusuf (A.S.) was rescued by a caravan from a well abandoned by his brother.",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "muh_07",
+          "title": "Liberation of Ibrahim (A.S.) from the fire",
+          "title_ar": "نَجَاةُ إِبْرَاهِيمَ مِنَ النَّارِ",
+          "date": "4 Muharram",
+          "date_en": "4 Muharram",
+          "month": "Muharram",
+          "description": "Some narrations say that on this day Allah made the fire of Nimrud cool and peaceful for Ibrahim (A.S.).",
+          "type": "history",
+          "reference": "Qurtubi in Tafseer"
+        },
+        {
+          "id": "muh_08",
+          "title": "Hussain's (RA) journey to Karbala",
+          "title_ar": "مَسِيرَةُ الْحُسَيْنِ إِلَى كَرْبَلَاء",
+          "date": "5 Muharram",
+          "date_en": "5 Muharram, 61 AH",
+          "month": "Muharram",
+          "description": "Hussain's (RA) caravan reached the desert of Karbala. Yazid's soldiers stopped the water supply.",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "muh_09",
+          "title": "Call Musa (A.S.) to Mount Tur",
+          "title_ar": "مُنَاجَاةُ مُوسَى فِي الطُّورِ",
+          "date": "6 Muharram",
+          "date_en": "6 Muharram",
+          "month": "Muharram",
+          "description": "Musa (a.s.) was summoned to converse with Allah on Mount Tur and received the Torah.",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "muh_10",
+          "title": "Ghazwaye Khaibar",
+          "title_ar": "غَزْوَةُ خَيْبَرَ",
+          "date": "7 Muharram",
+          "date_en": "7 Muharram, 7 AH (628 CE)",
+          "month": "Muharram",
+          "description": "The Prophet (peace and blessings of Allah be upon him) conquered Khaibar, the fort of the Jews, with 1600 companions. Ali (RA) conquered the fort of Kamus.",
+          "type": "ghazwa",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "muh_11",
+          "title": "The sinking of the pharaoh",
+          "title_ar": "غَرَقُ فِرْعَوْنَ",
+          "date": "9 Muharram",
+          "date_en": "9 Muharram",
+          "month": "Muharram",
+          "description": "Tasua — The day before Ashura. The Prophet (peace and blessings of Allah be upon him) said to fast on this day as well.",
+          "type": "history",
+          "reference": "Sahih Muslim"
+        },
+        {
+          "id": "muh_12",
+          "title": "Ashura - The deliverance of Musa (A.S.).",
+          "title_ar": "يَوْمُ عَاشُورَاءَ",
+          "date": "10 Muharram",
+          "date_en": "10 Muharram",
+          "month": "Muharram",
+          "description": "Allah saved Musa (a.s.) and Bani Israel from Pharaoh. Pharaoh drowned in the Red Sea.",
+          "type": "history",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "muh_13",
+          "title": "The tragedy of Karbala",
+          "title_ar": "وَاقِعَةُ كَرْبَلَاءَ",
+          "date": "10 Muharram",
+          "date_en": "10 Muharram, 61 AH (680 CE)",
+          "month": "Muharram",
+          "description": "Hussain (may Allah be pleased with him), the son-in-law of the Prophet (may peace be upon him) was martyred in Karbala. 72 family members and companions were martyred with him.",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "muh_14",
+          "title": "Battle of Kadeshia",
+          "title_ar": "مَعْرَكَةُ الْقَادِسِيَّةِ",
+          "date": "11 Muharram",
+          "date_en": "11 Muharram, 14 AH (636 CE)",
+          "month": "Muharram",
+          "description": "Muslim forces led by Saad bin Abi Waqqas (RA) defeated the Persian commander Rustam.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "muh_15",
+          "title": "Gazwaye Jatur Rika",
+          "title_ar": "غَزْوَةُ ذَاتِ الرِّقَاعِ",
+          "date": "12 Muharram",
+          "date_en": "12 Muharram, 4 AH",
+          "month": "Muharram",
+          "description": "Campaign against the Gatafan tribe of Najd. The rule of Salatul Khawf (Prayer of Fear) was revealed in this battle.",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "muh_16",
+          "title": "Yunus (A.) Deliverance from the belly of the fish",
+          "title_ar": "نَجَاةُ يُونُسَ مِنْ بَطْنِ الْحُوتِ",
+          "date": "13 Muharram",
+          "date_en": "13 Muharram",
+          "month": "Muharram",
+          "description": "According to the narration, Yunus (A.S.) was released from the belly of the fish by the grace of Allah around Ashura.",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "muh_17",
+          "title": "Battle of Talut and Jalut",
+          "title_ar": "مَعْرَكَةُ طَالُوتَ وَجَالُوت",
+          "date": "15 Muharram",
+          "date_en": "15 Muharram",
+          "month": "Muharram",
+          "description": "The army of Bani Israel led by Talut defeated the army of Jalut. Dawood (A.S.) killed Jalut.",
+          "type": "history",
+          "reference": "Qurtubi in Tafseer"
+        },
+        {
+          "id": "muh_18",
+          "title": "Martyrdom of Ammar Ibn Yasir (RA).",
+          "title_ar": "اسْتِشْهَادُ عَمَّارِ بْنِ يَاسِرٍ",
+          "date": "17 Muharram",
+          "date_en": "17 Muharram",
+          "month": "Muharram",
+          "description": "The Prophet (peace be upon him) predicted that Ammar would be killed by the rebel group. He was martyred at Siffin at the age of 93.",
+          "type": "sahaba",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "muh_19",
+          "title": "Succession of Sulayman (a.s.).",
+          "title_ar": "تَوَلِّي سُلَيْمَانَ الْمُلْكَ",
+          "date": "18 Muharram",
+          "date_en": "18 Muharram",
+          "month": "Muharram",
+          "description": "After Dawood (A.S.) his son Sulaiman (A.S.) received the kingship and prophethood.",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "muh_20",
+          "title": "Ayyub (a.) relief from disease",
+          "title_ar": "شِفَاءُ أَيُّوبَ عَلَيْهِ السَّلَام",
+          "date": "20 Muharram",
+          "date_en": "20 Muharram",
+          "month": "Muharram",
+          "description": "After a long illness, Allah Ta'ala granted health to Ayyub (A.S.).",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "muh_21",
+          "title": "Death of Imam Abu Hanifa (RA).",
+          "title_ar": "وَفَاةُ الْإِمَامِ أَبِي حَنِيفَةَ",
+          "date": "22 Muharram",
+          "date_en": "22 Muharram, 150 AH (767 CE)",
+          "month": "Muharram",
+          "description": "Imam Azam Abu Hanifa Numan bin Thabit (RA), the founder of Hanafi Fiqh, passed away in Baghdad.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "muh_22",
+          "title": "Death of Zainul Abedin (Rah.).",
+          "title_ar": "وَفَاةُ عَلِيِّ بْنِ الْحُسَيْنِ زَيْنِ الْعَابِدِينَ",
+          "date": "25 Muharram",
+          "date_en": "25 Muharram, 94 AH (713 CE)",
+          "month": "Muharram",
+          "description": "Ali Ibnul Hussain Zainul Abedin (R.A.) son of Fera Hussain (R.A.) survived Karbala and passed away in Madinah.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "muh_23",
+          "title": "Conquest of Egypt",
+          "title_ar": "فَتْحُ مِصْرَ",
+          "date": "28 Muharram",
+          "date_en": "28 Muharram, 20 AH (641 CE)",
+          "month": "Muharram",
+          "description": "The Muslim army under the leadership of Amr ibn al-As (RA) conquered Egypt.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        }
+      ]
+    },
+    {
+      "id": "safar",
+      "title": "tour",
+      "title_ar": "صَفَر",
+      "items": [
+        {
+          "id": "saf_01",
+          "title": "Ghazwaye Abwa (Waddan)",
+          "title_ar": "غَزْوَةُ الْأَبْوَاءِ",
+          "date": "1 visit",
+          "date_en": "1 Safar, 2 AH (623 CE)",
+          "month": "tour",
+          "description": "The Prophet (peace be upon him) himself led the first military campaign. A peace treaty was made with the Banu Jamra tribe.",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "saf_02",
+          "title": "Death of Abdul Muttalib, grandfather of the Prophet (peace be upon him).",
+          "title_ar": "وَفَاةُ عَبْدِ الْمُطَّلِبِ",
+          "date": "2 tour",
+          "date_en": "2 Safar (578 CE)",
+          "month": "tour",
+          "description": "The Prophet (peace be upon him) lost his grandfather Abdul Muttalib at the age of eight. He then grew up under the supervision of uncle Abu Talib.",
+          "type": "seerah",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "saf_03",
+          "title": "The incident of Bir Mauna",
+          "title_ar": "حَادِثَةُ بِئْرِ مَعُونَة",
+          "date": "4 tour",
+          "date_en": "4 Safar, 4 AH (625 CE)",
+          "month": "tour",
+          "description": "70 Hafez were martyred by deceiving the Companions of the Qur'an. The Prophet (peace and blessings of Allah be upon him) was revealed in Qunut for 30 days.",
+          "type": "sahaba",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "saf_04",
+          "title": "Razi's incident",
+          "title_ar": "حَادِثَةُ الرَّجِيعِ",
+          "date": "5 tour",
+          "date_en": "5 Safar, 4 AH",
+          "month": "tour",
+          "description": "6 Companions were deceived and sold to the polytheists. Khubayb (ra) prayed two rakats before he was martyred.",
+          "type": "sahaba",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "saf_05",
+          "title": "Ghazwaye Banu Nadir",
+          "title_ar": "غَزْوَةُ بَنِي النَّضِيرِ",
+          "date": "7 tour",
+          "date_en": "7 Safar, 4 AH",
+          "month": "tour",
+          "description": "The Jewish tribe of Banu Nadi plotted to kill the Prophet (peace and blessings of Allah be upon him) and were expelled from Madinah. Surah Hashar was revealed.",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "saf_06",
+          "title": "Sariya Nakhla",
+          "title_ar": "سَرِيَّةُ نَخْلَة",
+          "date": "8 tours",
+          "date_en": "8 Safar, 2 AH (624 CE)",
+          "month": "tour",
+          "description": "The expedition led by Abdullah Ibn Jahsh (R.A.). First armed conflict with Quraysh.",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "saf_07",
+          "title": "Marriage of Ali (RA) and Fatima (RA).",
+          "title_ar": "زَوَاجُ عَلِيٍّ وَفَاطِمَةَ",
+          "date": "10 trips",
+          "date_en": "10 Safar, 2 AH",
+          "month": "tour",
+          "description": "The Prophet (peace and blessings of Allah be upon him) married his beloved daughter Fatimah to Ali (RA).",
+          "type": "seerah",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "saf_08",
+          "title": "Battle of Siffin",
+          "title_ar": "مَوْقِعَةُ صِفِّينَ",
+          "date": "12 tours",
+          "date_en": "12 Safar, 37 AH (657 CE)",
+          "month": "tour",
+          "description": "Battle of Siffin between Ali (RA) and Muawiya (RA). Later terminated by arbitration.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "saf_09",
+          "title": "Death of Imam Hasan (RA).",
+          "title_ar": "وَفَاةُ الْحَسَنِ بْنِ عَلِيٍّ",
+          "date": "15 tours",
+          "date_en": "15 Safar, 50 AH (670 CE)",
+          "month": "tour",
+          "description": "Hasan (R.A.), the son-in-law of the Prophet (peace be upon him) and the leader of the heavenly youth, passed away in Madinah.",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "saf_10",
+          "title": "First migration to Habsha",
+          "title_ar": "الْهِجْرَةُ الْأُولَى إِلَى الْحَبَشَةِ",
+          "date": "17 trips",
+          "date_en": "17 Safar, 5th year of Prophethood",
+          "month": "tour",
+          "description": "When persecution increased in Makkah, 11 male and 4 female Companions migrated to Abyssinia (Ethiopia), the land of righteous Najashi.",
+          "type": "seerah",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "saf_11",
+          "title": "Invitation to Darul Arkam",
+          "title_ar": "الدَّعْوَةُ فِي دَارِ الْأَرْقَمِ",
+          "date": "19 tour",
+          "date_en": "19 Safar",
+          "month": "tour",
+          "description": "The Prophet (peace and blessings of Allah be upon him) used to conduct Da'wah secretly in the house of Arqam Ibn Abil Arqam (R.A.) at the foot of Safa Hill.",
+          "type": "seerah",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "saf_12",
+          "title": "Rise of Musaylamatul Qayyab",
+          "title_ar": "ظُهُورُ مُسَيْلِمَةَ الْكَذَّابِ",
+          "date": "20 visits",
+          "date_en": "20 Safar, 11 AH",
+          "month": "tour",
+          "description": "After the death of the Prophet (peace and blessings of Allah be upon him), the hypocrite Prophet Musaylama falsely claimed prophethood in Yamama.",
+          "type": "history",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "saf_13",
+          "title": "Birth of Imam Malek (RA).",
+          "title_ar": "مَوْلِدُ الْإِمَامِ مَالِكٍ",
+          "date": "21 tour",
+          "date_en": "21 Safar, 93 AH (711 CE)",
+          "month": "tour",
+          "description": "Imam Malik Ibn Anas (RA) was born in Madinah, author of Muatta Imam Malik and founder of the Maliki Madhhab.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "saf_14",
+          "title": "Battle of Wakedi",
+          "title_ar": "مَعْرَكَةُ الْوَلَجَةِ",
+          "date": "23 tours",
+          "date_en": "23 Safar, 12 AH (633 CE)",
+          "month": "tour",
+          "description": "In Iraq, Khalid bin Walid (RA) defeated the Persian forces and paved the way for the conquest of Iraq.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "saf_15",
+          "title": "Death of Ibn Taymiyyah (RA).",
+          "title_ar": "وَفَاةُ ابْنِ تَيْمِيَّةَ",
+          "date": "26 tours",
+          "date_en": "26 Safar, 728 AH (1328 CE)",
+          "month": "tour",
+          "description": "Shaykhul Islam Imam Ibn Taymiyyah (RA) died in prison in Damascus.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "saf_16",
+          "title": "Beginning of the illness of the Prophet (peace be upon him).",
+          "title_ar": "بِدَايَةُ مَرَضِ النَّبِيِّ ﷺ",
+          "date": "28 tours",
+          "date_en": "28 Safar, 11 AH (632 CE)",
+          "month": "tour",
+          "description": "The Prophet (peace be upon him) fell ill which continued till his death in Rabiul Awal.",
+          "type": "seerah",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "saf_17",
+          "title": "Death of Ibn Mas'ud (RA).",
+          "title_ar": "وَفَاةُ ابْنِ مَسْعُودٍ",
+          "date": "29 tours",
+          "date_en": "29 Safar, 32 AH (653 CE)",
+          "month": "tour",
+          "description": "Renowned Sahabi, Hafiz of Quran and Mufassir Abdullah Ibn Masood (RA) passed away in Madinah.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        }
+      ]
+    },
+    {
+      "id": "rabiul_awwal",
+      "title": "Rabiul Awal",
+      "title_ar": "رَبِيعُ الْأَوَّلِ",
+      "items": [
+        {
+          "id": "rab1_01",
+          "title": "Birth of the Prophet (peace be upon him).",
+          "title_ar": "مَوْلِدُ النَّبِيِّ ﷺ",
+          "date": "9 or 12 Rabiul Awal",
+          "date_en": "9 or 12 Rabi al-Awwal (571 CE)",
+          "month": "Rabiul Awal",
+          "description": "Prophet Muhammad (peace be upon him) was born in Makkah on Monday morning of Amul Fiel (571 AD). His father Abdullah died before he was born.",
+          "type": "seerah",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "rab1_02",
+          "title": "Nurture by Halima Sadia",
+          "title_ar": "رِضَاعَةُ حَلِيمَةَ السَّعْدِيَّةِ",
+          "date": "1 Rabiul Awal",
+          "date_en": "1 Rabi al-Awwal",
+          "month": "Rabiul Awal",
+          "description": "According to traditional Arab custom, the baby Muhammad (may peace be upon him) was given to Halima Sadiya of the Banu Saad tribe to nurse.",
+          "type": "seerah",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "rab1_03",
+          "title": "The death of the mother of the Prophet (peace be upon him).",
+          "title_ar": "وَفَاةُ آمِنَةَ بِنْتِ وَهْبٍ",
+          "date": "3 Rabiul Awal",
+          "date_en": "3 Rabi al-Awwal (577 CE)",
+          "month": "Rabiul Awal",
+          "description": "The Prophet (peace be upon him) lost his mother Amena bint Wahhab at the age of six. Then he was brought up by his grandfather Abdul Muttalib.",
+          "type": "seerah",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "rab1_04",
+          "title": "Ghazwaye Saweek",
+          "title_ar": "غَزْوَةُ السَّوِيقِ",
+          "date": "5 Rabiul Awal",
+          "date_en": "5 Rabi al-Awwal, 2 AH",
+          "month": "Rabiul Awal",
+          "description": "When Abu Sufyan attacked the outskirts of Madinah, he left the umbrella (Sawiq) while fleeing.",
+          "type": "ghazwa",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "rab1_05",
+          "title": "Death of Abu Talib",
+          "title_ar": "وَفَاةُ أَبِي طَالِبٍ",
+          "date": "7 Rabiul Awal",
+          "date_en": "7 Rabi al-Awwal (619 CE)",
+          "month": "Rabiul Awal",
+          "description": "Abu Talib, the uncle and guardian of the Prophet (peace be upon him) passed away.",
+          "type": "seerah",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "rab1_06",
+          "title": "Hijrat and Quba Mosque in Medina",
+          "title_ar": "الْهِجْرَةُ إِلَى الْمَدِينَةِ وَبِنَاءُ مَسْجِدِ قُبَاء",
+          "date": "8 Rabiul Awal",
+          "date_en": "8 Rabi al-Awwal, 1 AH (622 CE)",
+          "month": "Rabiul Awal",
+          "description": "The Prophet (peace be upon him) reached Quba and built the first mosque of Islam, 'Masjid Quba'.",
+          "type": "seerah",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "rab1_07",
+          "title": "First Friday prayer",
+          "title_ar": "أَوَّلُ صَلَاةِ جُمُعَةٍ",
+          "date": "10 Rabiul Awal",
+          "date_en": "10 Rabi al-Awwal, 1 AH",
+          "month": "Rabiul Awal",
+          "description": "On the way of Hijrah, the Prophet (peace and blessings of Allah be upon him) offered the first Friday prayer in the history of Islam in the valley of the tribe of Banu Salim.",
+          "type": "seerah",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "rab1_08",
+          "title": "Death of the Prophet (peace be upon him).",
+          "title_ar": "وَفَاةُ النَّبِيِّ ﷺ",
+          "date": "12 Rabiul Awal",
+          "date_en": "12 Rabi al-Awwal, 11 AH (632 CE)",
+          "month": "Rabiul Awal",
+          "description": "The Prophet (peace be upon him) died on Monday at the age of 63. His last words were 'Ar-Rafiqul A'la'.",
+          "type": "seerah",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "rab1_09",
+          "title": "Abu Bakr's (RA) acceptance of the caliphate",
+          "title_ar": "بَيْعَةُ أَبِي بَكْرٍ الصِّدِّيقِ",
+          "date": "12 Rabiul Awal",
+          "date_en": "12 Rabi al-Awwal, 11 AH",
+          "month": "Rabiul Awal",
+          "description": "Abu Bakr Siddiq (RA) was elected as the first Caliph by consensus of Banu Sa'ida.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "rab1_10",
+          "title": "Construction of Masjid Nabawi",
+          "title_ar": "بِنَاءُ الْمَسْجِدِ النَّبَوِيِّ",
+          "date": "14 Rabiul Awal",
+          "date_en": "14 Rabi al-Awwal, 1 AH",
+          "month": "Rabiul Awal",
+          "description": "On reaching Medina, the construction of Masjid an-Nabawi began at the place where the camel of the Prophet (peace and blessings of Allah be upon him) sat.",
+          "type": "seerah",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "rab1_11",
+          "title": "Formulation of Madinah Sanad",
+          "title_ar": "صَحِيفَةُ الْمَدِينَةِ",
+          "date": "15 Rabiul Awal",
+          "date_en": "15 Rabi al-Awwal, 1 AH",
+          "month": "Rabiul Awal",
+          "description": "The Prophet (peace be upon him) drew up a written charter of peaceful coexistence between the Muhajirs, the Ansar and the Jews. It is considered to be the first written constitution in the world.",
+          "type": "seerah",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "rab1_12",
+          "title": "Muakhat — Establishment of brotherhood",
+          "title_ar": "الْمُؤَاخَاةُ بَيْنَ الْمُهَاجِرِينَ وَالْأَنْصَارِ",
+          "date": "16 Rabiul Awal",
+          "date_en": "16 Rabi al-Awwal, 1 AH",
+          "month": "Rabiul Awal",
+          "description": "He established a bond of brotherhood between the Muhajirs and the Ansar.",
+          "type": "seerah",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "rab1_13",
+          "title": "Prevalence of call to prayer",
+          "title_ar": "مَشْرُوعِيَّةُ الْأَذَانِ",
+          "date": "18 Rabiul Awal",
+          "date_en": "18 Rabi al-Awwal, 1 AH",
+          "month": "Rabiul Awal",
+          "description": "Abdullah Ibn Zayd (RA) saw the call to prayer in a dream and the Prophet (PBUH) appointed Bilal (RA) as the first muezzin.",
+          "type": "history",
+          "reference": "Sunan Abu Dawud"
+        },
+        {
+          "id": "rab1_14",
+          "title": "Death of Abdur Rahman Ibn Awf (RA).",
+          "title_ar": "وَفَاةُ عَبْدِ الرَّحْمٰنِ بْنِ عَوْفٍ",
+          "date": "20 Rabiul Awal",
+          "date_en": "20 Rabi al-Awwal, 32 AH (652 CE)",
+          "month": "Rabiul Awal",
+          "description": "Asharae Mubasshara and Badri Sahabi Abdur Rahman Ibn Awf (RA) passed away in Madinah.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "rab1_15",
+          "title": "Dispatch of Usama forces",
+          "title_ar": "بَعْثُ جَيْشِ أُسَامَةَ",
+          "date": "22 Rabiul Awal",
+          "date_en": "22 Rabi al-Awwal, 11 AH",
+          "month": "Rabiul Awal",
+          "description": "Abu Bakr (R.A.) sent the army of Usama Ibn Zayd (R.A.) against the Romans as per the instructions of the Prophet (Sallallahu Alaihi Wasallam).",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "rab1_16",
+          "title": "Birth of Imam Ahmad Ibn Hanbal (RA).",
+          "title_ar": "مَوْلِدُ الْإِمَامِ أَحْمَدَ بْنِ حَنْبَلٍ",
+          "date": "25 Rabiul Awal",
+          "date_en": "25 Rabi al-Awwal, 164 AH (780 CE)",
+          "month": "Rabiul Awal",
+          "description": "Imam Ahmad Ibn Hanbal (RA) was born in Baghdad, one of the Imams of the Four Madhhabs and the compiler of Musnad Ahmad.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "rab1_17",
+          "title": "Invitation to Tawaif",
+          "title_ar": "دَعْوَةُ أَهْلِ الطَّائِفِ",
+          "date": "27 Rabiul Awal",
+          "date_en": "27 Rabi al-Awwal",
+          "month": "Rabiul Awal",
+          "description": "The Prophet (peace and blessings of Allah be upon him) who was persecuted in Makkah went to Tawaif and gave an invitation. The people there stoned him to death.",
+          "type": "seerah",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "rab1_18",
+          "title": "Najashi Raja's conversion to Islam",
+          "title_ar": "إِسْلَامُ النَّجَاشِيِّ",
+          "date": "28 Rabiul Awal",
+          "date_en": "28 Rabi al-Awwal",
+          "month": "Rabiul Awal",
+          "description": "Najashi, the righteous king of Habsha (Ethiopia) secretly converted to Islam. Upon his death, the Prophet (peace and blessings of Allah be upon him) performed the Ghaibana funeral.",
+          "type": "history",
+          "reference": "Ar-Rahikul Makhtum"
+        }
+      ]
+    },
+    {
+      "id": "rabiul_akhir",
+      "title": "Robius Sunny",
+      "title_ar": "رَبِيعُ الْآخِرِ",
+      "items": [
+        {
+          "id": "rab2_01",
+          "title": "Gazwaye Buwat",
+          "title_ar": "غَزْوَةُ بُوَاطٍ",
+          "date": "1 Robius Sunny",
+          "date_en": "1 Rabi al-Akhir, 2 AH",
+          "month": "Robius Sunny",
+          "description": "The Prophet (peace and blessings of Allah be upon him) followed the commercial caravan of Quraysh with 200 companions.",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "rab2_02",
+          "title": "Ghazwaye Safwan (Badre Ula)",
+          "title_ar": "غَزْوَةُ سَفَوَانَ",
+          "date": "3 Robius Sunny",
+          "date_en": "3 Rabi al-Akhir, 2 AH",
+          "month": "Robius Sunny",
+          "description": "When Qurz ibn Jabir looted the camels of Madinah, the Prophet (peace and blessings of Allah be upon him) followed him.",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "rab2_03",
+          "title": "The Battle of Ridda begins",
+          "title_ar": "حُرُوبُ الرِّدَّةِ",
+          "date": "5 Robius Sunny",
+          "date_en": "5 Rabi al-Akhir, 11 AH",
+          "month": "Robius Sunny",
+          "description": "When the hypocrite Prophet Musaylama, Tulaiha and Sajah rebelled, Abu Bakr (R.A.) sent 11 troops.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "rab2_04",
+          "title": "Gazwaye Gaba (Zi-Karad)",
+          "title_ar": "غَزْوَةُ ذِي قَرَدٍ",
+          "date": "8 Robius Sunny",
+          "date_en": "8 Rabi al-Akhir, 6 AH",
+          "month": "Robius Sunny",
+          "description": "Salama Ibnul Aqwa (R.A.) alone chased the enemy and recovered the looted camels.",
+          "type": "ghazwa",
+          "reference": "Sahih Muslim"
+        },
+        {
+          "id": "rab2_05",
+          "title": "Abdul Quader Jilani (Rah.) passed away",
+          "title_ar": "وَفَاةُ عَبْدِ الْقَادِرِ الْجِيلَانِي",
+          "date": "11 Robius Sunny",
+          "date_en": "11 Rabi al-Akhir, 561 AH (1166 CE)",
+          "month": "Robius Sunny",
+          "description": "The famous scholar and Ali Sheikh Abdul Quader Jilani of Baghdad passed away.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "rab2_06",
+          "title": "The decision to compile the Qur'an",
+          "title_ar": "قَرَارُ جَمْعِ الْقُرْآنِ",
+          "date": "13 Robius Sunny",
+          "date_en": "13 Rabi al-Akhir, 12 AH",
+          "month": "Robius Sunny",
+          "description": "Abu Bakr (RA) decided to compile the Quran on the advice of Omar (RA) after 700 Hafez were martyred in Yamama. Zayd Ibn Thabit (RA) was given the responsibility.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "rab2_07",
+          "title": "Muhammad Ibnul Qasim Conquest of Indus",
+          "title_ar": "فَتْحُ السِّنْدِ",
+          "date": "15 Robius Sunny",
+          "date_en": "15 Rabi al-Akhir, 93 AH (712 CE)",
+          "month": "Robius Sunny",
+          "description": "Muhammad Ibnul Qasim, who was only 17 years old, conquered the province of Sindh in the subcontinent.",
+          "type": "history",
+          "reference": "Tarikhul Islam"
+        },
+        {
+          "id": "rab2_08",
+          "title": "Death of Bilal (RA).",
+          "title_ar": "وَفَاةُ بِلَالِ بْنِ رَبَاحٍ",
+          "date": "17 Robius Sunny",
+          "date_en": "17 Rabi al-Akhir, 20 AH (641 CE)",
+          "month": "Robius Sunny",
+          "description": "The first muezzin of Islam and a freed slave, Bilal Ibn Rabah (RA) passed away in Damascus.",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "rab2_09",
+          "title": "Birth of Imam Nawabi (RA).",
+          "title_ar": "مَوْلِدُ الْإِمَامِ النَّوَوِيِّ",
+          "date": "20 Robius Sunny",
+          "date_en": "20 Rabi al-Akhir, 631 AH (1233 CE)",
+          "month": "Robius Sunny",
+          "description": "Imam Nawabi (RA), the author of Riyadus Salehin and Arbain Nawabi, was born in Nawa, Syria.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "rab2_10",
+          "title": "Death of Saad Ibn Abi Waqqas (RA).",
+          "title_ar": "وَفَاةُ سَعْدِ بْنِ أَبِي وَقَّاصٍ",
+          "date": "23 Robius Sunny",
+          "date_en": "23 Rabi al-Akhir, 55 AH (675 CE)",
+          "month": "Robius Sunny",
+          "description": "The last member of the Asharai Mubashshara, the conqueror of Qadesia and the founder of Kufa, Sa'd (RA) passed away in Madinah.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "rab2_11",
+          "title": "Spread of Islam in Iraq",
+          "title_ar": "اِنْتِشَارُ الْإِسْلَامِ فِي الْعِرَاقِ",
+          "date": "25 Robius Sunny",
+          "date_en": "25 Rabi al-Akhir, 14 AH",
+          "month": "Robius Sunny",
+          "description": "Khalid Bin Waleed (RA) conquered the city of Hira and opened the doors of Islam to Iraq.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "rab2_12",
+          "title": "Martyrdom of Zubair Ibnul Awam (RA).",
+          "title_ar": "اسْتِشْهَادُ الزُّبَيْرِ بْنِ الْعَوَّامِ",
+          "date": "27 Robius Sunny",
+          "date_en": "27 Rabi al-Akhir, 36 AH",
+          "month": "Robius Sunny",
+          "description": "Zubair (may Allah be pleased with him) one of the Mubassharas of Ashara and a follower of the Prophet (peace and blessings of Allah be upon him) was martyred on his way back after the Battle of Jamal.",
+          "type": "sahaba",
+          "reference": "Tarikhul Khulafa"
+        }
+      ]
+    },
+    {
+      "id": "jumadal_ula",
+      "title": "Jumadal Ula",
+      "title_ar": "جُمَادَى الْأُولَى",
+      "items": [
+        {
+          "id": "jum1_01",
+          "title": "Battle of Mutah",
+          "title_ar": "غَزْوَةُ مُؤْتَةَ",
+          "date": "1 jumadal ula",
+          "date_en": "1 Jumada al-Ula, 8 AH (629 CE)",
+          "month": "Jumadal Ula",
+          "description": "3,000 Muslim soldiers faced 1,000,000 Romans. Zayd, Jafar and Abdullah (RA) were martyred successively.",
+          "type": "ghazwa",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "jum1_02",
+          "title": "Martyrdom of Jafar Ibn Abi Talib (RA).",
+          "title_ar": "اسْتِشْهَادُ جَعْفَرِ بْنِ أَبِي طَالِبٍ",
+          "date": "1 jumadal ula",
+          "date_en": "1 Jumada al-Ula, 8 AH",
+          "month": "Jumadal Ula",
+          "description": "In the Battle of Mutah, Jafar (R.A.) got his two hands cut off while fighting with the flag. The Prophet (peace be upon him) said that Allah gave him two wings.",
+          "type": "sahaba",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "jum1_03",
+          "title": "Khalid bin Waleed (R.A.) was given the title of 'Saifullah'",
+          "title_ar": "تَلْقِيبُ خَالِدٍ بِسَيْفِ اللهِ",
+          "date": "3 Jumadal Ula",
+          "date_en": "3 Jumada al-Ula, 8 AH",
+          "month": "Jumadal Ula",
+          "description": "The Prophet (peace and blessings of Allah be upon him) gave Khalid the title of 'Saifullah' (Sword of God) after bringing the Muslim army back safely from Mutah.",
+          "type": "sahaba",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "jum1_04",
+          "title": "Birth of Zainab bint Ali (RA).",
+          "title_ar": "مَوْلِدُ زَيْنَبَ بِنْتِ عَلِيٍّ",
+          "date": "5 Jumadal Ula",
+          "date_en": "5 Jumada al-Ula, 5 AH",
+          "month": "Jumadal Ula",
+          "description": "Zainab (RA) was born to Ali (RA) and Fatima (RA).",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "jum1_05",
+          "title": "Ghazwaye Dhul Ashira",
+          "title_ar": "غَزْوَةُ ذِي الْعُشَيْرَةِ",
+          "date": "7 Jumadal Ula",
+          "date_en": "7 Jumada al-Ula, 2 AH",
+          "month": "Jumadal Ula",
+          "description": "The Prophet (peace and blessings of Allah be upon him) followed the caravan of Quraysh heading towards Syria. This caravan later led to the Battle of Badr.",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "jum1_06",
+          "title": "Battle of Yarmouk",
+          "title_ar": "مَعْرَكَةُ الْيَرْمُوكِ",
+          "date": "12 Jumadal Ula",
+          "date_en": "12 Jumada al-Ula, 15 AH (636 CE)",
+          "month": "Jumadal Ula",
+          "description": "40 thousand Muslims under the leadership of Khalid bin Walid (RA) defeated 200,000 Roman soldiers and conquered Syria.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "jum1_07",
+          "title": "Death of Abu Ubaidah Ibnul Jarrah (RA).",
+          "title_ar": "وَفَاةُ أَبِي عُبَيْدَةَ بْنِ الْجَرَّاحِ",
+          "date": "15 Jumadal Ula",
+          "date_en": "15 Jumada al-Ula, 18 AH (639 CE)",
+          "month": "Jumadal Ula",
+          "description": "One of the Companions of Asharai Mubashshara, entitled 'Aminul Ummah' (Trustee of the Ummah) died of plague.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "jum1_08",
+          "title": "Death of Mu'az Ibn Jabal (RA).",
+          "title_ar": "وَفَاةُ مُعَاذِ بْنِ جَبَلٍ",
+          "date": "17 Jumadal Ula",
+          "date_en": "17 Jumada al-Ula, 18 AH (639 CE)",
+          "month": "Jumadal Ula",
+          "description": "The most knowledgeable Companion on Halal and Haram, Mu'adh (R.A.) died of the Plague of Amwas in the region of Sham.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "jum1_09",
+          "title": "First attempt at the siege of Constantinople",
+          "title_ar": "أَوَّلُ حِصَارٍ لِلْقُسْطَنْطِينِيَّةِ",
+          "date": "20 Jumadal Ula",
+          "date_en": "20 Jumada al-Ula, 49 AH (669 CE)",
+          "month": "Jumadal Ula",
+          "description": "During the reign of Muawiyah (R.A.), the Muslim navy besieged Constantinople (Istanbul) for the first time. Abu Ayyub Ansari (RA) was martyred in this campaign.",
+          "type": "history",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "jum1_10",
+          "title": "Martyrdom of Abu Ayyub Ansari (RA).",
+          "title_ar": "اسْتِشْهَادُ أَبِي أَيُّوبَ الْأَنْصَارِيِّ",
+          "date": "22 Jumadal Ula",
+          "date_en": "22 Jumada al-Ula, 52 AH (672 CE)",
+          "month": "Jumadal Ula",
+          "description": "The great companion in whose house the Prophet (peace and blessings of Allah be upon him) first stayed after his migration to Madinah died during the siege of Constantinople.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "jum1_11",
+          "title": "Battle of Nahawand",
+          "title_ar": "مَعْرَكَةُ نَهَاوَنْدَ",
+          "date": "25 Jumadal Ula",
+          "date_en": "25 Jumada al-Ula, 21 AH (642 CE)",
+          "month": "Jumadal Ula",
+          "description": "In this battle known as 'Fathul Futuh' (Victory of all victories), the Muslims decisively defeated the Persians.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "jum1_12",
+          "title": "Death of Imam Abu Yusuf (RA).",
+          "title_ar": "وَفَاةُ الْإِمَامِ أَبِي يُوسُفَ",
+          "date": "28 Jumadal Ula",
+          "date_en": "28 Jumada al-Ula, 182 AH (798 CE)",
+          "month": "Jumadal Ula",
+          "description": "Imam Abu Yusuf (r.a.), chief student of Imam Abu Hanifa and chief justice of the Abbasid Caliphate, passed away.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        }
+      ]
+    },
+    {
+      "id": "jumadal_akhira",
+      "title": "Jumadas Sunny",
+      "title_ar": "جُمَادَى الْآخِرَة",
+      "items": [
+        {
+          "id": "jum2_01",
+          "title": "Death of Fatimah (RA).",
+          "title_ar": "وَفَاةُ فَاطِمَةَ الزَّهْرَاءِ",
+          "date": "3 Jumadas Sunny",
+          "date_en": "3 Jumada al-Akhira, 11 AH (632 CE)",
+          "month": "Jumadas Sunny",
+          "description": "Six months after the death of the Prophet (peace be upon him), his beloved daughter, the leader of the heavenly women, Fatimah (RA) passed away.",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "jum2_02",
+          "title": "Battle of Yamama",
+          "title_ar": "مَعْرَكَةُ الْيَمَامَةِ",
+          "date": "5 Jumadas Sunny",
+          "date_en": "5 Jumada al-Akhira, 12 AH (633 CE)",
+          "month": "Jumadas Sunny",
+          "description": "Valor of Wahshi (RA) and Abu Dujana (RA) against the Hypocritical Prophet Musaylama. 700 Hafez was martyred.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "jum2_03",
+          "title": "Khalid's (ra) Iraq campaign began",
+          "title_ar": "بِدَايَةُ فُتُوحَاتِ خَالِدٍ فِي الْعِرَاقِ",
+          "date": "8 Jumadas Sunny",
+          "date_en": "8 Jumada al-Akhira, 12 AH",
+          "month": "Jumadas Sunny",
+          "description": "Khalid Bin Walid (R.A.) started the Iraq campaign under the command of Abu Bakr (R.A.) and won one victory after another.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "jum2_04",
+          "title": "Death of Imam Ghazali (RA).",
+          "title_ar": "وَفَاةُ الْإِمَامِ الْغَزَالِيِّ",
+          "date": "14 Jumadas Sunny",
+          "date_en": "14 Jumada al-Akhira, 505 AH (1111 CE)",
+          "month": "Jumadas Sunny",
+          "description": "The great Islamic thinker and philosopher known as 'Hujjatul Islam' Imam Ghazali (RA) passed away.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "jum2_05",
+          "title": "Plague of Amwas",
+          "title_ar": "طَاعُونُ عَمَوَاسَ",
+          "date": "18 Jumadas Sunny",
+          "date_en": "18 Jumada al-Akhira, 18 AH (639 CE)",
+          "month": "Jumadas Sunny",
+          "description": "25 thousand Muslims died in the terrible plague in Palestine, including great Companions like Abu Ubaidah and Mu'az (RA).",
+          "type": "history",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "jum2_06",
+          "title": "Death of Abu Bakr (RA).",
+          "title_ar": "وَفَاةُ أَبِي بَكْرٍ الصِّدِّيقِ",
+          "date": "22 Jumadas Sunny",
+          "date_en": "22 Jumada al-Akhira, 13 AH (634 CE)",
+          "month": "Jumadas Sunny",
+          "description": "The first Caliph Abu Bakr (RA) died at the age of 63. He was buried next to the Prophet (peace be upon him).",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "jum2_07",
+          "title": "Accepting the caliphate of Umar (RA).",
+          "title_ar": "بَيْعَةُ عُمَرَ بْنِ الْخَطَّابِ",
+          "date": "23 Jumadas Sunny",
+          "date_en": "23 Jumada al-Akhira, 13 AH",
+          "month": "Jumadas Sunny",
+          "description": "According to the will of Abu Bakr (RA), Umar (RA) was appointed as the second caliph.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "jum2_08",
+          "title": "Establishment of Baitul Mal",
+          "title_ar": "تَأْسِيسُ بَيْتِ الْمَالِ",
+          "date": "25 Jumadas Sunny",
+          "date_en": "25 Jumada al-Akhira, 15 AH",
+          "month": "Jumadas Sunny",
+          "description": "Umar (RA) established the state treasury 'Baytul Maal', from which the allowances of the people and government expenditure were carried out.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "jum2_09",
+          "title": "Martyrdom of Talha Ibn Ubaidullah (RA).",
+          "title_ar": "اسْتِشْهَادُ طَلْحَةَ بْنِ عُبَيْدِ اللهِ",
+          "date": "27 Jumadas Sunny",
+          "date_en": "27 Jumada al-Akhira, 36 AH",
+          "month": "Jumadas Sunny",
+          "description": "Talha (ra) one of Mubashshara's Companions was martyred in the Battle of Jamal.",
+          "type": "sahaba",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "jum2_10",
+          "title": "Birth of Ibnul Asir (RA).",
+          "title_ar": "مَوْلِدُ ابْنِ الْأَثِيرِ",
+          "date": "29 Jumadas Sunny",
+          "date_en": "29 Jumada al-Akhira, 555 AH (1160 CE)",
+          "month": "Jumadas Sunny",
+          "description": "Ibn al-Asir (RA), the author of al-Kamil Fit Tarikh and Islamic historian, was born in Mosul.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        }
+      ]
+    },
+    {
+      "id": "rajab",
+      "title": "Rajab",
+      "title_ar": "رَجَب",
+      "items": [
+        {
+          "id": "raj_01",
+          "title": "Isra and Miraj",
+          "title_ar": "الْإِسْرَاءُ وَالْمِعْرَاجُ",
+          "date": "27 Rajab",
+          "date_en": "27 Rajab (621 CE)",
+          "month": "Rajab",
+          "description": "The Prophet (peace be upon him) went from Makkah to Baitul Muqaddas (Isra) and from there to Sidratul Muntaha (Miraj). Five times prayer is obligatory.",
+          "type": "seerah",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "raj_02",
+          "title": "Gazwaye Tabuk",
+          "title_ar": "غَزْوَةُ تَبُوكَ",
+          "date": "1 Rajab",
+          "date_en": "1 Rajab, 9 AH (630 CE)",
+          "month": "Rajab",
+          "description": "The Last Ghazwa of the Prophet (peace be upon him). Journey to Tabu with 30 thousand companions. Uthman (RA) donated 1000 camels.",
+          "type": "ghazwa",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "raj_03",
+          "title": "Birth of Ali (RA).",
+          "title_ar": "مَوْلِدُ عَلِيِّ بْنِ أَبِي طَالِبٍ",
+          "date": "13 Rajab",
+          "date_en": "13 Rajab (599 CE)",
+          "month": "Rajab",
+          "description": "Ali, the fourth caliph and cousin of the Prophet (peace be upon him) was born inside the Kaaba.",
+          "type": "sahaba",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "raj_04",
+          "title": "Conquest of Baitul Muqaddas by Saladin",
+          "title_ar": "تَحْرِيرُ بَيْتِ الْمَقْدِسِ",
+          "date": "27 Rajab",
+          "date_en": "27 Rajab, 583 AH (1187 CE)",
+          "month": "Rajab",
+          "description": "After 90 years, Sultan Salahuddin recaptured Baitul Muqaddas from the Ayyubid Crusaders.",
+          "type": "history",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "raj_05",
+          "title": "Acceptance of Baitul Muqaddas by Umar (RA).",
+          "title_ar": "فَتْحُ بَيْتِ الْمَقْدِسِ",
+          "date": "5 Rajab",
+          "date_en": "5 Rajab, 15 AH (636 CE)",
+          "month": "Rajab",
+          "description": "Umar (RA) himself went and received the keys of Jerusalem peacefully. Christians are given all religious freedom.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "raj_06",
+          "title": "Birth of Imam Shafi'i (RA).",
+          "title_ar": "مَوْلِدُ الْإِمَامِ الشَّافِعِيِّ",
+          "date": "7 Rajab",
+          "date_en": "7 Rajab, 150 AH (767 CE)",
+          "month": "Rajab",
+          "description": "One of the four schools of thought, Imam Shafi'i (RA) was born in Gaza.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "raj_07",
+          "title": "Death of Omar Ibn Abdul Aziz (RA).",
+          "title_ar": "وَفَاةُ عُمَرَ بْنِ عَبْدِ الْعَزِيزِ",
+          "date": "25 Rajab",
+          "date_en": "25 Rajab, 101 AH (720 CE)",
+          "month": "Rajab",
+          "description": "The fifth caliph Rashid and the righteous caliph Omar bin Abdul Aziz (r.a.) passed away.",
+          "type": "history",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "raj_08",
+          "title": "Conquest of Constantinople",
+          "title_ar": "فَتْحُ الْقُسْطَنْطِينِيَّةِ",
+          "date": "20 Rajab",
+          "date_en": "20 Jumada al-Ula, 857 AH (1453 CE)",
+          "month": "Rajab",
+          "description": "Sultan Muhammad II (Muhammad al-Fatih) conquered Constantinople as prophesied by the Prophet (peace be upon him).",
+          "type": "history",
+          "reference": "Tarikhul Islam"
+        },
+        {
+          "id": "raj_09",
+          "title": "Death of Anas Ibn Malik (RA).",
+          "title_ar": "وَفَاةُ أَنَسِ بْنِ مَالِكٍ",
+          "date": "10 Rajab",
+          "date_en": "10 Rajab, 93 AH (712 CE)",
+          "month": "Rajab",
+          "description": "Anas (R.A.), the 10-year servant of the Prophet (peace be upon him) and the narrator of many hadiths, died in Basra as the last companion.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "raj_10",
+          "title": "Birth of Ibn Khaldun (RA).",
+          "title_ar": "مَوْلِدُ ابْنِ خَلْدُونٍ",
+          "date": "15 Rajab",
+          "date_en": "15 Rajab, 732 AH (1332 CE)",
+          "month": "Rajab",
+          "description": "Ibn Khaldun, father of sociology and author of 'Al-Muqaddimah', was born in Tunis.",
+          "type": "history",
+          "reference": "Tarikhul Islam"
+        },
+        {
+          "id": "raj_11",
+          "title": "Battle of Taifuluj",
+          "title_ar": "غَزْوَةُ الطَّائِفِ",
+          "date": "22 Rajab",
+          "date_en": "22 Rajab, 8 AH",
+          "month": "Rajab",
+          "description": "After the conquest of Makkah and Hunayn, the Prophet (peace and blessings of Allah be upon him) besieged Tawaif.",
+          "type": "ghazwa",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "raj_12",
+          "title": "Death of Imam Muslim (RA).",
+          "title_ar": "وَفَاةُ الْإِمَامِ مُسْلِمٍ",
+          "date": "28 Rajab",
+          "date_en": "28 Rajab, 261 AH (875 CE)",
+          "month": "Rajab",
+          "description": "Compiler of Sahih Muslim, Imam Muslim Ibnul Hajjaz (RA) passed away in Nishapur.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        }
+      ]
+    },
+    {
+      "id": "shaban",
+      "title": "Shaban",
+      "title_ar": "شَعْبَان",
+      "items": [
+        {
+          "id": "sha_01",
+          "title": "Shabbat",
+          "title_ar": "لَيْلَةُ النِّصْفِ مِنْ شَعْبَانَ",
+          "date": "15 Shaban",
+          "date_en": "15 Sha'ban",
+          "month": "Shaban",
+          "description": "Rajini in the middle of the month of Shaban. On this night, Allah forgives many people.",
+          "type": "history",
+          "reference": "Sunan Ibn Majah"
+        },
+        {
+          "id": "sha_02",
+          "title": "Qibla change",
+          "title_ar": "تَحْوِيلُ الْقِبْلَةِ",
+          "date": "15 Shaban",
+          "date_en": "15 Sha'ban, 2 AH (624 CE)",
+          "month": "Shaban",
+          "description": "Qibla changes from Baitul Muqaddas towards Kaaba. Verse 144 of Surah Baqarah was revealed.",
+          "type": "seerah",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "sha_03",
+          "title": "Fasting is obligatory",
+          "title_ar": "فَرْضُ صِيَامِ رَمَضَانَ",
+          "date": "1 Shaban",
+          "date_en": "1 Sha'ban, 2 AH (624 CE)",
+          "month": "Shaban",
+          "description": "In the 2nd Hijri, the 183rd verse of Surah Baqarah was revealed, making the fasting of Ramadan obligatory.",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "sha_04",
+          "title": "Ghazway Banu Mustaliq",
+          "title_ar": "غَزْوَةُ بَنِي الْمُصْطَلِقِ",
+          "date": "2 Shaban",
+          "date_en": "2 Sha'ban, 6 AH (627 CE)",
+          "month": "Shaban",
+          "description": "On the way back from this battle, Aisha (RA) was slandered by Ifq. His sanctity is declared in Surah Noor Najil.",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "sha_05",
+          "title": "Birth of Hussain (RA).",
+          "title_ar": "مَوْلِدُ الْحُسَيْنِ بْنِ عَلِيٍّ",
+          "date": "3 Shaban",
+          "date_en": "3 Sha'ban, 4 AH (626 CE)",
+          "month": "Shaban",
+          "description": "Hussain (RA) was born, the son-in-law of the Prophet (peace and blessings of Allah be upon him) and the leader of the heavenly youth.",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "sha_06",
+          "title": "Zakat is obligatory",
+          "title_ar": "فَرْضُ الزَّكَاةِ",
+          "date": "5 Shaban",
+          "date_en": "5 Sha'ban, 2 AH",
+          "month": "Shaban",
+          "description": "Zakat was imposed on Muslims in 2nd Hijri.",
+          "type": "history",
+          "reference": "Fiqhs Sunnah"
+        },
+        {
+          "id": "sha_07",
+          "title": "Death of Abbas (RA).",
+          "title_ar": "وَفَاةُ الْعَبَّاسِ بْنِ عَبْدِ الْمُطَّلِبِ",
+          "date": "8 Shaban",
+          "date_en": "8 Sha'ban, 32 AH (653 CE)",
+          "month": "Shaban",
+          "description": "The uncle of the Prophet (peace and blessings of Allah be upon him) Abbas (RA) died in Madinah. The Abbasid Caliphate is named after him.",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "sha_08",
+          "title": "Birth of Hasan (RA).",
+          "title_ar": "مَوْلِدُ الْحَسَنِ بْنِ عَلِيٍّ",
+          "date": "10 Shaban",
+          "date_en": "10 Sha'ban, 3 AH",
+          "month": "Shaban",
+          "description": "The first son of the Prophet (peace and blessings of Allah be upon him) Hassan (RA) was born. The Prophet (peace be upon him) himself named him.",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "sha_09",
+          "title": "Verses were revealed with the permission of Jihad",
+          "title_ar": "نُزُولُ آيَةِ الْإِذْنِ بِالْقِتَالِ",
+          "date": "12 Shaban",
+          "date_en": "12 Sha'ban, 2 AH",
+          "month": "Shaban",
+          "description": "Muslims are permitted to fight in self-defense through verses 39-40 of Surah Hajj.",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "sha_10",
+          "title": "Death of Ibnul Qayyim (RA).",
+          "title_ar": "وَفَاةُ ابْنِ قَيِّمِ الْجَوْزِيَّةِ",
+          "date": "23 Shaban",
+          "date_en": "23 Sha'ban, 751 AH (1350 CE)",
+          "month": "Shaban",
+          "description": "Ibn al-Qayyim (r.a.), the author of Jadul Maad and a favorite student of Ibn Taymiyyah, passed away in Damascus.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "sha_11",
+          "title": "Preparations for the battle of Badr began",
+          "title_ar": "بِدَايَةُ الْاِسْتِعْدَادِ لِبَدْرٍ",
+          "date": "25 Shaban",
+          "date_en": "25 Sha'ban, 2 AH",
+          "month": "Shaban",
+          "description": "Hearing the caravan of Quraysh coming, the Prophet (peace and blessings of Allah be upon him) began to gather the Companions.",
+          "type": "ghazwa",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "sha_12",
+          "title": "Death of Imam Tirmidhi (RA).",
+          "title_ar": "وَفَاةُ الْإِمَامِ التِّرْمِذِيِّ",
+          "date": "28 Shaban",
+          "date_en": "28 Sha'ban, 279 AH (892 CE)",
+          "month": "Shaban",
+          "description": "Imam Tirmidhi (RA), the compiler of Sunan Tirmidhi and Shamaile Muhammadi, passed away.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        }
+      ]
+    },
+    {
+      "id": "ramadan",
+      "title": "Ramadan",
+      "title_ar": "رَمَضَان",
+      "items": [
+        {
+          "id": "ram_01",
+          "title": "The beginning of the revelation of the Qur'an",
+          "title_ar": "بِدَايَةُ نُزُولِ الْقُرْآنِ",
+          "date": "1 Ramadan",
+          "date_en": "1 Ramadan (610 CE)",
+          "month": "Ramadan",
+          "description": "In the cave of Hera, Gabriel (A.S.) brought the first five verses of Surah Al-Alak. The Qur'an began to be revealed.",
+          "type": "seerah",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "ram_02",
+          "title": "The sahifahs are revealed",
+          "title_ar": "نُزُولُ الصُّحُفِ",
+          "date": "2 Ramadan",
+          "date_en": "2 Ramadan",
+          "month": "Ramadan",
+          "description": "Narrated that the sahifah of Ibrahim (as) was revealed at the beginning of this month.",
+          "type": "history",
+          "reference": "Ahmad in Musnad"
+        },
+        {
+          "id": "ram_03",
+          "title": "Birth of Abdullah Ibn Omar (RA).",
+          "title_ar": "مَوْلِدُ عَبْدِ اللهِ بْنِ عُمَرَ",
+          "date": "5 Ramadan",
+          "date_en": "5 Ramadan",
+          "month": "Ramadan",
+          "description": "Abdullah ibn Umar (R.A.), one of the Companions who gave the most fatwas, was born.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "ram_04",
+          "title": "Acceptance of Islam by Sa'd Ibn Mu'az (RA).",
+          "title_ar": "إِسْلَامُ سَعْدِ بْنِ مُعَاذٍ",
+          "date": "7 Ramadan",
+          "date_en": "7 Ramadan",
+          "month": "Ramadan",
+          "description": "Sa'd Ibn Mu'az (R.A.), the chief of the tribe of Aws, accepted Islam and his whole tribe became Muslims.",
+          "type": "sahaba",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "ram_05",
+          "title": "Death of Khadijah (RA).",
+          "title_ar": "وَفَاةُ خَدِيجَةَ رَضِيَ اللهُ عَنْهَا",
+          "date": "10 Ramadan",
+          "date_en": "10 Ramadan (619 CE)",
+          "month": "Ramadan",
+          "description": "The first wife of the Prophet (peace be upon him) and the first convert to Islam. This year is 'Amul Hujan' (year of mourning).",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "ram_06",
+          "title": "The Torah was revealed",
+          "title_ar": "نُزُولُ التَّوْرَاةِ",
+          "date": "12 Ramadan",
+          "date_en": "12 Ramadan",
+          "month": "Ramadan",
+          "description": "It is narrated that on this day the Torah was revealed to Musa (a.s.).",
+          "type": "history",
+          "reference": "Ahmad in Musnad"
+        },
+        {
+          "id": "ram_07",
+          "title": "The Bible was revealed",
+          "title_ar": "نُزُولُ الْإِنْجِيلِ",
+          "date": "13 Ramadan",
+          "date_en": "13 Ramadan",
+          "month": "Ramadan",
+          "description": "It is narrated that on this day the Injil was revealed to Jesus (pbuh).",
+          "type": "history",
+          "reference": "Ahmad in Musnad"
+        },
+        {
+          "id": "ram_08",
+          "title": "Historical Battle of Badr",
+          "title_ar": "غَزْوَةُ بَدْرٍ الْكُبْرَى",
+          "date": "17 Ramadan",
+          "date_en": "17 Ramadan, 2 AH (624 CE)",
+          "month": "Ramadan",
+          "description": "313 Companions won a historic victory against 1000 Quraysh. 70 Quraysh leaders including Abu Jahl were killed.",
+          "type": "ghazwa",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "ram_09",
+          "title": "Death of Ayesha (RA).",
+          "title_ar": "وَفَاةُ عَائِشَةَ رَضِيَ اللهُ عَنْهَا",
+          "date": "17 Ramadan",
+          "date_en": "17 Ramadan, 58 AH (678 CE)",
+          "month": "Ramadan",
+          "description": "Ayesha Siddiqa, beloved wife of the Prophet (peace be upon him) and narrator of many hadiths, passed away at the age of 66.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "ram_10",
+          "title": "Conquest of Mecca",
+          "title_ar": "فَتْحُ مَكَّةَ",
+          "date": "20 Ramadan",
+          "date_en": "20 Ramadan, 8 AH (630 CE)",
+          "month": "Ramadan",
+          "description": "Victory of Mecca without bloodshed with an army of 10,000 Companions. Removal of 360 idols of Kaaba and declaration of amnesty.",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "ram_11",
+          "title": "Martyrdom of Ali (RA).",
+          "title_ar": "اسْتِشْهَادُ عَلِيِّ بْنِ أَبِي طَالِبٍ",
+          "date": "21 Ramadan",
+          "date_en": "21 Ramadan, 40 AH (661 CE)",
+          "month": "Ramadan",
+          "description": "The fourth caliph Ali (RA) was martyred in Kufa after being hit by Khareji Ibn Muljim.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "ram_12",
+          "title": "Birth of Imam Bukhari (RA).",
+          "title_ar": "مَوْلِدُ الْإِمَامِ الْبُخَارِيِّ",
+          "date": "22 Ramadan",
+          "date_en": "22 Ramadan, 194 AH (810 CE)",
+          "month": "Ramadan",
+          "description": "Imam Bukhari (RA) the compiler of the greatest hadith book Sahih Bukhari was born in Bukhara.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "ram_13",
+          "title": "Shabba Kadar",
+          "title_ar": "لَيْلَةُ الْقَدْرِ",
+          "date": "27 Ramadan (Last Decade)",
+          "date_en": "Last 10 nights of Ramadan",
+          "month": "Ramadan",
+          "description": "A resin is better than a thousand months. The Prophet (peace and blessings of Allah be upon him) said to seek it on the odd night of the last decade.",
+          "type": "history",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "ram_14",
+          "title": "Conquest of Andalusia (Spain).",
+          "title_ar": "فَتْحُ الْأَنْدَلُسِ",
+          "date": "28 Ramadan",
+          "date_en": "28 Ramadan, 92 AH (711 CE)",
+          "month": "Ramadan",
+          "description": "Tariq bin Ziyad defeated King Roderick in Spain and started 800 years of Islamic civilization.",
+          "type": "history",
+          "reference": "Tarikhul Islam"
+        },
+        {
+          "id": "ram_15",
+          "title": "Ain Zalut's War",
+          "title_ar": "مَعْرَكَةُ عَيْنِ جَالُوت",
+          "date": "25 Ramadan",
+          "date_en": "25 Ramadan, 658 AH (1260 CE)",
+          "month": "Ramadan",
+          "description": "Sultan Qutuz and Baibars saved the Muslim world by defeating the formidable Mongol forces.",
+          "type": "history",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "ram_16",
+          "title": "Battle of Hittin",
+          "title_ar": "مَعْرَكَةُ حِطِّينَ",
+          "date": "26 Ramadan",
+          "date_en": "26 Ramadan, 583 AH (1187 CE)",
+          "month": "Ramadan",
+          "description": "Salah al-Din defeated the main force of the Ayyubid Crusaders at Hittin, which paved the way for the conquest of Baitul Muqaddas.",
+          "type": "history",
+          "reference": "Al-Bidayah One Nihaya"
+        }
+      ]
+    },
+    {
+      "id": "shawwal",
+      "title": "Shawal",
+      "title_ar": "شَوَّال",
+      "items": [
+        {
+          "id": "shw_01",
+          "title": "Eid-ul-Fitr",
+          "title_ar": "عِيدُ الْفِطْرِ",
+          "date": "1 Shawwal",
+          "date_en": "1 Shawwal",
+          "month": "Shawal",
+          "description": "Eid-ul-Fitr is the biggest religious festival of Muslims after Ramadan.",
+          "type": "history",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "shw_02",
+          "title": "Death of Imam Bukhari (RA).",
+          "title_ar": "وَفَاةُ الْإِمَامِ الْبُخَارِيِّ",
+          "date": "1 Shawwal",
+          "date_en": "1 Shawwal, 256 AH (870 CE)",
+          "month": "Shawal",
+          "description": "Imam Bukhari (RA), the author of Sahih Bukhari, passed away in Samarkand on the night of Eid.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "shw_03",
+          "title": "Treaty of Hasan (RA) and Muawiya (RA).",
+          "title_ar": "صُلْحُ الْحَسَنِ وَمُعَاوِيَةَ",
+          "date": "3 Shawwal",
+          "date_en": "3 Shawwal, 41 AH (661 CE)",
+          "month": "Shawal",
+          "description": "Hasan (RA) handed over the caliphate to Muawiya (RA) for the unity of the Muslim Ummah. The Prophet (peace and blessings of Allah be upon him) predicted that this grandson would make a treaty between the two parties.",
+          "type": "sahaba",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "shw_04",
+          "title": "Ghazwaye Ohud",
+          "title_ar": "غَزْوَةُ أُحُدٍ",
+          "date": "7 Shawwal",
+          "date_en": "7 Shawwal, 3 AH (625 CE)",
+          "month": "Shawal",
+          "description": "Battle with the Quraish at Mount Ohud. 70 people including Hamza (ra) were martyred. A temporary disaster ensued as the archers left their positions.",
+          "type": "ghazwa",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "shw_05",
+          "title": "Martyrdom of Hamza (RA).",
+          "title_ar": "اسْتِشْهَادُ حَمْزَةَ بْنِ عَبْدِ الْمُطَّلِبِ",
+          "date": "7 Shawwal",
+          "date_en": "7 Shawwal, 3 AH",
+          "month": "Shawal",
+          "description": "Hamza (RA), the uncle of the Prophet (PBUH) and the lion of Islam, was martyred by the spear of Wahshi in Ohud.",
+          "type": "sahaba",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "shw_06",
+          "title": "Accidental death",
+          "title_ar": "غَزْوَةُ حُنَيْنٍ",
+          "date": "10 Shawwal",
+          "date_en": "10 Shawwal, 8 AH (630 CE)",
+          "month": "Shawal",
+          "description": "War against the Hawazin tribe after the conquest of Makkah. It is mentioned in the Quran (Sura Tawbah 25).",
+          "type": "ghazwa",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "shw_07",
+          "title": "Ghazwaye Khandak (Ahzab)",
+          "title_ar": "غَزْوَةُ الْخَنْدَقِ",
+          "date": "15 Shawwal",
+          "date_en": "15 Shawwal, 5 AH (627 CE)",
+          "month": "Shawal",
+          "description": "10 thousand polytheists attacked Medina. The trenches were dug on the advice of Salman Farsi (RA).",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "shw_08",
+          "title": "Ghazway Banu Qurayza",
+          "title_ar": "غَزْوَةُ بَنِي قُرَيْظَةَ",
+          "date": "20 Shawwal",
+          "date_en": "20 Shawwal, 5 AH",
+          "month": "Shawal",
+          "description": "Campaign against the treacherous Banu Qurayza tribe. Sa'd ibn Mu'adh (R.A.) ruled on the law of the Torah.",
+          "type": "ghazwa",
+          "reference": "Ibn Hisham in Seerah"
+        },
+        {
+          "id": "shw_09",
+          "title": "The siege of Taif is over",
+          "title_ar": "فَكُّ حِصَارِ الطَّائِفِ",
+          "date": "22 Shawwal",
+          "date_en": "22 Shawwal, 8 AH",
+          "month": "Shawal",
+          "description": "The Prophet (peace be upon him) lifted the siege of Taif and prayed for them. Later the whole of Taif became Muslim.",
+          "type": "ghazwa",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "shw_10",
+          "title": "Jamal's War",
+          "title_ar": "مَوْقِعَةُ الْجَمَلِ",
+          "date": "25 Shawwal",
+          "date_en": "25 Shawwal, 36 AH (656 CE)",
+          "month": "Shawal",
+          "description": "A tragic clash took place in Basra between the forces of Ali (RA) and the forces of Ayesha, Talha and Zubair (RA).",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "shw_11",
+          "title": "Birth of Ibn Hajar Askalani (RA).",
+          "title_ar": "مَوْلِدُ ابْنِ حَجَرٍ الْعَسْقَلَانِيِّ",
+          "date": "28 Shawwal",
+          "date_en": "28 Shawwal, 773 AH (1372 CE)",
+          "month": "Shawal",
+          "description": "Hafez Ibn Hajar Asqalani (RA) the author of Fathul Bari (Bukhari's greatest exegesis) was born in Egypt.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        }
+      ]
+    },
+    {
+      "id": "dhul_qadah",
+      "title": "Zilkad",
+      "title_ar": "ذُو الْقَعْدَة",
+      "items": [
+        {
+          "id": "dq_01",
+          "title": "Treaty of Hudaybiyah",
+          "title_ar": "صُلْحُ الْحُدَيْبِيَةِ",
+          "date": "1 Zilkad",
+          "date_en": "1 Dhul Qa'dah, 6 AH (628 CE)",
+          "month": "Zilkad",
+          "description": "Umrah journey with 1400 companions. The treaty with the Quraysh is called 'Fathum Mubeen' in the Qur'an.",
+          "type": "seerah",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "dq_02",
+          "title": "Bayatur Ridwan",
+          "title_ar": "بَيْعَةُ الرِّضْوَانِ",
+          "date": "3 Zilkad",
+          "date_en": "3 Dhul Qa'dah, 6 AH",
+          "month": "Zilkad",
+          "description": "The companions swore to fight to the death under the tree. Allah is pleased with them.",
+          "type": "sahaba",
+          "reference": "Surah Fatah"
+        },
+        {
+          "id": "dq_03",
+          "title": "Umratul Qaza",
+          "title_ar": "عُمْرَةُ الْقَضَاءِ",
+          "date": "5 Zilkad",
+          "date_en": "5 Dhul Qa'dah, 7 AH (629 CE)",
+          "month": "Zilkad",
+          "description": "According to the terms of the treaty, the Prophet (peace and blessings of Allah be upon him) performed Umrah in Makkah with 2000 companions.",
+          "type": "seerah",
+          "reference": "Ar-Rahikul Makhtum"
+        },
+        {
+          "id": "dq_04",
+          "title": "Construction of Kaaba House (Ibrahim A.)",
+          "title_ar": "بِنَاءُ الْكَعْبَةِ",
+          "date": "7 Zilkad",
+          "date_en": "7 Dhul Qa'dah",
+          "month": "Zilkad",
+          "description": "Ibrahim (A.S.) and Ismail (A.S.) rebuilt the Kaaba House together.",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "dq_05",
+          "title": "Birth of Imam Abu Hanifa (RA).",
+          "title_ar": "مَوْلِدُ الْإِمَامِ أَبِي حَنِيفَةَ",
+          "date": "10 Zilkad",
+          "date_en": "10 Dhul Qa'dah, 80 AH (699 CE)",
+          "month": "Zilkad",
+          "description": "Imam Azam Abu Hanifa Numan bin Thabit (R.H.) was born in Kufa, the founder of Hanafi fiqh.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "dq_06",
+          "title": "Victory of Damascus",
+          "title_ar": "فَتْحُ دِمَشْقَ",
+          "date": "15 Zilkad",
+          "date_en": "15 Dhul Qa'dah, 14 AH (635 CE)",
+          "month": "Zilkad",
+          "description": "Damascus, the capital of Syria, was conquered under the joint leadership of Khalid bin Walid and Abu Ubaidah (RA).",
+          "type": "khulafa_e_rashidun",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "dq_07",
+          "title": "Death of Abdullah Ibn Abbas (RA).",
+          "title_ar": "وَفَاةُ عَبْدِ اللهِ بْنِ عَبَّاسٍ",
+          "date": "18 Zilkad",
+          "date_en": "18 Dhul Qa'dah, 68 AH (687 CE)",
+          "month": "Zilkad",
+          "description": "The great Sahabah Ibn Abbas (R.A.) with the title of 'Tarjumanul Qur'an' (Explainer of the Qur'an) passed away in Taif.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "dq_08",
+          "title": "Death of Ibn Hisham (RA).",
+          "title_ar": "وَفَاةُ ابْنِ هِشَامٍ",
+          "date": "20 Zilkad",
+          "date_en": "20 Dhul Qa'dah, 218 AH (833 CE)",
+          "month": "Zilkad",
+          "description": "Ibn Hisham, compiler of Sirat Ibn Hisham and biographer of the Prophet (peace be upon him) died in Egypt.",
+          "type": "history",
+          "reference": "Siaru Alamin Nubala"
+        },
+        {
+          "id": "dq_09",
+          "title": "Death of Umm Salama (RA).",
+          "title_ar": "وَفَاةُ أُمِّ سَلَمَةَ",
+          "date": "25 Zilkad",
+          "date_en": "25 Dhul Qa'dah, 62 AH",
+          "month": "Zilkad",
+          "description": "Umm al-Mu'minin and two Companions of Hijrat Umm Salama (RA) passed away in Madinah.",
+          "type": "sahaba",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "dq_10",
+          "title": "The status of the month of Zilkad",
+          "title_ar": "فَضْلُ ذِي الْقَعْدَةِ",
+          "date": "30 Zilkad",
+          "date_en": "30 Dhul Qa'dah",
+          "month": "Zilkad",
+          "description": "Zilqad is one of the four haram (honorable) months. Fighting is forbidden in this month. Hajj preparations are made.",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        }
+      ]
+    },
+    {
+      "id": "dhul_hijjah",
+      "title": "Zilhaj",
+      "title_ar": "ذُو الْحِجَّة",
+      "items": [
+        {
+          "id": "dh_01",
+          "title": "Day of Arafah and prayer",
+          "title_ar": "يَوْمُ عَرَفَةَ",
+          "date": "9 Zilhaj",
+          "date_en": "9 Dhul Hijjah",
+          "month": "Zilhaj",
+          "description": "The greatest day of the year. On this day, Allah releases the most people from hell. Two years of sins are forgiven if you fast.",
+          "type": "history",
+          "reference": "Sahih Muslim"
+        },
+        {
+          "id": "dh_02",
+          "title": "Farewell Hajj and Arafa speech",
+          "title_ar": "حَجَّةُ الْوَدَاعِ وَخُطْبَةُ عَرَفَة",
+          "date": "9 Zilhaj",
+          "date_en": "9 Dhul Hijjah, 10 AH (632 CE)",
+          "month": "Zilhaj",
+          "description": "The only Hajj of a lifetime with 1 lakh companions. Banning human rights, women's rights and usury.",
+          "type": "seerah",
+          "reference": "Sahih Muslim"
+        },
+        {
+          "id": "dh_03",
+          "title": "Declaring the perfection of religion",
+          "title_ar": "إِكْمَالُ الدِّينِ",
+          "date": "9 Zilhaj",
+          "date_en": "9 Dhul Hijjah, 10 AH",
+          "month": "Zilhaj",
+          "description": "It was revealed on the plain of Arafah: 'Today I have fulfilled your religion' (Surah Ma'idah 3).",
+          "type": "seerah",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "dh_04",
+          "title": "Eid al-Adha and Qurbani",
+          "title_ar": "عِيدُ الْأَضْحَى",
+          "date": "10 Zilhaj",
+          "date_en": "10 Dhul Hijjah",
+          "month": "Zilhaj",
+          "description": "Eid-ul-Azha commemorates the great sacrifice of Ibrahim (AS). Qurbani, Takbeer, Tashreek and Eid prayers.",
+          "type": "history",
+          "reference": "Al-Quran"
+        },
+        {
+          "id": "dh_05",
+          "title": "Sacrifice of Ibrahim (AS).",
+          "title_ar": "قِصَّةُ ذَبْحِ إِسْمَاعِيلَ",
+          "date": "10 Zilhaj",
+          "date_en": "10 Dhul Hijjah",
+          "month": "Zilhaj",
+          "description": "When Ibrahim (a.s.) went to sacrifice his son Ismail by Allah's command, Allah sent Dumba.",
+          "type": "history",
+          "reference": "Tafseer Ibn Kasir"
+        },
+        {
+          "id": "dh_06",
+          "title": "Ayame Tashreek",
+          "title_ar": "أَيَّامُ التَّشْرِيقِ",
+          "date": "11-13 Zilhaj",
+          "date_en": "11-13 Dhul Hijjah",
+          "month": "Zilhaj",
+          "description": "The days of stoning and remembrance in Mina. The Prophet (peace and blessings of Allah be upon him) said that these are days of eating and drinking and remembrance of Allah.",
+          "type": "history",
+          "reference": "Sahih Muslim"
+        },
+        {
+          "id": "dh_07",
+          "title": "Martyrdom of Uthman (RA).",
+          "title_ar": "اسْتِشْهَادُ عُثْمَانَ بْنِ عَفَّانَ",
+          "date": "18 Zilhaj",
+          "date_en": "18 Dhul Hijjah, 35 AH (656 CE)",
+          "month": "Zilhaj",
+          "description": "After 40 days of siege, the third Caliph Uthman (RA) was martyred while reciting the Quran.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "dh_08",
+          "title": "Compilation of the Qur'an (Mushaf Usmani)",
+          "title_ar": "جَمْعُ الْمُصْحَفِ الْعُثْمَانِيِّ",
+          "date": "19 Zilhaj",
+          "date_en": "19 Dhul Hijjah, 25 AH (646 CE)",
+          "month": "Zilhaj",
+          "description": "Uthman (RA) made a standard copy of the Quran and sent it to different cities. It is known as 'Mushafe Usmani'.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Sahih Bukhari"
+        },
+        {
+          "id": "dh_09",
+          "title": "Accepting the caliphate of Ali (RA).",
+          "title_ar": "بَيْعَةُ عَلِيِّ بْنِ أَبِي طَالِبٍ",
+          "date": "20 Zilhaj",
+          "date_en": "20 Dhul Hijjah, 35 AH",
+          "month": "Zilhaj",
+          "description": "Ali (RA) became the fourth and last Caliph after the martyrdom of Uthman (RA).",
+          "type": "khulafa_e_rashidun",
+          "reference": "Tarikhul Khulafa"
+        },
+        {
+          "id": "dh_10",
+          "title": "Gadire Khum's speech",
+          "title_ar": "خُطْبَةُ غَدِيرِ خُمٍّ",
+          "date": "18 Zilhaj",
+          "date_en": "18 Dhul Hijjah, 10 AH",
+          "month": "Zilhaj",
+          "description": "On the way back from Farewell Hajj, the Prophet (peace and blessings of Allah be upon him) addressed the Companions at a place called Ghadir Khum.",
+          "type": "seerah",
+          "reference": "Sahih Muslim"
+        },
+        {
+          "id": "dh_11",
+          "title": "Attack on Omar (RA).",
+          "title_ar": "الْإِعْتِدَاءُ عَلَى عُمَرَ",
+          "date": "26 Zilhaj",
+          "date_en": "26 Dhul Hijjah, 23 AH (644 CE)",
+          "month": "Zilhaj",
+          "description": "Abu Lulu Firoz stabbed during Fajr prayer. Umar (RA) formed the Shura Committee and was martyred on 1 Muharram.",
+          "type": "khulafa_e_rashidun",
+          "reference": "Al-Bidayah One Nihaya"
+        },
+        {
+          "id": "dh_12",
+          "title": "Death of Abu Zar Giffari (RA).",
+          "title_ar": "وَفَاةُ أَبِي ذَرٍّ الْغِفَارِيِّ",
+          "date": "28 Zilhaj",
+          "date_en": "28 Dhul Hijjah, 32 AH",
+          "month": "Zilhaj",
+          "description": "Abu Zar (R.A.), the great companion of Juhad and Tawakkul, died alone in Rabajah.",
+          "type": "sahaba",
+          "reference": "Siaru Alamin Nubala"
+        }
+      ]
+    }
+  ]
+}

@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { useTx } from "../../store/language-store";
+import { useLang, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 export default function PurificationPage() {
   const tx = useTx();
+  const lang = useLang();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,6 +18,8 @@ export default function PurificationPage() {
       .catch(() => setItems([]))
       .finally(() => setLoading(false));
   }, []);
+
+  const itemsL = useLocalizedData(items, lang);
 
   return (
     <div className="animate-fade-up">
@@ -28,11 +32,11 @@ export default function PurificationPage() {
             </div>
           ))}
         </div>
-      ) : items.length === 0 ? (
+      ) : itemsL.length === 0 ? (
         <div className="mt-3"><EmptyState icon="heart" title={tx("শীঘ্রই আসছে")} hint={tx("আত্মশুদ্ধির গাইড যোগ হচ্ছে")} /></div>
       ) : (
         <div className="mt-3 space-y-2">
-          {items.slice(0, 40).map((p: any, i: number) => (
+          {itemsL.slice(0, 40).map((p: any, i: number) => (
             <details key={i} className="card group p-4">
               <summary className="flex cursor-pointer list-none items-center gap-3 font-bold [&::-webkit-details-marker]:hidden">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-sm font-bold text-rose-500">

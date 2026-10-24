@@ -140,18 +140,24 @@ offline-tolerant, keyless APIs only.
   (`islah-design`, Material on Android, Liquid elsewhere) + pre-paint script
 - UI language (`islah-language`: `bn` default, `ur`, `en`) via
   `store/language-store.ts` + `lib/i18n.ts`. The pre-paint script sets
-  `<html lang>`/`dir` (Urdu = RTL) before first paint; the store uses
-  `skipHydration` and AppShell rehydrates after mount so SSR stays Bengali
-  and there is no text hydration mismatch. Scope is **all static UI copy**
-  (navigation, cards, labels, empty states, buttons, counts, dates) stored
-  in `lib/ui-strings.ts` and rendered through `tx("বাংলা")` / `useTx()`;
-  API content (bayan titles, dua text, articles, Qur'an Arabic/translation)
-  remains in its source language. Counts/dates use `useNum()`, so Bangla
-  digits appear only in Bengali mode. The old `praybd-lang` BN/EN toggle is
-  gone — Prayer Times follows the global language, and `lib/prayer.ts`
-  supports `bn`/`ur`/`en` names, months and time formats. Urdu UI uses the
-  local Naskh/Nastaliq stack (`html[lang="ur"]`) with Bengali falling back
-  to Hind Siliguri.
+  `<html lang>` before first paint and keeps `dir="ltr"` for every language,
+  including Urdu, so the app shell and card order never mirror; Urdu text
+  still runs RTL through Unicode bidi. The store uses `skipHydration` and
+  AppShell rehydrates after mount so SSR stays Bengali and there is no text
+  hydration mismatch. Scope is **all visible app chrome and app-owned content**
+  (navigation, cards, labels, empty states, buttons, counts, dates, feature
+  articles). Shared UI copy lives in `lib/ui-strings.ts` and renders through
+  `tx("বাংলা")` / `useTx()`; large static data is generated into
+  `public/data/*.en.json` / `*.ur.json` packs and loaded by the page.
+  Upstream API/YouTube text is localized by `lib/content-translate.ts` through
+  `/api/translate` (server cache + best-effort fallback). Quran translations
+  and tafsir remain Bengali by explicit exception, and book chapter bodies /
+  PDFs are not machine-translated. Counts/dates use `useNum()` and
+  `timeAgo(iso, lang)`, so Bangla digits appear only in Bengali mode. The old
+  `praybd-lang` BN/EN toggle is gone — Prayer Times follows the global
+  language, and `lib/prayer.ts` supports `bn`/`ur`/`en` names, months and time
+  formats. Urdu UI uses the local Naskh/Nastaliq stack (`html[lang="ur"]`)
+  with Bengali falling back to Hind Siliguri.
 - Theme switch plays beta's tap-bloom (`components/theme-bloom.tsx` +
   `.theme-wrap` CSS, reduced-motion safe)
 - Golden signature elements identical in both modes
@@ -245,9 +251,12 @@ offline-tolerant, keyless APIs only.
 ## 5. Conventions
 
 - Static UI copy lives in `lib/ui-strings.ts`, keyed by its Bengali source
-  string (`[en, ur]` tuples), and is rendered with `tx("…")`; content from
-  the API stays in its source language. Dates/digits follow the UI language
-  via `useNum()` (Bengali digits in `bn` only)
+  string (`[en, ur]` tuples), and is rendered with `tx("…")`. App-owned data
+  ships as `public/data/<name>.en.json` / `.ur.json`; upstream text uses
+  `useLocalizedData()` / `translateText()` from `lib/content-translate.ts`.
+  Dates/digits follow the UI language via `useNum()` (Bengali digits in `bn`
+  only). Quran translations/tafsir and book bodies/PDFs are intentionally not
+  machine-translated.
 - New pages: `PageHead` hero + skeleton loaders + `EmptyState`
 - Buttons only from the `.btn-*` / `.chip` system — every variant must be
   readable in **both** light and dark (pinned colors on gold/white)

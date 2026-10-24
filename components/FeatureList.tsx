@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PageHead, ShareCopy, EmptyState } from "./ui";
 import { Icon } from "./icons";
 import { useLang, useNum, useTx } from "../store/language-store";
@@ -25,12 +25,28 @@ export function FeatureListPage({ file, title, subtitle, icon = "book", backHref
   const [cat, setCat] = useState<string>("all");
   const [open, setOpen] = useState<string | null>(null);
 
-  useMemo(() => {
-    fetch(`/data/${file}`)
-      .then((r) => r.json())
-      .then(setData)
-      .catch(() => setFailed(true));
-  }, [file]);
+  useEffect(() => {
+    let live = true;
+    setFailed(false);
+    setData(null);
+    const localized = lang === "bn" ? file : file.replace(/\.json$/, `.${lang}.json`);
+    fetch(`/data/${localized}`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      // Older/missing translation packs fall back to the Bengali source.
+      .catch(() => fetch(`/data/${file}`).then((r) => r.json()))
+      .then((d) => {
+        if (live) setData(d);
+      })
+      .catch(() => {
+        if (live) setFailed(true);
+      });
+    return () => {
+      live = false;
+    };
+  }, [file, lang]);
 
   const cats: any[] = data?.categories || [];
   const catCounts = useMemo(() => {
@@ -43,9 +59,16 @@ export function FeatureListPage({ file, title, subtitle, icon = "book", backHref
     [catCounts]
   );
   const serialLabel = (it: any, i: number) => {
-    const raw = it.serial || num(i + 1);
+    const raw = String(it.serial || num(i + 1));
     if (lang === "bn") return raw;
-    return String(raw).replace(/[০-৯]/g, (d) => String("০১২৩৪৫৬৭৮৯".indexOf(d)));
+    const digits = raw.replace(/[০-৯]/g, (d) => String("০১২৩৪৫৬৭৮৯".indexOf(d)));
+    const wazifa = digits.match(/^(\d+) নং ওয়াজিফা$/);
+    if (wazifa) return lang === "ur" ? `وظیفہ ${wazifa[1]}` : `Wazifa ${wazifa[1]}`;
+    const amal = digits.match(/^(\d+)(?:ম|র্থ|ষ্ঠ|তম|য়|য়) আমল$/);
+    if (amal) return lang === "ur" ? `عمل ${amal[1]}` : `Amal ${amal[1]}`;
+    const step = digits.match(/^ধাপ (\d+)$/);
+    if (step) return lang === "ur" ? `مرحلہ ${step[1]}` : `Step ${step[1]}`;
+    return digits;
   };
 
   const filtered = useMemo(() => {

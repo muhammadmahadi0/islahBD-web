@@ -1,0 +1,1794 @@
+{
+  "id": "sunnat",
+  "title": "Sunnah and manners",
+  "icon": "assets/icons/sunnat_icon.png",
+  "source_book": "Kitabus Sunnah - Mufti Mansoorul Haq",
+  "categories": [
+    {
+      "id": "cat_1",
+      "title": "Obligation and Sunnah of Wudu",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Wash all face once.",
+          "reference": "Surah Ma'idah, verse 6"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Wash both hands including elbows once.",
+          "reference": "that"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Massage a quarter of the head once. 4. Wash both feet including the ankles once. (the)\n\nBenefits: Ablution will not be valid if one of the above four tasks is not performed or even one hair is dry.",
+          "reference": "Evidence: Shami, 1:91 / Al Bahrur Rayiq, 1:9 / Hidayah, 1:16"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Making the intention of ablution means that the person performing ablution should make the intention in his heart that he is performing ablution in order to attain purity and for the prayer to be permissible.",
+          "reference": "Surah Bayynah, 5/ Bukhari Sharif, Hadith No-6689"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Begin ablution by reciting Bismillahir Rahmanir Rahim. It is said in the hadith that if one performs ablution after reciting Bismillah wal Hamdulillah, as long as that ablution lasts, the angels will continue to write rewards in his name, even if he is engaged in any mubah.",
+          "reference": "Nasa'i Sharif, Hadith No. 78 / Tabrani Sagir, 1: 73"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Wash both hands separately including wrists three times.",
+          "reference": "Bukhari Sharif, Hadith No-159"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "to miswalk If there is no Miswak, it is mustahabb that the Miswak for brushing the teeth with the fingers should not be longer than half a hand and be a branch of a tree.",
+          "reference": "Musnad Ahmad, Hadith No-9216, 139, 3990 / Tirmidhi, Hadith No-23 / Baihaqi, Hadith No-174"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Three times porter.",
+          "reference": "Bukhari Sharif, Hadith No-185"
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "Watering the nose three times and clearing the nose.",
+          "reference": "Sahih Ibn Hibban, Hadith No. 1077"
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "At the same time, wash the nose every time.",
+          "reference": "Muslim Sharif, Hadith No-236"
+        },
+        {
+          "id": "১১",
+          "title": "Sunnah 11",
+          "fazilat": "Wash each organ thoroughly three times. For this, water should be taken more than three times.",
+          "reference": "Bukhari Sharif, Hadith No-159"
+        },
+        {
+          "id": "১২",
+          "title": "Sunnah 12",
+          "fazilat": "Washing the face with both hands and brushing the beard while washing the face.",
+          "reference": "Tirmidhi, Hadith No-31"
+        },
+        {
+          "id": "১৩",
+          "title": "Sunnah 13",
+          "fazilat": "Cross fingers while washing hands and feet.",
+          "reference": "Tirmidhi, Hadith No-38"
+        },
+        {
+          "id": "১৪",
+          "title": "Sunnah 14",
+          "fazilat": "Massage the entire head once.",
+          "reference": "Tirmidhi, Hadith No-34"
+        },
+        {
+          "id": "১৫",
+          "title": "Sunnah 15",
+          "fazilat": "Massage both ears. Remember to massage by inserting the little finger into the ear hole and with the shahadat finger on the remaining part.",
+          "reference": "Tirmidhi, Hadith No-33 / Abu Dawud, Hadith No-135"
+        },
+        {
+          "id": "১৬",
+          "title": "Sunnah 16",
+          "fazilat": "Wash the parts of ablution by hand.",
+          "reference": "Mustadarak, Hadith No-576 / Sahih Ibn Khuzaimah, Hadith No-118"
+        },
+        {
+          "id": "১৭",
+          "title": "Sunnah 17",
+          "fazilat": "Do not delay washing one part after washing another part.",
+          "reference": "Muslim, Hadith No-243 / Abu Dawud, Hadith No-173"
+        },
+        {
+          "id": "১৮",
+          "title": "Sunnah 18",
+          "fazilat": "Perform ablution with taratib. That is to maintain continuity while washing the organs of Wudu.",
+          "reference": "Abu Dawud, Hadith No. 137"
+        },
+        {
+          "id": "১৯",
+          "title": "Sunnah 19",
+          "fazilat": "Wash the right side limb first.",
+          "reference": "Bukhari Sharif, Hadith No-168"
+        },
+        {
+          "id": "২০",
+          "title": "Sunnah 20",
+          "fazilat": "When you do not want to perform ablution due to cold or any other reason, you should still perform ablution by washing the parts of the ablution properly.",
+          "reference": "Tirmidhi, Hadith No-51 / Muslim, Hadith No-251"
+        },
+        {
+          "id": "২১",
+          "title": "Sunnah 21",
+          "fazilat": "Recite the following two verses during ablution:\n\nاَللّٰهُمَّ اغْفِرْ لِيْ ذَنبِـيْ وَوَسِّعْ لِـيْ فِيْ دَارِيْ وَبَارِكْ لِيْ فِيْ رِزْقِيْ.\n\n(Amalulawami wal Lailah li Ibnissunni, hadith no-28)\n\nAnd reciting Shahadat in Kalima after ablution. (Muslim Sharif, Hadith No-234)\n\nThen recite this Dua: (Tirmidhi, Hadith No. 55)\n\nاَللّٰهُمَّ اجْعَلْنِيْ مِنَ التَوَّابِيْنَ, وَاجْعَلْنِـيْ مِنَ الْمُتَطَهِّرِيْنَ\n\nIt should be noted that at the beginning and end of ghusl and tayammum, the dua mentioned in ablution will be recited.\n\nB. Dr. It is not possible to perform ablution in the Sunnah way just by reading all these narrations, for this a Haqqani scholar will take a visual look at all the issues. Allah Ta'ala taught the Prophet sallallaahu 'alaihi wa sallam by showing all things visually through Hazrat Gabriel.",
+          "reference": "Tirmidhi, Hadith No-149",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ اغْفِرْ لِيْ ذَنبِـيْ وَوَسِّعْ لِـيْ فِيْ دَارِيْ وَبَارِكْ لِيْ فِيْ رِزْقِيْ."
+            },
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ اجْعَلْنِيْ مِنَ التَوَّابِيْنَ، وَاجْعَلْنِـيْ مِنَ الْمُتَطَهِّرِيْنَ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cat_2",
+      "title": "Obligation and Sunnah of bathing",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Rinse well once.",
+          "reference": "Surah Ma'idah, verse 6"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Once the water reaches the soft part of the nose.",
+          "reference": "that"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "To deliver water once to the whole body, so that not a single hair is dry anywhere.",
+          "reference": "O/ Tirmidhi, 103; Al Bahrur Rayiq, 1 : 45 / Shami, 1 : 151"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Istinja i.e. urinate before Faraj Ghusl.",
+          "reference": "Musannaf Abdur Razzaq, Hadith No. 1020"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "At the beginning read Bismillahir Rahmanir Rahim.",
+          "reference": "Musnad Ahmad, Hadith No-12694"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Wash both hands including wrists separately.",
+          "reference": "Bukhari Sharif, Hadith No-248"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "If there is impurity in any part of the body or clothes, first wash it three times and purify it.",
+          "reference": "Muslim Sharif, Hadith No-321"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Washing the genitals in all cases, whether impurity is attached or not. Then wash both hands thoroughly.",
+          "reference": "Bukhari Sharif, Hadith No-249"
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "Complete ablution according to the Sunnah. But if there is water in the place of bathing, wash the feet after bathing.",
+          "reference": "Bukhari Sharif, Hadith No-260"
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "First pour water on the head.",
+          "reference": "Bukhari Sharif, Hadith No-256"
+        },
+        {
+          "id": "১১",
+          "title": "Sunnah 11",
+          "fazilat": "Then on the right shoulder.",
+          "reference": "Bukhari Sharif, Hadith No-254"
+        },
+        {
+          "id": "১২",
+          "title": "Sunnah 12",
+          "fazilat": "Then the left shoulder.",
+          "reference": "Bukhari Sharif, Hadith No-254"
+        },
+        {
+          "id": "১৩",
+          "title": "Sunnah 13",
+          "fazilat": "Then wet the rest of the body.",
+          "reference": "Bukhari Sharif, Hadith No-274"
+        },
+        {
+          "id": "১৪",
+          "title": "Sunnah 14",
+          "fazilat": "Water the entire body three times in such a way that not even a hair root is dry. (Abu Dawud, Hadith No-49 / Musannaf Ibn Abi Shaiba, Hadith No-813)\n\nHowever, if you take a bath in a river, pond, etc., the sunnah of pouring water three times will be fulfilled if you dip for a while.",
+          "reference": "Abu Dawud, Hadith No-249 / Musannaf Ibn Abi Shaybah, Hadith No-813"
+        },
+        {
+          "id": "১৫",
+          "title": "Sunnah 15",
+          "fazilat": "Scrub the whole body with hands.",
+          "reference": "Tirmidhi, Hadith No. 106"
+        }
+      ]
+    },
+    {
+      "id": "cat_3",
+      "title": "Obligations and Sunnahs of Tayammum",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Niyyat means intending to attain purity for praying or reciting the Qur'an.",
+          "reference": "Surah Nisa, verse: 43"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "After that, the first time to wipe the face with clay or a holy object like clay.",
+          "reference": "that"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Similarly, touch the ground for the second time and massage both hands with elbows.",
+          "reference": "Oi/Hidaya, 1:50-51/Alamgiri, 1:25-26"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Recitation of Bismillahir Rahmanir Rahim at the beginning of Tayammum.",
+          "reference": "Musnad Ahmad, Hadith No-12694"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Keep the fingers apart while keeping the hands on the ground.",
+          "reference": "Muslim, hadith no-368"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "After placing both hands on the ground, move the hands slightly forward and rub the ground.",
+          "reference": "Muslim, hadith no-368"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "Then shake both hands.",
+          "reference": "Muslim, hadith no-368"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Maintaining consistency while massaging the organs in Tayammum. That is to massage the whole face first, then the right and then the left hand with the elbow.",
+          "reference": "Abu Dawud, Hadith No-330"
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "Not delaying between face and hand mashah.",
+          "reference": "Abu Dawud, Hadith No-330"
+        }
+      ]
+    },
+    {
+      "id": "cat_4",
+      "title": "Sunnah of sleeping and waking up",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Try to sleep as early as possible after the Isha prayer, so that it is easier to get up for Tahajjud. (Bukhari, Hadith No. 547)\n\nB. Dr. It is mentioned in the hadith that the Prophet (peace and blessings of Allah be upon him) used to sleep on the ground, a post, a cloth bed, a mat, a leather bed, etc.",
+          "reference": "Bukhari Sharif, Hadith No. 2069/Shamayil Tirmidhi, p. 22"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Bed with ablution.",
+          "reference": "Bukhari Sharif, Hadith No. 6311"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Shake the bed well before going to bed.",
+          "reference": "Bukhari Sharif, Hadith No. 6320"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Change into sleeping clothes before going to bed.",
+          "reference": "Al Madkhal, 3: 162"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Saying 'Bismillah' before going to bed and doing the following: 1. close the door 2. Covering water containers and food containers and other containers. If no object is available for covering, then placing a stick or stick in his mouth saying 'Bismillah', 3. Turn off the lights.",
+          "reference": "Bukhari Sharif, Hadith No. 5623-24"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Surma is applied three times on both eyes before sleeping.",
+          "reference": "Mustadarak, Hadith No. 8249"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "Reciting some amount of Quran Sharif before going to bed. Namely: Recitation of Alhamdu Sharif, Surah Kafirun, Ayatul Kursi, Amana Rasool to the end of Surah Baqara, Surah Mulk, Alif Lam Meem Sijdah etc. If it is not possible to read more then read at least 2/3 small Surahs.",
+          "reference": "Tabrani Kabir Hadith No-2195 / Al Adabul Mufrad, Hadith No-1209 / Bukhari Sharif, Hadith No-3275"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Reciting Durood Sharif a few times before going to sleep and reciting Tasbeeh Fatemi i.e. 33 times Subahanallah, 33 times Alhamdulillah and 34 times Allahu Akbar.",
+          "reference": "Bukhari Sharif, Hadith No. 3113"
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "Reciting Surah Ikhlas, Surah Falaq and Surah Nas three times each and wiping the entire body from head to toe as much as possible. Do this three times.",
+          "reference": "Bukhari Sharif, Hadith No. 5017"
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "Shua Sunnah while sleeping with the right ear facing the Qibla. Prone sleeping is prohibited. Because Allah does not like sleeping like this.",
+          "reference": "Bukhari Sharif, Hadith No. 6314 / Sahih Ibn Hibban Hadith No. 5549"
+        },
+        {
+          "id": "১১",
+          "title": "Sunnah 11",
+          "fazilat": "Reciting this dua while sleeping:\n\nبِاسْمِكَ رَبِّـىْ وَضَعْتُ جَنْبِيْ وَبِكَ اَرْفَعُهٗ اِنْ اَمْسَكْتَ نَفْسِيْ فَاغْفِرْلَهَا وَاِنْ اَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِه عِبَادَكَ الصَّالِحِيْنَ.",
+          "reference": "Bukhari Sharif, Hadith No. 6320",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "بِاسْمِكَ رَبِّـىْ وَضَعْتُ جَنْبِيْ وَبِكَ اَرْفَعُهٗ اِنْ اَمْسَكْتَ نَفْسِيْ فَاغْفِرْلَهَا وَاِنْ اَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِه عِبَادَكَ الصَّالِحِيْنَ."
+            }
+          ]
+        },
+        {
+          "id": "১২",
+          "title": "Sunnah 12",
+          "fazilat": "Read this Istighfar three times before sleeping:\n\nاَسْتَغْفِرُ اللهَ الَّذِيْ لَاۤ  اِلٰهَ اِلَّا هُوَ الْحَيُّ الْقَيُّوْمُ وَاَتُوْبُ اِلَيْهِ",
+          "reference": "Tirmidhi, Hadith No. 3397",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَسْتَغْفِرُ اللهَ الَّذِيْ لَاۤ  اِلٰهَ اِلَّا هُوَ الْحَيُّ الْقَيُّوْمُ وَاَتُوْبُ اِلَيْهِ"
+            }
+          ]
+        },
+        {
+          "id": "১৩",
+          "title": "Sunnah 13",
+          "fazilat": "Also recite this dua: اَللّهُمَّ بِاسْمِكَ اَمُوْتُ وَاَحْيَا",
+          "reference": "Bukhari Sharif, Hadith No. 6314",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ بِاسْمِكَ اَمُوْتُ وَاَحْيَا"
+            }
+          ]
+        },
+        {
+          "id": "১৪",
+          "title": "Sunnah 14",
+          "fazilat": "Finally read these two:\n\nاَللّٰهُمَّ اَسْلَمْتُ وَجْهِيْ اِلَيْكَ وَفَوَّضْتُ اَمْرِيْ اِلَيْكَ وَاَلْجَاْ تُ ظَهْرِيْ اِلَيْكَ رَغْبَةً وَرَهْبَةً اِلَيْكَ لَا مَلْجَاَ وَلَا مَنْجَاَ مِنْكَ اِلَّا اِلَيْكَ اَللّٰهُمَّ اٰمَنْتُ بِكِتَابِكَ الَّذِيْ اَ نْزَلْتَ وَبِنَبِيِّكَ الَّذِيْ اَرْسَلْتَ.",
+          "reference": "Bukhari Sharif, Hadith No. 247",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ اَسْلَمْتُ وَجْهِيْ اِلَيْكَ وَفَوَّضْتُ اَمْرِيْ اِلَيْكَ وَاَلْجَاْ تُ ظَهْرِيْ اِلَيْكَ رَغْبَةً وَرَهْبَةً اِلَيْكَ لَا مَلْجَاَ وَلَا مَنْجَاَ مِنْكَ اِلَّا اِلَيْكَ اَللّٰهُمَّ اٰمَنْتُ بِكِتَابِكَ الَّذِيْ اَ نْزَلْتَ وَبِنَبِيِّكَ الَّذِيْ اَرْسَلْتَ."
+            }
+          ]
+        },
+        {
+          "id": "১৫",
+          "title": "Sunnah 15",
+          "fazilat": "After going to bed, if you do not sleep because of fear, read this dua:\n\nبِسْمِ ا للّٰهِ اَعُوْذُ بِكَلِمَاتِ اللّٰهِ التَّامَّةِ مِنْ غَضَبِهٖ وَعِقَابِهٖ وَشَرِّ عِبَادِهٖ وَمِنْ هَمَزَاتِ الشَّيَاطِيْنِ وَاَنْ يَّحْضُرُوْنَ.",
+          "reference": "Tirmidhi, Hadith No. 3528",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "بِسْمِ ا للّٰهِ اَعُوْذُ بِكَلِمَاتِ اللّٰهِ التَّامَّةِ مِنْ غَضَبِهٖ وَعِقَابِهٖ وَشَرِّ عِبَادِهٖ وَمِنْ هَمَزَاتِ الشَّيَاطِيْنِ وَاَنْ يَّحْضُرُوْنَ."
+            }
+          ]
+        },
+        {
+          "id": "১৬",
+          "title": "Sunnah 16",
+          "fazilat": "Three times when the eyes are opened after seeing something terrible in a dream\n\nاَعُوْذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ\n\nLie down and spit on the left side and sleep. There is no further risk of harm and these two readings:\n\nاَللّٰهُمَّ اِنِّيْ اَعُوْذُ بِكَ مِنْ شَرِّ هٰذِهِ الرُّؤْيَا",
+          "reference": "Muslim, Hadith No. 2262",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَعُوْذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ"
+            },
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ اِنِّيْ اَعُوْذُ بِكَ مِنْ شَرِّ هٰذِهِ الرُّؤْيَا"
+            }
+          ]
+        },
+        {
+          "id": "১৭",
+          "title": "Sunnah 17",
+          "fazilat": "If there is a chance, do Qailullah for a while after eating at noon, that is, go to bed. Want to sleep or not.",
+          "reference": "Bukhari Sharif, Hadith No-939"
+        },
+        {
+          "id": "১৮",
+          "title": "Sunnah 18",
+          "fazilat": "On waking up, gently rub the face and eyes with both hands to remove the feeling of sleepiness.",
+          "reference": "Bukhari Sharif, Hadith No-183"
+        },
+        {
+          "id": "১৯",
+          "title": "Sunnah 19",
+          "fazilat": "Reciting this dua after waking up:\n\nاَ لْحَمْدُ لِلّٰهِ الَّذِيْ اَحْيَانَا بَعْدَ مَا اَمَاتَنَا وَ اِلَيْهِ النُّشُوْرُ.",
+          "reference": "Bukhari Sharif, Hadith No-6324",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَ لْحَمْدُ لِلّٰهِ الَّذِيْ اَحْيَانَا بَعْدَ مَا اَمَاتَنَا وَ اِلَيْهِ النُّشُوْرُ."
+            }
+          ]
+        },
+        {
+          "id": "২০",
+          "title": "Sunnah 20",
+          "fazilat": "It is a Sunnah to do miswak whenever one wakes up. Doing miswak as a sunnah of ablution while performing ablution.",
+          "reference": "Bukhari Sharif, Hadith No-245 / Abu Dawud, Hadith No-47"
+        }
+      ]
+    },
+    {
+      "id": "cat_5",
+      "title": "Sunnahs of Istinjar",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "cover the head",
+          "reference": "Baihaqi Sharif, Hadith No-456"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Wearing sandals.",
+          "reference": "Tabaqat Ibn Sa'ad', 185/ Kanjul Ummal, Hadith No. 17872"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Reciting this dua before entering the toilet-",
+          "reference": "Musannaf Ibn Abi Shaiba, Hadith No. 5",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "بِسْمِ اللهِ اَللّٰهُمَّ اِنِّيْ اَعُوْذُبِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ"
+            }
+          ]
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "After reciting Dua, put the left foot in first.",
+          "reference": "Abu Dawud, Hadith No. 32"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Do not sit with your face or back towards the Qibla.",
+          "reference": "Bukhari Sharif, Hadith No-144"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "As close as possible to sitting, open the umbrella and urinate and defecate while sitting, do not urinate while standing.",
+          "reference": "Nasa'i Sharif, Hadith No-29 / Tirmidhi Sharif, Hadith No-14"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "Avoid splashing urine and impure water with extreme caution.",
+          "reference": "Bukhari Sharif, Hadith No-218"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Use loose-kulukh (or toilet paper) before consuming water.",
+          "reference": "Baihaqi, Hadith No-517"
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "Use the left hand while drinking and consuming water.",
+          "reference": "Bukhari Sharif, Hadith No-154"
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "To stop the dripping of urine, move a little behind.",
+          "reference": "Ibn Majah Sharif, Hadith No. 326"
+        },
+        {
+          "id": "১১",
+          "title": "Sunnah 11",
+          "fazilat": "Where there is no designated place for urinals and toilets, sit in such a way that the umbrella is not visible.",
+          "reference": "Abu Dawud Hadith No-2"
+        },
+        {
+          "id": "১২",
+          "title": "Sunnah 12",
+          "fazilat": "Finding a soft place to urinate or where urine does not splash onto the body or clothes.",
+          "reference": "Abu Dawud, Hadith No-3"
+        },
+        {
+          "id": "১৩",
+          "title": "Sunnah 13",
+          "fazilat": "Use water after using dhilaka.",
+          "reference": "Sahih Ibn Khuzaimah, Hadith No. 83"
+        },
+        {
+          "id": "১৪",
+          "title": "Sunnah 14",
+          "fazilat": "Step out with the right foot.",
+          "reference": "Abu Dawud, Hadith No. 32"
+        },
+        {
+          "id": "১৫",
+          "title": "Sunnah 15",
+          "fazilat": "Come out and recite this dua-",
+          "reference": "Abu Dawud, Hadith No-30 / Ibn Majah, Hadith No-301",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "غُفْرَانَكَ اَ لْحَمْدُ لِلّٰهِ الَّذِيْ اَذْهَبَ عَنِّيْ الْاَذٰى وَعَافَانِيْ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cat_6",
+      "title": "Sunnahs of wearing clothes",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "The Prophet, may God bless him and grant him peace, preferred white clothes.",
+          "reference": "Mustadarak, hadith no-7379"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Right hand and right foot should be inserted first while wearing all kinds of clothes including clothes and pajamas.",
+          "reference": "Abu Dawud, Hadith No-4141"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Pajama, lungi and dress for men, jubba and aba-kaba above the ankles. It is haram to wear clothes below the ankles. Huzoor sallallaahu 'alaihi wa sallam said - 'Whoever wears a garment hanging below his ankle, Allah Ta'ala will not look at him with mercy on the Day of Resurrection. B. Dr. Exceptions to the socks rule.",
+          "reference": "Bukhari Sharif, Hadith No-5784 / Abu Dawud Hadith No-4093, 4117 / Sahih Ibn Hibban, Hadith No-5447"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Reciting this Du'a while dressing normally: (Mustadrak, Hadith No-7409)\n\nاَلْحَمْدُ لِلّٰهِ الَّذِيْ كَسَانِـيْ هٰذَا وَرَزَقَنِيْهِ مِنْ غَيْرِ حَوْلٍ مِّنِّىْ وَلَا قُوَّةٍ.\n\nAnd reciting this dua wearing new clothes\n\nاَلْحَمْدُ لِلّٰهِ الَّذِيْ كَسَانِىْ مَا اُوَارِيْ بِه عَوْرَتِـيْ وَاَتَجَمَّلُ بِه فِيْ حَيَاتِيْ .",
+          "reference": "Tirmidhi, Hadith No-3560 / Ibn Majah, Hadith No-3557",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَلْحَمْدُ لِلّٰهِ الَّذِيْ كَسَانِـيْ هٰذَا وَرَزَقَنِيْهِ مِنْ غَيْرِ حَوْلٍ مِّنِّىْ وَلَا قُوَّةٍ."
+            },
+            {
+              "type": "arabic",
+              "text": "اَلْحَمْدُ لِلّٰهِ الَّذِيْ كَسَانِىْ مَا اُوَارِيْ بِه عَوْرَتِـيْ وَاَتَجَمَّلُ بِه فِيْ حَيَاتِيْ ."
+            }
+          ]
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "wearing a hat Wearing a turban over a hat is mustahab and dress etiquette. But it is not a Sunnah of prayer. Wearing a turban without a hat is against the Sunnah.",
+          "reference": "Abu Dawud, Hadith No. 4078"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "After tying the turban, hang one arm's length at the back of the head. B.- Always wear turban with cap unless there is any reason. There are no hadiths about wearing a turban only during prayer.",
+          "reference": "Muslim, Hadith No. 1359"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "Start opening the clothes by saying Bismillah and take out the left hand and left foot first while opening.",
+          "reference": "Amalul Yawmi Wal Laylah, Hadith No-274 / Musannafe Ibn Abi Shaybah, Hadith No-24910"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Shoes are first worn on the right foot, then on the left foot.",
+          "reference": "Bukhari Sharif, Hadith No-5855"
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "While opening the shoes first from the left foot and then from the right foot.",
+          "reference": "Bukhari Sharif, Hadith No-5855"
+        }
+      ]
+    },
+    {
+      "id": "cat_7",
+      "title": "Sunnahs of entering and leaving the mosque",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Reading Bismillah.",
+          "reference": "Musnad Ahmad, Hadith No-26473, Amlulyawmi Wal Laylah, Hadith No-88"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Reading Durood Sharif.",
+          "reference": "Musnad Ahmad, Hadith No-26472"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Then read this dua: \n\nThe mentioned Duas can be recited together as follows:\n\nبِسْمِ اللهِ، وَالصَّلَاةُ وَالسَّلَامُ عَلٰى رَسُوْلِ اللهِ، اَللّٰهُمَّ افْتَحْ لِيْ اَبْوَابَ رَحْمَتِكَ",
+          "reference": "Muslim, hadith no-713",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ افْتَحْ لِيْ اَبْوَابَ رَحْمَتِكَ"
+            },
+            {
+              "type": "arabic",
+              "text": "بِسْمِ اللهِ، وَالصَّلَاةُ وَالسَّلَامُ عَلٰى رَسُوْلِ اللهِ، اَللّٰهُمَّ افْتَحْ لِيْ اَبْوَابَ رَحْمَتِكَ"
+            }
+          ]
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Place the right foot first in the mosque.",
+          "reference": "Bukhari Sharif, Hadith No-426"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Entering the mosque and making the intention of I'tikaf. B. Dr. When entering the mosque, first take off the shoes of the left foot and stand on the left foot, then take off the shoes of the right foot and recite duas, then first put the right foot inside the mosque.\n\nThe Sunnahs of leaving the mosque:",
+          "reference": "Shami, 2: 443/ Bukhari Sharif, Hadith No. 2042"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Reading Bismillah.",
+          "reference": "Musnad Ahmad, Hadith No-26473"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "Reading Durood Sharif.",
+          "reference": "Musnad Ahmad, Hadith No-26472"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Then read this dua:\n\nThe mentioned Duas can be recited together like this\n\nبِسْمِ اللهِ, وَالصَّلَةُ وَالسَّلَامُ عَلٰى رَسُولِ الِلِ, اَللّهُمَّ اِنِّيْ اَسْئَلُكَ مِنْ فَضْلِكَ,\n\nRead these Dua's before going out.",
+          "reference": "Muslim, hadith no-713",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ اِنِّيْ اَسْئَلُكَ مِنْ فَضْلِكَ،"
+            },
+            {
+              "type": "arabic",
+              "text": "بِسْمِ اللهِ، وَالصَّلَاةُ وَالسَّلَامُ عَلٰى رَسُوْلِ اللهِ، اَللّٰهُمَّ اِنِّيْ اَسْئَلُكَ مِنْ فَضْلِكَ،"
+            }
+          ]
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "Place the left foot first outside the mosque (on the shoe).",
+          "reference": "Mustadrake Hakim, Hadith No-791"
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "Then wearing shoes on the right foot first. Then wear it on the left leg.",
+          "reference": "Bukhari Sharif, Hadith No-5855"
+        }
+      ]
+    },
+    {
+      "id": "cat_8",
+      "title": "The Sunnahs of the call to prayer",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Giving the call to prayer in a pure state.",
+          "reference": "Musannaf Abdur Razzaq, Hadith No-1799"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Calling the adhan facing the Qiblah and keeping a space of four fingers between both feet facing the Qiblah.",
+          "reference": "Abu Dawud, Hadith No-507 / Musannaf Abdur Razzaq, Hadith No-1802"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "A. Stop saying the first two takbeers together in one breath.\n\nb. Then the two takbeers are said together in one breath and stop.\n\nB. Dr. At the end of each of the mentioned takbirs is to make Sakin, i.e. not to say 'Allahu Akbar Allahu Akbar' like this. (Musannaf Ibn Abi Shaybah, Hadith No-2377)\n\nc. Then speaking one sentence at a time from the middle sentences, and at the end of each sentence, rest and pause. (Musannaf Ibn Abi Shaybah, Hadith No-2377)\n\nd. Stop saying the last two takbeers together in one breath and make Sakin at the end of both takbeers.\n\ne. Finally, end the call to prayer by saying La-Ila-Ha-Illallah. (Nasa'i, Hadith No. 652)\n\nIt should be noted that, after stopping to say one sentence, to pause so much that the read sentence can be read once; That is, the listeners should be able to respond to the adhan at that time.",
+          "reference": "Musannaf Ibn Abi Shaybah, hadith no-2234"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Saying 'Hayya Alassalah' after turning the face to the right and saying 'Hayya Alal Falah' after turning the face to the left. But the chest and legs will not turn from the direction of Qibla.",
+          "reference": "Bukhari Sharif, Hadith No-634"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "As soon as the first adhan of the mahalla is heard, the recitation, dhikr, tasbeeh, etc. of the listeners are stopped until the end of the adhan.",
+          "reference": "Musannaf Abdur Razzaq, Hadith No. 1849"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Answering the call to prayer. That is to say the exact words of the adhan of the listeners in between the muezzin's pronunciation of the adhan. But after saying 'Hayya Alassalah' and 'Hayya Alal Falah' the answer is to say 'La Haula Wala Quwwata Illa Billah'. And saying 'Sadaqta wa Bararata' in response to 'Assalatu Khairum Minan Naum' in Fajr Azan.",
+          "reference": "Bukhari Sharif, Hadith No-611,613 / Muslim Hadith No-385"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "Recitation of Durood Sharif at the end of Azaan.",
+          "reference": "Muslim, Hadith No-384"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Then read this dua:\n\nاَللّٰهُمَّ رَبَّ هٰذِهِ الدَّعْوَةِ التَّاْوَةِ التَّامَّةِ وَالصَّلَةِ الْقَائِمَةِ اٰتِ مُحَمَّدَانِ الْوَسِيْلَةَ وَالْفَضِيْلَةَ وَابْعَثهُ مَقَامً مَّحْمُوْدَانِ الَّذِيْ وَعَدْتَّهٗ. اِنَّكَ لَا تُخْلِفُ الْمِيْعَادَ.\n\n(Bukhari Sharif, Hadith No-614, 4719 / Baihaqi Hadith No-1933)\n\nB. Dr. It is not sahih to make the takbeers of the adhan more than one alif, especially the second takbeer, and it is gravely wrong to create waves in the sound, i.e., to raise and lower the sound at will.",
+          "reference": "Bukhari Sharif, Hadith No-609/ Darakutani, Hadith No-906/ Ad Durrul Mukhtar, 1: 387",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ رَبَّ هٰذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ اٰتِ مُحَمَّدَانِ الْوَسِيْلَةَ وَالْفَضِيْلَةَ وَابْعَثْهُ مَقَامًا مَّحْمُوْدَانِ الَّذِيْ وَعَدْتَّهٗ. اِنَّكَ لَا تُخْلِفُ الْمِيْعَادَ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cat_9",
+      "title": "The Sunnahs of Iqamat",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Giving Iqamat in a pure state.",
+          "reference": "Tirmidhi, Hadith No. 200"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Performing Iqamat facing the Qibla and keeping both feet facing the Qibla with a space of four fingers between the two feet.",
+          "reference": "Abu Dawud, Hadith No-499/Ad Durrul Mukhtar, 1:389"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "A. Hadr in Iqamah i.e. stopping saying the first four takbeers together in one breath and saying saqeen at the end of each takbeer. (Tirmidhi, Hadith No. 195)\n\nb. Then, between the middle sentences, say two sentences together in one breath, and rest at the end of each sentence. (Kanjul Ummal, Hadith No-23210)\n\nc. Saying 'La-Ilaha Illallah' together with the last two takbirs together in one breath and saying the Sakin at the end of both takbirs.",
+          "reference": "Ma'arifus Sunan, 2:195/ Shami, 1:386"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "In Iqamat also turning the face towards the right as in the call to prayer and then saying 'Hayya Alas Salah'. Then turn your face to the left and say 'Haiya Alal Falah'. (But care should be taken not to turn the sinah and start saying Haya Alal Falah after finishing turning the face.)",
+          "reference": "Muslim, Hadith No-503/Ad Durrul Mukhtar, 1:387"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Responding to the Iqamat of Muslims is similar to the response to the call to prayer. But saying Akbamahallahu wa Adamaha in response to 'Qada Qamatis Salah'. Mistakes during Iqamat:",
+          "reference": "Abu Dawud, Hadith No-528"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Many people stand with their hands tied during Iqamat or before tying Tahrima. But it is makruh to do so. The rule is to keep hands off at this time.",
+          "reference": "Fataway Rahimiyyah, 3:14"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "Many do not respond to Iqamat. But it is mustahab to respond to Iqamat like the call to prayer.",
+          "reference": "Abu Dawud, Hadith No. 528"
+        }
+      ]
+    },
+    {
+      "id": "cat_10",
+      "title": "Friday's special practices",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Take a good bath for the purpose of Jumu'ar prayer.",
+          "reference": ""
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Going to the mosque as soon as it is time.",
+          "reference": "without waiting for the adhan"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Walking to the mosque.",
+          "reference": ""
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Sitting near Imam Sahib. That is, sitting in the front row as far as possible.",
+          "reference": ""
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Listen carefully to the sermon.",
+          "reference": ""
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Do not speak or do anything during the sermon. (Sahih Ibn Khuzaimah, hadith no-1758/Nasa'i, hadith no-1384, Tirmidhi, hadith no-496/ Abu Dawud, hadith no-345)\n\nB. Dr. Apart from the deeds described in any Sahih hadith, there is no mention of so many virtues in relation to any other Nafal deed. It is also Sunnah to do some more deeds on Friday. Namely: wearing good and clean clothes, applying perfume, reciting Surah Kahf, reciting Durood Sharif more and more, reading Salatut Tasbeeh, making dua in your mind without raising your hands between two sermons, reciting the following Durood Sharif 80 times while sitting at your place after Asr prayer for all men and women.\n\nاَللّٰهُمَّ صَلِّ عَلٰى مُحَمَّدِنِ النَّبِيِّ الْاُمِّيِّ وَعَلٰى اٰلِه وَسَلِّمْ تَسْلِيْمً\n\nB. Dr. The merit of the mentioned Durood Sharif is that the reward of 80 years of worship is written in the deeds of the doer and his sins of 80 years are forgiven. (Ibn Bashkwal, Al Qawsul Badi Fis Salati Was Salami Alal Habibish Shafi'i, p. 284)\n\nAnd engaging in dhikr and du'a earnestly from shortly before sunset until sunset.",
+          "reference": "Abu Dawud, Hadith No-347/ Abu Dawud, Hadith No-1291/ Mustadarak, Hadith No- 3392/ Mustadarak, Hadith No- 8681",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ صَلِّ عَلٰى مُحَمَّدِنِ النَّبِيِّ الْاُمِّيِّ وَعَلٰى اٰلِه وَسَلِّمْ تَسْلِيْمًا"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cat_11",
+      "title": "The Sunnahs of Eid",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Waking up earlier in the morning than other days.",
+          "reference": "Baihaqi, Hadith No. 6126"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "to miswalk",
+          "reference": "Tabeenul Haqaiq, 1:538"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "take a bath",
+          "reference": "Ibn Majah, Hadith No. 1315"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Shariah compliant dressing.",
+          "reference": "Bukhari Sharif, Hadith No. 948"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Wear good clothes according to your ability.",
+          "reference": "Bukhari Sharif, Hadith No. 948 / Mustadrake Hakeem, Hadith No. 7560"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Use perfume.",
+          "reference": "Mustadrake Hakeem, Hadith No. 7560"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "Eating sweets like (dates etc.) before going to Eidgah on Eid-ul-Fitr. However, it is better to not eat anything on Eid-ul-Azha and eat the meat of one's sacrifice after the Eid prayer.",
+          "reference": "Bukhari Sharif, Hadith No- 953 / Tirmidhi Sharif, Hadith No- 542 / Daremi Hadith No- 1603"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Going to Eidgah in the morning.",
+          "reference": "Abu Dawood, Hadith No. 1157"
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "Before going to the Eidgah on Eid-ul-Fitr, performing the Fitr in a chadkaya.",
+          "reference": "Darakutani, Hadith No. 1694"
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "Eid prayer should be performed in the Idgah, not performed in the mosque without exception.",
+          "reference": "Bukhari Sharif, Hadith No- 956 / Abu Dawud Hadith No- 1158"
+        },
+        {
+          "id": "১১",
+          "title": "Sunnah 11",
+          "fazilat": "If possible, take another road on the way back to the Eidgah.",
+          "reference": "Bukhari Sharif, Hadith No. 986"
+        },
+        {
+          "id": "১২",
+          "title": "Sunnah 12",
+          "fazilat": "walking",
+          "reference": "Abu Dawud, Hadith No. 1143"
+        },
+        {
+          "id": "১৩",
+          "title": "Sunnah 13",
+          "fazilat": "While going to the Eidgah on Eid-ul-Fitr, read this takbeer slowly-\n\nاَللهُ اَكْبَرُ اَللهُ اَكْبَرُ. لَاۤ اِلٰهَ اِلَّا اللهُ . وَللهُ اَكْبَرُ اَللهُ اَكْبَرُ. وَ لِلّٰهِ الْحَمْدُ\n\nHowever, while going to Eid-ul-Azha, this takbeer will be read aloud on the way.",
+          "reference": "Mustadrake Hakeem, Hadith No. 1105 / Baihaqi, Hadith No. 6130",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللهُ اَكْبَرُ اَللهُ اَكْبَرُ. لَاۤ اِلٰهَ اِلَّا اللهُ . وَللهُ اَكْبَرُ اَللهُ اَكْبَرُ. وَ لِلّٰهِ الْحَمْدُ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cat_12",
+      "title": "Sunnahs of eating",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Wash both hands up to the wrist.",
+          "reference": "Abu Dawud, Hadith No. 3761"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Spread the table and eat. (Bukhari Sharif, Hadith No. 5386)\n\nB. (a) First sit facing the food and the blessings of God, then spread the table. (Bukhari Sharif, Hadith No. 5385, 5399)\n\n(b) The table should be kept very clean. Jhuta (leftover food), bones etc. should not be placed on it or one should not step on it.",
+          "reference": "Muslim Hadith No. 2033"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "(Aloud) Reciting Bismillah.",
+          "reference": "Bukhari Sharif, Hadith No. 5376"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "eat with right hand",
+          "reference": "Bukhari, Hadith No. 5376 / Muslim, Hadith No. 2020"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Khana is initiated by the one who is older and elder in Khana Majlis.",
+          "reference": "Muslim, Hadith No. 2017"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "If the food is one of a kind, eat in front of yourself.",
+          "reference": "Bukhari Sharif, Hadith No. 5376"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "If any part of the food falls, pick it up (clean it if necessary) and eat it.",
+          "reference": "Muslim, Hadith No. 2033"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Do not eat while leaning.",
+          "reference": "Bukhari Sharif, Hadith No. 5398"
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "Do not find fault with the diet.",
+          "reference": "Bukhari Sharif, Hadith No. 5409"
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "Eat with shoes off if wearing shoes.",
+          "reference": "Mustadrake Hakeem, Hadith No. 7129"
+        },
+        {
+          "id": "১১",
+          "title": "Sunnah 11",
+          "fazilat": "There are three ways to sit while eating.\n\nA. Raise both knees and press the feet together. (Muslim, Hadith No. 2044)\n\nb. Raise one knee and bend the other knee. (Sharhus Sunnah, Hadith No. 3577)\n\nc. Eating with both knees spread, that is, like sitting in prayer, leaning slightly forward. (Abu Dawud, Hadith No. 3773)\n\nB. Dr. It is also permissible to sit with asana due to reason.",
+          "reference": "Surah Noor, verse-61 / Al Ithaf, 5: 480"
+        },
+        {
+          "id": "১২",
+          "title": "Sunnah 12",
+          "fazilat": "After eating, lick the utensils well with your fingers and eat cleanly. In this, the food containers pray to Allah Almighty for forgiveness for the eater. Licking the fingers of the hand respectively middle, shahadat, elder.",
+          "reference": "Muslim, Hadith No. 2033 / Tirmidhi, Hadith No. 1804 / Tabrani Awsat, Hadith No. 1649"
+        },
+        {
+          "id": "১৩",
+          "title": "Sunnah 13",
+          "fazilat": "Recite this dua at the end of the meal:\n\nاَلْحَمْدُ لِلّٰهِ الَّذِيْ اَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِيْنَ.",
+          "reference": "Abu Dawud, Hadith No. 3850",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَلْحَمْدُ لِلّٰهِ الَّذِيْ اَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِيْنَ."
+            }
+          ]
+        },
+        {
+          "id": "১৪",
+          "title": "Sunnah 14",
+          "fazilat": "At the end of the meal, first lift the table and then get up yourself.",
+          "reference": "Ibn Majah, Hadith No. 3295"
+        },
+        {
+          "id": "১৫",
+          "title": "Sunnah 15",
+          "fazilat": "Recite this dua while removing the table and leftover food:\n\nاَلْحَمْدُ لِلّٰهِ حَمْدًا كَثِيْرًا طَيِّبًا مُبَارَكًا فِيْهِ غَيْرَ مَكْفِىٍّ وَلَا مُوَدَّعٍ وَلَا مُسْتَغْنًى عَنْهُ رَبَّنَا.",
+          "reference": "Bukhari Sharif, Hadith No. 5458",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَلْحَمْدُ لِلّٰهِ حَمْدًا كَثِيْرًا طَيِّبًا مُبَارَكًا فِيْهِ غَيْرَ مَكْفِىٍّ وَلَا مُوَدَّعٍ وَلَا مُسْتَغْنًى عَنْهُ رَبَّنَا."
+            }
+          ]
+        },
+        {
+          "id": "১৬",
+          "title": "Sunnah 16",
+          "fazilat": "Wash both hands after eating.",
+          "reference": "Tirmidhi, Hadith No. 1846"
+        },
+        {
+          "id": "১৭",
+          "title": "Sunnah 17",
+          "fazilat": "Clean the face with coolie.",
+          "reference": "Bukhari Sharif, Hadith No. 5455"
+        },
+        {
+          "id": "১৮",
+          "title": "Sunnah 18",
+          "fazilat": "If you forget to read Bismillah at the beginning of the Khana, after remembering, read this dua between the Khana:\n\nبِسْمِ اللهِ اَوَّلَهٗ وَاٰخِرَهٗ",
+          "reference": "Abu Dawud, Hadith No. 3767",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "بِسْمِ اللهِ اَوَّلَهٗ وَاٰخِرَهٗ"
+            }
+          ]
+        },
+        {
+          "id": "১৯",
+          "title": "Sunnah 19",
+          "fazilat": "If you eat as someone's guest, first recite the dua mentioned in No. 13 to thank Allah, then recite this dua to thank the host (Muslim, Hadith No. 2055).\n\nاَللّٰهُمَّ اَ طْعِمْ مَنْ اَ طْعَمَنِىْ, وَاسْقِ مَنْ سَقَانِيْ\n\nThe hadith also encourages the reciting of these two verses to the host:\n\nاَكَلَ طَعَامَكُمُ الْاَبْرَارُ وَصَلَّتْ عَلَيْكُمُ الْمَلَائِكَةُ وَاَفْطَرَ عِنْدَكُمُ الصَّائِمُوْنَ.",
+          "reference": "Abu Dawud, Hadith No. 3854",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ اَ طْعِمْ مَنْ اَ طْعَمَنِىْ، وَاسْقِ مَنْ سَقَانِيْ"
+            },
+            {
+              "type": "arabic",
+              "text": "اَكَلَ طَعَامَكُمُ الْاَبْرَارُ وَصَلَّتْ عَلَيْكُمُ الْمَلَائِكَةُ وَاَفْطَرَ عِنْدَكُمُ الصَّائِمُوْنَ."
+            }
+          ]
+        },
+        {
+          "id": "২০",
+          "title": "Sunnah 20",
+          "fazilat": "It is makruh to be completely silent while eating. For this reason, talk to each other while eating. But the kind of words or news that may cause anxiety or hatred, should not be said while eating.",
+          "reference": "Bukhari Sharif, Hadith No. 5376"
+        }
+      ]
+    },
+    {
+      "id": "cat_13",
+      "title": "Sunnahs of drinking",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Hold water cup with right hand.",
+          "reference": "Muslim, Hadith No. 2020"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Drinking while sitting, do not drink standing if it is not difficult to sit.",
+          "reference": "Muslim, Hadith No. 2024"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Drinking while saying Bismillah and saying Alhamdulillah while drinking.",
+          "reference": "Tabrani Awsata, Hadith No- 6452"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Drink in at least three breaths and remove the water container from the mouth while exhaling.",
+          "reference": "Bukhari Sharif, Hadith No. 5631"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Do not drink from the broken side of the container.",
+          "reference": "Abu Dawud, Hadith No. 3722"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "If the container is such that the inside is not visible, do not drink with your mouth. Because any poisonous animal can harm it.",
+          "reference": "Bukhari Sharif, Hadith No. 5626"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "Recite this Dua after drinking water:\n\nاَ لْحَمْدُ لِلّٰهِ الَّذِيْ سَقَانَا مَاءً عَذْبًا فُرَا تًا بِرَحْمَتِه وَلَمْ يَجْعَلْهٗ مِلْحًا اُجَاجًا بِذُنُوْبِنَا",
+          "reference": "",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَ لْحَمْدُ لِلّٰهِ الَّذِيْ سَقَانَا مَاءً عَذْبًا فُرَا تًا بِرَحْمَتِه وَلَمْ يَجْعَلْهٗ مِلْحًا اُجَاجًا بِذُنُوْبِنَا"
+            }
+          ]
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "To give a drink to someone, give it to the person on the right first and finish in this sequence.",
+          "reference": "Bukhari Sharif, Hadith No. 5619"
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "After performing ablution, drink the remaining water from the container in which the water is taken by hand, facing the Qibla. It cures various diseases.",
+          "reference": "Shami, 1: 129/ Bukhari Sharif, Hadith No. 5616"
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "Reciting this dua before drinking milk:\n\nاَللّٰهُمَّ بَارِكْ لَنَا فِيْهِ وَزِدْنَا مِنْهُ.\n\n(Abu Dawud, Hadith No. 3730)\n\nAdding خَيْرًا after وَزِدْنَا for any drink other than milk.",
+          "reference": "Amalul Yaomi Wallailah, 127",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ بَارِكْ لَنَا فِيْهِ وَزِدْنَا مِنْهُ."
+            },
+            {
+              "type": "arabic",
+              "text": "وَزِدْنَا"
+            },
+            {
+              "type": "arabic",
+              "text": "خَيْرًا"
+            }
+          ]
+        },
+        {
+          "id": "১১",
+          "title": "Sunnah 11",
+          "fazilat": "The last person to drink is the one who drinks.",
+          "reference": "Muslim, Hadith No. 681"
+        },
+        {
+          "id": "১২",
+          "title": "Sunnah 12",
+          "fazilat": "Drink water facing Qibla by reciting this dua:\n\nاَللّٰهُمَّ اِنِّيْ اَسْئَلُكَ عِلْمًا نَافِعًا وَّرِزْقًا وَّاسِعًا وَّشِفَاءً مِّنْ كُلِّ دَاءٍ.",
+          "reference": "Musannaf Abdur Razzaq, Hadith No-9112/Sunan Darakutani, Hadith No-2712",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ اِنِّيْ اَسْئَلُكَ عِلْمًا نَافِعًا وَّرِزْقًا وَّاسِعًا وَّشِفَاءً مِّنْ كُلِّ دَاءٍ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cat_14",
+      "title": "Sunnahs of marriage",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Masnoon marriages will be simple and unadorned, free from extravagance, extravagance, vulgarity and foreign culture, music, video-audio, and will not have dowry conditions or mahrana beyond means.",
+          "reference": "Tabrani Ausat, Hadith No-3612"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Seeking honest and God-fearing spouses and sending marriage messages. If it is possible to see the bride under any pretext or opportunity, it is mustahab. But the practice of showing off the bride by formalization which is prevalent in our society is against the Sunnah and is abandoned.",
+          "reference": "Imdadul Fatawa, 4: 200/ Bukhari Hadith No. 5090"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Performing weddings in mosques during the month of Shawwal and on the day of Jumu'ar. Note that it is permissible to get married on any day of all months.",
+          "reference": "Muslim, Hadith No. 1423 / Baihaqi, Hadith No. 14699"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Celebrating the marriage by publicizing the news widely and distributing dates after the marriage among the people present at the ceremony.",
+          "reference": "Bukhari Sharif, Hadith No. 5147"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "To levy mahar according to capacity.",
+          "reference": "Abu Dawud: Hadith No. 2106"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Reciting this dua with the hair on the top of the wife's forehead at Basr night:\n\nاَللّٰهُمَّ اِنِّيْ اَسْئَلُكَ مِنْ خَيْرِهَا وَخَيْرِ مَا جَبَلْتَ عَلَيْهِ . وَاَعُوْذُ بِكَ مِنْ شَرِّهَا وَشَرِّ مَا جَبَلْتَ عَلَيْهِ",
+          "reference": "Abu Dawud, Hadith No. 2160",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ اِنِّيْ اَسْئَلُكَ مِنْ خَيْرِهَا وَخَيْرِ مَا جَبَلْتَ عَلَيْهِ . وَاَعُوْذُ بِكَ مِنْ شَرِّهَا وَشَرِّ مَا جَبَلْتَ عَلَيْهِ"
+            }
+          ]
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "First create intimacy with the wife, then whenever intercourse is desired, first recite the following dua:\n\nبِسْمِ اللّٰهِ اَللّٰهُمَّ جَنِّبْنَا الشَّيْطَانَ وَجَنِّبِ الشَّيْطَانَ مَا رَزَقْتَنَا",
+          "reference": "Muslim, Hadith No. 1434",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "بِسْمِ اللّٰهِ اَللّٰهُمَّ جَنِّبْنَا الشَّيْطَانَ وَجَنِّبِ الشَّيْطَانَ مَا رَزَقْتَنَا"
+            }
+          ]
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "After the night of Basr, organizing the feeding of Olima to relatives, friends, well-wishers and the poor and needy according to Tawfiq.",
+          "reference": "Muslim, Hadith No. 1427"
+        }
+      ]
+    },
+    {
+      "id": "cat_15",
+      "title": "Sunnahs of travel",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "At least two people traveling together, preferably not traveling alone.",
+          "reference": "Tirmidhi, Hadith No. 2165"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "from home-\n\nبِسْمِ اللهِ تَوَكَّلْتُ عَلَى اللهِ\n\nfall out",
+          "reference": "Abu Dawud, Hadith No. 5095",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "بِسْمِ اللهِ تَوَكَّلْتُ عَلَى اللهِ"
+            }
+          ]
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Stepping on the vehicle door saying 'Bismillah'.",
+          "reference": "Abu Dawud, Hadith No. 2602"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "After sitting properly in the vehicle recite this dua three times Allahu Akbar says:\n\nاَلْحَمْدُ لِلّٰهِ سُبْحَانَ الَّذِيْ سَخَّرَ لَنَا هٰذَا وَمَا كُنَّا لَهٗ مُقْرِنِيْنَ، وَاِنَّا اِلٰى رَبِّنَا لَمُنْقَلِبُوْنَ اَللّٰهُمَّ اِنَّا نَسْاَلُكَ فِىْ سَفَرِنَا هٰذَاالْبِرَّ وَالتَّقْوٰى وَمِنَ الْعَمَلِ مَا تَرْضٰى اَللّٰهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هٰذَا وَاطْوِ عَنَّا بُعْدَهٗ اَللّٰهُمَّ اَنْتَ الصَّاحِبُ فِىْ السَّفَرِ وَالْخَلِيْفَةُ فِى الْاَهْلِ اَللّٰهُمَّ اِنِّىْ اَعُوْذُ بِكَ مِنْ وَعْثَاءِ السَّفَرِ وَكَـاْبَةِ الْمَنْظَرِ وَسُوْءِ الْمُنْقَلَبِ فِى الْمَالِ وَالْاَهْلِ.",
+          "reference": "Muslim, Hadith No. 1342 / Nasa'i, Hadith No. 5513 / Abu Dawud, Hadith No. 2598, 2599",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَلْحَمْدُ لِلّٰهِ سُبْحَانَ الَّذِيْ سَخَّرَ لَنَا هٰذَا وَمَا كُنَّا لَهٗ مُقْرِنِيْنَ، وَاِنَّا اِلٰى رَبِّنَا لَمُنْقَلِبُوْنَ اَللّٰهُمَّ اِنَّا نَسْاَلُكَ فِىْ سَفَرِنَا هٰذَاالْبِرَّ وَالتَّقْوٰى وَمِنَ الْعَمَلِ مَا تَرْضٰى اَللّٰهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هٰذَا وَاطْوِ عَنَّا بُعْدَهٗ اَللّٰهُمَّ اَنْتَ الصَّاحِبُ فِىْ السَّفَرِ وَالْخَلِيْفَةُ فِى الْاَهْلِ اَللّٰهُمَّ اِنِّىْ اَعُوْذُ بِكَ مِنْ وَعْثَاءِ السَّفَرِ وَكَـاْبَةِ الْمَنْظَرِ وَسُوْءِ الْمُنْقَلَبِ فِى الْمَالِ وَالْاَهْلِ."
+            }
+          ]
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "If it is necessary to stay somewhere during the tour, stay somewhere in such a way that it does not disturb the movement of people etc.",
+          "reference": "Bukhari, Hadith No. 6229"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Say Allahu Akbar when you or the vehicle starts going up.",
+          "reference": "Muslim, Hadith No. 1344"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "Say Subhanallah when you or the vehicle starts to descend or descend.",
+          "reference": "Bukhari Sharif, Hadith No. 2993"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Reciting these two or three times as soon as the destination is visible from a distance:\n\nاَللّٰهُمَّ بَارِكْ لَنَا فِيْهَا",
+          "reference": "Tabrani Ausat, Hadith No. 4755",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ بَارِكْ لَنَا فِيْهَا"
+            }
+          ]
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "Recite this dua while entering the destination:\n\nاَللّٰهُمَّ ارْزُقْنَا جَنَاهَا وَحَبِّبْنَا اِلٰی اَهْلِهَا وَحَبِّبْ صَالِحِىْ اَهْلِهَا اِلَيْنَا.",
+          "reference": "Tabrani Ausat, Hadith No. 4755",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ ارْزُقْنَا جَنَاهَا وَحَبِّبْنَا اِلٰی اَهْلِهَا وَحَبِّبْ صَالِحِىْ اَهْلِهَا اِلَيْنَا."
+            }
+          ]
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "The Messenger of Allah, may God bless him and grant him peace, said: He will return home soon after completing his journey. It is not good to prolong the journey unnecessarily.",
+          "reference": "Bukhari Sharif, Hadith No. 1804"
+        },
+        {
+          "id": "১১",
+          "title": "Sunnah 11",
+          "fazilat": "Do not enter the house suddenly when returning home after a long day of travel. Instead, first come to the mosque of your village or neighborhood and pray two rak'ats. Then after reaching the news of coming home, he waited for a while and entered his house after meeting the people. Similarly, after a long trip, do not enter the house late at night.",
+          "reference": "Muslim, Hadith No. 2769 / Bukhari Sharif, Hadith No. 1800"
+        },
+        {
+          "id": "১২",
+          "title": "Sunnah 12",
+          "fazilat": "Do not keep dogs, rattlesnakes and rattlers on the trip. Because the devil pursues them, the blessing of the journey is gone. It should be noted that keeping a dog at home is prohibited in Shari'a.",
+          "reference": "Muslim, Hadith No. 1574 / Muslim Sharif, Hadith No. 2113"
+        },
+        {
+          "id": "১৩",
+          "title": "Sunnah 13",
+          "fazilat": "Reciting this Dua on returning from a trip:\n\nاٰئِـبُوْنَ تَائِبُوْنَ عَا بِدُوْنَ لِرَبِّنَا حَامِدُوْنَ.",
+          "reference": "Tirmidhi, Hadith No. 3440",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اٰئِـبُوْنَ تَائِبُوْنَ عَا بِدُوْنَ لِرَبِّنَا حَامِدُوْنَ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cat_16",
+      "title": "The Sunnah of cutting nails",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Cut nails once a week.",
+          "reference": "Sharhus Sunnah, Hadith No. 3090"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "Cut the nails before going to Jumu'ar prayer on Friday.",
+          "reference": "Sharhus Sunnah, Hadith No. 3091"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "Both hands (held in prayer shape) starting from shahadah finger of right hand successively cutting the nail of thumb of left hand. Then lastly cut the nails of the thumb of the right hand.",
+          "reference": "Fatawae Shami-6: 406/ Fatawae Alamgiri, 5: 358"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "Starting from the right toenail and ending with the left toenail.",
+          "reference": "Shami, 6: 406"
+        }
+      ]
+    },
+    {
+      "id": "cat_17",
+      "title": "Various sunnahs",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "The Prophet (peace and blessings of Allah be upon him) did not push or move people from the road while walking.",
+          "reference": "Musnad Ahmad, Hadith No. 14236"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "If anyone asked anything from the Messenger of Allah, may Allah bless him and grant him peace, he would never say no.",
+          "reference": "Musnad Ahmad, Hadith No. 14294"
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "The Prophet sallallaahu 'alayhi wa sallam would not withdraw his blessed countenance from anyone's face until he withdrew his countenance.",
+          "reference": "Ibn Majah, Hadith No-3716 / Abu Dawud, Hadith No-4794"
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "The Prophet (peace and blessings of Allah be upon him) used to greet each other first, then shake hands.",
+          "reference": "Abu Dawud, Hadith No. 5214 / Bukhari Sharif Hadith No. 6265-6266"
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "The Prophet (peace and blessings of Allah be upon him) used to smile while saying goodbye to someone and recite this dua:\n\nاَسْتَوْدِ عُ اللهَ دِيْنَكُمْ وَاَمَانَتَكُمْ وَخَوَاتِيْمَ اَعْمَالِكُمْ.\n\n(Abu Dawud, Hadith No. 2601)\n\nAnd he used to recite these two verses to whom he sent away:\n\nاَسْتَوْدِعُكُمُ اللهَ الَّذِيْ لَا تَضِيْعُ وَدَائِعُهٗ",
+          "reference": "Ibn Majah Hadith No. 2825",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَسْتَوْدِ عُ اللهَ دِيْنَكُمْ وَاَمَانَتَكُمْ وَخَوَاتِيْمَ اَعْمَالِكُمْ."
+            },
+            {
+              "type": "arabic",
+              "text": "اَسْتَوْدِعُكُمُ اللهَ الَّذِيْ لَا تَضِيْعُ وَدَائِعُهٗ"
+            }
+          ]
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "The Prophet (peace and blessings of Allah be upon him) used to recite this dua when he achieved something desirable:\n\nاَ لْحَمْدُ لِلّٰهِ الَّذِيْ بِنِعْمَتِهٖ تَتِمُّ الصَّالِحَاتُ.",
+          "reference": "Ibn Majah, Hadith No. 3803",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَ لْحَمْدُ لِلّٰهِ الَّذِيْ بِنِعْمَتِهٖ تَتِمُّ الصَّالِحَاتُ."
+            }
+          ]
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "On the other hand, if faced with any situation except the desire of the mind, he used to recite this dua:\n\nاَ لْحَمْدُ لِلّٰهِ عَلٰی كُلِّ حَالٍ.",
+          "reference": "Ibn Majah, Hadith No. 3803",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَ لْحَمْدُ لِلّٰهِ عَلٰی كُلِّ حَالٍ."
+            }
+          ]
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "The Prophet (peace and blessings of Allah be upon him) used to recite this dua when faced with any problem:\n\nيَا حَيُّ يَا قَيُّوْمُ بِرَحْمَتِكَ اَسْتَغِيْثُ.",
+          "reference": "Tirmidhi, Hadith No. 3524",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "يَا حَيُّ يَا قَيُّوْمُ  بِرَحْمَتِكَ اَسْتَغِيْثُ."
+            }
+          ]
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "When the Prophet (peace and blessings of Allah be upon him) looked at someone, he turned his full face.",
+          "reference": "Shamayil al-Tirmidhi, p. 1"
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "Huzoor sallallaahu alayhi wa sallam always looked down upon creation.",
+          "reference": "Shamayil al-Tirmidhi, p. 2"
+        },
+        {
+          "id": "১১",
+          "title": "Sunnah 11",
+          "fazilat": "The Prophet (peace and blessings of Allah be upon him) used to lean slightly forward while walking.",
+          "reference": "Shamayil al-Tirmidhi, p. 1"
+        },
+        {
+          "id": "১২",
+          "title": "Sunnah 12",
+          "fazilat": "The beloved Prophet (peace and blessings of Allah be upon him) lived in harmony with everyone.",
+          "reference": "Shamayil al-Tirmidhi, p. 15"
+        },
+        {
+          "id": "১৩",
+          "title": "Sunnah 13",
+          "fazilat": "If any poor or old woman wanted to talk, he would go to one side of the road and listen to them.",
+          "reference": "Shamayil al-Tirmidhi, p. 22"
+        },
+        {
+          "id": "১৪",
+          "title": "Sunnah 14",
+          "fazilat": "If he needed to leave the house at night, he would get up very slowly and quietly open the door and go out.",
+          "reference": "Muslim, Hadith No. 103"
+        },
+        {
+          "id": "১৫",
+          "title": "Sunnah 15",
+          "fazilat": "When a child is seven years old, make him accustomed to perform the prayer.",
+          "reference": "Tirmidhi, Hadith No. 407"
+        },
+        {
+          "id": "১৬",
+          "title": "Sunnah 16",
+          "fazilat": "If the child is ten years old, beating with hands for prayer if necessary.",
+          "reference": "Tirmidhi, Hadith No. 407"
+        },
+        {
+          "id": "১৭",
+          "title": "Sunnah 17",
+          "fazilat": "To show due respect to dignitaries of all castes.",
+          "reference": "Shamayil al-Tirmidhi, p. 23"
+        },
+        {
+          "id": "১৮",
+          "title": "Sunnah 18",
+          "fazilat": "Divide the day into three parts.",
+          "reference": "Shamayil al-Tirmidhi, p. 22"
+        },
+        {
+          "id": "১৯",
+          "title": "Sunnah 19",
+          "fazilat": "Reciting more Durood, treating neighbors well.",
+          "reference": "Muslim Hadith No-408"
+        },
+        {
+          "id": "২০",
+          "title": "Sunnah 20",
+          "fazilat": "Maintaining good relations by forgiving the misbehavior of a relative.",
+          "reference": "Bukhari Sharif, Hadith No. 5991"
+        },
+        {
+          "id": "২১",
+          "title": "Sunnah 21",
+          "fazilat": "After the birth of the child, calling the Adhan in the right ear and Iqamat in the left ear, naming the beautiful and aqeeqah.",
+          "reference": "Tirmidhi, Hadith No. 1514, 1522, 1515"
+        },
+        {
+          "id": "২২",
+          "title": "Sunnah 22",
+          "fazilat": "Keeping close relations with relatives.",
+          "reference": "Bukhari Sharif, Hadith No. 5987"
+        },
+        {
+          "id": "২৩",
+          "title": "Sunnah 23",
+          "fazilat": "Bogle, the lower part of the navel should be kept clean regularly.",
+          "reference": "Bukhari Sharif, Hadith No. 6297"
+        },
+        {
+          "id": "২৪",
+          "title": "Sunnah 24",
+          "fazilat": "It is obligatory to keep the beard at least one fist, keep the mustache short.",
+          "reference": "Bukhari Sharif, Hadith No. 5892, 5893"
+        },
+        {
+          "id": "২৫",
+          "title": "Sunnah 25",
+          "fazilat": "Watch out for the weak.",
+          "reference": "Bukhari Sharif, Hadith No. 2445"
+        },
+        {
+          "id": "২৬",
+          "title": "Sunnah 26",
+          "fazilat": "Making jokes to please his wife.",
+          "reference": "Shamayil al-Tirmidhi, p. 17"
+        },
+        {
+          "id": "২৭",
+          "title": "Sunnah 27",
+          "fazilat": "Meeting a Muslim brother with a smile.",
+          "reference": "Tirmidhi, Hadith No. 1833"
+        },
+        {
+          "id": "২৮",
+          "title": "Sunnah 28",
+          "fazilat": "Sneezing or yawning is actually covering the mouth with hands or cloth.",
+          "reference": "Abu Dawud, Hadith No. 5029"
+        },
+        {
+          "id": "২৯",
+          "title": "Sunnah 29",
+          "fazilat": "Don't dress like heathens.",
+          "reference": "Bukhari Sharif, Hadith No. 5787"
+        },
+        {
+          "id": "৩০",
+          "title": "Sunnah 30",
+          "fazilat": "Strengthening one's faith, learning worship, halal sustenance, fulfilling the rights of the servant, avoiding sin and calling to religion.",
+          "reference": "Surah Baqarah, verse 177 / Tirmidhi, hadith no-2267"
+        }
+      ]
+    },
+    {
+      "id": "cat_18",
+      "title": "Sunnahs at the time of death",
+      "items": [
+        {
+          "id": "১",
+          "title": "Sunnah 1",
+          "fazilat": "Turning the face of the dying person towards the Qiblah and reciting Kalima Sharif while sitting in front of him. But do not order him to recite the Kalima and recite Surah Yaseen while sitting beside him.",
+          "reference": "Mustadarak, Hadith No. 1305 / Muslim, Hadith No. 916 / Abu Dawud, Hadith No. 3121"
+        },
+        {
+          "id": "২",
+          "title": "Sunnah 2",
+          "fazilat": "If you feel that your death is near, keep reciting this dua:\n\nاَللّٰهُمَّ اغْفِرْلِيْ وَارْحَمْنِيْ وَاَ لْحِقْنِيْ بِالرَّفِيْقِ الْاَعْلٰى",
+          "reference": "Tirmidhi, Hadith No-3496 / Abu Dawud, Hadith No-3121",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ اغْفِرْلِيْ وَارْحَمْنِيْ وَاَ لْحِقْنِيْ بِالرَّفِيْقِ الْاَعْلٰى"
+            }
+          ]
+        },
+        {
+          "id": "৩",
+          "title": "Sunnah 3",
+          "fazilat": "When the spirit is felt to be coming out, recite this dua:\n\nاَللّٰهُمَّ اَعِنِّيْ عَلٰى غَمَرَاتِ الْمَوْتِ وَ سَكَرَاتِ الْمَوْتِ .",
+          "reference": "Tirmidhi, Hadith No. 978",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اَللّٰهُمَّ اَعِنِّيْ عَلٰى غَمَرَاتِ الْمَوْتِ وَ سَكَرَاتِ الْمَوْتِ ."
+            }
+          ]
+        },
+        {
+          "id": "৪",
+          "title": "Sunnah 4",
+          "fazilat": "On hearing the news of the death of a Muslim read this dua: اَللّٰهُمَّ اْجُرْنِيْ فِـيْ مُصِيْبَتِيْ, وَاَخْلِفْ لِيْ خَيْرًا مِنْهَا.",
+          "reference": "Muslim, Hadith No. 918",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "اِنَّا لِلّٰهِ وَاِنَّا اِلَيْهِ رَاجِعُوْنَ. اَللّٰهُمَّ اْجُرْنِيْ فِـيْ مُصِيْبَتِيْ، وَاَخْلِفْ لِيْ خَيْرًا مِّنْهَا."
+            }
+          ]
+        },
+        {
+          "id": "৫",
+          "title": "Sunnah 5",
+          "fazilat": "Closing the eyes and mouth of the dead person if they are open.",
+          "reference": "Muslim, Hadith No. 920"
+        },
+        {
+          "id": "৬",
+          "title": "Sunnah 6",
+          "fazilat": "Saying 'Bismillah' while placing the deceased on the bed.",
+          "reference": "Musannaf Ibn Abi Shaiba, Hadith No. 12062"
+        },
+        {
+          "id": "৭",
+          "title": "Sunnah 7",
+          "fazilat": "As soon as possible, after completing bath, shroud and funeral prayers, make arrangements for burial.",
+          "reference": "Abu Dawud, Hadith No. 318, 3165"
+        },
+        {
+          "id": "৮",
+          "title": "Sunnah 8",
+          "fazilat": "Reciting this dua while burying the dead body:\n\nبِاسْمِ اللهِ وَعَلٰى مِلَّةِ رَسُوْلِ اللهِ.",
+          "reference": "Abu Dawud, Hadith No. 1046 / Musnad Ahmad, Hadith No. 4989",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "بِاسْمِ اللهِ وَعَلٰى مِلَّةِ رَسُوْلِ اللهِ."
+            }
+          ]
+        },
+        {
+          "id": "৯",
+          "title": "Sunnah 9",
+          "fazilat": "In the grave, the body should be completely laid on the right side, that is, the face and chest should be facing the Qibla.",
+          "reference": "Mustadarak, Hadith No. 197"
+        },
+        {
+          "id": "১০",
+          "title": "Sunnah 10",
+          "fazilat": "Arrangement of food for the family of the deceased on the first day by the relatives.",
+          "reference": "Bukhari Sharif, Hadith No. 5417 / Musnad Ahmad, Hadith No. 905"
+        },
+        {
+          "id": "১১",
+          "title": "Sunnah 11",
+          "fazilat": "Graves should not be raised too high and paved.",
+          "reference": "Muslim, Hadith No. 969, 970"
+        },
+        {
+          "id": "১২",
+          "title": "Sunnah 12",
+          "fazilat": "Sprinkling water on the grave.",
+          "reference": "Musannaf Abdur Razzaq, Hadith No. 6481"
+        },
+        {
+          "id": "১৩",
+          "title": "Sunnah 13",
+          "fazilat": "Dua for forgiveness after completing burial.",
+          "reference": "Abu Dawud, Hadith No. 3221"
+        },
+        {
+          "id": "১৪",
+          "title": "Sunnah 14",
+          "fazilat": "Recitation of Surah Baqarah from the beginning to مُفْلِحُوْنْ towards the head of the grave and from Amanَ الرَّسُوْلُ to the end.",
+          "reference": "Shuabul Iman, Hadith No. 8854",
+          "amal_text": [
+            {
+              "type": "arabic",
+              "text": "مُفْلِحُوْنْ"
+            },
+            {
+              "type": "arabic",
+              "text": "آمَنَ الرَّسُوْلُ"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

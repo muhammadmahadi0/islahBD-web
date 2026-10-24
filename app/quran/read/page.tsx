@@ -13,7 +13,6 @@ import { JUZ_NAMES } from "../../../lib/juz-names";
 import { storageSetJSON, storageGetJSON, storageSet, storageGet } from "../../../lib/storage";
 import { getLastRead, saveLastRead, type QuranViewMode } from "../../../lib/quran-progress";
 import { usePlayerStore, type Track } from "../../../store/player-store";
-import { bnNum } from "../../../lib/audio";
 import { useLang, useNum, useTx } from "../../../store/language-store";
 
 const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
@@ -375,7 +374,7 @@ function Reader() {
       const chapterName = chapters.find((c) => c.id === ch)?.name_simple;
       const track: Track = {
         id: `quran-surah-${ch}`,
-        title: `${tx("সূরা")} ${surahBn(ch) || chapterName || ch} — ${tx("সম্পূর্ণ তিলাওয়াত")}`,
+        title: `${tx("সূরা")} ${surahTitle(ch) || chapterName || ch} — ${tx("সম্পূর্ণ তিলাওয়াত")}`,
         thumbnail: "",
         duration: 0,
         channelName: reciterName,
@@ -516,6 +515,14 @@ function Reader() {
       String(c.id) === q
     );
   });
+
+  const surahTitle = (id: number) => {
+    if (lang === "bn") return surahBn(id);
+    const chapter = chapters.find((c) => c.id === id);
+    return (lang === "ur" ? chapter?.name_arabic : chapter?.name_simple) || "";
+  };
+  const surahFullTitle = (id: number) =>
+    lang === "bn" ? surahBnFull(id) : `${tx("সূরা")} ${surahTitle(id) || id}`;
 
   const ayahCount = current?.verses_count || 286;
 
@@ -769,7 +776,7 @@ function Reader() {
                     : "font-medium hover:bg-primary-50"
                 }`}
               >
-                {c.id}. {surahBn(c.id) || c.name_simple}
+                {c.id}. {surahTitle(c.id) || c.name_simple}
               </button>
             ))}
           </div>
@@ -805,14 +812,14 @@ function Reader() {
               >
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[13px] font-bold">
-                    {num(j.n)}. {j.bn}
+                    {num(j.n)}. {lang === "bn" ? j.bn : j.ar}
                   </span>
                   <span
                     className={`block truncate text-[10px] ${
                       active ? "text-white/75" : "text-ink-faint"
                     }`}
                   >
-                    {tx("শুরু")}: {tx("সূরা")} {surahBn(j.surah)} · {tx("আয়াত")} {num(j.ayah)}
+                    {tx("শুরু")}: {tx("সূরা")} {surahTitle(j.surah) || num(j.surah)} · {tx("আয়াত")} {num(j.ayah)}
                   </span>
                 </span>
                 <span
@@ -869,15 +876,15 @@ function Reader() {
             <div>
               <p className="mb-1 text-xs font-bold text-ink-faint">{tx("নির্বাচিত অনুবাদ")}</p>
               <select value={trans1} onChange={(e) => setTrans1(Number(e.target.value))} className="input !text-[13px]" aria-label="translation 1">
-                {BN_TRANSLATIONS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
+                {BN_TRANSLATIONS.map((t) => <option key={t.id} value={t.id}>{lang === "bn" ? t.label : lang === "ur" ? t.labelUr : t.labelEn}</option>)}
               </select>
               <select value={trans2} onChange={(e) => setTrans2(Number(e.target.value))} className="input mt-2 !text-[13px]" aria-label="translation 2">
                 <option value={0}>{tx("২য় অনুবাদ বন্ধ")}</option>
-                {BN_TRANSLATIONS.filter((t) => t.id !== trans1).map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
+                {BN_TRANSLATIONS.filter((t) => t.id !== trans1).map((t) => <option key={t.id} value={t.id}>{lang === "bn" ? t.label : lang === "ur" ? t.labelUr : t.labelEn}</option>)}
               </select>
               <select value={tafsirId} onChange={(e) => setTafsirId(Number(e.target.value))} className="input mt-2 !text-[13px]" aria-label="tafsir">
                 <option value={0}>{tx("তাফসীর বন্ধ")}</option>
-                {BN_TAFSIRS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
+                {BN_TAFSIRS.map((t) => <option key={t.id} value={t.id}>{tx(t.label)}</option>)}
               </select>
             </div>
             <div>
@@ -943,7 +950,7 @@ function Reader() {
           {jump === "sura" ? (
             <>
               <h1 className="text-[22px] font-bold tracking-wide">
-                {tx("সূরা")} {lang === "bn" ? (surahBn(surah) || current?.name_simple || surah) : lang === "ur" ? (current?.name_arabic || surahBn(surah) || surah) : (current?.name_simple || surahBn(surah) || surah)}{" "}
+                {tx("সূরা")} {lang === "bn" ? (surahBn(surah) || current?.name_simple || surah) : lang === "ur" ? (current?.name_arabic || surah) : (current?.name_simple || surah)}{" "}
                 {lang !== "ur" && (
                   <span className="font-arabic font-semibold text-primary-700">({current?.name_arabic || ""})</span>
                 )}{" "}
@@ -1033,7 +1040,7 @@ function Reader() {
                     <div key={g.surah}>
                       <div className="mb-2 flex items-center gap-2 px-1 pt-2">
                         <span className="surah-ornament !h-9 !w-9"><span className="!text-[11px]">{g.surah}</span></span>
-                        <span className="text-sm font-bold">{surahBnFull(g.surah)}</span>
+                        <span className="text-sm font-bold">{surahFullTitle(g.surah)}</span>
                       </div>
                       {viewTab === "recitation" ? (
                         renderRecitationBlock(g.items)

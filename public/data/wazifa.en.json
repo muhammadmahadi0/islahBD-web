@@ -1,0 +1,291 @@
+{
+  "source_book": "Quran and Hadith in Khazayen",
+  "author": "Hazrat Maulana Shah Hakeem Muhammad Akhtar Saheb",
+  "translator": "Maulana Abdul Mateen bin Hussain",
+  "app_version": "1.0.0",
+  "id": "wazifa_darud",
+  "title": "Wazifa and Durood Sharif",
+  "icon": "wazifa_icon",
+  "description": "Important Wazifa and Durood Sharifs",
+  "categories": [
+    {
+      "id": "sokal_sondha_wazifa",
+      "title": "The Morning and Evening Ma'mulat (Wazifa) of the Salikin",
+      "description": "The Salikin are the people of the Tariqah. Muslims who are not yet Salik may also practise these; InshaAllah they will benefit as well.",
+      "items": [
+        {
+          "id": "wazifa_001",
+          "serial": "১",
+          "title": "Surah Al-Ikhlas, Al-Falaq and An-Nas",
+          "fazilat": "Recite these three Surahs in the morning and evening for protection from all evil and from Shaytan.",
+          "amal_text": [
+            {
+              "name": "Surah Al-Ikhlas, Al-Falaq and An-Nas",
+              "recite_count": "3 times each"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_002",
+          "serial": "২",
+          "title": "The last verse of Surah At-Tawbah — Hasbiyallah",
+          "fazilat": "Recite it seven times for protection from all calamities and trials.",
+          "amal_text": [
+            {
+              "arabic": "حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
+              "bangla_translation": "Allah is sufficient for me. There is no god but Him. In Him I place my trust, and He is the Lord of the Mighty Throne.",
+              "recite_count": "7 times"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_003",
+          "serial": "৩",
+          "title": "The last three verses of Surah Al-Hashr",
+          "fazilat": "Seventy thousand angels will seek forgiveness for the reciter from morning until evening.",
+          "amal_text": [
+            {
+              "name": "A'udhu Billahi Minash-Shaytanir-Rajim + the last three verses of Surah Al-Hashr",
+              "recite_count": "1 time"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_004",
+          "serial": "৪",
+          "title": "Sayyidul Istighfar",
+          "fazilat": "If a person sincerely, with full conviction, offers this supplication to Allah at any time of the day and dies before nightfall that same day, he will undoubtedly be among the people of Paradise.",
+          "reference": "Sahih al-Bukhari",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ أَنتَ رَبِّي لَا إِلَهَ إِلَّا أَنتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ أَعُوذُ بِكَ مِن شَرِّ مَا صَنَعْتُ أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ بِذَنبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنتَ",
+              "bangla_translation": "O Allah, You are my Lord; there is no god but You. You created me and I am Your servant. I remain faithful to Your covenant and promise as much as I am able. I seek refuge in You from the evil of what I have done. I acknowledge Your favours upon me, and I acknowledge my sin. So forgive me, for none forgives sins except You.",
+              "recite_count": "1 time"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_005",
+          "serial": "৫",
+          "title": "Dua for the protection of life and wealth",
+          "fazilat": "Allah protects the reciter's religion, faith, life, wealth, children and family, and frees his heart from anxiety and worry about them.",
+          "reference": "Kanz al-Ummal, Vol. 2, p. 636",
+          "amal_text": [
+            {
+              "arabic": "بِسْمِ اللَّهِ عَلَى دِينِي وَنَفْسِي وَوَلَدِي وَأَهْلِي وَمَالِي",
+              "bangla_translation": "O Allah, in Your name, protect my religion, my life, my children, my family and my wealth.",
+              "recite_count": "Morning and evening"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_006",
+          "serial": "৬",
+          "title": "La Hawla (7 times)",
+          "fazilat": "A treasure of Paradise. A remedy for the ninety-nine illnesses of this world and the Hereafter.",
+          "amal_text": [
+            {
+              "arabic": "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+              "bangla_translation": "There is no might nor power except with Allah.",
+              "recite_count": "7 times"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_007",
+          "serial": "৭",
+          "title": "Salatut-Tunjina or Durood-e-Tunjina",
+          "fazilat": "Whoever recites this Durood, Allah protects him from severe hardship and delivers him from it.",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ صَلَوةً تُنَجِّينَا بِهَا مِن جَمِيعِ الْأَهْوَالِ وَالْآفَاتِ وَتَقْضِي لَنَا بِهَا جَمِيعَ الْحَاجَاتِ وَتُطَهِّرُنَا بِهَا مِن جَمِيعِ السَّيِّئَاتِ وَتَرْفَعُنَا بِهَا عِندَكَ أَعْلَى الدَّرَجَاتِ وَتُبَلِّغُنَا بِهَا أَقْصَى الْغَايَاتِ مِن جَمِيعِ الْخَيْرَاتِ فِي الْحَيَاةِ وَبَعْدَ الْمَمَاتِ إِنَّكَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+              "bangla_translation": "O Allah, send blessings upon our master Muhammad ﷺ, through which we are saved from every fear and danger, all our needs are fulfilled, we are purified from every sin, we are raised to the highest rank before You, and we receive every good of this world and the Hereafter. Indeed, You are All-Powerful.",
+              "recite_count": "3 times"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_008",
+          "serial": "৮",
+          "title": "Verses 81 and 82 of Surah Yunus",
+          "fazilat": "By the blessing of this practice, one is protected from magic and sorcery.",
+          "amal_text": [
+            {
+              "arabic": "فَلَمَّا أَلْقَوا قَالَ مُوسَى مَا جِئْتُم بِهِ السِّحْرُ إِنَّ اللَّهَ سَيُبْطِلُهُ إِنَّ اللَّهَ لَا يُصْلِحُ عَمَلَ الْمُفْسِدِينَ وَيُحِقُّ اللَّهُ الْحَقَّ بِكَلِمَاتِهِ وَلَوْ كَرِهَ الْمُجْرِمُونَ",
+              "bangla_translation": "When they (the magicians) cast [their ropes and staffs], Musa said: 'What you have brought is magic. Allah will surely nullify it. Indeed, Allah does not amend the work of those who spread corruption.' Allah establishes the truth by His words, even though the criminals dislike it.",
+              "recite_count": "3 times"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_009",
+          "serial": "৯",
+          "title": "Dua after verses 81–82 of Surah Yunus",
+          "fazilat": "Whoever recites this dua, all his hardships will be removed.",
+          "amal_text": [
+            {
+              "name": "Allahumma inni a'udhu bika",
+              "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِن جَهْدِ الْبَلَاءِ وَدَرَكِ الشَّقَاءِ وَسُوءِ الْقَضَاءِ وَشَمَاتَةِ الْأَعْدَاءِ",
+              "bangla_translation": "O Allah, I seek refuge in You from severe hardship, from the onslaught of misfortune, from harmful decrees, and from the gloating of enemies.",
+              "recite_count": "7 times"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_010",
+          "serial": "১০",
+          "title": "Dua for guidance of the heart and protection from the evil of the self",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ اهْدِنِي رُشْدِي وَأَعِذْنِي مِن شَرِّ نَفْسِي",
+              "bangla_translation": "O Allah, pour guidance into my heart and constantly protect me from the corruption of my nafs.",
+              "recite_count": "3 times"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_011",
+          "serial": "১১",
+          "title": "Dua for protection from hidden shirk",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَن أُشْرِكَ بِكَ وَأَنَا أَعْلَمُ وَأَسْتَغْفِرُكَ لِمَا لَا أَعْلَمُ",
+              "bangla_translation": "O Allah, I earnestly seek refuge in You from knowingly associating anything with You, and I seek Your forgiveness for any shirk I may commit unknowingly or unintentionally.",
+              "recite_count": "3 times"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_012",
+          "serial": "১২",
+          "title": "Jami' Dua (Comprehensive Dua)",
+          "fazilat": "This is a comprehensive dua that includes all the supplications made by the Prophet ﷺ throughout his 23 years of prophethood.",
+          "reference": "Jawahir al-Bukhari, p. 572",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِن خَيْرِ مَا سَأَلَكَ مِنْهُ نَبِيُّكَ مُحَمَّدٌ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ وَأَعُوذُ بِكَ مِن شَرِّ مَا اسْتَعَاذَ مِنْهُ نَبِيُّكَ مُحَمَّدٌ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ وَأَنتَ الْمُسْتَعَانُ وَعَلَيْكَ الْبَلَاغُ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+              "bangla_translation": "O Allah, I ask You for all the good and blessings for which Your Prophet Muhammad ﷺ asked You, and I seek refuge in You from all the harm and evil from which Your Prophet Muhammad ﷺ sought refuge. It is Your work alone to hear supplications and fulfil them. There is no might to avoid sin, nor any power to do good, except with the help of Allah.",
+              "recite_count": "1 time"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_013",
+          "serial": "১৩",
+          "title": "Dua for deliverance from Hell",
+          "fazilat": "Whoever recites it seven times after Fajr and seven times after Maghrib, Allah will protect him from Hell.",
+          "reference": "Sunan Abu Dawud; Mishkat Sharif, p. 210",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ",
+              "bangla_translation": "O Allah, protect me from the fire of Hell.",
+              "recite_count": "7 times (after Fajr and Maghrib)"
+            }
+          ]
+        },
+        {
+          "id": "wazifa_014",
+          "serial": "১৪",
+          "title": "Bismillahilladhi La Yadurru",
+          "fazilat": "Whoever recites this dua three times in the morning and evening, no person and nothing can harm him in any way.",
+          "amal_text": [
+            {
+              "arabic": "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+              "bangla_translation": "In the name of Allah, with whose name nothing on earth or in the heavens can cause harm. He is All-Hearing, All-Knowing.",
+              "recite_count": "3 times"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "darud_collection",
+      "title": "Durood Sharif Collection",
+      "items": [
+        {
+          "id": "darud_001",
+          "title": "Darude Ibrahimi",
+          "fazilat": "Durood Ibrahimi is the Durood made by the Prophet himself. After reciting it once, Allah bestows ten blessings, grants ten high statuses, writes ten good deeds in the deeds and forgives ten sins.",
+          "reference": "Nasha'ee Sharif, Ma'areful-Hadith",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ",
+              "bangla_translation": "O Allah, send mercy upon Hazrat Muhammad sallallahu alaihi wasallam and his progeny, as You sent mercy upon Hazrat Ibrahim alaihis salam and his progeny. Surely You are Praised, Great. O Allah, bless Prophet Muhammad and his progeny as You blessed Prophet Ibrahim and his progeny. Surely You are Praised, Great.",
+              "recite_count": "At the last meeting of the prayer and as much as possible"
+            }
+          ]
+        },
+        {
+          "id": "darud_002",
+          "title": "The shortest Durood Sharif",
+          "fazilat": "Even if you read this smallest Durood, you get ten blessings, ten blessings, ten virtues and ten forgiveness of sins. My Peer and Morshed Damat Barakatuhum advised me to recite this Durood-Sharif 100 times daily.",
+          "reference": "Nasha'ee Sharif, Ma'areful-Hadith",
+          "amal_text": [
+            {
+              "arabic": "صَلَّى اللَّهُ عَلَى النَّبِيِّ الْأُمِّيِّ",
+              "bangla_translation": "May Allah send mercy on Ummi Nabi.",
+              "recite_count": "100 times per day"
+            }
+          ]
+        },
+        {
+          "id": "darud_003",
+          "title": "Darude Tunajina",
+          "fazilat": "By reciting this blessing, Allah protects and rescues him from severe danger.",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ صَلَوةً تُنَجِّينَا بِهَا مِن جَمِيعِ الْأَهْوَالِ وَالْآفَاتِ",
+              "bangla_translation": "O Allah, send blessings on our leader Hazrat Muhammad, by virtue of which we are saved from all fears and dangers.",
+              "recite_count": "3 times"
+            }
+          ]
+        },
+        {
+          "id": "darud_004",
+          "title": "Blessings of a thousand days of reward",
+          "fazilat": "Whoever recites this dua once, its reward will tire seventy angels for a thousand days. In other words, they get tired of writing its reward continuously for a thousand days.",
+          "reference": "Tabrani, Targheeb and Tarheeb, Faisal Durood 44 pages",
+          "amal_text": [
+            {
+              "arabic": "جَزَى اللَّهُ عَنَّا مُحَمَّداً مَّا هُوَ أَهْلُهُ",
+              "bangla_translation": "May Allah grant Prophet Muhammad the reward he deserves on our behalf.",
+              "recite_count": "1 time"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ism_e_azam",
+      "title": "Ichme-A'am",
+      "items": [
+        {
+          "id": "ism_001",
+          "title": "The first Ichme-A'am",
+          "fazilat": "The Messenger of Allah, may God bless him and grant him peace, has sworn that this is Isme-A'zam. If you pray with this prayer, the prayer will be accepted and whatever is prayed for, Allah will grant it.",
+          "reference": "Abu Dawood, Tirmidhi, Ruhul Ma'ani 27 paras, 110 pages",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ بِأَنَّ لَكَ الْحَمْدَ لَا إِلَهَ إِلَّا أَنتَ الْمَنَّانُ بَدِيعُ السَّمَاوَاتِ وَالْأَرْضِ ذُو الْجَلَالِ وَالْإِكْرَامِ يَا حَيُّ يَا قَيُّومُ",
+              "bangla_translation": "O Allah, I submit my supplication to You that all praise is due to You, there is no god but You. You are the Most Merciful, the Creator of the heavens and the earth, the Glorious and the Honorable. O Eternal, O Mighty Sustainer.",
+              "recite_count": "Read if necessary"
+            }
+          ]
+        },
+        {
+          "id": "ism_002",
+          "title": "Second Ichme-A'zam",
+          "fazilat": "By Allah in Whose Hand is my life, the Holy Prophet, peace and blessings of Allah be upon him, surely prayed through Isme-e-A'zam, through Whom supplication is granted and whatever is prayed for, He grants.",
+          "reference": "Ruhul Maani 30 paras, 267 pages",
+          "amal_text": [
+            {
+              "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ بِأَنِّي أَشْهَدُ أَنَّكَ أَنتَ اللَّهُ الَّذِي لَا إِلَهَ إِلَّا أَنتَ الْأَحَدُ الصَّمَدُ الَّذِي لَمْ يَلِدْ وَلَمْ يُولَدْ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ",
+              "bangla_translation": "O Allah, I submit my request to Your court in this way that I testify sincerely that You are Allah, there is no god but You. You are the Lord who is One, La-Sharik, Be-Niyaz, Who is neither the Father, nor the Begotten, nor the Parent, nor the Child, and Who has no peer, no equal.",
+              "recite_count": "Read if necessary"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

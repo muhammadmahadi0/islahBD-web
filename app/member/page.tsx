@@ -2,8 +2,7 @@
 import { useEffect, useState } from "react";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { toBn } from "../../lib/prayer";
-import { useTx } from "../../store/language-store";
+import { useNum, useTx } from "../../store/language-store";
 
 const BENEFITS = [
   "উলামায়ে কেরাম ও তালিবুল ইলমদের সাথে জুড়ে থাকা যায়।",
@@ -46,6 +45,7 @@ function useCountdown() {
 
 export default function MemberPage() {
   const tx = useTx();
+  const num = useNum();
   const cd = useCountdown();
 
   return (
@@ -72,7 +72,7 @@ export default function MemberPage() {
                 ] as const
               ).map(([v, l]) => (
                 <div key={l} className="min-w-[64px] rounded-2xl bg-white/15 px-2 py-2 backdrop-blur">
-                  <div className="text-xl font-bold tabular-nums">{toBn(v)}</div>
+                  <div className="text-xl font-bold tabular-nums">{num(v)}</div>
                   <div className="text-[10px] text-white/75">{l} {tx("বাকি")}</div>
                 </div>
               ))}
@@ -110,7 +110,7 @@ export default function MemberPage() {
         {BENEFITS.map((b, i) => (
           <div key={i} className="card flex items-start gap-2.5 p-3.5">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-primary-600 text-xs font-bold text-white">
-              {toBn(i + 1)}
+              {num(i + 1)}
             </span>
             <p className="text-[13px] leading-relaxed">{tx(b)}</p>
           </div>

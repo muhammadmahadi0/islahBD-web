@@ -1,7 +1,8 @@
 // Notification center — shared types, deep links, read state, and the events
 // the header badge + service worker listen to.
-import { bnNum } from "./audio";
+import { localizeDigits } from "./audio";
 import { storageGetJSON, storageSetJSON } from "./storage";
+import type { Lang } from "./i18n";
 
 export interface AppNotification {
   id: number;
@@ -83,20 +84,30 @@ export function notifHref(n: AppNotification): string | null {
   }
 }
 
-const MONTHS_BN = [
-  "জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন",
-  "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর",
-];
+const MONTHS: Record<Lang, string[]> = {
+  bn: [
+    "জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন",
+    "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর",
+  ],
+  en: [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ],
+  ur: [
+    "جنوری", "فروری", "مارچ", "اپریل", "مئی", "جون",
+    "جولائی", "اگست", "ستمبر", "اکتوبر", "نومبر", "دسمبر",
+  ],
+};
 
-/** Day bucket label for the feed ("আজ", "গতকাল", or a Bengali date). */
-export function notifDay(iso: string): string {
+/** Day bucket label for the feed ("Today", "Yesterday", or a local date). */
+export function notifDay(iso: string, lang: Lang = "bn"): string {
   const d = new Date(iso);
-  if (isNaN(d.getTime())) return "আগের";
+  if (isNaN(d.getTime())) return lang === "bn" ? "আগের" : lang === "ur" ? "پہلے" : "Earlier";
   const startOf = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
   const days = Math.round((startOf(new Date()) - startOf(d)) / 86400000);
-  if (days <= 0) return "আজ";
-  if (days === 1) return "গতকাল";
-  return `${bnNum(d.getDate())} ${MONTHS_BN[d.getMonth()]} ${bnNum(d.getFullYear())}`;
+  if (days <= 0) return lang === "bn" ? "আজ" : lang === "ur" ? "آج" : "Today";
+  if (days === 1) return lang === "bn" ? "গতকাল" : lang === "ur" ? "گزشتہ کل" : "Yesterday";
+  return `${localizeDigits(d.getDate(), lang)} ${MONTHS[lang][d.getMonth()]} ${localizeDigits(d.getFullYear(), lang)}`;
 }
 
 export function getReadIds(): Set<number> {

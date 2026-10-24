@@ -1,13 +1,21 @@
-// UI language dictionaries. The app content (bayans, duas, articles) stays in
-// Bengali — this covers the shared chrome and every static UI string.
+// UI language dictionaries. This file covers the shared chrome and static UI
+// labels. App-owned content is shipped as public/data/*.en.json / *.ur.json
+// packs; upstream catalog text is localized at runtime. Quran translations and
+// tafsir remain in Bengali by design (see lib/content-translate.ts).
 import { lookupUi } from "./ui-strings";
 
 export type Lang = "bn" | "ur" | "en";
 
-export const LANGUAGES: { id: Lang; native: string; dir: "ltr" | "rtl" }[] = [
-  { id: "bn", native: "বাংলা", dir: "ltr" },
-  { id: "ur", native: "اردو", dir: "rtl" },
-  { id: "en", native: "English", dir: "ltr" },
+export const LANGUAGES: {
+  id: Lang;
+  native: string;
+  en: string;
+  ur: string;
+  dir: "ltr" | "rtl";
+}[] = [
+  { id: "bn", native: "বাংলা", en: "Bengali", ur: "بنگالی", dir: "ltr" },
+  { id: "ur", native: "اردو", en: "Urdu", ur: "اردو", dir: "rtl" },
+  { id: "en", native: "English", en: "English", ur: "انگریزی", dir: "ltr" },
 ];
 
 type Dict = {

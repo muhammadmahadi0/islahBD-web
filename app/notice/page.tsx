@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { useTx } from "../../store/language-store";
+import { useLang, useTx } from "../../store/language-store";
+import { useLocalizedData } from "../../lib/content-translate";
 
 export default function NoticePage() {
   const tx = useTx();
+  const lang = useLang();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,6 +19,14 @@ export default function NoticePage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const itemsL = useLocalizedData(items, lang);
+  const fmtDate = (iso: string) => {
+    const d = new Date(iso);
+    if (!iso || isNaN(d.getTime())) return iso;
+    const locale = lang === "bn" ? "bn-BD" : lang === "ur" ? "ur-PK" : "en-GB";
+    return new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" }).format(d);
+  };
+
   return (
     <div className="animate-fade-up">
       <PageHead title={tx("নোটিশ বোর্ড")} subtitle={tx("ঘোষণা ও আপডেট")} icon="mega" />
@@ -26,17 +36,19 @@ export default function NoticePage() {
             <div key={i} className="card animate-pulse p-4"><div className="h-4 w-2/3 rounded-full bg-sand-dark" /></div>
           ))}
         </div>
-      ) : items.length === 0 ? (
+      ) : itemsL.length === 0 ? (
         <div className="mt-3"><EmptyState icon="mega" title={tx("কোনো নোটিশ নেই")} /></div>
       ) : (
         <div className="mt-3 space-y-2">
-          {items.slice(0, 40).map((n: any, i: number) => (
+          {itemsL.slice(0, 40).map((n: any, i: number) => {
+            const title = n.title === "Notice" ? tx("নোটিশ") : n.title;
+            return (
             <details key={i} className="card group p-4" open={i === 0}>
               <summary className="flex cursor-pointer list-none items-center gap-2.5 [&::-webkit-details-marker]:hidden">
                 <span className="icon-tile !h-10 !w-10 shrink-0 bg-sky-50 text-sky-600"><Icon name="mega" size={18} /></span>
                 <span className="flex-1">
-                  <span className="block text-sm font-bold leading-snug">{n.title}</span>
-                  <span className="block text-[11px] font-bold text-ink-faint">{n.date}</span>
+                  <span className="block text-sm font-bold leading-snug">{title}</span>
+                  <span className="block text-[11px] font-bold text-ink-faint">{fmtDate(n.date)}</span>
                 </span>
                 <span className="rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform group-open:rotate-90">
                   <Icon name="chevron" size={15} />
@@ -46,13 +58,14 @@ export default function NoticePage() {
               <div className="mt-2 pl-[52px]">
                 <button
                   className="btn-ghost !py-1.5 !text-xs"
-                  onClick={() => navigator.clipboard?.writeText(`${n.title}\n${n.body || ""}`)}
+                  onClick={() => navigator.clipboard?.writeText(`${title}\n${n.body || ""}`)}
                 >
                   <Icon name="copy" size={14} /> {tx("কপি")}
                 </button>
               </div>
             </details>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

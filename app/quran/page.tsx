@@ -6,7 +6,6 @@ import { Icon } from "../../components/icons";
 import type { QuranChapter } from "../../lib/quran";
 import { surahBn, surahBnFull } from "../../lib/surah-names";
 import { QURAN_TOPICS } from "../../lib/quran-topics";
-import { bnNum } from "../../lib/audio";
 import { stripHtml } from "../../lib/quran";
 import { getLastRead, resumeHref, type QuranLastRead } from "../../lib/quran-progress";
 import { useLang, useNum, useTx } from "../../store/language-store";
@@ -50,14 +49,22 @@ export default function QuranLanding() {
   }, [chapters, submitted]);
 
   const topics = useMemo(() => {
-    const query = submitted.trim();
+    const query = submitted.trim().toLowerCase();
     if (!query) return QURAN_TOPICS;
-    return QURAN_TOPICS.filter((t) => t.title.includes(query) || t.desc.includes(query));
+    return QURAN_TOPICS.filter((t) =>
+      [t.title, t.desc, t.titleEn, t.descEn, t.titleUr, t.descUr]
+        .join(" ")
+        .toLowerCase()
+        .includes(query)
+    );
   }, [submitted]);
 
 // Topic card with expandable famous verses (Arabic + translation),
 // each linking deep into the reader.
-function TopicCard({ topic }: { topic: { id: string; title: string; desc: string; verses: string[] } }) {
+function TopicCard({ topic }: { topic: { id: string; title: string; desc: string; titleEn: string; descEn: string; titleUr: string; descUr: string; verses: string[] } }) {
+  const lang = useLang();
+  const title = lang === "bn" ? topic.title : lang === "ur" ? topic.titleUr : topic.titleEn;
+  const desc = lang === "bn" ? topic.desc : lang === "ur" ? topic.descUr : topic.descEn;
   const [open, setOpen] = useState(false);
   const [verses, setVerses] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -90,9 +97,9 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
           <Icon name="book" size={20} />
         </span>
         <span className="flex-1">
-          <span className="block font-bold">{topic.title}</span>
+          <span className="block font-bold">{title}</span>
           <span className="block text-xs text-ink-faint">
-            {topic.desc} • {num(topic.verses.length)} {tx("আয়াত")}
+            {desc} • {num(topic.verses.length)} {tx("আয়াত")}
           </span>
         </span>
         <span className={`rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform ${open ? "rotate-90" : ""}`}>
@@ -150,7 +157,12 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
               {tx("যেখানে থেমেছিলেন")}
             </span>
             <span className="block truncate text-[15px] font-bold">
-              {tx("সূরা")} {lang === "bn" ? surahBn(lastRead.surah) : (chapters.find((c) => c.id === lastRead.surah)?.name_simple || surahBn(lastRead.surah))}
+              {tx("সূরা")}{" "}
+              {lang === "bn"
+                ? surahBn(lastRead.surah)
+                : (lang === "ur"
+                    ? chapters.find((c) => c.id === lastRead.surah)?.name_arabic
+                    : chapters.find((c) => c.id === lastRead.surah)?.name_simple) || lastRead.surah}
             </span>
             <span className="block truncate text-xs text-ink-faint">
               {tx("আয়াত")} {num(lastRead.ayah)} · {lastRead.mode === "recitation" ? tx("তেলাওয়াত") : tx("অনুবাদ")}
