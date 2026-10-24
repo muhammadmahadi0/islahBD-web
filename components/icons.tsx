@@ -15,6 +15,12 @@ const paths: Record<string, React.ReactNode> = {
     </>
   ),
   library: <path d="M4 4v16M9 4v16M13 5l4 14M17.5 5.5 21 19M2 20h20" />,
+  playlist: (
+    <>
+      <path d="M4 6h11M4 12h11M4 18h7" />
+      <path d="m15 14.5 5 3.5-5 3.5v-7Z" />
+    </>
+  ),
   grid: (
     <>
       <rect x="3.5" y="3.5" width="7" height="7" rx="2" />

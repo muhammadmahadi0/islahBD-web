@@ -32,6 +32,13 @@ export interface InnertubeChannel {
   nextToken: string | null;
 }
 
+export interface InnertubePlaylist {
+  id: string;
+  title: string;
+  thumbnail: string;
+  itemCount: number;
+}
+
 let sessionPromise: Promise<any> | null = null;
 
 function getSession(): Promise<any> {
@@ -185,6 +192,88 @@ export async function getInnertubeMore(
   }
 
   return { videos, nextToken: current };
+}
+
+/**
+ * Items of any (non-uploads) playlist: first page + chained continuations.
+ * Used for the channel's YouTube playlists.
+ */
+export async function getInnertubePlaylistItems(
+  playlistId: string,
+  pages = 2
+): Promise<{ videos: InnertubeVideo[]; nextToken: string | null }> {
+  const yt = await getSession();
+  const playlist = await yt.getPlaylist(playlistId);
+
+  const videos = extractItems(playlist);
+  let current: string | null = extractToken(playlist);
+
+  for (let i = 1; i < pages && current; i++) {
+    try {
+      const page = await fetchContinuationPage(current);
+      videos.push(...page.videos);
+      current = page.nextToken;
+    } catch {
+      // Past the end (youtubei.js throws on empty continuations) — keep partial.
+      current = null;
+    }
+  }
+
+  return { videos, nextToken: current };
+}
+
+/**
+ * A channel's public playlists via its Playlists tab (params are stable —
+ * channel-scoped, not per-video, so this needs no key at all).
+ * Returns [] when the tab is unreachable — routes surface "none yet".
+ */
+export async function getInnertubeChannelPlaylists(
+  channelId: string
+): Promise<InnertubePlaylist[]> {
+  const yt = await getSession();
+
+  // Discover the channel's Playlists tab (params differ per channel).
+  const channel = await yt.getChannel(channelId);
+  const tabs = channel.memo.getType(YTNodes.Tab);
+  const playlistsTab = tabs.find(
+    (t: any) => (t.title?.toString?.() || t.title || '') === 'Playlists'
+  );
+  const params: string | undefined = playlistsTab?.endpoint?.payload?.params;
+  if (!params) return [];
+
+  const raw = await yt.actions.execute('/browse', { browseId: channelId, params });
+  const { Parser } = await import('youtubei.js');
+  const memo = Parser.parseResponse(raw.data).contents_memo;
+  if (!memo) return [];
+  const lockups = memo
+    .getType(YTNodes.LockupView)
+    .filter((p: any) => p.content_type === 'PLAYLIST');
+
+  return lockups
+    .map((p: any): InnertubePlaylist | null => {
+      try {
+        const id: string = p.content_id;
+        if (!id) return null;
+        const title: string = p.metadata?.title?.text || 'Untitled playlist';
+        const thumbnail: string = p.content_image?.primary_thumbnail?.image?.[0]?.url || '';
+        // "54 videos" badge on the thumbnail overlay.
+        const badges: any[] =
+          p.content_image?.primary_thumbnail?.overlays?.flatMap?.(
+            (o: any) => o.badges || []
+          ) || [];
+        const countText: string = badges.map((b: any) => b.text || '').join(' ');
+        const count = parseInt(countText.replace(/[^0-9]/g, ''), 10);
+        return {
+          id,
+          title,
+          thumbnail,
+          itemCount: Number.isFinite(count) ? count : 0,
+        };
+      } catch {
+        return null;
+      }
+    })
+    .filter((p: InnertubePlaylist | null): p is InnertubePlaylist => p !== null);
 }
 
 /** InnerTube continuation tokens are long; Data API page tokens are short. */

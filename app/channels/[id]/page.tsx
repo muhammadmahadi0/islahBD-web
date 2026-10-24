@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { PageHead, EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
@@ -217,11 +218,22 @@ export default function ChannelPage() {
         backHref="/channels"
         icon="youtube"
         action={
-          avatar ? (
-            <span className="h-11 w-11 overflow-hidden rounded-full border border-white/30 shadow">
-              <img src={avatar} alt="" className="h-full w-full object-cover" />
+          <div className="flex flex-col items-end gap-1.5">
+            <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white/10 text-gold-100 shadow">
+              {avatar ? (
+                <img src={avatar} alt="" className="h-full w-full object-cover" />
+              ) : (
+                <Icon name="youtube" size={20} />
+              )}
             </span>
-          ) : undefined
+            <Link
+              href={`/channels/${encodeURIComponent(channelId)}/playlists`}
+              className="inline-flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-md transition hover:bg-white/25 active:scale-95"
+            >
+              <Icon name="playlist" size={12} />
+              {tx("প্লেলিস্ট")}
+            </Link>
+          </div>
         }
       />
 

@@ -1204,6 +1204,26 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
     "Playlist",
     "پلے لسٹ"
   ],
+  "চ্যানেলের প্লেলিস্ট": [
+    "Channel playlists",
+    "چینل کی پلے لسٹس"
+  ],
+  "চ্যানেলের প্লেলিস্ট লোড করা যাচ্ছে না।": [
+    "Couldn’t load channel playlists.",
+    "چینل کی پلے لسٹس لوڈ نہیں ہو سکیں۔"
+  ],
+  "প্লেলিস্টের ভিডিও লোড করা যাচ্ছে না।": [
+    "Couldn’t load this playlist.",
+    "اس پلے لسٹ کی ویڈیوز لوڈ نہیں ہو سکیں۔"
+  ],
+  "প্লেলিস্টটি খালি বা পাওয়া যায়নি।": [
+    "This playlist is empty or unavailable.",
+    "یہ پلے لسٹ خالی ہے یا دستیاب نہیں۔"
+  ],
+  "এই চ্যানেলে এখনো কোনো পাবলিক প্লেলিস্ট নেই।": [
+    "No public playlists on this channel yet.",
+    "اس چینل پر ابھی کوئی عوامی پلے لسٹ نہیں ہے۔"
+  ],
   "বন্ধ করুন": [
     "Close",
     "بند کریں"
@@ -1687,6 +1707,10 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
   "টি ভিডিও": [
     " videos",
     " ویڈیوز"
+  ],
+  "টি প্লেলিস্ট": [
+    " playlists",
+    " پلے لسٹس"
   ],
   "টি বই": [
     " books",
