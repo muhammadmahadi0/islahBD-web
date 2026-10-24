@@ -193,7 +193,7 @@ export default function PrayerCard() {
         {/* gauge + current prayer */}
         <div className="my-3 flex items-center justify-between rounded-2xl bg-white/10 p-3.5">
           <div className="relative flex h-24 w-24 shrink-0 items-center justify-center">
-            <svg className="h-full w-full -rotate-90" viewBox="0 0 36 36">
+            <svg className="h-full w-full" viewBox="0 0 36 36">
               <path className="text-white/20" strokeWidth="3.5" stroke="currentColor" fill="none" d={`M18 2.0845 a ${R} ${R} 0 0 1 0 31.831 a ${R} ${R} 0 0 1 0 -31.831`} />
               <path
                 className="text-gold-100" strokeWidth="3.5" strokeLinecap="round" stroke="currentColor" fill="none"
