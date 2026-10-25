@@ -869,3 +869,46 @@ html.dark .gold-text {
     inset 0 1px 1px rgba(255, 255, 255, 0.25),
     0 4px 14px rgba(8, 73, 47, 0.35);
 }
+
+/* ---------- hajj map (Leaflet + OSM) ---------- */
+.hajj-pin-wrap {
+  background: transparent;
+  border: 0;
+}
+.hajj-pin {
+  position: relative;
+  display: block;
+  width: 26px;
+  height: 26px;
+  margin: 2px auto 0;
+  border-radius: 50% 50% 50% 0;
+  background: var(--pin, #0e7c5b);
+  border: 3px solid #fff;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.35);
+  transform: rotate(-45deg);
+  transition: transform 160ms ease;
+}
+.hajj-pin::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: #fff;
+}
+.hajj-pin-wrap.is-active .hajj-pin {
+  transform: rotate(-45deg) scale(1.22);
+}
+/* Dark theme dims + inverts the raster tiles; pins sit in a separate pane. */
+.dark .hajj-map .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9) saturate(0.6);
+}
+.hajj-map .leaflet-container {
+  background: transparent;
+  font: inherit;
+}
+.hajj-map .leaflet-control-attribution {
+  display: none;
+}

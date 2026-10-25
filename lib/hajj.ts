@@ -7,6 +7,8 @@
 // is not available yet.
 import weekGuideJson from "../public/data/hajj/week-guide.json";
 import pilgrimageJson from "../public/data/hajj/pilgrimage.json";
+import placesJson from "../public/data/hajj/places.json";
+import mapPlacesJson from "../public/data/hajj/map-places.json";
 
 export type ObligationType = "farz" | "wajib" | "sunnat" | "mustahab";
 
@@ -142,3 +144,99 @@ export const PILGRIMAGE_STORAGE_KEYS = {
   typeIndex: "hajj_checklist_type_index",
   doneItems: "hajj_checklist_done_items",
 } as const;
+
+/* ------------------------------------------------------------------ */
+/* Places guide + map                                                  */
+/* ------------------------------------------------------------------ */
+
+export interface Place {
+  title: string;
+  titleEn: string;
+  description: string;
+  lat: number;
+  lng: number;
+  iconCodePoint: string;
+}
+
+export interface PlaceRegion {
+  title: string;
+  titleEn: string;
+  subtitle: string;
+  color: string;
+  iconCodePoint: string;
+  places: Place[];
+}
+
+export interface PlacesData {
+  source: string;
+  filters: string[];
+  regions: PlaceRegion[];
+  total: number;
+}
+
+export interface MapPlace {
+  title: string;
+  titleEn: string;
+  region: string;
+  lat: number;
+  lng: number;
+}
+
+export interface MapPlacesData {
+  source: string;
+  filters: string[];
+  places: MapPlace[];
+  total: number;
+}
+
+export const places = placesJson as unknown as PlacesData;
+export const mapPlaces = mapPlacesJson as unknown as MapPlacesData;
+
+/** Region pin colours used by the map (মক্কা gold, মদিনা green, হিজাজ brown). */
+export const MAP_REGION_COLORS: Record<string, string> = {
+  মক্কা: "#D4A957",
+  মদিনা: "#2E7D32",
+  হিজাজ: "#795548",
+};
+
+export function mapRegionColor(region: string): string {
+  return MAP_REGION_COLORS[region] || "#0E7C5B";
+}
+
+/**
+ * Filter the places guide the same way the app does: region chips match the
+ * region title, keyword chips match place text and drop empty regions.
+ */
+export function filterPlaces(filter: string): PlaceRegion[] {
+  if (!filter || filter === "সব") return places.regions;
+
+  const keyword = (place: Place, ...needles: string[]) => {
+    const hay = `${place.title} ${place.titleEn} ${place.description}`.toLowerCase();
+    return needles.some((n) => hay.includes(n.toLowerCase()));
+  };
+
+  // Region chips match the region title; keyword chips match place text only.
+  const regionFilters = ["সীরাত", "মক্কা", "মদিনা", "তায়েফ", "যুদ্ধ"];
+
+  return places.regions
+    .map((region) => {
+      if (regionFilters.includes(filter) && region.title.includes(filter)) return region;
+
+      let matches: (place: Place) => boolean = () => false;
+      if (filter === "মসজিদ") matches = (p) => keyword(p, "মসজিদ", "masjid");
+      else if (filter === "গুহা") matches = (p) => keyword(p, "গুহা", "গার", "cave");
+      else if (filter === "মিকাত") matches = (p) => keyword(p, "মিকাত", "miqat");
+
+      return { ...region, places: region.places.filter(matches) };
+    })
+    .filter((region) => region.places.length > 0);
+}
+
+/** Google Maps deep links used by the places cards. */
+export function googlePlaceUrl(lat: number, lng: number): string {
+  return `https://www.google.com/maps/place/${lat},${lng}/@${lat},${lng},16z/data=!3m1!1e3`;
+}
+
+export function googleDirectionsUrl(lat: number, lng: number): string {
+  return `https://www.google.com/maps/dir//${lat},${lng}/@${lat},${lng},14z/data=!3m1!1e3`;
+}

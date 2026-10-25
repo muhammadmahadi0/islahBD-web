@@ -555,10 +555,14 @@ export default function HajjChecklistPage() {
                 )}
 
                 <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-sand px-2.5 py-1 text-[10px] font-bold text-ink-soft dark:bg-white/10">
+                  <Link
+                    href={`/hajj-umrah/map?q=${encodeURIComponent(activeStep.location)}`}
+                    className="inline-flex items-center gap-1 rounded-full bg-sand px-2.5 py-1 text-[10px] font-bold text-ink-soft transition hover:bg-primary-50 hover:text-primary-700 dark:bg-white/10 dark:hover:bg-primary-500/10 dark:hover:text-primary-300"
+                  >
                     <Icon name="pin" size={11} className="text-primary-600 dark:text-primary-300" />
                     {tx("স্থান")}: {tx(activeStep.location)}
-                  </span>
+                    <Icon name="compass" size={10} className="ms-0.5 text-primary-600/70 dark:text-primary-300/70" />
+                  </Link>
                   {activeStep.arabic && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-sand px-2.5 py-1 text-[10px] font-bold text-ink-soft dark:bg-white/10">
                       <Icon name="book" size={11} className="text-gold-600" />
