@@ -200,6 +200,12 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M12 7v5l3.5 2" />
     </>
   ),
+  refresh: (
+    <>
+      <path d="M20 12a8 8 0 1 1-2.6-5.9" />
+      <path d="M20 4v4.5h-4.5" />
+    </>
+  ),
   pin: (
     <>
       <path d="M12 21.5S5 15.6 5 10a7 7 0 0 1 14 0c0 5.6-7 11.5-7 11.5Z" />

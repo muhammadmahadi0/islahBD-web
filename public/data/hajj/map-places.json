@@ -1,0 +1,131 @@
+{
+  "source": "IslahBD APK v1.3.0 — lib/features/hajj/screens/hajj_map_screen.dart",
+  "filters": [
+    "সব",
+    "মক্কা",
+    "মদিনা",
+    "হিজাজ"
+  ],
+  "places": [
+    {
+      "title": "মিকাত যুল হুলাইফাহ (বীর আলী)",
+      "titleEn": "Miqat Dhul Hulaifah (Bir Ali)",
+      "region": "হিজাজ",
+      "lat": 24.415,
+      "lng": 39.5439
+    },
+    {
+      "title": "বীরে শিফা",
+      "titleEn": "Bir Shifa",
+      "region": "হিজাজ",
+      "lat": 23.782,
+      "lng": 38.805
+    },
+    {
+      "title": "বদর যুদ্ধক্ষেত্র",
+      "titleEn": "Badr Battlefield",
+      "region": "হিজাজ",
+      "lat": 23.7744,
+      "lng": 38.7903
+    },
+    {
+      "title": "খন্দকের যুদ্ধক্ষেত্র (সাত মসজিদ)",
+      "titleEn": "Seven Mosques (Battle of Trench)",
+      "region": "মদিনা",
+      "lat": 24.4756,
+      "lng": 39.5936
+    },
+    {
+      "title": "মসজিদে গামামাহ",
+      "titleEn": "Masjid al-Ghamamah",
+      "region": "মদিনা",
+      "lat": 24.4646,
+      "lng": 39.6094
+    },
+    {
+      "title": "জান্নাতুল বাকী",
+      "titleEn": "Jannat al-Baqi",
+      "region": "মদিনা",
+      "lat": 24.4675,
+      "lng": 39.6158
+    },
+    {
+      "title": "উহুদ পাহাড় ও শহীদদের কবর",
+      "titleEn": "Jabal Uhud & Shuhada Uhud",
+      "region": "মদিনা",
+      "lat": 24.5028,
+      "lng": 39.6144
+    },
+    {
+      "title": "মসজিদে কিবলাতাইন",
+      "titleEn": "Masjid al-Qiblatayn",
+      "region": "মদিনা",
+      "lat": 24.4839,
+      "lng": 39.5786
+    },
+    {
+      "title": "মসজিদে কুবা",
+      "titleEn": "Masjid Quba",
+      "region": "মদিনা",
+      "lat": 24.4392,
+      "lng": 39.6172
+    },
+    {
+      "title": "মসজিদুন নববী",
+      "titleEn": "Masjid an-Nabawi",
+      "region": "মদিনা",
+      "lat": 24.4672,
+      "lng": 39.6111
+    },
+    {
+      "title": "মসজিদে জিন",
+      "titleEn": "Masjid al-Jinn",
+      "region": "মক্কা",
+      "lat": 21.4303,
+      "lng": 39.8306
+    },
+    {
+      "title": "আরাফাত ময়দান (জাবালে রহমত)",
+      "titleEn": "Arafat (Jabal al-Rahmah)",
+      "region": "মক্কা",
+      "lat": 21.3547,
+      "lng": 39.9678
+    },
+    {
+      "title": "মুযদালিফা",
+      "titleEn": "Muzdalifah",
+      "region": "মক্কা",
+      "lat": 21.3965,
+      "lng": 39.9168
+    },
+    {
+      "title": "মিনা",
+      "titleEn": "Mina",
+      "region": "মক্কা",
+      "lat": 21.4162,
+      "lng": 39.8911
+    },
+    {
+      "title": "জাবালে সাওর (সাওর গুহা)",
+      "titleEn": "Jabal Thawr (Ghar Thawr)",
+      "region": "মক্কা",
+      "lat": 21.3789,
+      "lng": 39.8492
+    },
+    {
+      "title": "জাবালে নূর (হেরা গুহা)",
+      "titleEn": "Jabal al-Noor (Ghar Hira)",
+      "region": "মক্কা",
+      "lat": 21.4578,
+      "lng": 39.8592
+    },
+    {
+      "title": "মসজিদুল হারাম",
+      "titleEn": "Masjid al-Haram",
+      "region": "মক্কা",
+      "lat": 21.4225,
+      "lng": 39.8262
+    }
+  ],
+  "total": 17
+}
