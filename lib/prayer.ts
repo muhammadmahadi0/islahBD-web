@@ -57,6 +57,9 @@ export interface PrayerTimes {
   asr: string;
   maghrib: string;
   isha: string;
+  /** Aladhan's sunset time; usually equal to Maghrib, but kept separate so
+   *  the pre-Maghrib prohibition window can be shown when they differ. */
+  sunset?: string;
 }
 
 export interface HijriInfo {
