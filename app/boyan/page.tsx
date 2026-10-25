@@ -4,6 +4,7 @@ import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import { usePlayerStore } from "../../store/player-store";
 import {
+  BOYAN_REFRESH_MS,
   boyanToTrack,
   type BoyanAudio, type BoyanCategory,
 } from "../../lib/audio";
@@ -31,16 +32,18 @@ export default function BoyanPage() {
   const load = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
     try {
-      const res = await fetch("/api/boyan");
+      const res = await fetch("/api/boyan", { cache: "no-store" });
       const data = await res.json();
       if (!data.success) throw new Error(data.error || "load failed");
       setAudios((prev) => {
-        if (silent && prev.length) {
-          const ids = new Set(prev.map((a) => a.id));
-          const fresh = (data.audios as BoyanAudio[]).filter((a) => !ids.has(a.id));
-          return fresh.length ? [...fresh, ...prev] : prev;
-        }
-        return data.audios;
+        const fresh = data.audios as BoyanAudio[];
+        if (!silent || !prev.length) return fresh;
+        // Take the upstream list as the source of truth (so new uploads,
+        // edits and ordering all show up), but keep any item that vanished
+        // from a transient upstream response instead of dropping it.
+        const freshIds = new Set(fresh.map((a) => a.id));
+        const missing = prev.filter((a) => !freshIds.has(a.id));
+        return missing.length ? [...fresh, ...missing] : fresh;
       });
       if (Array.isArray(data.categories)) setCategories(data.categories);
       setError("");
@@ -53,8 +56,20 @@ export default function BoyanPage() {
 
   useEffect(() => {
     load();
-    refreshTimer.current = setInterval(() => load(true), 5 * 60 * 1000);
-    return () => { if (refreshTimer.current) clearInterval(refreshTimer.current); };
+    refreshTimer.current = setInterval(() => load(true), BOYAN_REFRESH_MS);
+    const refreshNow = () => load(true);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") refreshNow();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", refreshNow);
+    window.addEventListener("online", refreshNow);
+    return () => {
+      if (refreshTimer.current) clearInterval(refreshTimer.current);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", refreshNow);
+      window.removeEventListener("online", refreshNow);
+    };
   }, [load]);
 
   const audiosL = useLocalizedData(audios, lang);

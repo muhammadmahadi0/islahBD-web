@@ -3,6 +3,9 @@
 // Sources: api.islahbd.com/api/audios/ (~110 MP3 lectures, keyless)
 //          api.islahbd.com/api/nasheeds/ (~50 audio/video items, keyless)
 
+/** How often the Bayan catalog is silently re-checked for new uploads. */
+export const BOYAN_REFRESH_MS = 60_000;
+
 export interface BoyanAudio {
   id: number;
   title: string;

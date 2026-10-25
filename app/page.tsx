@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import PrayerCard from "../components/PrayerCard";
 import { Icon } from "../components/icons";
-import { boyanToTrack } from "../lib/audio";
+import { boyanToTrack, BOYAN_REFRESH_MS } from "../lib/audio";
 import type { BoyanAudio } from "../lib/audio";
 import { LIVE_POLL_MS } from "../lib/live";
 import { usePlayerStore } from "../store/player-store";
@@ -72,10 +72,34 @@ export default function HomePage() {
   const isPlaying = usePlayerStore((s) => s.isPlaying);
 
   useEffect(() => {
-    fetch("/api/boyan")
-      .then((r) => r.json())
-      .then((d) => { if (d.success) setRecent(d.audios.slice(0, 4)); })
-      .catch(() => {});
+    let dead = false;
+    const load = async () => {
+      try {
+        const res = await fetch("/api/boyan", { cache: "no-store" });
+        if (!res.ok) return;
+        const d = await res.json();
+        if (!dead && d.success && Array.isArray(d.audios)) {
+          setRecent(d.audios.slice(0, 4));
+        }
+      } catch {
+        // Keep the last known uploads; the next refresh can recover.
+      }
+    };
+    load();
+    const id = setInterval(load, BOYAN_REFRESH_MS);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") load();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", load);
+    window.addEventListener("online", load);
+    return () => {
+      dead = true;
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", load);
+      window.removeEventListener("online", load);
+    };
   }, []);
 
   // Match the live page's status poll so the Listen button flickers only
