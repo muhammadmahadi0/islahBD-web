@@ -62,8 +62,9 @@ API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/shorts`,
   inset highlight/lowlight, soft ambient shadow, and only a 5% emerald/gold
   tint wash on liquid surfaces. Shared tokens live on `html.glass` /
   `html.dark.glass` (`--lg-tint`, `--lg-warm`, `--lg-edge`, `--lg-highlight`,
-  `--lg-lowlight`, `--lg-ambient`). The bottom nav adds a slow
-  `glass-sheen` highlight, springy transitions use
+  `--lg-lowlight`, `--lg-ambient`). The bottom nav is the fullest expression:
+  48px blur, 200% saturation, a refractive rim, a drifting specular
+  highlight and a slow `glass-sheen` sweep. Springy transitions use
   `cubic-bezier(0.22, 1, 0.36, 1)`, and `@supports not (backdrop-filter)`
   falls back to opaque surfaces. Material mode is simply the absence of
   `html.glass` (solid cards).

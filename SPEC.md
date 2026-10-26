@@ -166,7 +166,9 @@ offline-tolerant, keyless APIs only.
   wash. Tokens on `html.glass` / `html.dark.glass`: `--lg-tint`,
   `--lg-warm`, `--lg-edge`, `--lg-highlight`, `--lg-lowlight`,
   `--lg-ambient`. Covers cards, header, bottom nav (+ `glass-sheen`
-  highlight), chips, buttons, inputs, icon tiles, scholar banner. Unlayered
+  highlight), chips, buttons, inputs, icon tiles, scholar banner. The nav
+  is the fullest expression: 48px blur, 200% saturation, refractive rim,
+  drifting specular highlight (`glass-drift`) and the sheen sweep. Unlayered
   glass rules outrank Tailwind utilities, so hover shadows are re-declared
   explicitly; `@supports not (backdrop-filter)` falls back to opaque
   surfaces and reduced motion disables the sheen + transitions. Material
