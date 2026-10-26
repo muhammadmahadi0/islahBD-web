@@ -40,6 +40,7 @@ No env vars needed. All upstream APIs are keyless.
 | Library + kitab reader, Short clips, Gallery/Wallpaper | `/library`, `/library/[id]` (chapter reader / PDF fallback), `/media`, `/gallery`, `/wallpaper` (`/nasheed` → `/hamdnaat`) |
 | Channels (YouTube) + video listing | `/channels`, `/channels/[id]` |
 | Paribar/Baiyat, Fatwa, Notice, Notifications | `/paribar` (family hub: biography, mission, applications, connect), `/mission` (Shaykh's mission, beta), `/fatwa`, `/notice`, `/notifications` |
+| Seerah Maps (Others hub) — places guide + map | `/seerah` (guide + inline "Map of Locations"), `/seerah/map` (full-screen map) |
 | Donate, Support, Settings, Others hub, Member | `/donate`, `/support`, `/settings`, `/others`, `/member` |
 
 API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/shorts`,
@@ -56,6 +57,16 @@ API proxies (cached): `/api/boyan`, `/api/hamdnaat`, `/api/shorts`,
 - Emerald/gold theme, SVG icon set (`components/icons.tsx`), no emoji icons
 - Dark midnight-blue mode + Liquid Glass / Material toggle (Settings,
   persisted, pre-paint script — no flash)
+- **Liquid Glass** (`html.glass`) is a neutral iOS-style frosted material:
+  24px blur + 180% saturation, hairline white specular edge (`--lg-edge`),
+  inset highlight/lowlight, soft ambient shadow, and only a 5% emerald/gold
+  tint wash on liquid surfaces. Shared tokens live on `html.glass` /
+  `html.dark.glass` (`--lg-tint`, `--lg-warm`, `--lg-edge`, `--lg-highlight`,
+  `--lg-lowlight`, `--lg-ambient`). The bottom nav adds a slow
+  `glass-sheen` highlight, springy transitions use
+  `cubic-bezier(0.22, 1, 0.36, 1)`, and `@supports not (backdrop-filter)`
+  falls back to opaque surfaces. Material mode is simply the absence of
+  `html.glass` (solid cards).
 - Golden signature pieces: prayer card, bottom nav, honorific title
 - Home entrance: sections/cards rise in with a 380ms slide-up and 28ms
   inline stagger (`.home-rise`, whole sequence under 1s)

@@ -22,6 +22,13 @@ function MapSkeleton() {
   );
 }
 
-export default function HajjMapPage() {
-  return <HajjMap places={mapPlaces.places} filters={mapPlaces.filters} />;
+export default function SeerahMapPage() {
+  return (
+    <HajjMap
+      places={mapPlaces.places}
+      filters={mapPlaces.filters}
+      variant="page"
+      backHref="/seerah"
+    />
+  );
 }

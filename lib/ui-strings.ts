@@ -2477,15 +2477,15 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
     "مزدلفہ"
   ],
   "সীরাত মানচিত্র": [
-    "Seerat Map",
-    "سیرت نقشہ"
+    "Seerah Maps",
+    "سیرت کے نقشے"
   ],
   "ঐতিহাসিক ও পবিত্র স্থানসমূহের বিবরণ": [
     "Descriptions of historical and holy places",
     "تاریخی اور مقدس مقامات کی تفصیل"
   ],
   "স্থানসমূহের মানচিত্র": [
-    "Places map",
+    "Map of Locations",
     "مقامات کا نقشہ"
   ],
   "মক্কা, মদিনা ও হিজাজের পবিত্র স্থান": [
@@ -2599,6 +2599,26 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
   "হিজাজ": [
     "Hijaz",
     "حجاز"
+  ],
+  "ঐতিহাসিক স্থান ও পবিত্র মক্কা-মদিনার মানচিত্র": [
+    "Historical places and the map of Makkah and Madinah",
+    "تاریخی مقامات اور مکہ و مدینہ کا نقشہ"
+  ],
+  "ঐতিহাসিক স্থানসমূহ": [
+    "Historical places",
+    "تاریخی مقامات"
+  ],
+  "মক্কা, মদিনা ও হিজাজ": [
+    "Makkah, Madinah & Hijaz",
+    "مکہ، مدینہ اور حجاز"
+  ],
+  "বড় মানচিত্রে দেখুন": [
+    "Open full map",
+    "مکمل نقشہ کھولیں"
+  ],
+  "অঞ্চল ও বিষয় অনুযায়ী ফিল্টার করুন": [
+    "Filter by region or topic",
+    "علاقے یا موضوع کے مطابق فلٹر کریں"
   ],
 };
 

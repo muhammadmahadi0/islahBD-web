@@ -13,7 +13,7 @@ import { useLocalizedData } from "../lib/content-translate";
 
 // Paths belonging to the More hub — the More tab stays highlighted there.
 const MORE_PREFIXES = [
-  "/others", "/quran", "/library", "/hamdnaat", "/media", "/nasheed",
+  "/others", "/seerah", "/quran", "/library", "/hamdnaat", "/media", "/nasheed",
   "/gallery", "/wallpaper", "/amal", "/dua", "/wazifa", "/calendar",
   "/poem", "/malfuzat", "/self-purification", "/fatwa", "/notice",
   "/notifications", "/donate", "/support", "/settings", "/member",

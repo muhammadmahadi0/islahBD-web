@@ -623,112 +623,279 @@ html.dark audio::-webkit-media-controls-panel {
 }
 
 /* ============================================================
-   LIQUID GLASS (html.glass) — beta-style frosted surfaces.
-   Material mode (default solid cards) is simply the absence
-   of this class. Works in light + dark.
+   LIQUID GLASS (html.glass) — iOS-style translucent material.
+   Neutral frosted surfaces with specular edges, soft ambient
+   shadows and only a whisper of emerald/gold tint. Material
+   mode is simply the absence of this class. Works light + dark.
    ============================================================ */
+html.glass {
+  --lg-tint: 14, 124, 91;
+  --lg-warm: 201, 162, 39;
+  --lg-blur: 24px;
+  --lg-sat: 180%;
+  --lg-edge: rgba(255, 255, 255, 0.62);
+  --lg-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  --lg-lowlight: inset 0 -1px 1px rgba(255, 255, 255, 0.24);
+  --lg-ambient: 0 22px 48px -22px rgba(8, 73, 47, 0.38);
+}
+html.dark.glass {
+  --lg-tint: 30, 138, 99;
+  --lg-warm: 230, 202, 101;
+  --lg-edge: rgba(255, 255, 255, 0.14);
+  --lg-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  --lg-lowlight: inset 0 -1px 1px rgba(0, 0, 0, 0.32);
+  --lg-ambient: 0 26px 56px -24px rgba(0, 0, 0, 0.72);
+}
+
+/* Ambient wallpaper — barely-there colour washes behind the glass. */
 html.glass body {
+  background-color: #f7f5f1;
   background-image:
-    radial-gradient(38rem 22rem at 85% -6rem, rgba(201, 162, 39, 0.16), transparent 65%),
-    radial-gradient(30rem 22rem at -8rem 32vh, rgba(14, 124, 91, 0.12), transparent 65%),
-    radial-gradient(34rem 24rem at 50% 115vh, rgba(201, 162, 39, 0.08), transparent 65%);
+    radial-gradient(46rem 30rem at 88% -10rem, rgba(var(--lg-warm), 0.13), transparent 64%),
+    radial-gradient(38rem 28rem at -12% 26vh, rgba(var(--lg-tint), 0.11), transparent 64%),
+    radial-gradient(44rem 30rem at 52% 116vh, rgba(96, 116, 255, 0.06), transparent 66%);
+  background-attachment: fixed;
 }
 html.dark.glass body {
+  background-color: #080d18;
   background-image:
-    radial-gradient(38rem 22rem at 85% -6rem, rgba(201, 162, 39, 0.14), transparent 65%),
-    radial-gradient(30rem 22rem at -8rem 32vh, rgba(14, 124, 91, 0.16), transparent 65%),
-    radial-gradient(34rem 24rem at 50% 115vh, rgba(201, 162, 39, 0.07), transparent 65%);
+    radial-gradient(46rem 30rem at 88% -10rem, rgba(var(--lg-warm), 0.1), transparent 64%),
+    radial-gradient(38rem 28rem at -12% 26vh, rgba(var(--lg-tint), 0.14), transparent 64%),
+    radial-gradient(44rem 30rem at 52% 116vh, rgba(96, 116, 255, 0.08), transparent 66%);
 }
 
+/* Frosted cards: neutral glass, faint tint, hairline specular edge. */
 html.glass .card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.62));
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  border-color: var(--lg-edge);
+  background:
+    radial-gradient(120% 100% at 10% 0%, rgba(var(--lg-tint), 0.05), transparent 55%),
+    radial-gradient(110% 100% at 100% 100%, rgba(var(--lg-warm), 0.05), transparent 58%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.34) 55%, rgba(255, 255, 255, 0.46));
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) brightness(1.04);
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) brightness(1.04);
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.55),
-    inset 0 -1px 2px rgba(8, 73, 47, 0.06),
-    0 16px 48px -12px rgba(8, 73, 47, 0.25);
+    var(--lg-highlight),
+    var(--lg-lowlight),
+    0 1px 2px rgba(8, 73, 47, 0.05),
+    var(--lg-ambient);
 }
 html.dark.glass .card {
-  background: linear-gradient(135deg, rgba(34, 47, 70, 0.82), rgba(14, 22, 36, 0.72));
-  border-color: rgba(230, 202, 101, 0.3);
+  background:
+    radial-gradient(120% 100% at 10% 0%, rgba(var(--lg-tint), 0.1), transparent 55%),
+    radial-gradient(110% 100% at 100% 100%, rgba(var(--lg-warm), 0.06), transparent 58%),
+    linear-gradient(145deg, rgba(38, 52, 74, 0.62), rgba(15, 23, 38, 0.5));
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.12),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.3),
-    0 16px 48px rgba(0, 0, 0, 0.5);
+    var(--lg-highlight),
+    var(--lg-lowlight),
+    0 1px 2px rgba(0, 0, 0, 0.42),
+    var(--lg-ambient);
+}
+/* Unlayered glass shadows beat the hover utilities — restore the lift. */
+html.glass .card-hover:hover {
+  box-shadow:
+    var(--lg-highlight),
+    var(--lg-lowlight),
+    0 2px 6px rgba(8, 73, 47, 0.08),
+    0 30px 60px -24px rgba(8, 73, 47, 0.45);
+}
+html.dark.glass .card-hover:hover {
+  box-shadow:
+    var(--lg-highlight),
+    var(--lg-lowlight),
+    0 2px 6px rgba(0, 0, 0, 0.5),
+    0 32px 64px -24px rgba(0, 0, 0, 0.8);
 }
 
+/* App header: a soft glass wash that fades into the page. */
 html.glass .app-header {
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+  -webkit-backdrop-filter: blur(18px) saturate(175%);
+  backdrop-filter: blur(18px) saturate(175%);
+}
+html.dark.glass .app-header {
+  background: linear-gradient(180deg, rgba(11, 17, 32, 0.55), rgba(11, 17, 32, 0));
 }
 
-/* Theme-aware bottom bar: frosted white in light, navy in dark */
+/* Floating capsule nav — the most "liquid" surface on the page. */
 .bottom-nav {
-  background: rgba(255, 255, 255, 0.92) !important;
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(8, 73, 47, 0.12) !important;
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);
+  border: 1px solid rgba(8, 73, 47, 0.12);
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.6),
-    0 16px 48px -12px rgba(8, 73, 47, 0.25) !important;
-}
-html.dark .nav-tab {
-  color: rgba(241, 237, 224, 0.6);
-}
-html.dark .nav-tab:hover {
-  color: #f1ede0;
-}
-html.glass .bottom-nav {
-  background: rgba(255, 255, 255, 0.72) !important;
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border-color: rgba(201, 162, 39, 0.35) !important;
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.55),
-    0 16px 48px -12px rgba(8, 73, 47, 0.3);
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 18px 40px -18px rgba(8, 73, 47, 0.35);
 }
 html.dark .bottom-nav {
-  background: rgba(13, 20, 34, 0.95) !important;
-  border-color: rgba(230, 202, 101, 0.22) !important;
+  background: rgba(13, 20, 34, 0.92);
+  border-color: rgba(230, 202, 101, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 18px 40px -18px rgba(0, 0, 0, 0.7);
+}
+html.glass .bottom-nav {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.93), rgba(252, 251, 249, 0.88));
+  border-color: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  backdrop-filter: blur(32px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.38),
+    0 22px 48px -20px rgba(8, 73, 47, 0.42);
 }
 html.dark.glass .bottom-nav {
-  background: rgba(13, 20, 34, 0.78) !important;
-  border-color: rgba(230, 202, 101, 0.3) !important;
+  background: linear-gradient(180deg, rgba(30, 42, 60, 0.95), rgba(13, 20, 34, 0.9));
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.4),
+    0 24px 52px -20px rgba(0, 0, 0, 0.82);
+}
+html.glass .bottom-nav::after {
+  content: "";
+  position: absolute;
+  inset: -40% -10%;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.22) 49%, transparent 58%);
+  transform: translateX(-70%);
+  animation: glass-sheen 12s ease-in-out infinite;
+}
+html.dark.glass .bottom-nav::after {
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.07) 49%, transparent 58%);
+}
+@keyframes glass-sheen {
+  0%, 52% { transform: translateX(-70%); }
+  78%, 100% { transform: translateX(70%); }
+}
+html.glass .nav-tab-active {
+  background: linear-gradient(180deg, rgba(20, 148, 108, 0.94), rgba(11, 98, 72, 0.94));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 8px 20px -8px rgba(8, 73, 47, 0.55);
 }
 
+/* Chips: small frosted pills with a tinted active state. */
 html.glass .chip {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  border: 1px solid rgba(201, 162, 39, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.32));
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(18px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 6px 16px -12px rgba(8, 73, 47, 0.5);
 }
 html.dark.glass .chip {
-  background: rgba(27, 41, 64, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(39, 53, 76, 0.55), rgba(20, 30, 48, 0.45));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 6px 16px -12px rgba(0, 0, 0, 0.6);
 }
 html.glass .chip-active,
 html.dark.glass .chip-active {
-  background: #0e7c5b;
+  border-color: rgba(255, 255, 255, 0.22);
+  background: linear-gradient(180deg, #14946c, #0b6a4f);
   color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 8px 20px -10px rgba(14, 124, 91, 0.65);
 }
 
+/* Buttons keep their brand tint, softened by a glass highlight. */
 html.glass .btn-primary {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.06));
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.35),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.18),
-    0 8px 24px -8px rgba(8, 73, 47, 0.5);
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.16),
+    0 10px 26px -12px rgba(8, 73, 47, 0.55);
 }
 html.glass .btn-gold {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0));
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.5),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.15),
-    0 0 14px rgba(201, 162, 39, 0.4),
-    0 8px 24px -8px rgba(122, 100, 21, 0.5);
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.14),
+    0 0 16px rgba(201, 162, 39, 0.28),
+    0 10px 26px -12px rgba(122, 100, 21, 0.5);
+}
+html.glass .btn-ghost {
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3));
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+html.dark.glass .btn-ghost {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(39, 53, 76, 0.55), rgba(20, 30, 48, 0.45));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+html.glass .btn-outline {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.32);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+html.dark.glass .btn-outline {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(23, 34, 52, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+html.glass .btn-white {
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-/* Scholar banner panel (beta) — cream card in light, glass/flat navy in
-   dark, matching the page design language. */
+/* Inputs and tiles pick up the same specular edge. */
+html.glass .input {
+  border-color: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.42);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+html.dark.glass .input {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(23, 34, 52, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+html.glass .icon-tile {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    0 10px 20px -14px rgba(8, 73, 47, 0.55);
+}
+html.dark.glass .icon-tile {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 10px 20px -14px rgba(0, 0, 0, 0.65);
+}
+
+/* Fluid motion — springy easing, no layout shift. */
+html.glass .card,
+html.glass .chip,
+html.glass .btn,
+html.glass .input,
+html.glass .icon-tile {
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hero cards get a liquid top edge. */
+html.glass .page-hero {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.2),
+    0 24px 50px -22px rgba(8, 73, 47, 0.5);
+}
+
+/* Scholar banner panel — cream card in light, flat navy in dark. */
 .scholar-banner {
   position: relative;
   overflow: hidden;
@@ -747,14 +914,151 @@ html.dark .scholar-banner {
   border-color: rgba(230, 202, 101, 0.3);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
-html.dark.glass .scholar-banner {
-  background: linear-gradient(135deg, rgba(34, 47, 70, 0.66), rgba(14, 22, 36, 0.6));
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
+
+/* Scholar banner — cream glass with a hint of gold. */
+html.glass .scholar-banner {
+  border-color: rgba(255, 255, 255, 0.6);
+  background:
+    radial-gradient(120% 100% at 18% 0%, rgba(var(--lg-warm), 0.12), transparent 60%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.3));
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  backdrop-filter: blur(22px) saturate(180%);
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.12),
-    0 16px 40px rgba(0, 0, 0, 0.45);
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 18px 40px -22px rgba(8, 73, 47, 0.42);
 }
+html.dark.glass .scholar-banner {
+  border-color: rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(120% 100% at 18% 0%, rgba(var(--lg-warm), 0.1), transparent 60%),
+    linear-gradient(145deg, rgba(38, 52, 74, 0.6), rgba(14, 22, 36, 0.52));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 20px 44px -22px rgba(0, 0, 0, 0.65);
+}
+
+/* Map overlays: the floating card, zoom pill and attribution join the glass. */
+html.glass .map-glass-card {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 16px 36px -20px rgba(8, 73, 47, 0.45);
+}
+html.dark.glass .map-glass-card {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(22, 32, 47, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 18px 38px -20px rgba(0, 0, 0, 0.7);
+}
+html.glass .map-zoom {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 12px 26px -18px rgba(8, 73, 47, 0.5);
+}
+html.dark.glass .map-zoom {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(22, 32, 47, 0.85);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 12px 26px -18px rgba(0, 0, 0, 0.7);
+}
+html.glass .map-attrib {
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+}
+html.dark.glass .map-attrib {
+  background: rgba(22, 32, 47, 0.78);
+}
+html.glass .glass-sheet {
+  border-color: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 -24px 60px -24px rgba(8, 73, 47, 0.5);
+}
+html.dark.glass .glass-sheet {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(22, 32, 47, 0.95);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 -24px 60px -24px rgba(0, 0, 0, 0.8);
+}
+
+/* Reader range boxes / inline surfaces. */
+html.glass .inner-box {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+html.dark.glass .inner-box {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(23, 34, 52, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+/* Sticky filter rail: a soft glass strip instead of a solid band. */
+html.glass .filter-bar {
+  background: linear-gradient(180deg, rgba(247, 245, 241, 0.94), rgba(247, 245, 241, 0.72));
+  -webkit-backdrop-filter: blur(18px) saturate(175%);
+  backdrop-filter: blur(18px) saturate(175%);
+  box-shadow: 0 14px 26px -24px rgba(8, 73, 47, 0.55);
+}
+html.dark.glass .filter-bar {
+  background: linear-gradient(180deg, rgba(8, 13, 24, 0.94), rgba(8, 13, 24, 0.72));
+  box-shadow: 0 14px 26px -24px rgba(0, 0, 0, 0.8);
+}
+
+/* Fallback: without backdrop-filter, keep surfaces opaque enough to read. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html.glass .card { background: rgba(255, 255, 255, 0.94); }
+  html.dark.glass .card { background: rgba(23, 34, 52, 0.96); }
+  html.glass .bottom-nav { background: rgba(255, 255, 255, 0.96); }
+  html.dark.glass .bottom-nav { background: rgba(13, 20, 34, 0.96); }
+  html.glass .chip,
+  html.glass .btn-ghost,
+  html.glass .btn-outline,
+  html.glass .input { background: rgba(255, 255, 255, 0.9); }
+  html.dark.glass .chip,
+  html.dark.glass .btn-ghost,
+  html.dark.glass .btn-outline,
+  html.dark.glass .input { background: rgba(23, 34, 52, 0.9); }
+  html.glass .map-glass-card,
+  html.glass .map-zoom { background: rgba(255, 255, 255, 0.94); }
+  html.dark.glass .map-glass-card,
+  html.dark.glass .map-zoom { background: rgba(22, 32, 47, 0.96); }
+  html.glass .glass-sheet { background: rgba(255, 255, 255, 0.97); }
+  html.dark.glass .glass-sheet { background: rgba(22, 32, 47, 0.98); }
+  html.glass .filter-bar { background: #f7f5f1; }
+  html.dark.glass .filter-bar { background: #080d18; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.glass .bottom-nav::after {
+    animation: none;
+    opacity: 0;
+  }
+  html.glass .card,
+  html.glass .chip,
+  html.glass .btn,
+  html.glass .input,
+  html.glass .icon-tile {
+    transition: none;
+  }
+}
+
 html.dark .scholar-banner .gold-text {
   filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.35));
 }
@@ -859,6 +1163,12 @@ html.dark .gold-text {
 }
 .nav-tab:disabled {
   opacity: 0.45;
+}
+html.dark .nav-tab {
+  color: rgba(241, 237, 224, 0.6);
+}
+html.dark .nav-tab:hover {
+  color: #f1ede0;
 }
 .nav-tab-active {
   background: #0e7c5b;

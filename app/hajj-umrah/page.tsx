@@ -3,14 +3,12 @@ import Link from "next/link";
 import { Icon } from "../../components/icons";
 import { HajjHero } from "../../components/hajj/HajjHero";
 import { BooksSection } from "../../components/hajj/BooksSection";
-import { mapPlaces, places } from "../../lib/hajj";
-import { useNum, useTx } from "../../store/language-store";
+import { useTx } from "../../store/language-store";
 
 // Hajj & Umrah hub — mirrors HajjMainScreen:
 // hero → translated books → interactive guide cards.
 export default function HajjPage() {
   const tx = useTx();
-  const num = useNum();
 
   const guides = [
     {
@@ -33,26 +31,6 @@ export default function HajjPage() {
       card: "border-gold-500/20 bg-gradient-to-br from-gold-light to-amber-50/60 dark:border-gold-400/20 dark:from-gold-500/10 dark:to-amber-500/[0.04]",
       cta: "text-gold-dark dark:text-gold-100",
     },
-    {
-      href: "/hajj-umrah/places",
-      icon: "mountain",
-      title: tx("সীরাত মানচিত্র"),
-      subtitle: tx("ঐতিহাসিক ও পবিত্র স্থানসমূহের বিবরণ"),
-      badge: `${num(places.total)} ${tx("স্থান")}`,
-      tile: "bg-indigo-600 text-white shadow-md shadow-indigo-600/25",
-      card: "border-indigo-500/20 bg-gradient-to-br from-indigo-50 to-sky-50/50 dark:border-indigo-400/20 dark:from-indigo-500/10 dark:to-sky-500/[0.04]",
-      cta: "text-indigo-700 dark:text-indigo-300",
-    },
-    {
-      href: "/hajj-umrah/map",
-      icon: "compass",
-      title: tx("স্থানসমূহের মানচিত্র"),
-      subtitle: tx("মক্কা, মদিনা ও হিজাজের পবিত্র স্থান"),
-      badge: `${num(mapPlaces.total)} ${tx("স্থান")}`,
-      tile: "bg-sky-600 text-white shadow-md shadow-sky-600/25",
-      card: "border-sky-500/20 bg-gradient-to-br from-sky-50 to-cyan-50/50 dark:border-sky-400/20 dark:from-sky-500/10 dark:to-cyan-500/[0.04]",
-      cta: "text-sky-700 dark:text-sky-300",
-    },
   ];
 
   return (
@@ -69,7 +47,7 @@ export default function HajjPage() {
               {tx("হজ ও ওমরা গাইড")}
             </h2>
             <p className="mt-0.5 text-[11px] font-semibold text-ink-faint">
-              {tx("গাইড, ঐতিহাসিক স্থান ও মানচিত্র")}
+              {tx("ধাপে ধাপে গাইড — প্রতিটি ধাপ সম্পন্ন করুন")}
             </p>
           </div>
         </div>

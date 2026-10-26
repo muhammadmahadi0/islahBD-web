@@ -160,6 +160,17 @@ offline-tolerant, keyless APIs only.
   with Bengali falling back to Hind Siliguri.
 - Theme switch plays beta's tap-bloom (`components/theme-bloom.tsx` +
   `.theme-wrap` CSS, reduced-motion safe)
+- **Liquid Glass** (`html.glass`) — neutral frosted iOS-style material:
+  `backdrop-filter: blur(24px) saturate(180%)`, white specular hairline,
+  inset highlight + lowlight, ambient shadow, and a 5% emerald/gold tint
+  wash. Tokens on `html.glass` / `html.dark.glass`: `--lg-tint`,
+  `--lg-warm`, `--lg-edge`, `--lg-highlight`, `--lg-lowlight`,
+  `--lg-ambient`. Covers cards, header, bottom nav (+ `glass-sheen`
+  highlight), chips, buttons, inputs, icon tiles, scholar banner. Unlayered
+  glass rules outrank Tailwind utilities, so hover shadows are re-declared
+  explicitly; `@supports not (backdrop-filter)` falls back to opaque
+  surfaces and reduced motion disables the sheen + transitions. Material
+  mode = no `html.glass` class (solid cards).
 - Golden signature elements identical in both modes
 - Home entrance: every section/card carries `.home-rise` (380ms
   `translateY(18px)` → `0`) with a 28ms inline `animation-delay` per item,
@@ -248,6 +259,28 @@ offline-tolerant, keyless APIs only.
 - Navigation is Hijri-based; the Gregorian span of the shown Hijri month is
   printed under its title.
 
+### 4.10 Seerah Maps (`/seerah`, `/seerah/map`)
+- The historical-places guide (`HajjPlacesGuideScreen`) and the Leaflet map
+  (`HajjMapScreen`) live under the **Others (অন্যান্য)** hub, not the Hajj
+  hub. `/others` renders a dedicated **সীরাত মানচিত্র** section with two
+  entries: **ঐতিহাসিক স্থানসমূহ** (`/seerah#places`, 65 places in 6 regions)
+  and **স্থানসমূহের মানচিত্র** (`/seerah/map`, 17 mapped places).
+- `/seerah` = gradient header (back to `/others`), a **স্থানসমূহের মানচিত্র**
+  subsection with a compact inline map (`HajjMap variant="section"`,
+  `h-[330px] sm:h-[390px]`), then the 9-chip filter bar and 65 place cards
+  (2-column from `sm`).
+- `/seerah/map` = full-screen map (`variant="page"`) for deep links from
+  place cards (`?lat=…&lng=…&title=…`) and the checklist location chip
+  (`?q=<location>`). Section mode ignores URL deep links and hides the
+  bottom hint.
+- Data + filter semantics live in `lib/hajj.ts` (`places`, `mapPlaces`,
+  `filterPlaces`, `mapRegionColor`, `googlePlaceUrl`,
+  `googleDirectionsUrl`). Pins are region-coloured (মক্কা gold, মদিনা green,
+  হিজাজ brown); `fitBounds` pads the top so pins clear the floating card.
+- Legacy routes `/hajj-umrah/places` → `/seerah` and `/hajj-umrah/map` →
+  `/seerah/map` are 307 redirects in `next.config.js`; the Hajj hub itself
+  is back to the week guide + checklist only.
+
 ## 5. Conventions
 
 - Static UI copy lives in `lib/ui-strings.ts`, keyed by its Bengali source
@@ -268,4 +301,4 @@ offline-tolerant, keyless APIs only.
   (generated from `public/images/logo.png`)
 - Toolchain: **bun** is the package manager (`bun install`, `bun run *`,
   `bun.lock` committed, `packageManager` pinned in `package.json`)
-- Verify with `bun run build` (66 routes) + prod smoke test before push
+- Verify with `bun run build` (74 routes) + prod smoke test before push

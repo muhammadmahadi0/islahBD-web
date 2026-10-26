@@ -10,7 +10,7 @@ No test suite — `bun run build` + prod smoke test is the gate.
 
 ## Before pushing
 
-1. `bun run build` must pass (expect 49 routes).
+1. `bun run build` must pass (expect 74 routes).
 2. Start prod (`bun run start -- -p <port>`) and curl `/`, changed pages,
    and any touched `/api/*` route — all must return 200 with real data.
 3. Kill the server afterwards (avoid `pkill -f` with a pattern that
@@ -20,7 +20,8 @@ No test suite — `bun run build` + prod smoke test is the gate.
 
 ## Where things live
 
-- Pages: `app/<section>/page.tsx` (Quran has `read|audio|search`)
+- Pages: `app/<section>/page.tsx` (Quran has `read|audio|search`;
+  Seerah Maps is `/seerah` + `/seerah/map`, entered from `/others`)
 - Cached API proxies: `app/api/<name>/route.ts`
 - Shared UI: `components/ui.tsx` (`PageHead`, `ShareCopy`, `EmptyState`),
   `components/icons.tsx` (SVG only — never emoji), `components/AppShell.tsx`
@@ -32,7 +33,11 @@ No test suite — `bun run build` + prod smoke test is the gate.
   Tracks carry an optional `sharePath`; shared URLs use `?play=<track-id>`
   and the catalog page auto-plays the matching item once.
 - Theme: `store/theme-store.ts` (`islah-theme`), `store/design-store.ts`
-  (`islah-design`), layers in `app/globals.css` (`html.dark`, `html.glass`)
+  (`islah-design`), layers in `app/globals.css` (`html.dark`, `html.glass`).
+  Glass is a neutral frosted material — `--lg-*` tokens, 24px blur, specular
+  edge, 5% emerald/gold tint, bottom-nav `glass-sheen`. Unlayered glass
+  rules beat Tailwind utilities, so re-declare hover shadows explicitly and
+  keep new surfaces readable in both light and dark.
 - Language: `store/language-store.ts` (`islah-language`, `bn` | `ur` | `en`)
   + `lib/i18n.ts` + `lib/ui-strings.ts`. Defaults to Bengali; `skipHydration`
   then `AppShell` rehydrate avoids SSR text mismatch. **Every new static UI

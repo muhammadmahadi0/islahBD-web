@@ -32,6 +32,24 @@ There is **no separate route for the map** in the app: it is pushed from a check
 (the step's `location` + "ম্যাপে দেখুন" action). The places guide is a standalone entry in the
 "Others" list.
 
+**Web IA (current).** The two screens above moved out of the Hajj hub into their own
+**সীরাত মানচিত্র / Seerah Maps** section under **Others**:
+
+```
+/others ──► "সীরাত মানচিত্র" section
+             ├─ ঐতিহাসিক স্থানসমূহ   → /seerah#places  (65 places, 6 regions)
+             └─ স্থানসমূহের মানচিত্র → /seerah/map      (full map, 17 pins)
+
+/seerah        header → inline map subsection ("স্থানসমূহের মানচিত্র") → places guide
+/seerah/map    full-screen map; ?lat/lng/title (place cards) or ?q=<location> (checklist)
+
+/hajj-umrah    week guide + checklist only
+```
+
+Legacy `/hajj-umrah/places` and `/hajj-umrah/map` are 307 redirects to `/seerah` and
+`/seerah/map`. The section is reachable from the bottom-bar **More/Others** tab
+(`MORE_PREFIXES` includes `/seerah`), and the checklist location chip deep-links to the map.
+
 ---
 
 ## 2. Design tokens

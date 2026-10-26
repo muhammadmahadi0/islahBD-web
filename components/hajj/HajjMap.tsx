@@ -20,13 +20,19 @@ const keyOf = (place: MapPlace) => `${place.title}@${place.lat},${place.lng}`;
 export default function HajjMap({
   places,
   filters,
+  variant = "page",
+  backHref = "/seerah",
 }: {
   places: MapPlace[];
   filters: string[];
+  /** "page" fills the viewport; "section" is a compact inline map. */
+  variant?: "page" | "section";
+  backHref?: string;
 }) {
   const tx = useTx();
   const num = useNum();
   const lang = useLang();
+  const isSection = variant === "section";
 
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
@@ -146,7 +152,12 @@ export default function HajjMap({
       }
       if (!visible.length) return;
       const bounds = L.latLngBounds(visible.map((p) => [p.lat, p.lng] as [number, number]));
-      map.fitBounds(bounds, { padding: [46, 46], maxZoom: 11 });
+      map.fitBounds(bounds, {
+        // Keep pins clear of the floating header card and zoom control.
+        paddingTopLeft: [28, 100],
+        paddingBottomRight: [34, 44],
+        maxZoom: 11,
+      });
     })();
     return () => {
       cancelled = true;
@@ -154,9 +165,9 @@ export default function HajjMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, filter]);
 
-  // Deep link support: /hajj-umrah/map?lat=..&lng=..&title=.. or ?q=মক্কা
+  // Deep link support: /seerah/map?lat=..&lng=..&title=.. or ?q=মক্কা
   useEffect(() => {
-    if (!ready) return;
+    if (!ready || isSection) return;
     const params = new URLSearchParams(window.location.search);
     const lat = Number(params.get("lat"));
     const lng = Number(params.get("lng"));
@@ -201,8 +212,12 @@ export default function HajjMap({
   }, [places]);
 
   return (
-    <div className="animate-fade-up">
-      <div className="relative h-[calc(100dvh-13rem)] min-h-[430px] overflow-hidden rounded-3xl border border-primary-900/10 bg-[#e8eef2] shadow-card dark:border-white/10 dark:bg-[#0b1120]">
+    <div className={isSection ? "" : "animate-fade-up"}>
+      <div
+        className={`relative overflow-hidden rounded-3xl border border-primary-900/10 bg-[#e8eef2] shadow-card dark:border-white/10 dark:bg-[#0b1120] ${
+          isSection ? "h-[340px] sm:h-[430px] lg:h-[520px]" : "h-[calc(100dvh-13rem)] min-h-[430px]"
+        }`}
+      >
         <div
           ref={containerRef}
           className="hajj-map absolute inset-0 z-0"
@@ -224,7 +239,7 @@ export default function HajjMap({
             <Icon name="compass" size={24} className="text-ink-faint" />
             <p className="text-[12.5px] font-bold text-ink">{tx("মানচিত্র লোড করা যায়নি")}</p>
             <Link
-              href="/hajj-umrah/places"
+              href="/seerah#places"
               className="mt-1 inline-flex items-center gap-1 rounded-full bg-primary-600 px-3 py-1.5 text-[11px] font-extrabold text-white"
             >
               <Icon name="pin" size={12} />
@@ -234,21 +249,33 @@ export default function HajjMap({
         )}
 
         {/* ---------- top card + filters ---------- */}
-        <div className="absolute inset-x-2 top-2 z-20 rounded-2xl border border-primary-900/10 bg-white/95 p-2 shadow-card backdrop-blur dark:border-white/10 dark:bg-[#16202f]/95">
+        <div className="map-glass-card absolute inset-x-2 top-2 z-20 rounded-2xl border border-primary-900/10 bg-white/95 p-2 shadow-card backdrop-blur dark:border-white/10 dark:bg-[#16202f]/95">
           <div className="flex items-center gap-2">
-            <Link
-              href="/hajj-umrah"
-              aria-label={tx("হজ ও ওমরাহ")}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-700 transition hover:bg-primary-100 dark:bg-primary-500/10 dark:text-primary-300"
-            >
-              <Icon name="back" size={14} />
-            </Link>
+            {isSection ? (
+              <Link
+                href="/seerah/map"
+                aria-label={tx("বড় মানচিত্রে দেখুন")}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-700 transition hover:bg-primary-100 dark:bg-primary-500/10 dark:text-primary-300"
+              >
+                <Icon name="external" size={14} />
+              </Link>
+            ) : (
+              <Link
+                href={backHref}
+                aria-label={tx("সীরাত মানচিত্র")}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-700 transition hover:bg-primary-100 dark:bg-primary-500/10 dark:text-primary-300"
+              >
+                <Icon name="back" size={14} />
+              </Link>
+            )}
             <div className="min-w-0 flex-1">
               <h1 className="truncate text-[12.5px] font-extrabold leading-tight tracking-tight text-ink">
-                {tx("ইসলামিক স্থানসমূহের মানচিত্র")}
+                {isSection ? tx("স্থানসমূহের মানচিত্র") : tx("ইসলামিক স্থানসমূহের মানচিত্র")}
               </h1>
               <p className="truncate text-[9.5px] font-semibold text-ink-faint">
-                {tx("মক্কা, মদিনা ও হিজাজ অঞ্চলের পবিত্র স্থানসমূহ")}
+                {isSection
+                  ? `${num(visible.length)} ${tx("টি স্থান")} · ${tx("মক্কা, মদিনা ও হিজাজ")}`
+                  : tx("মক্কা, মদিনা ও হিজাজ অঞ্চলের পবিত্র স্থানসমূহ")}
               </p>
             </div>
             <button
@@ -273,11 +300,7 @@ export default function HajjMap({
                     setSelected(null);
                     setFilter(item);
                   }}
-                  className={`shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-extrabold transition active:scale-95 ${
-                    active
-                      ? "border-primary-600 bg-primary-600 text-white"
-                      : "border-primary-900/10 bg-white text-ink-soft hover:border-primary-500/30 dark:border-white/10 dark:bg-white/[0.04]"
-                  }`}
+                  className={`chip shrink-0 !px-2.5 !py-1 !text-[10px] ${active ? "chip-active" : ""}`}
                 >
                   {tx(item)}
                 </button>
@@ -291,7 +314,7 @@ export default function HajjMap({
 
         {/* ---------- selected place card ---------- */}
         {selected && (
-          <div className="absolute inset-x-2 bottom-3 z-20 rounded-2xl border border-primary-900/10 bg-white/95 p-2.5 shadow-lift backdrop-blur dark:border-white/10 dark:bg-[#16202f]/95">
+          <div className="map-glass-card absolute inset-x-2 bottom-3 z-20 rounded-2xl border border-primary-900/10 bg-white/95 p-2.5 shadow-lift backdrop-blur dark:border-white/10 dark:bg-[#16202f]/95">
             <div className="flex items-start gap-2">
               <span
                 aria-hidden
@@ -332,7 +355,7 @@ export default function HajjMap({
 
         {/* ---------- zoom + attribution ---------- */}
         <div
-          className={`absolute end-2 z-20 flex flex-col overflow-hidden rounded-xl border border-primary-900/10 bg-white shadow-card transition-[bottom] duration-200 dark:border-white/10 dark:bg-[#16202f] ${
+          className={`map-zoom absolute end-2 z-20 flex flex-col overflow-hidden rounded-xl border border-primary-900/10 bg-white shadow-card transition-[bottom] duration-200 dark:border-white/10 dark:bg-[#16202f] ${
             selected ? "bottom-[9.5rem]" : "bottom-3"
           }`}
         >
@@ -359,15 +382,17 @@ export default function HajjMap({
           href="https://www.openstreetmap.org/copyright"
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute bottom-1.5 start-2 z-20 rounded bg-white/80 px-1.5 py-0.5 text-[8.5px] font-semibold text-ink-soft backdrop-blur dark:bg-[#16202f]/80 dark:text-white/60"
+          className="map-attrib absolute bottom-1.5 start-2 z-20 rounded bg-white/80 px-1.5 py-0.5 text-[8.5px] font-semibold text-ink-soft backdrop-blur dark:bg-[#16202f]/80 dark:text-white/60"
         >
           © OpenStreetMap
         </a>
       </div>
 
-      <p className="mt-2 px-2 text-center text-[10px] font-semibold leading-relaxed text-ink-faint">
-        {tx("ম্যাপে পিনে চাপ দিয়ে স্থান দেখুন, অথবা তালিকা থেকে বেছে নিন")}
-      </p>
+      {!isSection && (
+        <p className="mt-2 px-2 text-center text-[10px] font-semibold leading-relaxed text-ink-faint">
+          {tx("ম্যাপে পিনে চাপ দিয়ে স্থান দেখুন, অথবা তালিকা থেকে বেছে নিন")}
+        </p>
+      )}
 
       {/* ---------- list sheet ---------- */}
       {listOpen &&
@@ -381,7 +406,7 @@ export default function HajjMap({
               role="dialog"
               aria-modal="true"
               aria-label={tx("গুরুত্বপূর্ণ স্থানসমূহ")}
-              className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-t-3xl border border-primary-900/10 bg-white p-4 shadow-lift dark:border-white/10 dark:bg-[#16202f] sm:rounded-3xl"
+              className="glass-sheet max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-t-3xl border border-primary-900/10 bg-white p-4 shadow-lift dark:border-white/10 dark:bg-[#16202f] sm:rounded-3xl"
               onClick={(event) => event.stopPropagation()}
             >
               <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-ink/15 dark:bg-white/20 sm:hidden" />
