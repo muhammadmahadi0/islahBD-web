@@ -935,6 +935,7 @@ html.glass .page-hero {
 .scholar-banner {
   position: relative;
   overflow: hidden;
+  container-type: inline-size;
   border-radius: 1.5rem;
   text-align: center;
   padding: 1.1rem 1rem;
@@ -944,6 +945,16 @@ html.glass .page-hero {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
     0 10px 30px rgba(8, 73, 47, 0.12);
+}
+
+/* The Sheikh's name stays on one line: scale with the banner, never wrap. */
+.scholar-banner h1 {
+  white-space: nowrap;
+  font-size: clamp(13px, 8cqi, 28px);
+}
+/* Latin transliteration runs wider than Bengali at the same size. */
+html[lang="en"] .scholar-banner h1 {
+  font-size: clamp(12px, 7cqi, 28px);
 }
 html.dark .scholar-banner {
   background: rgba(13, 20, 34, 0.94);
@@ -1014,8 +1025,9 @@ html.dark.glass .scholar-banner::after {
   background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.06) 49%, transparent 58%);
 }
 
-/* The Sheikh's name: glossy liquid gold with a slow specular sweep. */
-html.glass .scholar-banner .gold-text {
+/* The Sheikh's name: glossy liquid gold with a slow specular sweep.
+   Applies in both glass and material modes. */
+.scholar-banner .gold-text {
   background-image: linear-gradient(
     100deg,
     #7a5410 0%,
@@ -1037,7 +1049,7 @@ html.glass .scholar-banner .gold-text {
   filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.45)) drop-shadow(0 10px 18px rgba(122, 100, 21, 0.22));
   animation: gold-shine 8s ease-in-out infinite;
 }
-html.dark.glass .scholar-banner .gold-text {
+html.dark .scholar-banner .gold-text {
   background-image: linear-gradient(
     100deg,
     #c9a227 0%,
@@ -1183,7 +1195,7 @@ html.dark.glass .filter-bar {
   }
   html.glass .scholar-banner::before,
   html.glass .scholar-banner::after,
-  html.glass .scholar-banner .gold-text {
+  .scholar-banner .gold-text {
     animation: none;
   }
   html.glass .card,
@@ -1193,10 +1205,6 @@ html.dark.glass .filter-bar {
   html.glass .icon-tile {
     transition: none;
   }
-}
-
-html.dark .scholar-banner .gold-text {
-  filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.35));
 }
 
 /* ============================================================
