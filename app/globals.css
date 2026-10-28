@@ -1370,10 +1370,109 @@ html.dark.glass .desktop-footer {
     linear-gradient(180deg, rgba(13, 20, 34, 0.5), rgba(8, 13, 24, 0.7));
 }
 
+/* ---------- desktop home hero artwork ----------
+   Kaaba Sharif and Masjid an-Nabawi artwork from islahbd.com, crossfading
+   slowly behind the Sheikh's name. Each image is radially masked so its
+   edges melt into the glass banner. */
+.home-art {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  opacity: 0;
+  filter: blur(6px);
+  transform: scale(1.02);
+  animation: home-art-cycle 18s ease-in-out infinite;
+  will-change: opacity, filter;
+}
+.home-art-nabawi {
+  top: -95px;
+  width: min(32vw, 350px);
+  aspect-ratio: 860 / 790;
+  -webkit-mask-image: radial-gradient(58% 62% at 52% 44%, #000 50%, transparent 78%),
+    linear-gradient(to bottom, transparent, #000 12%);
+  -webkit-mask-composite: source-in;
+  mask-image: radial-gradient(58% 62% at 52% 44%, #000 50%, transparent 78%),
+    linear-gradient(to bottom, transparent, #000 12%);
+  mask-composite: intersect;
+}
+.home-art-kaaba {
+  top: -80px;
+  width: min(40vw, 440px);
+  aspect-ratio: 1160 / 790;
+  -webkit-mask-image: radial-gradient(56% 64% at 50% 44%, #000 52%, transparent 80%),
+    linear-gradient(to bottom, transparent, #000 12%);
+  -webkit-mask-composite: source-in;
+  mask-image: radial-gradient(56% 64% at 50% 44%, #000 52%, transparent 80%),
+    linear-gradient(to bottom, transparent, #000 12%);
+  mask-composite: intersect;
+  animation-delay: -9s;
+}
+.home-art-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.home-art-img-dark {
+  display: none;
+}
+html.dark .home-art-img-light {
+  display: none;
+}
+html.dark .home-art-img-dark {
+  display: block;
+}
+
+@keyframes home-art-cycle {
+  0%,
+  40% {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+  50%,
+  90% {
+    opacity: 0;
+    filter: blur(6px);
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+/* The lineage line crosses the artwork, so it gets a soft halo that matches
+   the banner background instead of relying on a flat scrim. */
+.hero-lineage {
+  text-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.9),
+    0 0 14px rgba(255, 255, 255, 0.75);
+}
+html.dark .hero-lineage {
+  color: #e2e8f0;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.95),
+    0 0 14px rgba(0, 0, 0, 0.8);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-art {
+    animation: none;
+    opacity: 0;
+    filter: none;
+    transform: none;
+  }
+  .home-art-nabawi {
+    opacity: 1;
+  }
+}
+
 @media (min-width: 1024px) {
   .scholar-banner.scholar-hero {
     margin: 0;
-    padding: 0 2rem 2.6rem;
+    padding: 0 2rem 2rem;
     border-radius: 2rem;
   }
   .scholar-banner.scholar-hero h1 {

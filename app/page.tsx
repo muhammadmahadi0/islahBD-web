@@ -156,18 +156,43 @@ export default function HomePage() {
         <section className="home-rise relative" style={rise(0)}>
           <div className="scholar-banner scholar-hero relative overflow-hidden text-center">
             <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-[210px] [mask-image:linear-gradient(to_bottom,black_40%,transparent)]">
-                <div className="absolute left-1/2 top-3 h-[200px] w-[620px] -translate-x-1/2 rounded-t-[999px] border border-primary-600/10 bg-gradient-to-b from-primary-500/[0.12] via-primary-500/[0.04] to-transparent" />
-                <div className="absolute left-1/2 top-8 h-[155px] w-[450px] -translate-x-1/2 rounded-t-[999px] border border-primary-600/10" />
-                <div className="absolute left-1/2 top-12 h-[110px] w-[300px] -translate-x-1/2 rounded-t-[999px] border border-primary-600/[0.08]" />
+              <div className="home-art home-art-nabawi">
+                <img
+                  src="/images/hero/masjid-nabawi.jpg"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="home-art-img home-art-img-light"
+                />
+                <img
+                  src="/images/hero/masjid-nabawi-dark.jpg"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="home-art-img home-art-img-dark"
+                />
               </div>
-              <span className="absolute left-[12%] top-[38%] h-2 w-2 rounded-full bg-gold/60" />
-              <span className="absolute right-[15%] top-[30%] h-1.5 w-1.5 rounded-full bg-primary-500/40" />
+              <div className="home-art home-art-kaaba">
+                <img
+                  src="/images/hero/kaaba-sharif.jpg"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="home-art-img home-art-img-light"
+                />
+                <img
+                  src="/images/hero/kaaba-sharif-dark.jpg"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="home-art-img home-art-img-dark"
+                />
+              </div>
             </div>
-            <div className="relative z-10 pt-14">
+            <div className="relative z-10 pt-28">
               <div className="mx-auto flex max-w-3xl items-center justify-center gap-4">
                 <span className="h-px flex-1 bg-gradient-to-r from-transparent to-primary-600/35" />
-                <p className="text-[12.5px] font-medium leading-relaxed text-ink-soft">
+                <p className="hero-lineage text-[12.5px] font-medium leading-relaxed text-ink-soft">
                   {tx("তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন হুসাইন সাহেব-এর খলিফা হযরত")}
                 </p>
                 <span className="h-px flex-1 bg-gradient-to-l from-transparent to-primary-600/35" />
