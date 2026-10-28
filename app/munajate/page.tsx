@@ -327,6 +327,10 @@ export default function MunajatPage() {
                       <span className="block text-[15px] font-bold leading-snug tracking-tight text-ink">
                         {heading}
                       </span>
+                    ) : isOpen ? (
+                      <span className="block text-[13px] font-bold leading-relaxed text-ink">
+                        {tx("মুনাজাত")} {serialLabel(it, i)}
+                      </span>
                     ) : (
                       <span className="line-clamp-2 text-[13px] leading-relaxed text-ink-soft">
                         {preview(it)}
