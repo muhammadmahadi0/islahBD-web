@@ -32,6 +32,7 @@ export const homeGrid: Feature[] = [
   { route: "/sunnat", titleBn: "সুন্নাত ও আদব", titleEn: "Sunnat", icon: "leaf", ...T.emerald },
   { route: "/fazilat", titleBn: "ফযীলত", titleEn: "Fazilat", icon: "gem", ...T.rose },
   { route: "/hajj-umrah", titleBn: "হজ ও ওমরাহ", titleEn: "Hajj & Umrah", icon: "kaaba", ...T.gold },
+  { route: "/seerah", titleBn: "সীরাত মানচিত্র", titleEn: "Seerah Maps", icon: "pin", ...T.teal },
   { route: "/calendar", titleBn: "ইসলামিক ক্যালেন্ডার", titleEn: "Calendar", icon: "calendar", ...T.sky },
   { route: "/poem", titleBn: "আধ্যাত্মিক কবিতা", titleEn: "Poetry", icon: "feather", ...T.violet },
   { route: "/malfuzat", titleBn: "মালফুযাত", titleEn: "Malfuzat", icon: "chat", ...T.teal },
