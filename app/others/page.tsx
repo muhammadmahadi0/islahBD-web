@@ -61,21 +61,9 @@ export default function OthersPage() {
               }`;
 
               return item.route ? (
-                item.route.startsWith("http") ? (
-                  <a
-                    key={item.titleBn}
-                    href={item.route}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={`${cls} card-hover`}
-                  >
-                    {content}
-                  </a>
-                ) : (
-                  <Link key={item.titleBn} href={item.route} className={`${cls} card-hover`}>
-                    {content}
-                  </Link>
-                )
+                <Link key={item.titleBn} href={item.route} className={`${cls} card-hover`}>
+                  {content}
+                </Link>
               ) : (
                 <div key={item.titleBn} aria-disabled="true" className={cls}>
                   {content}

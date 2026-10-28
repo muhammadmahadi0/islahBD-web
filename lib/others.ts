@@ -28,10 +28,9 @@ export const othersSections: OthersSection[] = [
       { titleBn: "সুন্নাত ও আদব", icon: "leaf", color: "text-amber-500", route: "/sunnat" },
       { titleBn: "ওয়াজিফা ও দরূদ", icon: "sparkle", color: "text-violet-500", route: "/wazifa" },
       { titleBn: "দোআ", icon: "hands", color: "text-gold-600", route: "/dua" },
-      { titleBn: "মুনাজাতে মাকবুল", icon: "hands", color: "text-emerald-500", route: "https://islahbd.com/munajat" },
+      { titleBn: "মুনাজাতে মাকবুল", icon: "hands", color: "text-emerald-500", route: "/munajate" },
       { titleBn: "আত্মশুদ্ধি", icon: "heart", color: "text-rose-500", route: "/self-purification" },
       { titleBn: "আমল", icon: "moon", color: "text-indigo-500", route: "/amal" },
-      { titleBn: "যাকাত ক্যালকুলেটর", icon: "calc", color: "text-slate-400", soon: true },
     ],
   },
   {
@@ -43,7 +42,6 @@ export const othersSections: OthersSection[] = [
       { titleBn: "ফযীলত", icon: "star", color: "text-orange-500", route: "/fazilat" },
       { titleBn: "ইসলামিক ক্যালেন্ডার", icon: "calendar", color: "text-teal-500", route: "/calendar" },
       { titleBn: "কুরআন", icon: "openbook", color: "text-teal-500", route: "/quran" },
-      { titleBn: "রমজান", icon: "sparkle", color: "text-slate-400", soon: true },
       { titleBn: "মালফুযাত", icon: "chat", color: "text-orange-500", route: "/malfuzat" },
       { titleBn: "আধ্যাত্মিক কবিতা", icon: "feather", color: "text-violet-500", route: "/poem" },
       { titleBn: "শরঈ জিজ্ঞাসা", icon: "help", color: "text-gold-600", route: "/fatwa" },
@@ -57,13 +55,10 @@ export const othersSections: OthersSection[] = [
     items: [
       { titleBn: "বয়ান", icon: "mic", color: "text-indigo-500", route: "/boyan" },
       { titleBn: "লাইভ", icon: "radio", color: "text-rose-500", route: "/live" },
-      { titleBn: "হারামাইন লাইভ", icon: "play", color: "text-slate-400", soon: true },
       { titleBn: "গ্যালারি", icon: "image", color: "text-teal-500", route: "/gallery" },
       { titleBn: "ওয়ালপেপার", icon: "image", color: "text-rose-500", route: "/wallpaper" },
       { titleBn: "সংক্ষিপ্ত ক্লিপস", icon: "play", color: "text-orange-500", route: "/media" },
       { titleBn: "হামদ ও নাত", icon: "music", color: "text-teal-500", route: "/hamdnaat" },
-      { titleBn: "নূর ক্লিপস", icon: "play", color: "text-slate-400", soon: true },
-      { titleBn: "ভিডিও সিরিজ", icon: "play", color: "text-slate-400", soon: true },
     ],
   },
   {
@@ -72,7 +67,6 @@ export const othersSections: OthersSection[] = [
     accent: "text-emerald-500",
     items: [
       { titleBn: "মাদরাসা", icon: "mosque", color: "text-violet-500", route: "/mission" },
-      { titleBn: "বই কিনুন", icon: "library", color: "text-slate-400", soon: true },
       { titleBn: "ডোনেট", icon: "gift", color: "text-rose-500", route: "/donate" },
       { titleBn: "আজীবন সদস্য", icon: "star", color: "text-orange-500", route: "/member" },
       { titleBn: "নোটিশ বোর্ড", icon: "mega", color: "text-rose-500", route: "/notice" },
@@ -87,9 +81,6 @@ export const othersSections: OthersSection[] = [
       { titleBn: "সেটিংস", icon: "gear", color: "text-slate-500", route: "/settings" },
       { titleBn: "সাপোর্ট সেন্টার", icon: "help", color: "text-gold-600", route: "/support" },
       { titleBn: "নোটিফিকেশন", icon: "bell", color: "text-amber-500", route: "/notifications" },
-      { titleBn: "আমার প্রোফাইল", icon: "name", color: "text-slate-400", soon: true },
-      { titleBn: "ব্যাকআপ", icon: "download", color: "text-slate-400", soon: true },
-      { titleBn: "হোম উইজেট", icon: "grid", color: "text-teal-500", soon: true },
     ],
   },
 ];

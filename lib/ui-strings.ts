@@ -2676,6 +2676,118 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
     "All features in one place",
     "تمام خصوصیات ایک جگہ"
   ],
+  "সপ্তাহের সাত মঞ্জিল": [
+    "The seven manzils of the week",
+    "ہفتے کے سات منازل"
+  ],
+  "টি মুনাজাত": [
+    "munajat",
+    "مناجات"
+  ],
+  "টি বিভাগ": [
+    "chapters",
+    "ابواب"
+  ],
+  "মুনাজাত": [
+    "Munajat",
+    "مناجات"
+  ],
+  "ভূমিকা": [
+    "Introduction",
+    "تمہید"
+  ],
+  "মোনাজাতে মকবুল পরিচিতি ও মুল মূলকথা": [
+    "Introduction to Munajat-e-Maqbul and its core message",
+    "مناجاتِ مقبول کا تعارف اور بنیادی پیغام"
+  ],
+  "দোয়ার ফযীলত": [
+    "Virtues of dua",
+    "دعا کی فضیلت"
+  ],
+  "কুরআন ও হাদীসের আলোকেও দোয়ার গুরুত্ব": [
+    "The importance of dua in the light of the Qur'an and Hadith",
+    "قرآن و حدیث کی روشنی میں دعا کی اہمیت"
+  ],
+  "দোয়া কবুল হওয়ার আদব": [
+    "Etiquettes of accepted dua",
+    "دعا قبول ہونے کے آداب"
+  ],
+  "দোয়া কবুলের ৩২টি অত্যাবশ্যকীয় আদব ও শর্তাবলী": [
+    "32 essential etiquettes and conditions for accepted dua",
+    "دعا قبول ہونے کے ۳۲ ضروری آداب و شرائط"
+  ],
+  "বিশেষ সময় ও স্থান": [
+    "Special times and places",
+    "خاص اوقات و مقامات"
+  ],
+  "দোয়া কবুল হওয়ার ১৫টি বিশেষ স্থান ও উত্তম সময়সমূহ": [
+    "15 special places and best times for accepted dua",
+    "دعا قبول ہونے کے ۱۵ خاص مقامات اور بہترین اوقات"
+  ],
+  "যাদের দোয়া কবুল হয়": [
+    "Those whose dua is accepted",
+    "جن کی دعا قبول ہوتی ہے"
+  ],
+  "মজলুম, মুসাফির, পিতা-মাতা ও দোয়ার ৩টি রূপ": [
+    "The oppressed, travellers, parents, and the three forms of dua",
+    "مظلوم، مسافر، والدین اور دعا کی تین صورتیں"
+  ],
+  "প্রথম মঞ্জিল · শনিবার": [
+    "First manzil · Saturday",
+    "پہلی منزل · ہفتہ"
+  ],
+  "শনিবারের মোনাজাত (দোয়া ১ - ৪৮)": [
+    "Saturday's munajat (duas 1–48)",
+    "ہفتے کی مناجات (دعائیں ۱–۴۸)"
+  ],
+  "দ্বিতীয় মঞ্জিল · রবিবার": [
+    "Second manzil · Sunday",
+    "دوسری منزل · اتوار"
+  ],
+  "রবিবারের মোনাজাত (দোয়া ৪৯ - ৮২)": [
+    "Sunday's munajat (duas 49–82)",
+    "اتوار کی مناجات (دعائیں ۴۹–۸۲)"
+  ],
+  "তৃতীয় মঞ্জিল · সোমবার": [
+    "Third manzil · Monday",
+    "تیسری منزل · پیر"
+  ],
+  "সোমবারের মোনাজাত (দোয়া ৮৩ - ১১৩)": [
+    "Monday's munajat (duas 83–113)",
+    "پیر کی مناجات (دعائیں ۸۳–۱۱۳)"
+  ],
+  "চতুর্থ মঞ্জিল · মঙ্গলবার": [
+    "Fourth manzil · Tuesday",
+    "چوتھی منزل · منگل"
+  ],
+  "মঙ্গলবারের মোনাজাত (দোয়া ১১৪ - ১৪৬)": [
+    "Tuesday's munajat (duas 114–146)",
+    "منگل کی مناجات (دعائیں ۱۱۴–۱۴۶)"
+  ],
+  "পঞ্চম মঞ্জিল · বুধবার": [
+    "Fifth manzil · Wednesday",
+    "پانچویں منزل · بدھ"
+  ],
+  "বুধবারের মোনাজাত (দোয়া ১৪৭ - ১৬৮)": [
+    "Wednesday's munajat (duas 147–168)",
+    "بدھ کی مناجات (دعائیں ۱۴۷–۱۶۸)"
+  ],
+  "ষষ্ঠ মঞ্জিল · বৃহস্পতিবার": [
+    "Sixth manzil · Thursday",
+    "چھٹی منزل · جمعرات"
+  ],
+  "বৃহস্পতিবারের মোনাজাত (দোয়া ১৬৯ - ১৮৩)": [
+    "Thursday's munajat (duas 169–183)",
+    "جمعرات کی مناجات (دعائیں ۱۶۹–۱۸۳)"
+  ],
+  "সপ্তম মঞ্জিল · শুক্রবার": [
+    "Seventh manzil · Friday",
+    "ساتویں منزل · جمعہ"
+  ],
+  "শুক্রবার বা জুমার দিনের মোনাজাত (দোয়া ১৮৪ - ১৯৬)": [
+    "Friday's or Jumu'ah day's munajat (duas 184–196)",
+    "جمعہ یا یومِ جمعہ کی مناجات (دعائیں ۱۸۴–۱۹۶)"
+  ],
 };
 
 export function lookupUi(bn: string, lang: "en" | "ur"): string | undefined {
