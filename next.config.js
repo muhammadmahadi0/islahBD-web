@@ -10,6 +10,8 @@ const nextConfig = {
     return [
       { source: "/hajj-umrah/places", destination: "/seerah", permanent: false },
       { source: "/hajj-umrah/map", destination: "/seerah/map", permanent: false },
+      // Munajat-e-Maqbul now lives on the production site.
+      { source: "/munajate", destination: "https://islahbd.com/munajat", permanent: false },
     ];
   },
 };

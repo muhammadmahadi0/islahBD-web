@@ -2616,6 +2616,66 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
     "Filter by region or topic",
     "علاقے یا موضوع کے مطابق فلٹر کریں"
   ],
+  "ইবাদত": [
+    "Worship",
+    "عبادت"
+  ],
+  "যাকাত ক্যালকুলেটর": [
+    "Zakat calculator",
+    "زکوٰۃ کیلکولیٹر"
+  ],
+  "ইলম": [
+    "Knowledge",
+    "علم"
+  ],
+  "রমজান": [
+    "Ramadan",
+    "رمضان"
+  ],
+  "হারামাইন লাইভ": [
+    "Haramain Live",
+    "حرمین لائیو"
+  ],
+  "নূর ক্লিপস": [
+    "Noor Clips",
+    "نور کلپس"
+  ],
+  "ভিডিও সিরিজ": [
+    "Video series",
+    "ویڈیو سیریز"
+  ],
+  "প্রতিষ্ঠান": [
+    "Institution",
+    "ادارہ"
+  ],
+  "মাদরাসা": [
+    "Madrasa",
+    "مدرسہ"
+  ],
+  "বই কিনুন": [
+    "Buy books",
+    "کتابیں خریدیں"
+  ],
+  "সেটিংস ও টুলস": [
+    "Settings & tools",
+    "ترتیبات و اوزار"
+  ],
+  "আমার প্রোফাইল": [
+    "My profile",
+    "میری پروفائل"
+  ],
+  "ব্যাকআপ": [
+    "Backup",
+    "بیک اپ"
+  ],
+  "হোম উইজেট": [
+    "Home widget",
+    "ہوم ویجٹ"
+  ],
+  "সকল ফিচার একসাথে": [
+    "All features in one place",
+    "تمام خصوصیات ایک جگہ"
+  ],
 };
 
 export function lookupUi(bn: string, lang: "en" | "ur"): string | undefined {

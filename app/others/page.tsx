@@ -1,51 +1,90 @@
 "use client";
 import Link from "next/link";
-import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { homeGrid } from "../../lib/features";
 import ChannelButton from "../../components/ChannelButton";
+import { othersSections } from "../../lib/others";
 import { useTx } from "../../store/language-store";
 
+// Others hub — categorised feature directory.
 export default function OthersPage() {
   const tx = useTx();
 
   return (
     <div className="animate-fade-up">
-      <PageHead title={tx("সব ফিচার")} subtitle={tx("ইসলাহ-এর সম্পূর্ণ সংগ্রহ")} icon="grid" />
+      <header className="border-b border-primary-900/10 pb-3 text-center dark:border-white/10">
+        <h1 className="text-[20px] font-bold leading-snug tracking-tight">{tx("অন্যান্য")}</h1>
+        <p className="mt-1 text-[13px] font-medium text-ink-faint">{tx("সকল ফিচার একসাথে")}</p>
+      </header>
 
       {/* Channels — both channels live inside this one button (master registry) */}
       <ChannelButton />
 
-      <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">
-        {homeGrid.map((f) => (
-          <Link key={f.route} href={f.route} className="card card-hover flex flex-col items-center gap-1.5 p-3 text-center">
-            <span className={`icon-tile !h-11 !w-11 ${f.tint} ${f.color}`}>
-              <Icon name={f.icon} size={22} />
-            </span>
-            <span className="text-[11px] font-bold leading-tight">{tx(f.titleBn)}</span>
-          </Link>
-        ))}
-      </div>
-      <div className="mt-2 grid gap-2 sm:grid-cols-2">
-        {[
-          { href: "/notifications", icon: "bell", tint: "bg-amber-50", color: "text-gold-600", t: tx("নোটিফিকেশন"), d: tx("সব আপডেট এক জায়গায়") },
-          { href: "/donate", icon: "gift", tint: "bg-rose-50", color: "text-rose-500", t: tx("ডোনেট"), d: tx("দ্বীনি খেদমতে শরিক হোন") },
-          { href: "/support", icon: "help", tint: "bg-sky-50", color: "text-sky-600", t: tx("সাপোর্ট সেন্টার"), d: tx("সাহায্য ও জিজ্ঞাসা") },
-          { href: "/member", icon: "star", tint: "bg-amber-50", color: "text-gold-600", t: tx("লাইফটাইম মেম্বার"), d: tx("বিশেষ সদস্যপদ") },
-          { href: "/settings", icon: "gear", tint: "bg-primary-50", color: "text-primary-600", t: tx("সেটিংস"), d: tx("থিম, ফন্ট ও ভাষা") },
-        ].map((c) => (
-          <Link key={c.href} href={c.href} className="card card-hover flex items-center gap-3 p-4">
-            <span className={`icon-tile ${c.tint} ${c.color}`}>
-              <Icon name={c.icon} size={24} />
-            </span>
-            <span className="flex-1">
-              <span className="block font-bold">{c.t}</span>
-              <span className="block text-xs text-ink-faint">{c.d}</span>
-            </span>
-            <Icon name="chevron" size={18} className="text-ink-faint" />
-          </Link>
-        ))}
-      </div>
+      {othersSections.map((section) => (
+        <section key={section.titleBn} className="mt-5">
+          <div className="mb-3 flex items-center gap-2">
+            <span
+              aria-hidden
+              className={`h-[21px] w-[3px] shrink-0 rounded-sm bg-current ${section.accent}`}
+            />
+            <Icon name={section.icon} size={17} className={section.accent} />
+            <h2 className="text-[18px] font-extrabold leading-tight tracking-tight">
+              {tx(section.titleBn)}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-4 gap-2.5 sm:grid-cols-6 lg:grid-cols-8">
+            {section.items.map((item) => {
+              const content = (
+                <>
+                  {item.soon && (
+                    <span className="absolute inset-x-1 top-1 rounded-md bg-sand py-0.5 text-[9px] font-semibold leading-normal text-ink-faint dark:bg-slate-800">
+                      {tx("শীঘ্রই আসছে")}
+                    </span>
+                  )}
+                  <Icon
+                    name={item.icon}
+                    size={30}
+                    className={`${item.color} ${item.soon ? "opacity-40" : ""}`}
+                  />
+                  <span
+                    className={`px-0.5 text-[11.5px] font-semibold leading-[1.3] ${
+                      item.soon ? "opacity-40" : ""
+                    }`}
+                  >
+                    {tx(item.titleBn)}
+                  </span>
+                </>
+              );
+
+              const cls = `card relative flex min-h-[102px] flex-col items-center justify-center gap-2 px-1.5 text-center ${
+                item.soon ? "pb-2.5 pt-6" : "py-2.5"
+              }`;
+
+              return item.route ? (
+                item.route.startsWith("http") ? (
+                  <a
+                    key={item.titleBn}
+                    href={item.route}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`${cls} card-hover`}
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <Link key={item.titleBn} href={item.route} className={`${cls} card-hover`}>
+                    {content}
+                  </Link>
+                )
+              ) : (
+                <div key={item.titleBn} aria-disabled="true" className={cls}>
+                  {content}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      ))}
     </div>
   );
 }
