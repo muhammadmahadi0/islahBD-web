@@ -197,10 +197,44 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {/* Honorific sub-header — home only */}
         {isHome && (
           <Link href="/paribar" className="scholar-banner block transition hover:brightness-[1.02] active:scale-[0.99]">
-            <p className="mx-auto max-w-sm text-[12px] font-medium leading-relaxed text-ink-soft">
+            <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+              <div className="home-art home-art-nabawi">
+                <img
+                  src="/images/hero/masjid-nabawi.jpg"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="home-art-img home-art-img-light"
+                />
+                <img
+                  src="/images/hero/masjid-nabawi-dark.jpg"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="home-art-img home-art-img-dark"
+                />
+              </div>
+              <div className="home-art home-art-kaaba">
+                <img
+                  src="/images/hero/kaaba-sharif.jpg"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="home-art-img home-art-img-light"
+                />
+                <img
+                  src="/images/hero/kaaba-sharif-dark.jpg"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="home-art-img home-art-img-dark"
+                />
+              </div>
+            </div>
+            <p className="hero-lineage relative z-10 mx-auto max-w-sm text-[12px] font-medium leading-relaxed text-ink-soft">
               {tx("তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন হুসাইন সাহেব-এর খলিফা হযরত")}
             </p>
-            <h1 className="gold-text mt-1 text-[28px] font-extrabold leading-tight tracking-wide">
+            <h1 className="gold-text relative z-10 mt-1 text-[28px] font-extrabold leading-tight tracking-wide">
               {tx("মাওলানা তৈয়্যেব আশরাফ সাহেব")}
             </h1>
           </Link>

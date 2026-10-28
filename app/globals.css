@@ -1046,7 +1046,10 @@ html.dark.glass .scholar-banner::after {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.45)) drop-shadow(0 10px 18px rgba(122, 100, 21, 0.22));
+  /* The name now sits over the hero artwork, so a soft halo keeps the gold
+     separated from the image without covering it. */
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.5)) drop-shadow(0 0 9px rgba(255, 255, 255, 0.8))
+    drop-shadow(0 0 20px rgba(255, 255, 255, 0.45)) drop-shadow(0 10px 18px rgba(122, 100, 21, 0.22));
   animation: gold-shine 8s ease-in-out infinite;
 }
 html.dark .scholar-banner .gold-text {
@@ -1068,7 +1071,8 @@ html.dark .scholar-banner .gold-text {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.4)) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.25));
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.7)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 0 14px rgba(212, 175, 55, 0.4)) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.25));
 }
 @keyframes gold-shine {
   0%, 100% { background-position: 0% 50%; }
@@ -1385,7 +1389,7 @@ html.dark.glass .desktop-footer {
   will-change: opacity, filter;
 }
 .home-art-nabawi {
-  top: -95px;
+  top: -8px;
   width: min(32vw, 350px);
   aspect-ratio: 860 / 790;
   -webkit-mask-image: radial-gradient(58% 62% at 52% 44%, #000 50%, transparent 78%),
@@ -1396,7 +1400,7 @@ html.dark.glass .desktop-footer {
   mask-composite: intersect;
 }
 .home-art-kaaba {
-  top: -80px;
+  top: 2px;
   width: min(40vw, 440px);
   aspect-ratio: 1160 / 790;
   -webkit-mask-image: radial-gradient(56% 64% at 50% 44%, #000 52%, transparent 80%),
@@ -1455,6 +1459,16 @@ html.dark .hero-lineage {
   text-shadow:
     0 1px 2px rgba(0, 0, 0, 0.95),
     0 0 14px rgba(0, 0, 0, 0.8);
+}
+
+/* Mobile banner: smaller artwork tucked behind the Sheikh's name. */
+.app-header .home-art-kaaba {
+  top: 10px;
+  width: 170px;
+}
+.app-header .home-art-nabawi {
+  top: -2px;
+  width: 150px;
 }
 
 @media (prefers-reduced-motion: reduce) {
