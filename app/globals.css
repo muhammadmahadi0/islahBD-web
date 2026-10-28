@@ -1324,6 +1324,66 @@ html.dark .nav-tab:hover {
     0 4px 14px rgba(8, 73, 47, 0.35);
 }
 
+/* ============================================================
+   DESKTOP CHROME — top navbar, footer and home hero.
+   Everything here is scoped to lg+ so the mobile app is untouched.
+   ============================================================ */
+.desktop-header {
+  border-bottom: 1px solid rgba(8, 73, 47, 0.09);
+  background: rgba(250, 248, 245, 0.96);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+html.dark .desktop-header {
+  border-bottom-color: rgba(241, 237, 224, 0.08);
+  background: rgba(11, 17, 32, 0.96);
+}
+html.glass .desktop-header {
+  border-bottom-color: rgba(255, 255, 255, 0.55);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.94));
+  box-shadow: 0 10px 30px -24px rgba(8, 73, 47, 0.45);
+}
+html.dark.glass .desktop-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(20, 30, 48, 0.97), rgba(11, 17, 32, 0.94));
+  box-shadow: 0 10px 30px -24px rgba(0, 0, 0, 0.75);
+}
+
+.desktop-footer {
+  background:
+    radial-gradient(60rem 24rem at 50% 120%, rgba(14, 124, 91, 0.08), transparent 65%),
+    #f5f1e9;
+}
+html.dark .desktop-footer {
+  background:
+    radial-gradient(60rem 24rem at 50% 120%, rgba(14, 124, 91, 0.12), transparent 65%),
+    #0a101d;
+}
+html.glass .desktop-footer {
+  background:
+    radial-gradient(60rem 24rem at 50% 120%, rgba(var(--lg-tint), 0.1), transparent 65%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.5));
+}
+html.dark.glass .desktop-footer {
+  background:
+    radial-gradient(60rem 24rem at 50% 120%, rgba(var(--lg-tint), 0.12), transparent 65%),
+    linear-gradient(180deg, rgba(13, 20, 34, 0.5), rgba(8, 13, 24, 0.7));
+}
+
+@media (min-width: 1024px) {
+  .scholar-banner.scholar-hero {
+    margin: 0;
+    padding: 0 2rem 2.6rem;
+    border-radius: 2rem;
+  }
+  .scholar-banner.scholar-hero h1 {
+    font-size: clamp(32px, 4.6cqi, 58px);
+  }
+  html[lang="en"] .scholar-banner.scholar-hero h1 {
+    font-size: clamp(28px, 4.1cqi, 52px);
+  }
+}
+
 /* ---------- hajj map (Leaflet + OSM) ---------- */
 .hajj-pin-wrap {
   background: transparent;

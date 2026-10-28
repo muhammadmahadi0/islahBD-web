@@ -748,7 +748,7 @@ export default function MiniPlayer() {
 
       {/* ---------------- Mini pill ---------------- */}
       <div
-        className={`fixed inset-x-0 bottom-[86px] z-40 px-3 sm:px-5 ${(!hasTrack || isExpanded) && "invisible pointer-events-none opacity-0"}`}
+        className={`fixed inset-x-0 bottom-[86px] z-40 px-3 sm:px-5 lg:bottom-6 ${(!hasTrack || isExpanded) && "invisible pointer-events-none opacity-0"}`}
         aria-hidden={!hasTrack || isExpanded}
       >
         <div
@@ -756,7 +756,7 @@ export default function MiniPlayer() {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          className="card mx-auto max-w-md cursor-pointer overflow-hidden !rounded-3xl transition-all active:scale-[0.99]"
+          className="card mx-auto max-w-md cursor-pointer overflow-hidden !rounded-3xl transition-all active:scale-[0.99] lg:max-w-2xl"
         >
           <div className="h-1 bg-primary-50">
             <div

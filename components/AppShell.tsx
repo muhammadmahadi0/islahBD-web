@@ -10,6 +10,8 @@ import { NOTIF_READ_EVENT, parseNotifications, unreadCount } from "../lib/notifi
 import { applyLang, useLanguageStore, useLang, useNum, useT, useTx } from "../store/language-store";
 import { applyTheme, useThemeStore } from "../store/theme-store";
 import { useLocalizedData } from "../lib/content-translate";
+import DesktopHeader from "./DesktopHeader";
+import DesktopFooter from "./DesktopFooter";
 
 // Paths belonging to the More hub — the More tab stays highlighted there.
 const MORE_PREFIXES = [
@@ -18,6 +20,14 @@ const MORE_PREFIXES = [
   "/poem", "/malfuzat", "/self-purification", "/fatwa", "/notice",
   "/notifications", "/donate", "/support", "/settings", "/member",
   "/munajate", "/prayer-times", "/qibla", "/tasbeeh", "/nearby-mosque",
+];
+
+// Content that reads best in a narrower desktop column (forms, settings and
+// long-form pages) instead of the wide grid used by hubs and listings.
+const NARROW_PREFIXES = [
+  "/settings", "/support", "/fatwa", "/notice", "/mission",
+  "/self-purification", "/poem", "/paribar", "/member", "/donate",
+  "/notifications",
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
@@ -128,8 +138,21 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, [liveL, isLiveTrackActive, isPlaying, setIsPlaying, playTrack]);
 
   const moreActive = MORE_PREFIXES.some((p) => path === p || path.startsWith(p + "/"));
-  const liveReady = !!liveL && (liveL.isLive || !!liveL.recording?.audioUrl);
+  // Desktop has dedicated links for these hubs, so the "More" pill should not
+  // also light up when one of them is open. Mobile keeps its original rule.
+  const desktopMoreActive =
+    moreActive &&
+    !["/quran", "/media", "/member", "/boyan", "/live"].some(
+      (p) => path === p || path.startsWith(p + "/")
+    );
+  const narrow = NARROW_PREFIXES.some((p) => path === p || path.startsWith(p + "/"));
   const isHome = path === "/";
+  const mainWidth = isHome
+    ? "lg:max-w-[1240px]"
+    : narrow
+      ? "lg:max-w-[860px]"
+      : "lg:max-w-[1080px]";
+  const liveReady = !!liveL && (liveL.isLive || !!liveL.recording?.audioUrl);
 
   const circleBtn =
     "p-2.5 rounded-full bg-slate-200/60 dark:bg-slate-800/60 text-slate-700 dark:text-amber-100/80 hover:bg-slate-300 dark:hover:bg-slate-700 transition active:scale-95";
@@ -137,8 +160,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const tabCls = (active: boolean) => `nav-tab${active ? " nav-tab-active" : ""}`;
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-md border-x border-slate-200 lg:max-w-5xl dark:border-slate-800/50">
-      <header className="app-header px-4 pb-2 pt-4">
+    <div className="mx-auto min-h-screen w-full max-w-md border-x border-slate-200 lg:max-w-none lg:border-x-0 dark:border-slate-800/50">
+      <DesktopHeader moreActive={desktopMoreActive} unread={unread} />
+
+      <header className="app-header px-4 pb-2 pt-4 lg:hidden">
         <div className="mb-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-md">
@@ -182,9 +207,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         )}
       </header>
 
-      <main className="px-3 pb-28 sm:px-4">{children}</main>
+      <main
+        className={`px-3 pb-28 sm:px-4 lg:mx-auto lg:px-8 lg:pb-16 lg:pt-6 ${mainWidth}`}
+      >
+        {children}
+      </main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-md px-4 lg:max-w-5xl" style={{ bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}>
+      <DesktopFooter />
+
+      <nav
+        className="fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-md px-4 lg:hidden lg:max-w-5xl"
+        style={{ bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}
+      >
         <div className="bottom-nav flex items-center justify-between rounded-full px-4 py-2.5 backdrop-blur-lg">
           <Link href="/" className={tabCls(path === "/")}>
             <Icon name="home" size={20} />

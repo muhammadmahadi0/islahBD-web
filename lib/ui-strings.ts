@@ -4,6 +4,20 @@
 export type UiTranslation = [en: string, ur: string];
 
 export const UI_STRINGS: Record<string, UiTranslation> = {
+  "বয়ান শুনুন": ["Listen to bayan", "بیان سنیں"],
+  "হযরত সম্পর্কে জানুন": ["Learn about Hazrat", "حضرت کے بارے میں جانیں"],
+  "অ্যাপ নিন": ["Get the app", "ایپ حاصل کریں"],
+  "যেকোনো সময়, যেকোনো জায়গায়": ["Any time, anywhere", "کسی بھی وقت، کسی بھی جگہ"],
+  "সর্বস্বত্ব সংরক্ষিত": ["All rights reserved", "جملہ حقوق محفوظ ہیں"],
+  "প্রয়োজনীয়": ["Essentials", "ضروری"],
+  "কুরআন, বয়ান, দোআ, হজ ও দৈনন্দিন আমল — দ্বীনি জীবনের সবকিছু এক জায়গায়।": [
+    "Qur'an, bayan, dua, Hajj and daily practices — everything for a life of deen in one place.",
+    "قرآن، بیان، دعا، حج اور روزمرہ اعمال — دینی زندگی کی ہر چیز ایک جگہ۔"
+  ],
+  "খুঁজুন": ["Search", "تلاش کریں"],
+  "ভাষা পরিবর্তন করুন": ["Change language", "زبان تبدیل کریں"],
+  "লাইট মোড": ["Light mode", "لائٹ موڈ"],
+  "ডার্ক মোড": ["Dark mode", "ڈارک موڈ"],
   "বছরে কমপক্ষে একবার আজীবন সদস্য সম্মেলনে অংশগ্রহণের মাধ্যমে উলামায়ে কেরাম ও তালিবুল ইলমদের সাথে উঠা-বসা, খাওয়া-দাওয়া ও বিশেষ দোয়ায় শরীক থাকা যায়।": [
     "By attending the Lifetime Member Conference at least once a year, members can meet the scholars and students of knowledge, share meals, and join in special duas.",
     "سال میں کم از کم ایک بار تاحیات رکن کانفرنس میں شرکت کے ذریعے علماء کرام اور طلبۂ علم کے ساتھ اٹھنے بیٹھنے، کھانے پینے اور خصوصی دعاؤں میں شریک ہوا جا سکتا ہے۔"
