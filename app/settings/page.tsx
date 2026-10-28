@@ -182,18 +182,6 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        {/* font size */}
-        <label className="block p-4">
-          <div className="flex items-center gap-3">
-            <span className="icon-tile bg-teal-50 text-teal-600"><Icon name="doc" size={20} /></span>
-            <span className="flex-1 text-sm font-bold">{t("textSize")}</span>
-          </div>
-          <input
-            type="range" min={14} max={22} defaultValue={16} className="mt-2 w-full" aria-label={t("textSize")}
-            onChange={(e) => { document.body.style.fontSize = `${e.target.value}px`; }}
-          />
-        </label>
-
         {/* notifications */}
         <button
           className="flex w-full items-center gap-3 p-4 text-left transition hover:bg-sand/60 disabled:opacity-60"
