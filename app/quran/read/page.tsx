@@ -3,6 +3,7 @@ import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { EmptyState } from "../../../components/ui";
+import { Collapse } from "../../../components/Collapse";
 import { Icon } from "../../../components/icons";
 import {
   BN_TRANSLATIONS, BN_TAFSIRS, stripHtml, wbwAudioUrl,
@@ -660,6 +661,7 @@ function Reader() {
                 <button
                   onClick={() => setOpenTafsir(openTafsir === v.verse_key ? null : v.verse_key)}
                   aria-expanded={openTafsir === v.verse_key}
+                  aria-controls={`tafsir-${v.verse_key}-body`}
                   className="flex w-full items-center gap-3 rounded-2xl px-1 py-2 text-left transition active:scale-[0.99]"
                 >
                   <span className="h-6 w-1 rounded-full bg-gold" />
@@ -672,18 +674,20 @@ function Reader() {
                 </button>
               </div>
             )}
-            {taf && showTafsir && openTafsir === v.verse_key && (
-              <div className="mx-5 mb-2">
-                <div className="rounded-xl border border-gold/30 bg-gold-light/50 p-4 text-justify text-sm leading-relaxed">
-                  {stripHtml(taf).slice(0, 1500)}
+            {taf && showTafsir && (
+              <Collapse open={openTafsir === v.verse_key} id={`tafsir-${v.verse_key}-body`}>
+                <div className="mx-5 mb-2">
+                  <div className="rounded-xl border border-gold/30 bg-gold-light/50 p-4 text-justify text-sm leading-relaxed">
+                    {stripHtml(taf).slice(0, 1500)}
+                  </div>
+                  <Link
+                    href={`/quran/tafsir?surah=${sNum}&ayah=${v.verse_number}`}
+                    className="mt-2 inline-flex items-center gap-1 text-[13px] font-bold text-primary-700"
+                  >
+                    {tx("সম্পূর্ণ তাফসীর")} <Icon name="chevron" size={14} />
+                  </Link>
                 </div>
-                <Link
-                  href={`/quran/tafsir?surah=${sNum}&ayah=${v.verse_number}`}
-                  className="mt-2 inline-flex items-center gap-1 text-[13px] font-bold text-primary-700"
-                >
-                  {tx("সম্পূর্ণ তাফসীর")} <Icon name="chevron" size={14} />
-                </Link>
-              </div>
+              </Collapse>
             )}
             <div className="px-5 pb-4">
               <div className="text-[11px] font-bold text-ink-faint">

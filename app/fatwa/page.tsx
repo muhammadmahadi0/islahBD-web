@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { Disclosure } from "../../components/Disclosure";
 import { useLang, useTx } from "../../store/language-store";
 import { useLocalizedData } from "../../lib/content-translate";
 
@@ -46,14 +47,19 @@ export default function FatwaPage() {
         </span>
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tx("প্রশ্ন খুঁজুন…")} className="input !pl-11 !shadow-card" />
       </form>
-      <details className="card group mt-2 p-4">
-        <summary className="flex cursor-pointer list-none items-center gap-2.5 font-bold [&::-webkit-details-marker]:hidden">
-          <span className="icon-tile !h-10 !w-10 bg-primary-600 text-white"><Icon name="plus" size={18} /></span>
-          <span className="flex-1">{tx("নতুন প্রশ্ন করুন")}</span>
-          <span className="rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform group-open:rotate-90">
-            <Icon name="chevron" size={15} />
-          </span>
-        </summary>
+      <Disclosure
+        className="card mt-2 p-4"
+        summaryClassName="flex w-full items-center gap-2.5 text-start font-bold"
+        summary={(open) => (
+          <>
+            <span className="icon-tile !h-10 !w-10 bg-primary-600 text-white"><Icon name="plus" size={18} /></span>
+            <span className="flex-1">{tx("নতুন প্রশ্ন করুন")}</span>
+            <span className={`rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform ${open ? "rotate-90" : ""}`}>
+              <Icon name="chevron" size={15} />
+            </span>
+          </>
+        )}
+      >
         <form className="mt-3 space-y-2" onSubmit={(e) => { e.preventDefault(); (e.target as HTMLFormElement).reset(); alert(tx("প্রশ্ন জমা হয়েছে")); }}>
           <input required placeholder={tx("আপনার নাম")} className="input" />
           <textarea required placeholder={tx("প্রশ্ন বিস্তারিত লিখুন…")} className="input" rows={4} />
@@ -61,7 +67,7 @@ export default function FatwaPage() {
             <Icon name="check" size={16} /> {tx("পাঠান")}
           </button>
         </form>
-      </details>
+      </Disclosure>
       {loading ? (
         <div className="mt-2 space-y-2">
           {[0, 1].map((i) => (
@@ -73,12 +79,14 @@ export default function FatwaPage() {
       ) : (
         <div className="mt-2 space-y-2">
           {list.map((x: any, i: number) => (
-            <details key={i} className="card group p-4">
-              <summary className="cursor-pointer list-none text-sm font-bold leading-snug [&::-webkit-details-marker]:hidden">
-                {x.question || x.title || `${tx("প্রশ্ন")} ${i + 1}`}
-              </summary>
+            <Disclosure
+              key={i}
+              className="card p-4"
+              summaryClassName="w-full text-start text-sm font-bold leading-snug"
+              summary={() => x.question || x.title || `${tx("প্রশ্ন")} ${i + 1}`}
+            >
               <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ink-soft">{x.answer || x.fatwa || tx("উত্তর শীঘ্রই…")}</p>
-            </details>
+            </Disclosure>
           ))}
         </div>
       )}

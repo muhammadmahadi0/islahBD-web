@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { Disclosure } from "../../components/Disclosure";
 import { useLang, useTx } from "../../store/language-store";
 import { useLocalizedData } from "../../lib/content-translate";
 
@@ -43,17 +44,24 @@ export default function NoticePage() {
           {itemsL.slice(0, 40).map((n: any, i: number) => {
             const title = n.title === "Notice" ? tx("নোটিশ") : n.title;
             return (
-            <details key={i} className="card group p-4" open={i === 0}>
-              <summary className="flex cursor-pointer list-none items-center gap-2.5 [&::-webkit-details-marker]:hidden">
-                <span className="icon-tile !h-10 !w-10 shrink-0 bg-sky-50 text-sky-600"><Icon name="mega" size={18} /></span>
-                <span className="flex-1">
-                  <span className="block text-sm font-bold leading-snug">{title}</span>
-                  <span className="block text-[11px] font-bold text-ink-faint">{fmtDate(n.date)}</span>
-                </span>
-                <span className="rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform group-open:rotate-90">
-                  <Icon name="chevron" size={15} />
-                </span>
-              </summary>
+            <Disclosure
+              key={i}
+              className="card p-4"
+              summaryClassName="flex w-full items-center gap-2.5 text-start"
+              defaultOpen={i === 0}
+              summary={(open) => (
+                <>
+                  <span className="icon-tile !h-10 !w-10 shrink-0 bg-sky-50 text-sky-600"><Icon name="mega" size={18} /></span>
+                  <span className="flex-1">
+                    <span className="block text-sm font-bold leading-snug">{title}</span>
+                    <span className="block text-[11px] font-bold text-ink-faint">{fmtDate(n.date)}</span>
+                  </span>
+                  <span className={`rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform ${open ? "rotate-90" : ""}`}>
+                    <Icon name="chevron" size={15} />
+                  </span>
+                </>
+              )}
+            >
               <p className="mt-2 whitespace-pre-line pl-[52px] text-sm leading-relaxed text-ink-soft">{n.body || n.description}</p>
               <div className="mt-2 pl-[52px]">
                 <button
@@ -63,7 +71,7 @@ export default function NoticePage() {
                   <Icon name="copy" size={14} /> {tx("কপি")}
                 </button>
               </div>
-            </details>
+            </Disclosure>
             );
           })}
         </div>

@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { Disclosure } from "../../components/Disclosure";
 import { useTx } from "../../store/language-store";
 
 const FAQS: [string, string][] = [
@@ -18,15 +19,21 @@ export default function SupportPage() {
       <PageHead title={tx("সাপোর্ট সেন্টার")} subtitle={tx("সাহায্য ও যোগাযোগ")} icon="help" />
       <div className="mt-3 space-y-2">
         {FAQS.map(([t, d]) => (
-          <details key={t} className="card group p-4">
-            <summary className="flex cursor-pointer list-none items-center gap-2 font-bold [&::-webkit-details-marker]:hidden">
-              <span className="flex-1 text-sm">{tx(t)}</span>
-              <span className="rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform group-open:rotate-90">
-                <Icon name="chevron" size={15} />
-              </span>
-            </summary>
+          <Disclosure
+            key={t}
+            className="card p-4"
+            summaryClassName="flex w-full items-center gap-2 text-start font-bold"
+            summary={(open) => (
+              <>
+                <span className="flex-1 text-sm">{tx(t)}</span>
+                <span className={`rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform ${open ? "rotate-90" : ""}`}>
+                  <Icon name="chevron" size={15} />
+                </span>
+              </>
+            )}
+          >
             <p className="mt-2 text-sm leading-relaxed text-ink-soft">{tx(d)}</p>
-          </details>
+          </Disclosure>
         ))}
         <div className="card flex flex-wrap gap-2 p-4">
           <a className="btn-outline flex-1 !text-[13px]" href="https://islahbd.com" target="_blank" rel="noreferrer">

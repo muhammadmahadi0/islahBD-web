@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { PageHead, ShareCopy, EmptyState } from "./ui";
+import { Collapse } from "./Collapse";
 import { Icon } from "./icons";
 import { useLang, useNum, useTx } from "../store/language-store";
 
@@ -256,11 +257,8 @@ export function FeatureListPage({ file, title, subtitle, icon = "book", backHref
                   </span>
                 </button>
 
-                {isOpen && (
-                  <div
-                    id={`feature-${id}-body`}
-                    className="animate-fade-up border-t border-primary-900/[0.06] bg-sand/40 px-4 pb-4 pt-3.5 dark:border-white/[0.08] dark:bg-white/[0.02] sm:px-5"
-                  >
+                <Collapse open={isOpen} id={`feature-${id}-body`}>
+                  <div className="border-t border-primary-900/[0.06] bg-sand/40 px-4 pb-4 pt-3.5 dark:border-white/[0.08] dark:bg-white/[0.02] sm:px-5">
                     <div className="space-y-3">
                       {it.fazilat && (
                         <div className="relative overflow-hidden rounded-2xl border border-primary-600/15 bg-primary-50 p-3.5 dark:border-primary-400/15">
@@ -350,7 +348,7 @@ export function FeatureListPage({ file, title, subtitle, icon = "book", backHref
                       </div>
                     </div>
                   </div>
-                )}
+                </Collapse>
               </article>
             );
           })}

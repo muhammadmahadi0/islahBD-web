@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { PageHead, EmptyState } from "../../../../components/ui";
 import { Icon } from "../../../../components/icons";
+import { Collapse } from "../../../../components/Collapse";
 import { usePlayerStore, type Track } from "../../../../store/player-store";
 import { useLang, useNum, useTx } from "../../../../store/language-store";
 import { channelLabel, getChannelById } from "../../../../lib/channels";
@@ -222,7 +223,12 @@ function PlaylistCard({
           )}
         </div>
 
-        <button onClick={toggle} className="min-w-0 flex-1 text-left">
+        <button
+          onClick={toggle}
+          aria-expanded={expanded}
+          aria-controls={`playlist-${playlist.id}-body`}
+          className="min-w-0 flex-1 text-left"
+        >
           <p className="line-clamp-2 text-[13px] font-bold leading-snug">{playlist.title}</p>
           <p className="mt-1 text-[11px] text-ink-faint">
             YouTube • {num(playlist.itemCount)}{tx("টি ভিডিও")}
@@ -239,6 +245,8 @@ function PlaylistCard({
         </button>
         <button
           onClick={toggle}
+          aria-expanded={expanded}
+          aria-controls={`playlist-${playlist.id}-body`}
           aria-label={expanded ? tx("বন্ধ করুন") : tx("প্লেলিস্ট")}
           className="shrink-0 rounded-xl p-1.5 text-ink-faint transition hover:bg-sand hover:text-ink dark:hover:bg-white/5"
         >
@@ -250,7 +258,7 @@ function PlaylistCard({
         </button>
       </div>
 
-      {expanded && (
+      <Collapse open={expanded} id={`playlist-${playlist.id}-body`}>
         <div className="border-t border-slate-200/70 dark:border-white/10">
           {loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-xs font-bold text-ink-faint">
@@ -330,7 +338,7 @@ function PlaylistCard({
             </div>
           )}
         </div>
-      )}
+      </Collapse>
     </div>
   );
 }

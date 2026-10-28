@@ -3,6 +3,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { PageHead, EmptyState } from "../../../components/ui";
 import { Icon } from "../../../components/icons";
+import { Disclosure } from "../../../components/Disclosure";
 import { useTx } from "../../../store/language-store";
 
 // Unified search: quran.com full-text and the offline Bengali database
@@ -92,10 +93,18 @@ function SearchBody() {
               </div>
               <div className="font-arabic mt-2 text-[22px]" dir="rtl">{h.text}</div>
               {gram && (
-                <details className="mt-2.5 rounded-2xl bg-sand p-3 text-[13px]">
-                  <summary className="cursor-pointer font-bold text-primary-700">{tx("ইরাব (ব্যাকরণ) দেখুন")}</summary>
+                <Disclosure
+                  className="mt-2.5 rounded-2xl bg-sand p-3 text-[13px]"
+                  summaryClassName="w-full text-start font-bold text-primary-700"
+                  summary={(open) => (
+                    <span className="flex items-center justify-between gap-2">
+                      {tx("ইরাব (ব্যাকরণ) দেখুন")}
+                      <Icon name="chevron" size={14} className={`transition-transform ${open ? "rotate-90" : ""}`} />
+                    </span>
+                  )}
+                >
                   <p className="font-arabic mt-1.5 whitespace-pre-line text-[16px]" dir="rtl">{gram}</p>
-                </details>
+                </Disclosure>
               )}
             </div>
           );
@@ -111,10 +120,18 @@ function SearchBody() {
               <div className="font-arabic mt-2 text-[22px]" dir="rtl">{a.text}</div>
               <div className="mt-1 text-sm text-ink-soft">{a.translation}</div>
               {gram && (
-                <details className="mt-2.5 rounded-2xl bg-sand p-3 text-[13px]">
-                  <summary className="cursor-pointer font-bold text-primary-700">{tx("ইরাব (ব্যাকরণ) দেখুন")}</summary>
+                <Disclosure
+                  className="mt-2.5 rounded-2xl bg-sand p-3 text-[13px]"
+                  summaryClassName="w-full text-start font-bold text-primary-700"
+                  summary={(open) => (
+                    <span className="flex items-center justify-between gap-2">
+                      {tx("ইরাব (ব্যাকরণ) দেখুন")}
+                      <Icon name="chevron" size={14} className={`transition-transform ${open ? "rotate-90" : ""}`} />
+                    </span>
+                  )}
+                >
                   <p className="font-arabic mt-1.5 whitespace-pre-line text-[16px]" dir="rtl">{gram}</p>
-                </details>
+                </Disclosure>
               )}
             </div>
           );

@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { PageHead, EmptyState } from "../../components/ui";
+import { Collapse } from "../../components/Collapse";
 import { Icon } from "../../components/icons";
 import type { QuranChapter } from "../../lib/quran";
 import { surahBn, surahBnFull } from "../../lib/surah-names";
@@ -92,7 +93,12 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
 
   return (
     <div className="card overflow-hidden">
-      <button onClick={toggle} className="flex w-full items-center gap-3 p-4 text-left">
+      <button
+        onClick={toggle}
+        aria-expanded={open}
+        aria-controls={`topic-${topic.id}-body`}
+        className="flex w-full items-center gap-3 p-4 text-left"
+      >
         <span className="icon-tile bg-primary-50 text-primary-600">
           <Icon name="book" size={20} />
         </span>
@@ -106,7 +112,7 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
           <Icon name="chevron" size={15} />
         </span>
       </button>
-      {open && (
+      <Collapse open={open} id={`topic-${topic.id}-body`}>
         <div className="space-y-2 border-t border-primary-900/10 bg-sand/60 p-3">
           {loading && (
             <div className="space-y-2">
@@ -132,7 +138,7 @@ function TopicCard({ topic }: { topic: { id: string; title: string; desc: string
             );
           })}
         </div>
-      )}
+      </Collapse>
     </div>
   );
 }

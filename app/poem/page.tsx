@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { PageHead, ShareCopy, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { Disclosure } from "../../components/Disclosure";
 import { useLang, useNum, useTx } from "../../store/language-store";
 
 export default function PoemPage() {
@@ -67,18 +68,24 @@ export default function PoemPage() {
       ) : (
         <div className="mt-3 space-y-2">
           {list.map((p: any) => (
-            <details key={p.id} className="card group p-4">
-              <summary className="flex cursor-pointer list-none items-center gap-2 font-bold [&::-webkit-details-marker]:hidden">
-                <span className="flex-1">{p.title} <span className="text-xs font-bold text-ink-faint">• {p.book_source}</span></span>
-                <span className="rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform group-open:rotate-90">
-                  <Icon name="chevron" size={15} />
-                </span>
-              </summary>
+            <Disclosure
+              key={p.id}
+              className="card p-4"
+              summaryClassName="flex w-full items-center gap-2 text-start font-bold"
+              summary={(open) => (
+                <>
+                  <span className="flex-1">{p.title} <span className="text-xs font-bold text-ink-faint">• {p.book_source}</span></span>
+                  <span className={`rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform ${open ? "rotate-90" : ""}`}>
+                    <Icon name="chevron" size={15} />
+                  </span>
+                </>
+              )}
+            >
               {p.original_text && <div className="font-arabic mt-2 whitespace-pre-line text-lg" dir="auto">{p.original_text}</div>}
               {p.bangla_translation && <div className="mt-1 whitespace-pre-line text-sm leading-relaxed">{p.bangla_translation}</div>}
               {p.sharh && <div className="mt-1.5 whitespace-pre-line text-xs leading-relaxed text-ink-soft">{p.sharh}</div>}
               <div className="mt-3"><ShareCopy text={`${p.title}\n${p.original_text || ""}\n${p.bangla_translation || ""}`} /></div>
-            </details>
+            </Disclosure>
           ))}
         </div>
       )}

@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "../icons";
+import { Collapse } from "../Collapse";
 import { EmptyState } from "../ui";
 import { HAJJ_BOOK_ORDER } from "../../lib/hajj";
 import { useLang, useNum, useTx } from "../../store/language-store";
@@ -246,8 +247,8 @@ export function BooksSection() {
                 </span>
               </button>
 
-              {isOpen && (
-                <div id={`book-${cat.id}`} className="animate-fade-up border-t border-primary-900/[0.06] bg-sand/30 p-2 dark:border-white/[0.08] dark:bg-white/[0.02]">
+              <Collapse open={isOpen} id={`book-${cat.id}`}>
+                <div className="border-t border-primary-900/[0.06] bg-sand/30 p-2 dark:border-white/[0.08] dark:bg-white/[0.02]">
                   <ul className="space-y-1">
                     {cat.items.map((item) => (
                       <li key={`${cat.id}-${item.id}`}>
@@ -268,7 +269,7 @@ export function BooksSection() {
                     ))}
                   </ul>
                 </div>
-              )}
+              </Collapse>
             </article>
           );
         })}

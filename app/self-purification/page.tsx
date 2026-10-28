@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
+import { Disclosure } from "../../components/Disclosure";
 import { useLang, useTx } from "../../store/language-store";
 import { useLocalizedData } from "../../lib/content-translate";
 
@@ -37,18 +38,24 @@ export default function PurificationPage() {
       ) : (
         <div className="mt-3 space-y-2">
           {itemsL.slice(0, 40).map((p: any, i: number) => (
-            <details key={i} className="card group p-4">
-              <summary className="flex cursor-pointer list-none items-center gap-3 font-bold [&::-webkit-details-marker]:hidden">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-sm font-bold text-rose-500">
-                  {i + 1}
-                </span>
-                <span className="flex-1">{p.title || `${tx("ধাপ")} ${i + 1}`}</span>
-                <span className="rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform group-open:rotate-90">
-                  <Icon name="chevron" size={15} />
-                </span>
-              </summary>
+            <Disclosure
+              key={i}
+              className="card p-4"
+              summaryClassName="flex w-full items-center gap-3 text-start"
+              summary={(open) => (
+                <>
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-sm font-bold text-rose-500">
+                    {i + 1}
+                  </span>
+                  <span className="flex-1 font-bold">{p.title || `${tx("ধাপ")} ${i + 1}`}</span>
+                  <span className={`rounded-full bg-primary-50 p-1.5 text-primary-600 transition-transform ${open ? "rotate-90" : ""}`}>
+                    <Icon name="chevron" size={15} />
+                  </span>
+                </>
+              )}
+            >
               <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ink-soft">{p.content || p.description}</p>
-            </details>
+            </Disclosure>
           ))}
         </div>
       )}
