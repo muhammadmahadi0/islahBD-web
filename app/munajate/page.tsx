@@ -44,6 +44,55 @@ const BN_DIGITS = "০১২৩৪৫৬৭৮৯";
 const toAsciiDigits = (raw: string) =>
   raw.replace(/[০-৯]/g, (d) => String(BN_DIGITS.indexOf(d)));
 
+// Height-animated accordion panel. The panel stays mounted while it closes so
+// the grid-row transition can finish before it leaves the DOM.
+function Collapse({
+  open,
+  id,
+  children,
+}: {
+  open: boolean;
+  id: string;
+  children: React.ReactNode;
+}) {
+  const [mounted, setMounted] = useState(open);
+  const [expanded, setExpanded] = useState(open);
+
+  useEffect(() => {
+    if (open) {
+      setMounted(true);
+      let inner = 0;
+      // Two frames: paint the collapsed state first, then transition open.
+      const outer = requestAnimationFrame(() => {
+        inner = requestAnimationFrame(() => setExpanded(true));
+      });
+      return () => {
+        cancelAnimationFrame(outer);
+        cancelAnimationFrame(inner);
+      };
+    }
+    setExpanded(false);
+    const timer = window.setTimeout(() => setMounted(false), 320);
+    return () => window.clearTimeout(timer);
+  }, [open]);
+
+  if (!mounted) return null;
+
+  return (
+    <div
+      id={id}
+      aria-hidden={!open}
+      inert={!open}
+      className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        open ? "" : "pointer-events-none"
+      }`}
+      style={{ gridTemplateRows: expanded ? "1fr" : "0fr", opacity: expanded ? 1 : 0 }}
+    >
+      <div className="min-h-0 overflow-hidden">{children}</div>
+    </div>
+  );
+}
+
 export default function MunajatPage() {
   const tx = useTx();
   const num = useNum();
@@ -354,11 +403,8 @@ export default function MunajatPage() {
                   </span>
                 </button>
 
-                {isOpen && (
-                  <div
-                    id={`munajat-${id}-body`}
-                    className="animate-fade-up border-t border-primary-900/[0.06] bg-sand/40 px-4 pb-4 pt-3.5 dark:border-white/[0.08] dark:bg-white/[0.02] sm:px-5"
-                  >
+                <Collapse open={isOpen} id={`munajat-${id}-body`}>
+                  <div className="border-t border-primary-900/[0.06] bg-sand/40 px-4 pb-4 pt-3.5 dark:border-white/[0.08] dark:bg-white/[0.02] sm:px-5">
                     <div className="space-y-3">
                       {amalTexts.map((a, j) => (
                         <div
@@ -418,7 +464,7 @@ export default function MunajatPage() {
                       </div>
                     </div>
                   </div>
-                )}
+                </Collapse>
               </article>
             );
           })}
