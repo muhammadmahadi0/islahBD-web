@@ -508,10 +508,6 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
     "This album has no photos.",
     "اس البم میں تصاویر نہیں ہیں۔"
   ],
-  "তৈয়্যেব আশরাফ সাহেব": [
-    "Tayyeb Ashraf Sahib.",
-    "طیب اشرف صاحب۔"
-  ],
   "বিকাশ / নগদ (মোবাইল)": [
     "bKash / Nagad (mobile).",
     "بکاش / نقد (موبائل)۔"
@@ -1792,9 +1788,9 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
     "Khalifa of Tarjuman-e-Akabir Arif Billah Hazrat Maulana Shah Abdul Matin bin Husain Sahib — founding principal of Madrasa Markazul Ihsan Dhaka and respected Khatib of Baitul Aman Jame Mosque.",
     "ترجمانِ اکابر عارف باللہ حضرت مولانا شاہ عبد المتین بن حسین صاحب کے خلیفہ — مدرسہ مرکز الاحسان ڈھاکہ کے بانی پرنسپل اور بیت الامان جامع مسجد کے محترم خطیب۔"
   ],
-  "তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন হুসাইন সাহেব-এর খলিফা হযরত মাওলানা": [
-    "Khalifa of Tarjuman-e-Akabir Arif Billah Hazrat Maulana Shah Abdul Matin bin Husain Sahib, Hazrat Maulana",
-    "ترجمانِ اکابر عارف باللہ حضرت مولانا شاہ عبد المتین بن حسین صاحب کے خلیفہ، حضرت مولانا"
+  "তারজুমান-এ-আকাবির আরিফ বিল্লাহ হযরত মাওলানা শাহ আব্দুল মতিন বিন হুসাইন সাহেব-এর খলিফা হযরত": [
+    "Khalifa of Tarjuman-e-Akabir Arif Billah Hazrat Maulana Shah Abdul Matin bin Husain Sahib, Hazrat",
+    "ترجمانِ اکابر عارف باللہ حضرت مولانا شاہ عبد المتین بن حسین صاحب کے خلیفہ، حضرت"
   ],
   "তাফসীর আহসানুল বায়ান": [
     "Tafsir Ahsanul Bayan",
