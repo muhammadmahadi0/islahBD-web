@@ -12,6 +12,8 @@ import { useLocalizedData } from "../../lib/content-translate";
 // api.khanqahbd.com, public/data/islamijindegi-books.json scraped from
 // islamijindegi.com/bn/books). Search, category sidebar/rail, and an
 // in-app reader (`/library/[id]`) with a PDF fallback for PDF-only books.
+// The KhanqahBD snapshot is pre-sorted with its Bengali-language books
+// first, so that shelf opens on the Bangla editions.
 interface Book {
   id: string;
   title: string;
