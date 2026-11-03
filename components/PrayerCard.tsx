@@ -4,10 +4,15 @@ import Link from "next/link";
 import { Icon } from "./icons";
 import {
   detectLocation, fetchPrayerData,
-  toMinutes, getNextPrayer, getCurrentKey, getSpecialPeriod, getNaflWindows, secsUntil,
+  toMinutes, getCurrentKey,
   prayerName, toBn, hijriText,
   type PrayerTimes,
 } from "../lib/prayer";
+import {
+  buildPrayerTimeline,
+  findCurrentPeriod,
+  periodRemainingSec,
+} from "../lib/prayer-schedule";
 import { useLang, useTx } from "../store/language-store";
 import { CITIES } from "../lib/prayer";
 
@@ -96,28 +101,17 @@ export default function PrayerCard() {
     );
   }
 
-  const next = getNextPrayer(times, now);
   const cur = getCurrentKey(times, now);
-  // Match the dedicated prayer page: during the sunrise prohibition, Ishraq
-  // or Chasht, the hero shows that period's name and its remaining time.
-  const special = getSpecialPeriod(times, now);
-  const remainSec = special ? special.remainSec : secsUntil(next.time, now, next.isTomorrow);
-  const win = getNaflWindows(times);
-  const specialStart =
-    special && special.type === "prohibited"
-      ? times.sunrise
-      : special && special.type === "ishraq"
-        ? win?.ishraqStart
-        : special && special.type === "chasht"
-          ? win?.chashtStart
-          : null;
-  const displayName = special
-    ? special.type === "prohibited"
-      ? prayerName("sunrise", lang)
-      : lang === "bn" ? special.labelBn : lang === "ur" ? special.labelUr : special.labelEn
-    : prayerName(cur, lang);
+  // Match the full prayer schedule (/prayer-times): the card's "now" panel
+  // shows whichever period is actually running — including Ishraq, Chasht,
+  // Zawal, Awwabin and Tahajjud — with that period's own start and end.
+  const timeline = buildPrayerTimeline(times, lang, tx);
+  const current = findCurrentPeriod(timeline, now);
+  const remainSec = current ? periodRemainingSec(current, now) : 0;
+  const startTime = current ? current.start : times[cur];
+  const displayName = current ? current.name : prayerName(cur, lang);
 
-  const curStart = toMinutes(specialStart || times[cur]) * 60;
+  const curStart = toMinutes(startTime) * 60;
   let winStart = new Date(now);
   winStart.setHours(Math.floor(curStart / 3600), Math.floor((curStart % 3600) / 60), 0, 0);
   if (winStart.getTime() > now.getTime()) winStart.setDate(winStart.getDate() - 1);
@@ -151,9 +145,7 @@ export default function PrayerCard() {
     d.setHours(h, m, 0, 0);
     return fmtDate12(d);
   };
-  const endTime = special
-    ? fmtDate12(new Date(now.getTime() + remainSec * 1000))
-    : fmt12(next.time);
+  const endTime = current ? fmt12(current.end) : fmt12(times[cur]);
 
   const gregText = now.toLocaleDateString(
     lang === "bn" ? "bn-BD" : lang === "ur" ? "ur-PK" : "en-GB",
@@ -222,7 +214,7 @@ export default function PrayerCard() {
             <div className="flex gap-3 text-xs text-white/80">
               <div>
                 <span className="block text-[11px] opacity-75">{tx("শুরু")}</span>
-                <span className="font-semibold tabular-nums text-white">{fmt12(specialStart || times[cur])}</span>
+                <span className="font-semibold tabular-nums text-white">{fmt12(startTime)}</span>
               </div>
               <div className="border-l border-white/20 pl-3">
                 <span className="block text-[11px] opacity-75">{tx("শেষ")}</span>

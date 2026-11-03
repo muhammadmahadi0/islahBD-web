@@ -6,22 +6,24 @@ import { PageHead } from "../../components/ui";
 import { Icon } from "../../components/icons";
 import {
   CITIES,
-  addMinutes,
   detectLocation,
   fetchPrayerData,
   formatCountdown,
   formatTime12,
-  getNaflWindows,
   gregorianText,
   hijriText,
   matchCity,
-  prayerName,
   toMinutes,
   type DetectedLocation,
   type HijriInfo,
-  type Lang,
   type PrayerTimes,
 } from "../../lib/prayer";
+import {
+  buildPrayerTimeline,
+  findCurrentPeriod,
+  findNextPeriod,
+  periodRange,
+} from "../../lib/prayer-schedule";
 import { banglaFromDate, banglaText } from "../../lib/hijri";
 import { kaabaBearing, kaabaDistanceKm, norm } from "../../lib/qibla";
 import { useLang, useNum, useTx } from "../../store/language-store";
@@ -30,19 +32,6 @@ import { useLang, useNum, useTx } from "../../store/language-store";
 // Hijri/Gregorian/Bangla dates, the whole day's prayer + nafl timeline, and
 // a compact Qibla panel. The hero stays deep emerald/navy in both themes;
 // every surrounding surface follows the app's light/dark tokens.
-
-type PeriodKind = "fard" | "nafl" | "prohibited";
-
-interface Period {
-  key: string;
-  name: string;
-  kind: PeriodKind;
-  icon: string;
-  start: string;
-  end: string;
-  endTomorrow?: boolean;
-  note?: string;
-}
 
 const CARDINALS = [
   "উত্তর",
@@ -57,140 +46,6 @@ const CARDINALS = [
 
 function cardinal(deg: number): string {
   return CARDINALS[Math.round(norm(deg) / 45) % 8];
-}
-
-function periodRange(start: string, end: string) {
-  const s = toMinutes(start);
-  let e = toMinutes(end);
-  if (e <= s) e += 1440;
-  return { start: s, end: e };
-}
-
-function buildTimeline(
-  times: PrayerTimes,
-  lang: Lang,
-  tx: (bn: string) => string
-): Period[] {
-  const nafl = getNaflWindows(times);
-  const sunset = times.sunset;
-  const asrEnd = sunset && sunset !== times.maghrib ? sunset : times.maghrib;
-  const rows: Period[] = [
-    {
-      key: "fajr",
-      name: prayerName("fajr", lang),
-      kind: "fard",
-      icon: "sunrise",
-      start: times.fajr,
-      end: times.sunrise,
-    },
-    {
-      key: "sunrise",
-      name: prayerName("sunrise", lang),
-      kind: "prohibited",
-      icon: "sun",
-      start: times.sunrise,
-      end: addMinutes(times.sunrise, 15),
-    },
-  ];
-
-  if (nafl) {
-    rows.push(
-      {
-        key: "ishraq",
-        name: tx("ইশরাক"),
-        kind: "nafl",
-        icon: "sunrise",
-        start: nafl.ishraqStart,
-        end: nafl.ishraqEnd,
-      },
-      {
-        key: "chasht",
-        name: tx("চাশত"),
-        kind: "nafl",
-        icon: "sun",
-        start: nafl.chashtStart,
-        end: nafl.chashtEnd,
-      }
-    );
-  }
-
-  rows.push(
-    {
-      key: "zawal",
-      name: tx("যাওয়াল"),
-      kind: "prohibited",
-      icon: "sun",
-      start: addMinutes(times.dhuhr, -10),
-      end: times.dhuhr,
-    },
-    {
-      key: "dhuhr",
-      name: prayerName("dhuhr", lang),
-      kind: "fard",
-      icon: "sun",
-      start: times.dhuhr,
-      end: times.asr,
-    },
-    {
-      key: "asr",
-      name: prayerName("asr", lang),
-      kind: "fard",
-      icon: "sun",
-      start: times.asr,
-      end: asrEnd,
-    }
-  );
-
-  if (sunset && sunset !== times.maghrib) {
-    rows.push({
-      key: "sunset",
-      name: tx("সূর্যাস্ত"),
-      kind: "prohibited",
-      icon: "sunset",
-      start: sunset,
-      end: times.maghrib,
-    });
-  }
-
-  rows.push(
-    {
-      key: "maghrib",
-      name: prayerName("maghrib", lang),
-      kind: "fard",
-      icon: "sunset",
-      start: times.maghrib,
-      end: times.isha,
-    },
-    {
-      key: "awwabin",
-      name: tx("আউওয়াবীন"),
-      kind: "nafl",
-      icon: "star",
-      start: addMinutes(times.maghrib, 10),
-      end: times.isha,
-    },
-    {
-      key: "isha",
-      name: prayerName("isha", lang),
-      kind: "fard",
-      icon: "moon",
-      start: times.isha,
-      end: times.fajr,
-      endTomorrow: true,
-    },
-    {
-      key: "tahajjud",
-      name: tx("তাহাজ্জুদ"),
-      kind: "nafl",
-      icon: "moon",
-      start: times.isha,
-      end: times.fajr,
-      endTomorrow: true,
-      note: tx("বাদ এশা থেকে ফজর পর্যন্ত"),
-    }
-  );
-
-  return rows.filter((row) => toMinutes(row.end) !== toMinutes(row.start));
 }
 
 /** Decorative day arc with a sun/moon marker at the current period's progress. */
@@ -407,31 +262,11 @@ export default function PrayerTimesPage() {
     : "";
   const locationSource = manual ? tx("নির্বাচিত") : tx("অটো");
 
-  const timeline = times ? buildTimeline(times, lang, tx) : [];
+  const timeline = times ? buildPrayerTimeline(times, lang, tx) : [];
   const nowM = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
 
-  let current: Period | null = null;
-  for (const period of timeline) {
-    const range = periodRange(period.start, period.end);
-    if (
-      (nowM >= range.start && nowM < range.end) ||
-      (nowM + 1440 >= range.start && nowM + 1440 < range.end)
-    ) {
-      current = period;
-      break;
-    }
-  }
-
-  let next: Period | null = null;
-  let nextStart = Number.POSITIVE_INFINITY;
-  for (const period of timeline) {
-    const start = toMinutes(period.start);
-    const occurrence = start <= nowM ? start + 1440 : start;
-    if (occurrence < nextStart) {
-      nextStart = occurrence;
-      next = period;
-    }
-  }
+  const current = findCurrentPeriod(timeline, now);
+  const next = findNextPeriod(timeline, now);
 
   const currentRange = current ? periodRange(current.start, current.end) : null;
   const currentNow =
