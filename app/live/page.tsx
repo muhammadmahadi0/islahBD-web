@@ -1,51 +1,24 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { PageHead, EmptyState } from "../../components/ui";
 import { Icon } from "../../components/icons";
-import { usePlayerStore, type Track } from "../../store/player-store";
+import { usePlayerStore } from "../../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../../lib/live";
-import { bnNum } from "../../lib/audio";
+import {
+  isLiveTrackId,
+  livePrimaryTrack,
+  liveRecordingTracks,
+  liveStreamTrack,
+} from "../../lib/live-tracks";
+import { formatSecs } from "../../lib/audio";
 import { useLang, useNum, useTx } from "../../store/language-store";
 import { useLocalizedData } from "../../lib/content-translate";
 
 // Live broadcast — beta live behavior: status polling, in-app HLS playback
 // with recording fallback (handled by AudioPlayer), listener count.
-function liveToTrack(live: LiveStatus, lang: "bn" | "ur" | "en"): Track | null {
-  const fallbackLive = lang === "bn" ? "সরাসরি বয়ান" : lang === "ur" ? "براہ راست بیان" : "Live bayan";
-  const fallbackRec = lang === "bn" ? "সর্বশেষ বয়ান" : lang === "ur" ? "تازہ ترین بیان" : "Latest bayan";
-  if (live.isLive && live.streamUrl) {
-    return {
-      id: "live",
-      title: live.title || fallbackLive,
-      thumbnail: "",
-      duration: 0,
-      channelName: [live.speaker, live.location].filter(Boolean).join(" • "),
-      videoId: "",
-      hlsUrl: live.streamUrl,
-      audioUrl: live.streamUrl,
-      isLive: true,
-      location: live.location,
-      sharePath: "/live?play=live",
-    };
-  }
-  const rec = live.recording;
-  if (rec?.audioUrl) {
-    return {
-      id: `live-recording`,
-      title: rec.title || fallbackRec,
-      thumbnail: "",
-      duration: rec.durationSeconds || 0,
-      channelName: [rec.speaker, rec.location].filter(Boolean).join(" • "),
-      videoId: "",
-      audioUrl: rec.audioUrl,
-      location: rec.location,
-      sharePath: "/live?play=live-recording",
-    };
-  }
-  return null;
-}
-
+// When nothing is live the newest recording starts and the rest of the
+// latest recordings follow as the queue.
 export default function LivePage() {
   const tx = useTx();
   const num = useNum();
@@ -75,7 +48,15 @@ export default function LivePage() {
 
   const liveL = useLocalizedData(live, lang);
   const isLive = !!liveL?.isLive;
-  const playingLive = currentTrack?.id === "live" || currentTrack?.id === "live-recording";
+  const streamTrack = useMemo(
+    () => (liveL ? liveStreamTrack(liveL, lang) : null),
+    [liveL, lang]
+  );
+  const recordings = useMemo(
+    () => (liveL ? liveRecordingTracks(liveL, lang) : []),
+    [liveL, lang]
+  );
+  const playingLive = isLiveTrackId(currentTrack?.id);
 
   const playLive = () => {
     if (!liveL) return;
@@ -84,21 +65,39 @@ export default function LivePage() {
       setIsPlaying(!isPlaying);
       return;
     }
-    const track = liveToTrack(liveL, lang);
-    if (track) playTrack(track);
+    // Live stream when on air, else the newest recording with the rest queued.
+    if (streamTrack) playTrack(streamTrack, [streamTrack], 0);
+    else if (recordings.length) playTrack(recordings[0], recordings, 0);
   };
 
-  // Shared link (/live?play=live) auto-plays the broadcast/recording once.
+  const playRecording = (index: number) => {
+    const track = recordings[index];
+    if (!track) return;
+    if (currentTrack?.id === track.id) {
+      setIsPlaying(!isPlaying);
+      return;
+    }
+    playTrack(track, recordings, index);
+  };
+
+  // Shared link (/live?play=live | live-recording[-n]) auto-plays once.
   const autoPlayed = useRef(false);
   useEffect(() => {
     if (autoPlayed.current || !liveL) return;
     const shared = new URLSearchParams(window.location.search).get("play");
-    if (shared !== "live" && shared !== "live-recording") return;
-    const track = liveToTrack(liveL, lang);
-    if (!track) return;
+    if (!shared) return;
+    if (shared === "live") {
+      const track = livePrimaryTrack(liveL, lang);
+      if (!track) return;
+      autoPlayed.current = true;
+      playTrack(track, streamTrack ? [streamTrack] : recordings, 0);
+      return;
+    }
+    const index = recordings.findIndex((t) => t.id === shared);
+    if (index < 0) return;
     autoPlayed.current = true;
-    playTrack(track);
-  }, [liveL, playTrack]);
+    playTrack(recordings[index], recordings, index);
+  }, [liveL, lang, streamTrack, recordings, playTrack]);
 
   return (
     <div className="animate-fade-up">
@@ -165,8 +164,12 @@ export default function LivePage() {
                   <><Icon name="playfill" size={17} /> {isLive ? tx("লাইভ শুনুন") : tx("রেকর্ডিং শুনুন")}</>
                 )}
               </button>
-              {!isLive && liveL.recording && (
-                <p className="mt-2 text-[11px] text-white/70">{tx("এখন লাইভ বন্ধ — সর্বশেষ রেকর্ডিং বাজবে")}</p>
+              {!isLive && recordings.length > 0 && (
+                <p className="mt-2 text-[11px] text-white/70">
+                  {recordings.length > 1
+                    ? tx("এখন লাইভ বন্ধ — সর্বশেষ রেকর্ডিংগুলো ক্রমান্বয়ে বাজবে")
+                    : tx("এখন লাইভ বন্ধ — সর্বশেষ রেকর্ডিং বাজবে")}
+                </p>
               )}
             </div>
           </div>
@@ -175,6 +178,48 @@ export default function LivePage() {
             <Link2 href="/boyan" icon="mic" label={tx("অডিও বয়ান")} internal />
           </div>
         </div>
+      )}
+
+      {recordings.length > 0 && (
+        <section className="mt-3">
+          <div className="mb-2 flex items-center justify-between px-1">
+            <h3 className="text-sm font-bold">{tx("সর্বশেষ বয়ানসমূহ")}</h3>
+            <span className="text-xs font-bold tabular-nums text-ink-faint">
+              {num(recordings.length)}{tx("টি রেকর্ডিং")}
+            </span>
+          </div>
+          <div className="space-y-2">
+            {recordings.map((t, i) => {
+              const active = currentTrack?.id === t.id;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => playRecording(i)}
+                  className={`card card-hover flex w-full items-center gap-3 p-3 text-left ${active ? "!border-primary-600/40 !bg-primary-50" : ""}`}
+                >
+                  <span className={`icon-tile shrink-0 ${active ? "bg-primary-600 text-white" : "bg-gradient-to-br from-primary-700 to-primary-900 text-gold-100"}`}>
+                    <Icon name="radio" size={20} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className={`block truncate text-sm font-bold leading-snug ${active ? "text-primary-700" : ""}`}>{t.title}</span>
+                    {t.channelName && <span className="mt-0.5 block truncate text-xs text-ink-faint">{t.channelName}</span>}
+                  </span>
+                  {t.duration > 0 && (
+                    <span className="shrink-0 text-xs font-bold tabular-nums text-ink-faint">{num(formatSecs(t.duration))}</span>
+                  )}
+                  {active && isPlaying && (
+                    <span className="flex h-4 items-end gap-[3px] pr-1 text-primary-600">
+                      {[0, 1, 2].map((k) => (
+                        <span key={k} className="eq-bar h-full" style={{ animationDelay: `${k * 0.22}s` }} />
+                      ))}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </section>
       )}
 
       <div className="card mt-2 p-4">

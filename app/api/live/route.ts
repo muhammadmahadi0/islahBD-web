@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import type { LiveStatus } from "../../../lib/live";
+import type { LiveRecording, LiveStatus } from "../../../lib/live";
 
 // Ported from beta (src/pages/api/live.ts).
 const STATUS_URL = "https://api.islahbd.com/api/live/status/";
@@ -17,7 +17,36 @@ export async function GET() {
     clearTimeout(timeout);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    const rec = data?.recording;
+    const toRecording = (r: any): LiveRecording | null =>
+      r?.audioUrl
+        ? {
+            title: r.title || "",
+            speaker: r.speaker || "",
+            location: r.location || "",
+            audioUrl: r.audioUrl,
+            durationSeconds: r.durationSeconds || 0,
+          }
+        : null;
+
+    const rec = toRecording(data?.recording);
+    // Upstream now ships the latest few recordings alongside the legacy
+    // single `recording`. Newest first, de-duplicated by URL.
+    const rawRecordings: any[] = Array.isArray(data?.recordings) ? [...data.recordings] : [];
+    rawRecordings.sort((a, b) => {
+      const ta = Date.parse(a?.startedAt || "") || 0;
+      const tb = Date.parse(b?.startedAt || "") || 0;
+      return tb - ta;
+    });
+    const recordings: LiveRecording[] = [];
+    const seen = new Set<string>();
+    for (const raw of rawRecordings) {
+      const item = toRecording(raw);
+      if (!item || seen.has(item.audioUrl)) continue;
+      seen.add(item.audioUrl);
+      recordings.push(item);
+    }
+    if (!recordings.length && rec) recordings.push(rec);
+
     const live: LiveStatus = {
       isLive: !!data?.isLive,
       title: data?.title || "",
@@ -25,15 +54,8 @@ export async function GET() {
       location: data?.location || "",
       listeners: data?.listeners ?? data?.real_listeners ?? 0,
       streamUrl: data?.streamUrl || data?.hlsUrl || "",
-      recording: rec?.audioUrl
-        ? {
-            title: rec.title || "",
-            speaker: rec.speaker || "",
-            location: rec.location || "",
-            audioUrl: rec.audioUrl,
-            durationSeconds: rec.durationSeconds || 0,
-          }
-        : null,
+      recording: rec ?? recordings[0] ?? null,
+      recordings,
     };
     return NextResponse.json({ success: true, live });
   } catch (e) {

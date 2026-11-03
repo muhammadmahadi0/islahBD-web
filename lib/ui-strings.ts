@@ -202,6 +202,18 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
     "Live is off now — the latest recording will play.",
     "ابھی لائیو بند ہے — تازہ ترین ریکارڈنگ چلے گی۔"
   ],
+  "এখন লাইভ বন্ধ — সর্বশেষ রেকর্ডিংগুলো ক্রমান্বয়ে বাজবে": [
+    "Live is off now — the latest recordings play in order.",
+    "ابھی لائیو بند ہے — تازہ ترین ریکارڈنگز ترتیب سے چلیں گی۔"
+  ],
+  "সর্বশেষ বয়ানসমূহ": [
+    "Latest recordings",
+    "تازہ ترین بیانات"
+  ],
+  "টি রেকর্ডিং": [
+    " recordings",
+    " ریکارڈنگز"
+  ],
   "তারিখে চাপ দিলে ক্যালেন্ডারে দেখা যাবে": [
     "Tap a date to view it in the calendar.",
     "تاریخ پر دبائیں تو کیلنڈر میں نظر آئے گی۔"

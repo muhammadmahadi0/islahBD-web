@@ -4,8 +4,13 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { Icon } from "./icons";
 import { openIslahBDApp } from "../lib/open-app";
-import { usePlayerStore, type Track } from "../store/player-store";
+import { usePlayerStore } from "../store/player-store";
 import { LIVE_POLL_MS, type LiveStatus } from "../lib/live";
+import {
+  isLiveTrackId,
+  liveRecordingTracks,
+  liveStreamTrack,
+} from "../lib/live-tracks";
 import { NOTIF_READ_EVENT, parseNotifications, unreadCount } from "../lib/notifications";
 import { applyLang, useLanguageStore, useLang, useNum, useT, useTx } from "../store/language-store";
 import { applyTheme, useThemeStore } from "../store/theme-store";
@@ -107,8 +112,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   const liveL = useLocalizedData(live, lang);
-  const isLiveTrackActive =
-    !!currentTrack && (currentTrack.id === "live" || currentTrack.id === "live-recording");
+  const isLiveTrackActive = isLiveTrackId(currentTrack?.id);
 
   const handleLive = useCallback(() => {
     if (!liveL) return;
@@ -116,26 +120,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       setIsPlaying(!isPlaying);
       return;
     }
-    let track: Track | null = null;
-    if (liveL.isLive && liveL.streamUrl) {
-      track = {
-        id: "live", title: liveL.title || tx("সরাসরি বয়ান"), thumbnail: "",
-        duration: 0, channelName: liveL.speaker || tx("ইসলাহ লাইভ"), videoId: "",
-        hlsUrl: liveL.streamUrl, audioUrl: liveL.streamUrl,
-        isLive: true, location: liveL.location || "",
-        sharePath: "/live?play=live",
-      };
-    } else if (liveL.recording?.audioUrl) {
-      track = {
-        id: "live-recording", title: liveL.recording.title || tx("সর্বশেষ বয়ান"), thumbnail: "",
-        duration: liveL.recording.durationSeconds || 0,
-        channelName: liveL.recording.speaker || tx("ইসলাহ"), videoId: "",
-        audioUrl: liveL.recording.audioUrl, location: liveL.recording.location || "",
-        sharePath: "/live?play=live-recording",
-      };
+    // Broadcast when on air, otherwise the newest recording with the rest of
+    // the latest recordings queued behind it.
+    const stream = liveStreamTrack(liveL, lang);
+    if (stream) {
+      playTrack(stream, [stream], 0);
+      return;
     }
-    if (track) playTrack(track, [track], 0);
-  }, [liveL, isLiveTrackActive, isPlaying, setIsPlaying, playTrack]);
+    const queue = liveRecordingTracks(liveL, lang);
+    if (queue.length) playTrack(queue[0], queue, 0);
+  }, [liveL, lang, isLiveTrackActive, isPlaying, setIsPlaying, playTrack]);
 
   const moreActive = MORE_PREFIXES.some((p) => path === p || path.startsWith(p + "/"));
   // Desktop has dedicated links for these hubs, so the "More" pill should not
@@ -152,7 +146,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     : narrow
       ? "lg:max-w-[860px]"
       : "lg:max-w-[1080px]";
-  const liveReady = !!liveL && (liveL.isLive || !!liveL.recording?.audioUrl);
+  const liveReady =
+    !!liveL &&
+    (liveL.isLive || (liveL.recordings?.length ?? 0) > 0 || !!liveL.recording?.audioUrl);
 
   const circleBtn =
     "p-2.5 rounded-full bg-slate-200/60 dark:bg-slate-800/60 text-slate-700 dark:text-amber-100/80 hover:bg-slate-300 dark:hover:bg-slate-700 transition active:scale-95";

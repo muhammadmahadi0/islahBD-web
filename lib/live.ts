@@ -23,7 +23,10 @@ export interface LiveStatus {
   listeners: number;
   /** HLS manifest URL — only meaningful when isLive. */
   streamUrl: string;
+  /** Newest recording (kept for the live-failure fallback in AudioPlayer). */
   recording: LiveRecording | null;
+  /** Latest recordings, newest first — upstream currently returns three. */
+  recordings: LiveRecording[];
 }
 
 export const LIVE_POLL_MS = 60_000;
