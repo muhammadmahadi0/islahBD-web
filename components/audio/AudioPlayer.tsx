@@ -43,8 +43,16 @@ export default function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const hlsRef = useRef<Hls | null>(null);
   const proxyTriedRef = useRef(false);
-  const fallbackTriedRef = useRef(false);
   const streamUrlRef = useRef<string | null>(null);
+
+  // Live-stream watchdog. hls.js can sit on a stale playlist (encoder
+  // restart, CDN hiccup, backgrounded tab) without ever raising a fatal
+  // error — the element simply stops advancing and the user hears silence.
+  // These refs let the watchdog notice and walk a recovery ladder.
+  const lastProgressRef = useRef({ time: -1, at: 0 });
+  const recoverStepRef = useRef(0);
+  const loadStreamRef = useRef<(url: string, autoplay: boolean) => void>(() => {});
+  const recoverLiveRef = useRef<() => void>(() => {});
 
   const {
     currentTrack,
@@ -141,8 +149,9 @@ export default function AudioPlayer() {
     if (!audio) return;
     destroyHls();
     proxyTriedRef.current = false;
-    fallbackTriedRef.current = false;
     streamUrlRef.current = url;
+    // Fresh source — restart the stall clock.
+    lastProgressRef.current = { time: -1, at: Date.now() };
 
     const startPlayback = () => {
       if (autoplay) {
@@ -193,7 +202,16 @@ export default function AudioPlayer() {
       return;
     }
     {
-      const hls = new HlsCtor({ enableWorker: true });
+      const hls = new HlsCtor({
+        enableWorker: true,
+        // Live tuning: stay close to the edge and ride out short CDN
+        // hiccups instead of surfacing them as fatal errors.
+        backBufferLength: 30,
+        liveSyncDurationCount: 3,
+        manifestLoadingMaxRetry: 4,
+        levelLoadingMaxRetry: 6,
+        fragLoadingMaxRetry: 8,
+      });
       hlsRef.current = hls;
       hls.on(HlsCtor.Events.ERROR, (_event, data) => {
         if (!data.fatal) return;
@@ -211,24 +229,13 @@ export default function AudioPlayer() {
             console.error("[AudioPlayer] proxy retry failed:", err);
           }
         }
-        // Live still failing → fall back to the last recording once,
-        // so the user gets audio instead of silence.
         const track = usePlayerStore.getState().currentTrack;
-        if (track?.isLive && !fallbackTriedRef.current) {
-          fallbackTriedRef.current = true;
-          fetch("/api/live")
-            .then((res) => res.json())
-            .then((live) => {
-              const recUrl: string | undefined = live?.live?.recording?.audioUrl;
-              const stillLive = usePlayerStore.getState().currentTrack?.id === "live";
-              if (recUrl && stillLive && recUrl !== streamUrlRef.current) {
-                proxyTriedRef.current = true;
-                void loadStream(recUrl, true);
-              } else {
-                storeRef.current.setIsLoading(false);
-              }
-            })
-            .catch(() => storeRef.current.setIsLoading(false));
+        if (track?.isLive) {
+          // Live: rebuild from a fresh manifest instead of silently swapping
+          // in an old recording while the broadcast is still on air. The
+          // stall watchdog keeps escalating if this attempt doesn't take.
+          recoverStepRef.current = Math.max(recoverStepRef.current, 1);
+          recoverLiveRef.current();
           return;
         }
         storeRef.current.setIsLoading(false);
@@ -238,6 +245,132 @@ export default function AudioPlayer() {
       startPlayback();
     }
   };
+
+  loadStreamRef.current = (url, autoplay) => { void loadStream(url, autoplay); };
+
+  /** Snap playback back to the live edge of the current buffer. */
+  const jumpToLiveEdge = (audio: HTMLAudioElement) => {
+    try {
+      const ranges = audio.seekable;
+      if (!ranges.length) return;
+      const end = ranges.end(ranges.length - 1);
+      if (Number.isFinite(end) && Math.abs(end - audio.currentTime) > 1) {
+        audio.currentTime = Math.max(0, end - 0.5);
+      }
+    } catch {
+      // not seekable yet — the next attempt will try again
+    }
+  };
+
+  /**
+   * Live recovery ladder. Step 1 nudges the existing hls.js pipeline and
+   * jumps to the live edge; later steps rebuild from a fresh manifest (the
+   * encoder may also have moved to a new URL). If the broadcast has actually
+   * ended, the newest recording takes over instead of silence.
+   */
+  const recoverLive = async () => {
+    const state = usePlayerStore.getState();
+    const track = state.currentTrack;
+    const audio = audioRef.current;
+    if (!track?.isLive || !audio || !state.isPlaying) return;
+    const step = ++recoverStepRef.current;
+
+    if (step === 1) {
+      if (hlsRef.current) {
+        try {
+          hlsRef.current.startLoad();
+        } catch {
+          // engine already torn down — the reload below handles it
+        }
+      }
+      jumpToLiveEdge(audio);
+      return;
+    }
+
+    const current = track.hlsUrl || track.audioUrl || "";
+    let next = current;
+    try {
+      const res = await fetch("/api/live", { cache: "no-store" });
+      const data = await res.json();
+      const fresh = data?.live;
+      if (fresh && fresh.isLive === false) {
+        const recUrl: string | undefined = fresh?.recording?.audioUrl;
+        if (recUrl) {
+          void loadStreamRef.current(recUrl, true);
+          return;
+        }
+      } else if (fresh?.streamUrl) {
+        next = fresh.streamUrl;
+      }
+    } catch {
+      // offline / API down — retry the URL we already have
+    }
+
+    storeRef.current.setIsLoading(true);
+    const delay = step >= 3 ? 5000 : 1000;
+    window.setTimeout(() => {
+      const now = usePlayerStore.getState();
+      if (now.currentTrack?.isLive && now.isPlaying) {
+        void loadStreamRef.current(next || current, true);
+      }
+    }, delay);
+  };
+  recoverLiveRef.current = () => { void recoverLive(); };
+
+  // Stall watchdog: live audio that stops advancing for ~9s (without the
+  // user pausing) is treated as a stall and recovered. The screen wake lock
+  // keeps most phones awake, but backgrounded tabs still throttle hls.js.
+  useEffect(() => {
+    const id = setInterval(() => {
+      const state = usePlayerStore.getState();
+      const track = state.currentTrack;
+      const audio = audioRef.current;
+      if (!track?.isLive || !audio) {
+        lastProgressRef.current = { time: -1, at: 0 };
+        recoverStepRef.current = 0;
+        return;
+      }
+      // A user pause clears isPlaying, so a paused element here means the
+      // browser gave up (media error / lost source) — recover it. Autoplay
+      // blocks are excluded: the gesture retry already covers those.
+      if (!state.isPlaying || (audio.paused && !audio.error)) {
+        lastProgressRef.current = { time: audio.currentTime, at: Date.now() };
+        return;
+      }
+      const now = Date.now();
+      const time = audio.currentTime;
+      const prev = lastProgressRef.current;
+      if (!audio.paused && (prev.time < 0 || time !== prev.time)) {
+        // Moving again — the next stall starts the ladder from the top.
+        lastProgressRef.current = { time, at: now };
+        recoverStepRef.current = 0;
+        return;
+      }
+      if (now - prev.at >= 9000) {
+        lastProgressRef.current = { time, at: now };
+        recoverLiveRef.current();
+      }
+    }, 3000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Coming back to the tab: give the stream a fresh stall window and resume
+  // if the browser suspended playback while we were away.
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState !== "visible") return;
+      lastProgressRef.current = { time: -1, at: Date.now() };
+      recoverStepRef.current = 0;
+      const state = usePlayerStore.getState();
+      const audio = audioRef.current;
+      if (state.currentTrack?.isLive && state.isPlaying && audio?.paused) {
+        const p = tryPlay(audio);
+        if (p) p.catch(() => retryOnNextGesture(audio));
+      }
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, []);
 
   // Load a stream track when it changes; stop the stream engine otherwise
   // (the YT engine in MiniPlayer owns YouTube tracks).
@@ -409,8 +542,16 @@ export default function AudioPlayer() {
         }
       }}
       onError={() => {
-        // Non-HLS (progressive) failures land here
+        // Non-HLS (progressive) failures land here. Live audio that loses its
+        // source should recover right away rather than waiting out the full
+        // stall window.
         storeRef.current.setIsLoading(false);
+        if (usePlayerStore.getState().currentTrack?.isLive) {
+          lastProgressRef.current = {
+            time: audioRef.current?.currentTime ?? 0,
+            at: Date.now() - 9000,
+          };
+        }
       }}
     />
   );
