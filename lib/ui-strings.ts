@@ -1374,6 +1374,14 @@ export const UI_STRINGS: Record<string, UiTranslation> = {
     "Previous",
     "پچھلا"
   ],
+  "১০ সেকেন্ড পিছনে": [
+    "Back 10 seconds",
+    "۱۰ سیکنڈ پیچھے"
+  ],
+  "১০ সেকেন্ড সামনে": [
+    "Forward 10 seconds",
+    "۱۰ سیکنڈ آگے"
+  ],
   "জুম ইন": [
     "Zoom in",
     "زوم ان"

@@ -143,6 +143,24 @@ const paths: Record<string, React.ReactNode> = {
   ),
   prev: <path d="M6 5.5v13M19 5.5 10 12l9 6.5v-13Z" />,
   next: <path d="M18 5.5v13M5 5.5l9 6.5-9 6.5v-13Z" />,
+  seekback: (
+    <>
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+      <text x="12" y="15" fontSize="8" fontWeight="700" textAnchor="middle" fill="currentColor" stroke="none">
+        10
+      </text>
+    </>
+  ),
+  seekforward: (
+    <>
+      <path d="M21 12a9 9 0 1 1-9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+      <path d="M21 3v5h-5" />
+      <text x="12" y="15" fontSize="8" fontWeight="700" textAnchor="middle" fill="currentColor" stroke="none">
+        10
+      </text>
+    </>
+  ),
   headphones: <path d="M4 14v-2a8 8 0 0 1 16 0v2M4 14H2.5v4H5m14-4h1.5v4H19M5 18v1.5A1.5 1.5 0 0 0 6.5 21H8v-6H6.5M19 15h-1.5v6H19a1.5 1.5 0 0 0 1.5-1.5V18" />,
   image: (
     <>

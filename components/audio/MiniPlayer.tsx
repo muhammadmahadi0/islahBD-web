@@ -142,6 +142,17 @@ export default function MiniPlayer() {
     setCurrentTime(time);
   };
 
+  // ±10s skip. Live streams have no seekable timeline, so the buttons are
+  // disabled there exactly like the scrubber.
+  const seekBy = (delta: number) => {
+    if (currentTrack?.isLive) return;
+    const limit = Number.isFinite(duration) && duration > 0 ? duration : Infinity;
+    const next = Math.max(0, Math.min(limit, (currentTime || 0) + delta));
+    if (!Number.isFinite(next)) return;
+    window.dispatchEvent(new CustomEvent(SEEK_EVENT, { detail: next }));
+    setCurrentTime(next);
+  };
+
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
 
   // Create the YT player in the persistent mount node.
@@ -656,9 +667,17 @@ export default function MiniPlayer() {
           </div>
 
           {/* transport */}
-          <div className="mt-1 flex items-center justify-center gap-5">
+          <div className="mt-1 flex items-center justify-center gap-2 sm:gap-4">
             <button onClick={playPrevious} className="btn-ghost !rounded-full !p-3" aria-label={tx("আগেরটি")}>
               <Icon name="prev" size={20} />
+            </button>
+            <button
+              onClick={() => seekBy(-10)}
+              disabled={isLive}
+              className="btn-ghost !rounded-full !p-2.5 disabled:opacity-40"
+              aria-label={tx("১০ সেকেন্ড পিছনে")}
+            >
+              <Icon name="seekback" size={24} strokeWidth={1.6} />
             </button>
             <button
               onClick={() => setIsPlaying(!isPlaying)}
@@ -670,6 +689,14 @@ export default function MiniPlayer() {
               ) : (
                 <Icon name={isPlaying ? "pause" : "playfill"} size={22} />
               )}
+            </button>
+            <button
+              onClick={() => seekBy(10)}
+              disabled={isLive}
+              className="btn-ghost !rounded-full !p-2.5 disabled:opacity-40"
+              aria-label={tx("১০ সেকেন্ড সামনে")}
+            >
+              <Icon name="seekforward" size={24} strokeWidth={1.6} />
             </button>
             <button onClick={playNext} className="btn-ghost !rounded-full !p-3" aria-label={tx("পরেরটি")}>
               <Icon name="next" size={20} />
