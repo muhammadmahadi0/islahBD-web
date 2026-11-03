@@ -7,8 +7,9 @@ import { bnNum } from "../../lib/audio";
 import { useLang, useNum, useTx } from "../../store/language-store";
 import { useLocalizedData } from "../../lib/content-translate";
 
-// Books — IslahBD catalog + the full Islami Jindegi kitab collection
-// (public/data/islamijindegi-books.json, scraped from
+// Books — KhanqahBD + IslahBD catalog + the full Islami Jindegi kitab
+// collection (public/data/khanqah-books.json scraped from
+// api.khanqahbd.com, public/data/islamijindegi-books.json scraped from
 // islamijindegi.com/bn/books). Search, category sidebar/rail, and an
 // in-app reader (`/library/[id]`) with a PDF fallback for PDF-only books.
 interface Book {
@@ -18,7 +19,7 @@ interface Book {
   category: string;
   cover: string;
   pdf: string;
-  source: "islahbd" | "islamijindegi";
+  source: "khanqahbd" | "islahbd" | "islamijindegi";
 }
 
 const PAGE_SIZE = 48;
@@ -65,7 +66,11 @@ export default function LibraryPage() {
     const seq = ++loadSeq.current;
     setLoading(true);
     const localFile = lang === "bn" ? "islamijindegi-books.json" : `islamijindegi-books.${lang}.json`;
-    const [islah, jindegi] = await Promise.allSettled([
+    const [khanqah, islah, jindegi] = await Promise.allSettled([
+      fetch("/data/khanqah-books.json").then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      }),
       fetch("/api/books").then((r) => r.json()),
       fetch(`/data/${localFile}`)
         .then((r) => {
@@ -75,7 +80,14 @@ export default function LibraryPage() {
         .catch(() => fetch("/data/islamijindegi-books.json").then((r) => r.json())),
     ]);
 
+    // KhanqahBD's kitab collection leads the library, then the IslahBD
+    // catalog, then the Islami Jindegi kitab collection.
     const merged: Book[] = [];
+    if (khanqah.status === "fulfilled" && Array.isArray(khanqah.value)) {
+      for (const b of khanqah.value as Omit<Book, "source">[]) {
+        merged.push({ ...b, source: "khanqahbd" });
+      }
+    }
     if (islah.status === "fulfilled" && islah.value?.success) {
       for (const b of islah.value.books as Omit<Book, "source">[]) {
         merged.push({ ...b, source: "islahbd" });
@@ -96,22 +108,46 @@ export default function LibraryPage() {
 
   const booksL = useLocalizedData(books, lang);
 
+  // The KhanqahBD collection ships under one subject; its localized name is
+  // whatever the runtime translator produced, so resolve it from the data.
+  const khanqahCategory = useMemo(
+    () => booksL.find((b) => b.source === "khanqahbd")?.category ?? "",
+    [booksL]
+  );
+
   const categories = useMemo(() => {
     const counts = new Map<string, number>();
     for (const b of booksL) {
       if (b.category) counts.set(b.category, (counts.get(b.category) || 0) + 1);
     }
-    return [...counts.entries()].sort((a, b) => b[1] - a[1]);
-  }, [booksL]);
+    const list = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+    // KhanqahBD always leads the subject list; the rest keep count order.
+    const at = list.findIndex(([name]) => name === khanqahCategory);
+    if (at > 0) list.unshift(...list.splice(at, 1));
+    return list;
+  }, [booksL, khanqahCategory]);
 
   const filtered = useMemo(() => {
     const term = submitted.trim().toLowerCase();
-    return booksL.filter((b) => {
+    const rows = booksL.filter((b) => {
       if (cat !== ALL && b.category !== cat) return false;
       if (!term) return true;
       return `${b.title} ${b.author} ${b.category}`.toLowerCase().includes(term);
     });
-  }, [booksL, submitted, cat]);
+    // Group by subject in sidebar order (KhanqahBD first, then the existing
+    // subjects by book count, uncategorised last) while keeping the source
+    // order inside each subject.
+    const rank = new Map(categories.map(([name], i) => [name, i]));
+    const last = categories.length;
+    return rows
+      .map((book, i) => ({ book, i }))
+      .sort(
+        (a, b) =>
+          (rank.get(a.book.category) ?? last) - (rank.get(b.book.category) ?? last) ||
+          a.i - b.i
+      )
+      .map((row) => row.book);
+  }, [booksL, submitted, cat, categories]);
 
   const list = filtered.slice(0, visible);
 

@@ -42,6 +42,15 @@ function remember(src: string, lang: Lang, out: string) {
 }
 
 function postProcess(src: string, out: string, lang: Lang) {
+  // KhanqahBD is a brand name — the machine translator mangles it
+  // ("Khankahabdi" / "خانقاہابدی"), so keep it fixed in every context.
+  if (src.includes("খানকাহবিডি")) {
+    if (lang === "en") {
+      out = src.trim() === "খানকাহবিডি" ? "KhanqahBD" : out.replace(/Khankahabdi/gi, "KhanqahBD");
+    } else {
+      out = src.trim() === "খানকাহবিডি" ? "خانقاہ بی ڈی" : out.replace(/خانقاہابدی/g, "خانقاہ بی ڈی");
+    }
+  }
   if (lang === "en") {
     if (src.includes("ছালেক")) {
       out = out.replace(/\bKhalekin\b/gi, "Salikin").replace(/\bChalekin\b/gi, "Salikin");
